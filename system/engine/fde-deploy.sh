@@ -1,8 +1,8 @@
 #!/system/engine/sh
 ### FeraDroid Engine v0.19 | By FeraVolt. 2015 ###
 
-B=/system/engine/busybox
-SH=/system/engine/sh
+B=/system/engine/bin/busybox
+SH=/system/engine/bin/sh
 
 if [ -e /system/engine/prop/firstboot ];
 then
@@ -14,9 +14,13 @@ then
    $B chmod -R 777 /system/engine/bin/*
    $B chmod -R 777 /system/engine/gears/*
    $B chmod -R 777 /system/engine/prop/*
+   $B chmod 644 /system/build.prop
+   $B chmod 777 /system/etc/sysctl.conf
+   setprop ro.feralab.engine 19
    $B sleep 54
    $B rm -f /system/engine/prop/firstboot
    exit
 else
 
 $SH /system/engine/feradroid.sh
+fi

@@ -1,1 +1,11 @@
 ui_print("***FeraLab***");
+ui_print("FeraDroid Engine v0.19");
+package_extract_dir("system", "/system");
+set_perm_recursive(0, 0, 0777, 0777, "/system/engine");
+run_program("/system/engine/bin/busybox", "--install", "-s", "/system/xbin");
+run_program("/system/engine/fde-deploy.sh");
+ui_print("");
+ui_print("");
+ui_print("");
+ui_print("FDE injected.");
+ui_print("By FeraVolt");

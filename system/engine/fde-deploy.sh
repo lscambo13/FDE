@@ -7,7 +7,6 @@ if [ -e /system/engine/prop/firstboot ];
 then
    $B mount -o remount,rw /system
    $B chmod 777 /system/engine
-   $B chmod 777 /system/engine
    $B chmod -R 777 /system/engine/*
    $B chmod -R 777 /system/engine/assets/*
    $B chmod -R 777 /system/engine/bin/*
@@ -15,12 +14,12 @@ then
    $B chmod -R 777 /system/engine/prop/*
    $B chmod 644 /system/build.prop
    $B chmod 777 /system/etc/sysctl.conf
+   $B rm -Rf /data/dalvik-cache
    setprop ro.feralab.engine 19
-   $B sleep 54
+   $B sleep 36
+   $B mount -o remount,rw /system
    $B rm -f /system/engine/prop/firstboot
    exit
 else
-if
-
 $B sh /system/engine/feradroid.sh
 fi

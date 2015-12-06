@@ -7,23 +7,20 @@ SH=/system/engine/bin/sh
 $B mount -o remount,rw /system
 $B mount -o remount,rw /data
 $B chmod 644 /system/build.prop
+$B chmod 777 /system/engine
+$B chmod -R 777 /system/engine/*
+$B chmod -R 777 /system/engine/assets/*
+$B chmod -R 777 /system/engine/bin/*
 $B chmod -R 777 /system/engine/gears/*
-
-if [ -e /system/etc/sysctl.conf ]; then
- $B chmod 777 /system/etc/sysctl.conf
- $B sysctl -p
-else
- $B touch /system/etc/sysctl.conf
- $B chmod 777 /system/etc/sysctl.conf
-fi;
-sync;
-
-if [ ! -h /data/local/tmp/adreno_config.txt ]; then
- $B chmod 777 /system/engine/assets/adreno_config.txt
- $B ln -s /system/engine/assets/adreno_config.txt /data/local/tmp/adreno_config.txt
-fi;
+$B chmod -R 777 /system/engine/prop/*
 
 $SH /system/engine/gears/001abc.sh
 $SH /system/engine/gears/002def.sh
 $SH /system/engine/gears/003ghi.sh
 $SH /system/engine/gears/004jkl.sh
+$SH /system/engine/gears/005mno.sh
+$SH /system/engine/gears/006pqr.sh
+
+$B sleep 3
+sync;
+

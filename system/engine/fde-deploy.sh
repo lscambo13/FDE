@@ -19,6 +19,6 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,rw /system
  $B rm -f /system/engine/prop/firstboot
 fi;
-$B sleep 18
+$B sleep 3
 sync;
 

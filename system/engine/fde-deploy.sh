@@ -2,6 +2,7 @@
 ### FeraDroid Engine v0.19 | By FeraVolt. 2015 ###
 
 B=/system/engine/bin/busybox
+SH=/system/engine/bin/sh
 
 if [ -e /system/engine/prop/firstboot ];
 then
@@ -21,5 +22,5 @@ then
    $B rm -f /system/engine/prop/firstboot
    exit
 else
-$B sh /system/engine/feradroid.sh
+$SH /system/engine/feradroid.sh
 fi

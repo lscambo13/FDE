@@ -11,10 +11,10 @@ $B rm -f /cache/recovery/*.tmp
 $B rm -Rf /data/anr
 $B rm -Rf /data/backup/pending
 $B rm -f /data/cache/*
-$B rm -f /data/local/tmp/*
+$B rm -Rf /data/local/tmp/*
 $B rm -f /data/local/*.apk
 $B rm -f /data/local/*.log
-$B rm -Rf /data/tombstones
+$B rm -f /data/tombstones/*
 $B rm -Rf /data/system/dropbox/
 $B rm -Rf /data/system/usagestats/
 $B rm -f /data/dalvik-cache/*.apk

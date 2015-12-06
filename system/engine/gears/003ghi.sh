@@ -6,12 +6,12 @@ KB="2048"
 MAX="97"
 
 if [ -e /mnt/sd-ext ]; then
-$B mount -t ext3 -o rw /dev/block/vold/179:2 /mnt/sd-ext
-$B mount -t ext3 -o rw /dev/block/mmcblk0p2 /mnt/sd-ext
-$B sleep 1
-$B mount -t ext4 -o rw /dev/block/vold/179:2 /mnt/sd-ext
-$B mount -t ext4 -o rw /dev/block/mmcblk0p2 /mnt/sd-ext
-$B sleep 1
+ $B mount -t ext3 -o rw /dev/block/vold/179:2 /mnt/sd-ext
+ $B mount -t ext3 -o rw /dev/block/mmcblk0p2 /mnt/sd-ext
+ $B sleep 1
+ $B mount -t ext4 -o rw /dev/block/vold/179:2 /mnt/sd-ext
+ $B mount -t ext4 -o rw /dev/block/mmcblk0p2 /mnt/sd-ext
+ $B sleep 1
 fi;
 
 echo $KB > /sys/devices/virtual/bdi/0:18/read_ahead_kb

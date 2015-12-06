@@ -18,6 +18,7 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B sleep 18
  $B mount -o remount,rw /system
  $B rm -f /system/engine/prop/firstboot
+ $B --install -s /system/xbin
 fi;
 $B sleep 3
 sync;

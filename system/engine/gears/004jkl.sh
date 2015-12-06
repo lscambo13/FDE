@@ -15,5 +15,6 @@ for i in \
 do \
 	$SQ $i 'REINDEX;'; 
 done;
+$B sleep 1
 sync;
 

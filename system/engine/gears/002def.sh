@@ -8,3 +8,6 @@ if [ "$A" == "100" ] ; then
 $B rm -f /data/system/batterystats.bin
 fi;
 
+$B sleep 1
+sync;
+

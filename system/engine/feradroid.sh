@@ -4,6 +4,7 @@
 B=/system/engine/bin/busybox
 SH=/system/engine/bin/sh
 
+chmod -R 777 /system/engine/bin/*
 $B mount -o remount,rw /system
 $B mount -o remount,rw /data
 $B mount -o remount,rw rootfs /

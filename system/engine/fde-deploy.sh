@@ -4,21 +4,21 @@
 B=/system/engine/bin/busybox
 
 if [ -e /system/engine/prop/firstboot ]; then
- $B mount -o remount,rw /system
- $B chmod 777 /system/engine
- $B chmod -R 777 /system/engine/*
- $B chmod -R 777 /system/engine/assets/*
- $B chmod -R 777 /system/engine/bin/*
- $B chmod -R 777 /system/engine/gears/*
- $B chmod -R 777 /system/engine/prop/*
- $B chmod 644 /system/build.prop
- $B rm -Rf /data/dalvik-cache
+ mount -o remount,rw /system
+ chmod 777 /system/engine
+ chmod -R 777 /system/engine/*
+ chmod -R 777 /system/engine/assets/*
+ chmod -R 777 /system/engine/bin/*
+ chmod -R 777 /system/engine/gears/*
+ chmod -R 777 /system/engine/prop/*
+ chmod 644 /system/build.prop
+ rm -Rf /data/dalvik-cache
  setprop ro.feralab.engine 19
- $B sleep 3
- $B mount -o remount,rw /system
- $B rm -f /system/engine/prop/firstboot
+ sleep 1
+ mount -o remount,rw /system
+ rm -f /system/engine/prop/firstboot
  $B --install -s /system/xbin
 fi;
-$B sleep 1
+sleep 1
 sync;
 

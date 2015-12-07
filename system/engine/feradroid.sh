@@ -8,6 +8,8 @@ $B mount -o remount,rw /system
 $B mount -o remount,rw /data
 $B chmod 644 /system/build.prop
 $B chmod 777 /system/engine
+$B chmod 777 /cache
+$B chmod -R 777 /cache/*
 $B chmod -R 777 /system/engine/*
 $B chmod -R 777 /system/engine/assets/*
 $B chmod -R 777 /system/engine/bin/*
@@ -20,6 +22,9 @@ $SH /system/engine/gears/003ghi.sh
 $SH /system/engine/gears/004jkl.sh
 $SH /system/engine/gears/005mno.sh
 $SH /system/engine/gears/006pqr.sh
+$SH /system/engine/gears/007stu.sh
+$SH /system/engine/gears/008vwx.sh
+$SH /system/engine/gears/009yza.sh
 
 $B sleep 3
 sync;

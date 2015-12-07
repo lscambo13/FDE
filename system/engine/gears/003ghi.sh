@@ -14,6 +14,10 @@ if [ -e /mnt/sd-ext ]; then
  $B sleep 1
 fi;
 
+echo $KB > /sys/block/mtdblock1/bdi/read_ahead_kb
+echo $KB > /sys/block/mtdblock2/bdi/read_ahead_kb
+echo $KB > /sys/block/mtdblock3/bdi/read_ahead_kb
+echo $KB > /sys/block/mtdblock4/bdi/read_ahead_kb
 echo $KB > /sys/devices/virtual/bdi/0:18/read_ahead_kb
 echo $KB > /sys/devices/virtual/bdi/0:22/read_ahead_kb
 echo $KB > /sys/devices/virtual/bdi/0:26/read_ahead_kb

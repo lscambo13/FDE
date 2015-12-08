@@ -37,6 +37,10 @@ done
 $B echo $KB > /sys/block/mmcblk0/queue/read_ahead_kb
 CHK=$($B cat /sys/devices/virtual/bdi/179:0/read_ahead_kb)
 $B echo "Checking if worked. Current parameter is $CHK KB"
+$B echo "FStrim init.."
+$B fstrim -v /system
+$B fstrim -v /data
+$B fstrim -v /cache
 $B echo "Check"
 $B sleep 1
 $B sync;

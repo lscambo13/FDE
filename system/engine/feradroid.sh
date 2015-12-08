@@ -24,15 +24,25 @@ $B chmod -R 777 /system/engine/bin/*
 $B chmod -R 777 /system/engine/gears/*
 $B chmod -R 777 /system/engine/prop/*
 $B sync;
+$B mount -o remount,rw /system
 $SH /system/engine/gears/001abc.sh
+$B mount -o remount,rw /system
 $SH /system/engine/gears/002def.sh
+$B mount -o remount,rw /system
 $SH /system/engine/gears/003ghi.sh
+$B mount -o remount,rw /system
 $SH /system/engine/gears/004jkl.sh
+$B mount -o remount,rw /system
 $SH /system/engine/gears/005mno.sh
+$B mount -o remount,rw /system
 $SH /system/engine/gears/006pqr.sh
+$B mount -o remount,rw /system
 $SH /system/engine/gears/007stu.sh
+$B mount -o remount,rw /system
 $SH /system/engine/gears/008vwx.sh
+$B mount -o remount,rw /system
 $SH /system/engine/gears/009yza.sh
+$B mount -o remount,ro /system
 $B sleep 1
 $B sync;
 

@@ -35,6 +35,21 @@ $B sleep 1
 $B echo 3 > /proc/sys/vm/drop_caches
 $B sleep 3
 sync;
+$B echo " "
+
+if [ -e /sys/block/zram0/disksize ]; then
+ ZRAM0=$((($B cat /sys/block/zram0/disksize)/1024)/1024)
+ FZRAM=$($RAM/2)
+ $B echo "ZRAM detected. Tuning.."
+ $B echo "ZRAM0 size is $ZRAM0 MB"
+ $B echo "Basing on your RAM, calculated ZRAM0 size is $FZRAM MB"
+ $B echo "Applying parameter.."
+ $B echo $(($FZRAM*1024*1024)) > /sys/block/zram0/disksize
+ $B mkswap /dev/block/zram0
+ $B swapon /dev/block/zram0
+ $B echo 100 > /proc/sys/vm/swappiness
+fi;
+
 RAMfree=$((`$B free | $B awk '{ print $4 }' | $B sed -n 2p`/1024))
 RAMcached=$((`$B free | $B awk '{ print $7 }' | $B sed -n 2p`/1024))
 RAMreported=$(($RAMfree + $RAMcached))

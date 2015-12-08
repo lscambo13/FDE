@@ -31,8 +31,8 @@ fi;
 
 for i in $BDI $STL $BML $MMC $ZRM $MTD $RM; do
 if [ -e ${i}/read_ahead_kb ]; then
-$B echo "Applying parameters.."
-$B echo $KB > ${i}/read_ahead_kb;
+ $B echo "Applying parameters.."
+ $B echo $KB > ${i}/read_ahead_kb
 fi;
 done
 

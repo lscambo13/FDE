@@ -11,5 +11,5 @@ else
  $B touch /system/etc/sysctl.conf
  $B chmod 777 /system/etc/sysctl.conf
 fi;
-$B sync;
+sync;
 

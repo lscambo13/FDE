@@ -3,7 +3,7 @@
 
 B=/system/engine/bin/busybox
 
-$B echo "Cleaning gear"
+$B echo "***Cleaning gear***"
 $B mount -o remount,rw /system
 $B mount -o remount,rw /data
 $B rm -f /cache/*.apk
@@ -35,7 +35,7 @@ $B rm -Rf /mnt/sdcard/.kate
 $B rm -Rf /mnt/sdcard/baidu
 $B rm -Rf /mnt/sdcard/DCIM/.thumbnails
 $B rm -f /mnt/sdcard/fix_permissions.log
-$B echo "Check"
+$B echo "***Check***"
 $B sleep 1
-$B sync;
+sync;
 

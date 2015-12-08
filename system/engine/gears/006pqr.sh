@@ -17,5 +17,5 @@ $B chmod 777 /dev/graphics/fb0
 $B echo 0 > /sys/kernel/debug/msm_fb/0/vsync_enable
 $B echo 16 > /sys/kernel/debug/msm_fb/mdp/mdp_usec_diff_treshold
 $B echo 30 > /sys/kernel/debug/msm_fb/mdp/vs_rdcnt_slow
-$B sync;
+sync;
 

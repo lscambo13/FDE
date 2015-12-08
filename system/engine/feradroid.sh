@@ -7,14 +7,13 @@ SH=/system/engine/bin/sh
 chmod -R 777 /system/engine/bin/*
 $B mount -o remount,rw /system
 $B mount -o remount,rw /data
-$B mount -o remount,rw rootfs /
-$B mount -t debugfs debugfs /sys/kernel/debug
+#$B mount -o remount,rw rootfs /
+#$B mount -t debugfs debugfs /sys/kernel/debug
 if [ -e /sbin/sysrw ]; then
  /sbin/sysrw
  $B sleep 1
 fi;
 $B chmod 644 /system/build.prop
-$B chmod 666 /system/lib/modules/*
 $B chmod 777 /system/engine
 $B chmod 777 /cache
 $B chmod -R 777 /cache/*

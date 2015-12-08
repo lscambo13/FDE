@@ -6,5 +6,5 @@ B=/system/engine/bin/busybox
 if [ -e /system/engine ]; then
  $B sleep 1
 fi;
-$B sync;
+sync;
 

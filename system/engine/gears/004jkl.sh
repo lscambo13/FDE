@@ -38,12 +38,15 @@ sync;
 $B echo " "
 
 if [ -e /sys/block/zram0/disksize ]; then
- ZRAM0=$((($B cat /sys/block/zram0/disksize)/1024)/1024)
- FZRAM=$($RAM/2)
+ ZRAM0=$((`$B cat /sys/block/zram0/disksize`/1024)/1024)
+ FZRAM=$(($RAM/2))
  $B echo "ZRAM detected. Tuning.."
  $B echo "ZRAM0 size is $ZRAM0 MB"
- $B echo "Basing on your RAM, calculated ZRAM0 size is $FZRAM MB"
+ $B echo "Basing on your RAM.."
+ $B echo "Calculated ZRAM0 size is $FZRAM MB"
  $B echo "Applying parameter.."
+ $B swapoff /dev/block/zram0
+ $B echo 1 /sys/block/zram0/reset
  $B echo $(($FZRAM*1024*1024)) > /sys/block/zram0/disksize
  $B mkswap /dev/block/zram0
  $B swapon /dev/block/zram0

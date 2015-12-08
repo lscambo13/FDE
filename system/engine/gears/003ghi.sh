@@ -3,48 +3,69 @@
 
 B=/system/engine/bin/busybox
 
-$B echo "***Memory gear***"
+$B echo "***RAM gear***"
 RAM=$((`$B free | $B awk '{ print $2 }' | $B sed -n 2p`/1024))
+RAMfree=$((`$B free | $B awk '{ print $4 }' | $B sed -n 2p`/1024))
+RAMcached=$((`$B free | $B awk '{ print $7 }' | $B sed -n 2p`/1024))
+RAMreported=$(($RAMfree + $RAMcached))
 SWAP=$((`$B free | $B awk '{ print $2 }' | $B sed -n 4p`/1024))
-KB=$(((($RAM+$SWAP)/64+1)*128))
-BDI=/sys/devices/virtual/bdi/*
-STL=/sys/block/stl*/bdi
-BML=/sys/block/bml*/bdi
-MMC=/sys/block/mmc*/bdi
-ZRM=/sys/block/zram*/bdi
-MTD=/sys/block/mtd*/bdi
-RM=/sys/block/ram*/bdi
-LP=/sys/block/loop*/bdi
-$B echo "Device has $RAM MB of RAM and $SWAP MB of SWAP/ZRAM"
-$B echo "Basing on your RAM & SWAP/ZRAM.."
-$B echo "Calculated readahead parameter is $KB KB"
-
-if [ -e /mnt/sd-ext ]; then
- $B echo "Mounting EXT partitions"
- $B mount -t ext3 -o rw /dev/block/vold/179:2 /mnt/sd-ext
- $B mount -t ext3 -o rw /dev/block/mmcblk0p2 /mnt/sd-ext
- $B sleep 1
- $B mount -t ext4 -o rw /dev/block/vold/179:2 /mnt/sd-ext
- $B mount -t ext4 -o rw /dev/block/mmcblk0p2 /mnt/sd-ext
- $B sleep 1
-fi;
-
-for i in $BDI $STL $BML $MMC $ZRM $MTD $RM; do
-if [ -e ${i}/read_ahead_kb ]; then
- $B echo "Applying parameters.."
- $B echo $KB > ${i}/read_ahead_kb
-fi;
-done
-
-$B echo $KB > /sys/block/mmcblk0/queue/read_ahead_kb
-CHK=$($B cat /sys/devices/virtual/bdi/179:0/read_ahead_kb)
-$B echo "Checking if worked. Current parameter is $CHK KB"
+SWAPused=$((`$B free | $B awk '{ print $3 }' | $B sed -n 4p`/1024))
+$B echo "Device has $RAM MB of RAM"
+$B echo "$RAMfree MB of RAM is realy free"
+$B echo "System reports that $RAMreported MB of RAM is free"
+$B echo "$RAMcached MB of RAM is cached"
+$B echo "SWAP/ZRAM is $SWAP MB"
+$B echo "$SWAPused MB of SWAP/ZRAM is used"
 $B echo " "
-$B echo "FStrim init.."
-$B fstrim -v /system
-$B fstrim -v /data
-$B fstrim -v /cache
-$B echo "***Check***"
+$B echo "Dropping caches.."
+sync;
 $B sleep 1
+$B echo 3 > /proc/sys/vm/drop_caches
+$B sleep 1
+sync;
+$B sleep 1
+$B echo 2 > /proc/sys/vm/drop_caches
+$B sleep 1
+sync;
+$B sleep 1
+$B echo 1 > /proc/sys/vm/drop_caches
+$B sleep 1
+sync;
+$B sleep 1
+$B echo 3 > /proc/sys/vm/drop_caches
+$B sleep 3
+sync;
+$B echo " "
+
+if [ -e /sys/block/zram0/disksize ]; then
+ ZRAM0=$((`$B cat /sys/block/zram0/disksize`/1024)/1024)
+ FZRAM=$(($RAM/2))
+ $B echo "ZRAM detected. Tuning.."
+ $B echo "ZRAM0 size is $ZRAM0 MB"
+ $B echo "Basing on your RAM.."
+ $B echo "Calculated ZRAM0 size is $FZRAM MB"
+ $B echo "Applying parameter.."
+ $B swapoff /dev/block/zram0
+ $B echo 1 /sys/block/zram0/reset
+ $B echo $(($FZRAM*1024*1024)) > /sys/block/zram0/disksize
+ $B mkswap /dev/block/zram0
+ $B swapon /dev/block/zram0
+ $B echo 100 > /proc/sys/vm/swappiness
+fi;
+
+RAMfree=$((`$B free | $B awk '{ print $4 }' | $B sed -n 2p`/1024))
+RAMcached=$((`$B free | $B awk '{ print $7 }' | $B sed -n 2p`/1024))
+RAMreported=$(($RAMfree + $RAMcached))
+SWAP=$((`$B free | $B awk '{ print $2 }' | $B sed -n 4p`/1024))
+SWAPused=$((`$B free | $B awk '{ print $3 }' | $B sed -n 4p`/1024))
+$B echo " "
+$B echo "NOW:"
+$B echo "Realy free RAM is $RAMfree MB"
+$B echo "System repored free RAM is $RAMreported MB"
+$B echo "Cached RAM is $RAMcached MB"
+$B echo "SWAP/ZRAM is $SWAP MB"
+$B echo "Used SWAP/ZRAM is $SWAPused MB"
+$B echo " "
+$B echo "***Check***"
 sync;
 

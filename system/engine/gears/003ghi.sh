@@ -2,11 +2,23 @@
 ### FeraDroid Engine v0.19 | By FeraVolt. 2015 ###
 
 B=/system/engine/bin/busybox
+
+$B echo "Memory gear"
 RAM=$((`$B free | $B awk '{ print $2 }' | $B sed -n 2p`/1024))
 KB=$((($RAM/64+1)*128))
-
+BDI=/sys/devices/virtual/bdi/*
+STL=/sys/block/stl*/bdi
+BML=/sys/block/bml*/bdi
+MMC=/sys/block/mmc*/bdi
+ZRM=/sys/block/zram*/bdi
+MTD=/sys/block/mtd*/bdi
+RAM=/sys/block/ram*/bdi
+LP=/sys/block/loop*/bdi
+$B echo "Device with $RAM MB of RAM"
+$B echo "Calculated readahead parameter based on your RAM is $KB KB"
 
 if [ -e /mnt/sd-ext ]; then
+ $B echo "Mounting EXT partitions"
  $B mount -t ext3 -o rw /dev/block/vold/179:2 /mnt/sd-ext
  $B mount -t ext3 -o rw /dev/block/mmcblk0p2 /mnt/sd-ext
  $B sleep 1
@@ -15,47 +27,17 @@ if [ -e /mnt/sd-ext ]; then
  $B sleep 1
 fi;
 
-$B echo $KB > /sys/block/mtdblock1/bdi/read_ahead_kb
-$B echo $KB > /sys/block/mtdblock2/bdi/read_ahead_kb
-$B echo $KB > /sys/block/mtdblock3/bdi/read_ahead_kb
-$B echo $KB > /sys/block/mtdblock4/bdi/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/0:18/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/0:22/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/0:26/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/1:0/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/1:1/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/1:2/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/1:3/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/1:4/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/1:5/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/1:6/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/1:7/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/1:8/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/1:9/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/1:10/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/1:11/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/1:12/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/1:13/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/1:14/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/1:15/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/7:0/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/7:1/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/7:2/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/7:3/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/7:4/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/7:5/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/7:6/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/7:7/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/31:0/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/179:0/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/179:2/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/179:128/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/179:32/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/179:64/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/179:96/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/253:0/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/254:0/read_ahead_kb
-$B echo $KB > /sys/devices/virtual/bdi/default/read_ahead_kb
+for i in $BDI $STL $BML $MMC $ZRM $MTD $RAM; do
+if [ -e ${i}/read_ahead_kb ]; then
+$B echo "Applying parameters.."
+$B echo $KB > ${i}/read_ahead_kb;
+fi;
+done
+
+$B echo $KB > /sys/block/mmcblk0/queue/read_ahead_kb
+CHK=$($B cat /sys/devices/virtual/bdi/179:0/read_ahead_kb)
+$B echo "Checking if worked. Current parameter is $CHK KB"
+$B echo "Check"
 $B sleep 1
 $B sync;
 

@@ -14,8 +14,8 @@ $B chmod 666 /dev/msm_aac_in
 $B chmod 666 /dev/msm_amr_in
 $B chmod 666 /dev/genlock
 $B chmod 777 /dev/graphics/fb0
-echo 0 > /sys/kernel/debug/msm_fb/0/vsync_enable
-echo 16 > /sys/kernel/debug/msm_fb/mdp/mdp_usec_diff_treshold
-echo 30 > /sys/kernel/debug/msm_fb/mdp/vs_rdcnt_slow
-sync;
+$B echo 0 > /sys/kernel/debug/msm_fb/0/vsync_enable
+$B echo 16 > /sys/kernel/debug/msm_fb/mdp/mdp_usec_diff_treshold
+$B echo 30 > /sys/kernel/debug/msm_fb/mdp/vs_rdcnt_slow
+$B sync;
 

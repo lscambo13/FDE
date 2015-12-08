@@ -23,7 +23,7 @@ $B chmod -R 777 /system/engine/assets/*
 $B chmod -R 777 /system/engine/bin/*
 $B chmod -R 777 /system/engine/gears/*
 $B chmod -R 777 /system/engine/prop/*
-sync;
+$B sync;
 $SH /system/engine/gears/001abc.sh
 $SH /system/engine/gears/002def.sh
 $SH /system/engine/gears/003ghi.sh
@@ -33,6 +33,6 @@ $SH /system/engine/gears/006pqr.sh
 $SH /system/engine/gears/007stu.sh
 $SH /system/engine/gears/008vwx.sh
 $SH /system/engine/gears/009yza.sh
-$B sleep 3
-sync;
+$B sleep 1
+$B sync;
 

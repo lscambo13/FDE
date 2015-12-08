@@ -13,5 +13,5 @@ if [ -e /system/engine/prop/nohost ]; then
 fi;
 
 $B sleep 1
-sync;
+$B sync;
 

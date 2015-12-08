@@ -5,7 +5,8 @@ B=/system/engine/bin/busybox
 
 $B echo "Memory gear"
 RAM=$((`$B free | $B awk '{ print $2 }' | $B sed -n 2p`/1024))
-KB=$((($RAM/64+1)*128))
+SWAP=$((`$B free | $B awk '{ print $2 }' | $B sed -n 4p`/1024))
+KB=$(((($RAM+$SWAP)/64+1)*128))
 BDI=/sys/devices/virtual/bdi/*
 STL=/sys/block/stl*/bdi
 BML=/sys/block/bml*/bdi
@@ -14,8 +15,9 @@ ZRM=/sys/block/zram*/bdi
 MTD=/sys/block/mtd*/bdi
 RAM=/sys/block/ram*/bdi
 LP=/sys/block/loop*/bdi
-$B echo "Device with $RAM MB of RAM"
-$B echo "Calculated readahead parameter based on your RAM is $KB KB"
+$B echo "Device with $RAM MB of RAM and $SWAP MB SWAP/ZRAM"
+$B echo "Basing on your RAM & SWAP/ZRAM.."
+$B echo "Calculated readahead parameter is $KB KB"
 
 if [ -e /mnt/sd-ext ]; then
  $B echo "Mounting EXT partitions"

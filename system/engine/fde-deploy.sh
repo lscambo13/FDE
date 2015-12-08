@@ -11,12 +11,12 @@ if [ -e /system/engine/prop/firstboot ]; then
  chmod -R 777 /system/engine/bin/*
  chmod -R 777 /system/engine/gears/*
  chmod -R 777 /system/engine/prop/*
- chmod 644 /system/build.prop
- rm -Rf /data/dalvik-cache
- setprop ro.feralab.engine 19
- sleep 1
- mount -o remount,rw /system
- rm -f /system/engine/prop/firstboot
+ $B chmod 644 /system/build.prop
+ $B rm -Rf /data/dalvik-cache
+ $B setprop ro.feralab.engine 19
+ $B sleep 1
+ $B mount -o remount,rw /system
+ $B rm -f /system/engine/prop/firstboot
  $B --install -s /system/xbin
 fi;
 sleep 1

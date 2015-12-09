@@ -2,6 +2,7 @@
 ### FeraDroid Engine v0.19 | By FeraVolt. 2015 ###
 
 B=/system/engine/bin/busybox
+RZS=/system/engine/bin/rzscontrol
 
 $B echo "***RAM gear***"
 RAM=$((`$B free | $B awk '{ print $2 }' | $B sed -n 2p`/1024))
@@ -53,6 +54,22 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B echo 100 > /proc/sys/vm/swappiness
 fi;
 
+if [ -e /sys/block/ramzswap0/size ]; then
+ RZ=$(`$B cat /sys/block/ramzswap0/size`/1024)
+ FRZ=$(($RAM/2))
+ $B echo "RAMZSWAP detected. Tuning.."
+ $B echo "RAMZSWAP size is $RZ MB"
+ $B echo "Basing on your RAM.."
+ $B echo "Calculated RAMZSWAP size is $FRZ MB"
+ ZRF=$(($FRZ*1024))
+ $B echo "Applying parameter.."
+ $B swapoff /dev/block/ramzswap0
+ $RZS /dev/block/ramzswap0 --reset
+ $RZS /dev/block/ramzswap0 -i -d $ZRF
+ $B swapon /dev/block/ramzswap0
+ $B echo 100 > /proc/sys/vm/swappiness
+fi;
+
 RAMfree=$((`$B free | $B awk '{ print $4 }' | $B sed -n 2p`/1024))
 RAMcached=$((`$B free | $B awk '{ print $7 }' | $B sed -n 2p`/1024))
 RAMreported=$(($RAMfree + $RAMcached))
@@ -61,7 +78,7 @@ SWAPused=$((`$B free | $B awk '{ print $3 }' | $B sed -n 4p`/1024))
 $B echo " "
 $B echo "NOW:"
 $B echo "Realy free RAM is $RAMfree MB"
-$B echo "System repored free RAM is $RAMreported MB"
+$B echo "System reported free RAM is $RAMreported MB"
 $B echo "Cached RAM is $RAMcached MB"
 $B echo "SWAP/ZRAM is $SWAP MB"
 $B echo "Used SWAP/ZRAM is $SWAPused MB"

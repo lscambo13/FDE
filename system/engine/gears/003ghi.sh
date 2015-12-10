@@ -11,12 +11,15 @@ RAMcached=$($B free -m | $B awk '{ print $7 }' | $B sed -n 2p)
 RAMreported=$((RAMfree + RAMcached))
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
 SWAPused=$($B free -m | $B awk '{ print $3 }' | $B sed -n 4p)
-$B echo "Device has $RAM MB of RAM"
-$B echo "$RAMfree MB of RAM is realy free"
-$B echo "System reports that $RAMreported MB of RAM is free"
-$B echo "$RAMcached MB of RAM is cached"
-$B echo "SWAP/ZRAM is $SWAP MB"
-$B echo "$SWAPused MB of SWAP/ZRAM is used"
+$B echo " "
+$B echo "Current RAM values:"
+$B echo "Total:              $RAM MB"
+$B echo "Free:               $RAMreported MB"
+$B echo "Real free:          $RAMfree MB"
+$B echo "Cached:             $RAMcached MB"
+$B echo "SWAP/ZRAM total:    $SWAP MB"
+$B echo "SWAP/ZRAM used:     $SWAPused MB"
+$B echo " "
 $B echo " "
 $B echo "Dropping caches.."
 sync;
@@ -40,7 +43,7 @@ $B echo " "
 
 if [ -e /sys/block/zram0/disksize ]; then
  ZRAM0=$($B cat /sys/block/zram0/disksize)
- ZZRAM=$((ZRAM0/1024))
+ ZZRAM=$((ZRAM0/1024/1024))
  FZRAM=$((RAM/2))
  $B echo "ZRAM detected. Tuning.."
  $B echo "ZRAM0 size is $ZZRAM MB"
@@ -49,7 +52,10 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B echo "Applying parameter.."
  $B swapoff /dev/block/zram0
  $B sleep 1
- $B echo "lz4" > /sys/block/zram0/comp_algorithm
+ if [ -e /sys/block/zram0/comp_algorithm ]; then
+  $B echo "Better compression level"
+  $B echo "lz4" > /sys/block/zram0/comp_algorithm
+ fi;
  $B echo 1 > /sys/block/zram0/reset
  $B echo $((FZRAM*1024*1024)) > /sys/block/zram0/disksize
  $B mkswap /dev/block/zram0
@@ -105,12 +111,13 @@ RAMreported=$((RAMfree + RAMcached))
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
 SWAPused=$($B free -m | $B awk '{ print $3 }' | $B sed -n 4p)
 $B echo " "
-$B echo "NOW:"
-$B echo "Realy free RAM is $RAMfree MB"
-$B echo "System reported free RAM is $RAMreported MB"
-$B echo "Cached RAM is $RAMcached MB"
-$B echo "SWAP/ZRAM is $SWAP MB"
-$B echo "Used SWAP/ZRAM is $SWAPused MB"
+$B echo "RAM values NOW:"
+$B echo "Total:              $RAM MB"
+$B echo "Free:               $RAMreported MB"
+$B echo "Real free:          $RAMfree MB"
+$B echo "Cached:             $RAMcached MB"
+$B echo "SWAP/ZRAM total:    $SWAP MB"
+$B echo "SWAP/ZRAM used:     $SWAPused MB"
 $B echo " "
 $B echo "***Check***"
 sync;

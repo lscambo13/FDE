@@ -33,8 +33,14 @@ fi;
 
 for i in $BDI $STL $BML $MMC $ZRM $MTD $RM $LP; do
 if [ -e "${i}"/read_ahead_kb ]; then
- $B echo "Applying parameters.."
+ $B echo "Applying read_ahead parameters.."
  $B echo $KB > "${i}"/read_ahead_kb
+elif [ -e "${i}"/queue/scheduler ]; then
+ $B echo "Applying i/o parameters.."
+ $B echo noop > "${i}"/queue/scheduler
+ $B echo 0 > "${i}"/queue/iostats
+ $B echo 0 > "${i}"/queue/rotational
+ $B echo 256 > "${i}"/queue/iosched/nr_requests
 fi;
 done
 

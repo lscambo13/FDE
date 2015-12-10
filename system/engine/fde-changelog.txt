@@ -14,13 +14,13 @@ By FeraVolt.
 - Latest, self-installable busybox v1.24.1
 - 2.6.29+ kernel support
 - Android 2.1-6.0 support
-- NAND/FLASH/SD/EXT/RAM/ZRAM memory booster gear (tweak)
+- NAND/FLASH/SD/EXT/RAM/ZRAM/SWAP memory booster gears (tweaks)
 - EXT3/EXT4 /sd-ext automounter
 - Wide range int/ext memory cleaner gear
 - Smart battery calibrator gear
-- System-wide database optimization gear
 - Brutal kernel configurator gear
 - VM configuration gear
 - Graphics booster gear
 - Ad-blocking gear
+- FS optimizations
 -..to be continued..

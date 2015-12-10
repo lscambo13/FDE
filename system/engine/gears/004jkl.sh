@@ -4,17 +4,17 @@
 B=/system/engine/bin/busybox
 
 $B echo "***Memory gear***"
-RAM=$((`$B free | $B awk '{ print $2 }' | $B sed -n 2p`/1024))
-SWAP=$((`$B free | $B awk '{ print $2 }' | $B sed -n 4p`/1024))
-KB=$(((($RAM+$SWAP)/64+1)*128))
-BDI=/sys/devices/virtual/bdi/*
-STL=/sys/block/stl*/bdi
-BML=/sys/block/bml*/bdi
-MMC=/sys/block/mmc*/bdi
-ZRM=/sys/block/zram*/bdi
-MTD=/sys/block/mtd*/bdi
-RM=/sys/block/ram*/bdi
-LP=/sys/block/loop*/bdi
+RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
+SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
+KB=$((((RAM+SWAP)/64+1)*128))
+BDI="/sys/devices/virtual/bdi/*"
+STL="/sys/block/stl*/bdi"
+BML="/sys/block/bml*/bdi"
+MMC="/sys/block/mmc*/bdi"
+ZRM="/sys/block/zram*/bdi"
+MTD="/sys/block/mtd*/bdi"
+RM="/sys/block/ram*/bdi"
+LP="/sys/block/loop*/bdi"
 $B echo "Device has $RAM MB of RAM and $SWAP MB of SWAP/ZRAM"
 $B echo "Basing on your RAM & SWAP/ZRAM.."
 $B echo "Calculated readahead parameter is $KB KB"
@@ -29,10 +29,10 @@ if [ -e /mnt/sd-ext ]; then
  $B sleep 1
 fi;
 
-for i in $BDI $STL $BML $MMC $ZRM $MTD $RM; do
-if [ -e ${i}/read_ahead_kb ]; then
+for i in $BDI $STL $BML $MMC $ZRM $MTD $RM $LP; do
+if [ -e "${i}"/read_ahead_kb ]; then
  $B echo "Applying parameters.."
- $B echo $KB > ${i}/read_ahead_kb
+ $B echo $KB > "${i}"/read_ahead_kb
 fi;
 done
 

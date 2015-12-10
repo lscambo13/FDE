@@ -49,7 +49,7 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B echo "Applying parameter.."
  $B swapoff /dev/block/zram0
  $B sleep 1
- $B echo 1 /sys/block/zram0/reset
+ $B echo 1 > /sys/block/zram0/reset
  $B echo $((FZRAM*1024*1024)) > /sys/block/zram0/disksize
  $B mkswap /dev/block/zram0
  $B swapon /dev/block/zram0

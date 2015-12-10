@@ -4,6 +4,8 @@
 B=/system/engine/bin/busybox
 
 $B echo "***Cleaning gear***"
+$B echo " "
+$B echo " "
 $B mount -o remount,rw /system
 $B mount -o remount,rw /data
 $B rm -f /cache/*.apk

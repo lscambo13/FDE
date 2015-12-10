@@ -4,6 +4,8 @@
 B=/system/engine/bin/busybox
 
 $B echo "***Ad-blocking gear***"
+$B echo " "
+$B echo " "
 if [ -e /system/engine/prop/nohost ]; then
  $B mount -o remount,rw /system
  $B rm -f /system/etc/hosts

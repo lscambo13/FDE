@@ -40,6 +40,7 @@ $B echo 3 > /proc/sys/vm/drop_caches
 $B sleep 3
 sync;
 $B echo " "
+$B echo " "
 
 if [ -e /sys/block/zram0/disksize ]; then
  ZRAM0=$($B cat /sys/block/zram0/disksize)
@@ -110,6 +111,7 @@ RAMcached=$($B free -m | $B awk '{ print $7 }' | $B sed -n 2p)
 RAMreported=$((RAMfree + RAMcached))
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
 SWAPused=$($B free -m | $B awk '{ print $3 }' | $B sed -n 4p)
+$B echo " "
 $B echo " "
 $B echo "RAM values NOW:"
 $B echo "Total:              $RAM MB"

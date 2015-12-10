@@ -75,6 +75,19 @@ elif [ "$SWAP" -gt "0" ]; then
  $B echo "SWAP size is $SWAP MB"
  $B echo "Tuning system for SWAP.."
  $B echo 50 > /proc/sys/vm/swappiness
+elif [ -e /sys/kernel/mm/ksm/run ]; then
+ $B echo "KSM detected. Tuning.."
+ if [ "$SWAP" -gt "0" ]; then
+  $B echo "KSM + SWAP/ZRAM/RAMZSWAP is a bad idea for Android."
+  $B echo "You have RAM paging enabled, so..disabling KSM.."
+  $B echo 0 > /sys/kernel/mm/ksm/run
+ else
+  $B echo "You have no RAM paging. Let's enable/tune KSM.."
+  $B echo 90 > /sys/kernel/mm/ksm/pages_to_scan
+  $B echo 5000 > /sys/kernel/mm/ksm/sleep_millisecs
+  $B echo 1 > /sys/kernel/mm/ksm/run
+ fi;
+ $B echo "Kernel is relaxed now."
 else
  $B echo "No SWAP/ZRAM/RAMZSWAP was detected. Tuning system.."
  $B echo 0 > /proc/sys/vm/swappiness

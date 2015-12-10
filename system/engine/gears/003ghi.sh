@@ -5,12 +5,12 @@ B=/system/engine/bin/busybox
 RZS=/system/engine/bin/rzscontrol
 
 $B echo "***RAM gear***"
-RAM=$((`$B free | $B awk '{ print $2 }' | $B sed -n 2p`/1024))
-RAMfree=$((`$B free | $B awk '{ print $4 }' | $B sed -n 2p`/1024))
-RAMcached=$((`$B free | $B awk '{ print $7 }' | $B sed -n 2p`/1024))
-RAMreported=$(($RAMfree + $RAMcached))
-SWAP=$((`$B free | $B awk '{ print $2 }' | $B sed -n 4p`/1024))
-SWAPused=$((`$B free | $B awk '{ print $3 }' | $B sed -n 4p`/1024))
+RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
+RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p)
+RAMcached=$($B free -m | $B awk '{ print $7 }' | $B sed -n 2p)
+RAMreported=$((RAMfree + RAMcached))
+SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
+SWAPused=$($B free -m | $B awk '{ print $3 }' | $B sed -n 4p)
 $B echo "Device has $RAM MB of RAM"
 $B echo "$RAMfree MB of RAM is realy free"
 $B echo "System reports that $RAMreported MB of RAM is free"
@@ -39,42 +39,52 @@ sync;
 $B echo " "
 
 if [ -e /sys/block/zram0/disksize ]; then
- ZRAM0=$((`$B cat /sys/block/zram0/disksize`/1024)/1024)
- FZRAM=$(($RAM/2))
+ ZRAM0=$($B cat /sys/block/zram0/disksize)
+ ZZRAM=$((ZRAM0/1024))
+ FZRAM=$((RAM/2))
  $B echo "ZRAM detected. Tuning.."
- $B echo "ZRAM0 size is $ZRAM0 MB"
+ $B echo "ZRAM0 size is $ZZRAM MB"
  $B echo "Basing on your RAM.."
  $B echo "Calculated ZRAM0 size is $FZRAM MB"
  $B echo "Applying parameter.."
  $B swapoff /dev/block/zram0
+ $B sleep 1
  $B echo 1 /sys/block/zram0/reset
- $B echo $(($FZRAM*1024*1024)) > /sys/block/zram0/disksize
+ $B echo $((FZRAM*1024*1024)) > /sys/block/zram0/disksize
  $B mkswap /dev/block/zram0
  $B swapon /dev/block/zram0
- $B echo 100 > /proc/sys/vm/swappiness
-fi;
-
-if [ -e /sys/block/ramzswap0/size ]; then
- RZ=$(`$B cat /sys/block/ramzswap0/size`/1024)
- FRZ=$(($RAM/2))
+ $B echo 99 > /proc/sys/vm/swappiness
+elif [ -e /sys/block/ramzswap0/size ]; then
+ RZ=$($B cat /sys/block/ramzswap0/size)
+ ZRZ=$((RZ/1024))
+ FRZ=$((RAM/2))
  $B echo "RAMZSWAP detected. Tuning.."
- $B echo "RAMZSWAP size is $RZ MB"
+ $B echo "RAMZSWAP size is $ZRZ MB"
  $B echo "Basing on your RAM.."
  $B echo "Calculated RAMZSWAP size is $FRZ MB"
- ZRF=$(($FRZ*1024))
+ ZRF=$((FRZ*1024))
  $B echo "Applying parameter.."
  $B swapoff /dev/block/ramzswap0
+ $B sleep 1
  $RZS /dev/block/ramzswap0 --reset
  $RZS /dev/block/ramzswap0 -i -d $ZRF
  $B swapon /dev/block/ramzswap0
- $B echo 100 > /proc/sys/vm/swappiness
+ $B echo 99 > /proc/sys/vm/swappiness
+elif [ "$SWAP" -gt "0" ]; then
+ $B echo "SWAP detected. Tuning.."
+ $B echo "SWAP size is $SWAP MB"
+ $B echo "Tuning system for SWAP.."
+ $B echo 50 > /proc/sys/vm/swappiness
+else
+ $B echo "No SWAP/ZRAM/RAMZSWAP was detected. Tuning system.."
+ $B echo 0 > /proc/sys/vm/swappiness
 fi;
 
-RAMfree=$((`$B free | $B awk '{ print $4 }' | $B sed -n 2p`/1024))
-RAMcached=$((`$B free | $B awk '{ print $7 }' | $B sed -n 2p`/1024))
-RAMreported=$(($RAMfree + $RAMcached))
-SWAP=$((`$B free | $B awk '{ print $2 }' | $B sed -n 4p`/1024))
-SWAPused=$((`$B free | $B awk '{ print $3 }' | $B sed -n 4p`/1024))
+RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p)
+RAMcached=$($B free -m | $B awk '{ print $7 }' | $B sed -n 2p)
+RAMreported=$((RAMfree + RAMcached))
+SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
+SWAPused=$($B free -m | $B awk '{ print $3 }' | $B sed -n 4p)
 $B echo " "
 $B echo "NOW:"
 $B echo "Realy free RAM is $RAMfree MB"

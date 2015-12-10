@@ -24,5 +24,6 @@ By FeraVolt.
 - Graphics booster gear
 - Ad-blocking gear
 - FS-trim Android partitions defragmentation
-- 
+- Entropy booster
+- Kernel configurator gear
 -..to be continued..

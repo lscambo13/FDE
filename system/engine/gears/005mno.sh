@@ -12,7 +12,8 @@ $B touch /system/etc/sysctl.conf
 $B echo "Setting proper permissions.."
 $B chmod 777 /system/etc/sysctl.conf
 
-
+$B sysctl -e -w kernel.random.read_wakeup_threshold=1536
+$B sysctl -e -w kernel.random.write_wakeup_threshold=512
 
 sysctl -p
 $B echo "***Check***"

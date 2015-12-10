@@ -5,13 +5,14 @@ B=/system/engine/bin/busybox
 RZS=/system/engine/bin/rzscontrol
 
 $B echo "***RAM gear***"
+$B echo " "
+$B echo " "
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p)
 RAMcached=$($B free -m | $B awk '{ print $7 }' | $B sed -n 2p)
 RAMreported=$((RAMfree + RAMcached))
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
 SWAPused=$($B free -m | $B awk '{ print $3 }' | $B sed -n 4p)
-$B echo " "
 $B echo "Current RAM values:"
 $B echo "Total:              $RAM MB"
 $B echo "Free:               $RAMreported MB"
@@ -22,6 +23,8 @@ $B echo "SWAP/ZRAM used:     $SWAPused MB"
 $B echo " "
 $B echo " "
 $B echo "Dropping caches.."
+$B echo " "
+$B echo " "
 sync;
 $B sleep 1
 $B echo 3 > /proc/sys/vm/drop_caches
@@ -39,8 +42,6 @@ $B sleep 1
 $B echo 3 > /proc/sys/vm/drop_caches
 $B sleep 3
 sync;
-$B echo " "
-$B echo " "
 
 if [ -e /sys/block/zram0/disksize ]; then
  ZRAM0=$($B cat /sys/block/zram0/disksize)
@@ -98,8 +99,8 @@ else
  $B echo "No SWAP/ZRAM/RAMZSWAP was detected. Tuning system.."
  $B echo 0 > /proc/sys/vm/swappiness
  if [ -e /sys/kernel/mm/ksm/run ]; then
-  $B echo "KSM detected. Tuning.."
-  $B echo "You have no RAM paging. Let's enable/tune KSM.."
+  $B echo "KSM detected."
+  $B echo "You have no RAM paging enabled. Let's enable/tune KSM.."
   $B echo 90 > /sys/kernel/mm/ksm/pages_to_scan
   $B echo 5000 > /sys/kernel/mm/ksm/sleep_millisecs
   $B echo 1 > /sys/kernel/mm/ksm/run

@@ -49,6 +49,7 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B echo "Applying parameter.."
  $B swapoff /dev/block/zram0
  $B sleep 1
+ $B echo "lz4" > /sys/block/zram0/comp_algorithm
  $B echo 1 > /sys/block/zram0/reset
  $B echo $((FZRAM*1024*1024)) > /sys/block/zram0/disksize
  $B mkswap /dev/block/zram0
@@ -75,6 +76,11 @@ elif [ "$SWAP" -gt "0" ]; then
  $B echo "SWAP size is $SWAP MB"
  $B echo "Tuning system for SWAP.."
  $B echo 50 > /proc/sys/vm/swappiness
+ if [ -e /sys/module/zswap/parameters/enabled ]; then
+ $B echo "ZSWAP detected. Enabling/tuning it.."
+ $B echo 1 > /sys/module/zswap/parameters/enabled
+ $B echo lz4 > /sys/module/zswap/parameters/compressor
+ fi;
  if [ -e /sys/kernel/mm/ksm/run ]; then
   $B echo "KSM detected. Tuning.."
   $B echo "KSM + SWAP/ZRAM/RAMZSWAP is a bad idea for Android."

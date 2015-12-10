@@ -16,7 +16,7 @@ By FeraVolt.
 - Android 2.1-6.0 support
 - NAND/FLASH/SD/EXT/LOOP/MTD/MMC memory booster gears (tweaks)
 - EXT3/EXT4 /sd-ext automounter
-- RAM/ZRAM/RAMZSWAP/SWAP/KSM booster gear
+- RAM/ZRAM/RAMZSWAP/SWAP/KSM/ZSWAP booster gear
 - Wide range int/ext memory cleaner gear
 - Smart battery calibrator gear
 - Brutal kernel configurator gear

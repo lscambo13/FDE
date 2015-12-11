@@ -21,7 +21,7 @@ $B sysctl -e -w vm.drop_caches=3
 $B sysctl -e -w vm.oom_kill_allocating_task=0
 $B sysctl -e -w vm.dirty_ratio=50
 $B sysctl -e -w vm.dirty_background_ratio=10
-$B sysctl -e -w vm.dirty_writeback_interval=6000
+$B sysctl -e -w vm.dirty_writeback_centisecs=6000
 $B sysctl -e -w vm.dirty_expire_centisecs=600
 
 $B echo 1536 > /proc/sys/kernel/random/read_wakeup_threshold
@@ -33,8 +33,8 @@ $B echo 3 > /proc/sys/vm/drop_caches
 $B echo 0 > /proc/sys/vm/oom_kill_allocating_task
 $B echo 50 > /proc/sys/vm/dirty_ratio
 $B echo 10 > /proc/sys/vm/dirty_background_ratio
-$B echo 6000 > /proc/sys/vm/vm.dirty_writeback_interval
-$B echo 600 > /proc/sys/vm/vm.dirty_expire_centisecs
+$B echo 6000 > /proc/sys/vm/dirty_writeback_centisecs
+$B echo 600 > /proc/sys/vm/dirty_expire_centisecs
 
 sysctl -p
 $B echo " "

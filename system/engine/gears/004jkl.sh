@@ -16,6 +16,12 @@ ZRM="/sys/block/zram*"
 MTD="/sys/block/mtd*"
 RM="/sys/block/ram*"
 LP="/sys/block/loop*"
+ORZS="/sys/devices/virtual/block/ramzswap*"
+ORM="/sys/devices/virtual/block/ram*"
+OLP="/sys/devices/virtual/block/loop*"
+OMTD="/sys/devices/virtual/block/mtd*"
+OMMC="/sys/devices/virtual/block/mmc*"
+
 $B echo "Device has $RAM MB of RAM and $SWAP MB of SWAP/ZRAM"
 $B echo "Basing on your RAM & SWAP/ZRAM.."
 $B echo "Calculated readahead parameter is $KB KB"
@@ -30,9 +36,10 @@ if [ -e /mnt/sd-ext ]; then
  $B sleep 1
 fi;
 
-for i in $STL $BML $MMC $ZRM $MTD $RM $LP; do
-if [ -e "${i}"/bdi/read_ahead_kb ]; then
- $B echo "Applying parameters.."
+for i in $STL $BML $MMC $ZRM $MTD $RM $LP $ORM $OLP $ORZS $OMTD $OMMC; do
+if [ -e "${i}"/queue/read_ahead_kb ]; then
+ $B echo "Applying new parameters.."
+ $B echo $KB > "${i}"/queue/read_ahead_kb
  $B echo $KB > "${i}"/bdi/read_ahead_kb
  $B echo "noop" > "${i}"/queue/scheduler
  $B echo 0 > "${i}"/queue/iostats
@@ -41,7 +48,6 @@ if [ -e "${i}"/bdi/read_ahead_kb ]; then
 fi;
 done
 
-$B echo $KB > /sys/block/mmcblk0/queue/read_ahead_kb
 CHK=$($B cat /sys/devices/virtual/bdi/179:0/read_ahead_kb)
 $B echo "Checking if worked. Current parameter is $CHK KB"
 $B echo " "

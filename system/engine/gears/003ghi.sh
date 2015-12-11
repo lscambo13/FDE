@@ -96,14 +96,14 @@ elif [ "$SWAP" -gt "0" ]; then
   $B echo lz4 > /sys/module/zswap/parameters/compressor
  fi;
 else
- $B echo "No SWAP/ZRAM/RAMZSWAP was detected. Tuning system.."
+ $B echo "No SWAP/ZRAM was detected. Tuning system.."
  $B echo 0 > /proc/sys/vm/swappiness
 fi;
-
+$B echo " "
 if [ "$SWAP" -gt "0" ]; then
  if [ -e /sys/kernel/mm/ksm/run ]; then
   $B echo "KSM detected. Tuning.."
-  $B echo "KSM + SWAP/ZRAM/RAMZSWAP is a bad idea for Android."
+  $B echo "KSM + SWAP/ZRAM is a bad idea for Android."
   $B echo "You have RAM paging enabled, so..disabling KSM.."
   $B echo 0 > /sys/kernel/mm/ksm/run
  fi;

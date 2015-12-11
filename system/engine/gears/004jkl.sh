@@ -9,18 +9,8 @@ $B echo " "
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
 KB=$((((RAM+(SWAP/2))/64+1)*128))
-STL="/sys/block/stl*"
-BML="/sys/block/bml*"
-MMC="/sys/block/mmc*"
-ZRM="/sys/block/zram*"
-MTD="/sys/block/mtd*"
-RM="/sys/block/ram*"
-LP="/sys/block/loop*"
-ORZS="/sys/devices/virtual/block/ramzswap*"
-ORM="/sys/devices/virtual/block/ram*"
-OLP="/sys/devices/virtual/block/loop*"
-OMTD="/sys/devices/virtual/block/mtd*"
-OMMC="/sys/devices/virtual/block/mmc*"
+AA="/sys/block/*"
+BB="/sys/devices/virtual/block/*"
 
 $B echo "Device has $RAM MB of RAM and $SWAP MB of SWAP/ZRAM"
 $B echo "Basing on your RAM & SWAP/ZRAM.."
@@ -36,7 +26,7 @@ if [ -e /mnt/sd-ext ]; then
  $B sleep 1
 fi;
 
-for i in $STL $BML $MMC $ZRM $MTD $RM $LP $ORM $OLP $ORZS $OMTD $OMMC; do
+for i in $AA $BB; do
 if [ -e "${i}"/queue/read_ahead_kb ]; then
  $B echo "Applying new parameters.."
  $B echo $KB > "${i}"/queue/read_ahead_kb
@@ -44,7 +34,6 @@ if [ -e "${i}"/queue/read_ahead_kb ]; then
  $B echo "noop" > "${i}"/queue/scheduler
  $B echo 0 > "${i}"/queue/iostats
  $B echo 0 > "${i}"/queue/rotational
- $B echo 256 > "${i}"/queue/nr_requests
 fi;
 done
 

@@ -55,6 +55,8 @@ $B echo "FStrim init.."
 $B fstrim -v /system
 $B fstrim -v /data
 $B fstrim -v /cache
+$B echo " "
+$B echo " "
 $B echo "***Check***"
 $B sleep 1
 sync;

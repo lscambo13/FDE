@@ -37,6 +37,8 @@ $B echo 6000 > /proc/sys/vm/vm.dirty_writeback_interval
 $B echo 600 > /proc/sys/vm/vm.dirty_expire_centisecs
 
 sysctl -p
+$B echo " "
+$B echo " "
 $B echo "***Check***"
 sync;
 

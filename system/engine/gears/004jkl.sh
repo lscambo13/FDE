@@ -8,7 +8,7 @@ $B echo " "
 $B echo " "
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
-KB=$((((RAM+SWAP)/64+1)*128))
+KB=$((((RAM+(SWAP/2))/64+1)*128))
 STL="/sys/block/stl*"
 BML="/sys/block/bml*"
 MMC="/sys/block/mmc*"

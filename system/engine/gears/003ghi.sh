@@ -52,8 +52,11 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B echo "Basing on your RAM.."
  $B echo "Calculated ZRAM0 size is $FZRAM MB"
  $B echo "Applying parameter.."
- $B swapoff /dev/block/zram0
- $B sleep 1
+ if [ "$SWAP" -gt "0" ]; then
+  $B swapoff /dev/block/zram0
+  $B sleep 1
+  sync;
+ fi;
  if [ -e /sys/block/zram0/comp_algorithm ]; then
   $B echo "Better compression level"
   $B echo "lz4" > /sys/block/zram0/comp_algorithm
@@ -73,8 +76,11 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  $B echo "Calculated RAMZSWAP size is $FRZ MB"
  ZRF=$((FRZ*1024))
  $B echo "Applying parameter.."
- $B swapoff /dev/block/ramzswap0
- $B sleep 1
+ if [ "$SWAP" -gt "0" ]; then
+  $B swapoff /dev/block/ramzswap0
+  $B sleep 1
+  sync;
+ fi;
  $RZS /dev/block/ramzswap0 --reset
  $RZS /dev/block/ramzswap0 -i -d $ZRF
  $B swapon /dev/block/ramzswap0
@@ -82,22 +88,26 @@ elif [ -e /sys/block/ramzswap0/size ]; then
 elif [ "$SWAP" -gt "0" ]; then
  $B echo "SWAP detected. Tuning.."
  $B echo "SWAP size is $SWAP MB"
- $B echo "Tuning system for SWAP.."
+ $B echo "Tuning system.."
  $B echo 50 > /proc/sys/vm/swappiness
  if [ -e /sys/module/zswap/parameters/enabled ]; then
- $B echo "ZSWAP detected. Enabling/tuning it.."
- $B echo 1 > /sys/module/zswap/parameters/enabled
- $B echo lz4 > /sys/module/zswap/parameters/compressor
+  $B echo "ZSWAP detected. Enabling/tuning it.."
+  $B echo 1 > /sys/module/zswap/parameters/enabled
+  $B echo lz4 > /sys/module/zswap/parameters/compressor
  fi;
+else
+ $B echo "No SWAP/ZRAM/RAMZSWAP was detected. Tuning system.."
+ $B echo 0 > /proc/sys/vm/swappiness
+fi;
+
+if [ "$SWAP" -gt "0" ]; then
  if [ -e /sys/kernel/mm/ksm/run ]; then
   $B echo "KSM detected. Tuning.."
   $B echo "KSM + SWAP/ZRAM/RAMZSWAP is a bad idea for Android."
   $B echo "You have RAM paging enabled, so..disabling KSM.."
   $B echo 0 > /sys/kernel/mm/ksm/run
  fi;
-else
- $B echo "No SWAP/ZRAM/RAMZSWAP was detected. Tuning system.."
- $B echo 0 > /proc/sys/vm/swappiness
+elif [ "$SWAP" = "0" ]; then
  if [ -e /sys/kernel/mm/ksm/run ]; then
   $B echo "KSM detected."
   $B echo "You have no RAM paging enabled. Let's enable/tune KSM.."

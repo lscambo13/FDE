@@ -44,6 +44,7 @@ $B sleep 3
 sync;
 
 if [ -e /sys/block/zram0/disksize ]; then
+ SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  ZRAM0=$($B cat /sys/block/zram0/disksize)
  ZZRAM=$((ZRAM0/1024/1024))
  FZRAM=$((RAM/2))
@@ -67,6 +68,7 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B swapon /dev/block/zram0
  $B echo 99 > /proc/sys/vm/swappiness
 elif [ -e /sys/block/ramzswap0/size ]; then
+ SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  RZ=$($B cat /sys/block/ramzswap0/size)
  ZRZ=$((RZ/1024))
  FRZ=$((RAM/2))
@@ -83,9 +85,11 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  fi;
  $RZS /dev/block/ramzswap0 --reset
  $RZS /dev/block/ramzswap0 -i -d $ZRF
+ $B sleep 1
  $B swapon /dev/block/ramzswap0
  $B echo 99 > /proc/sys/vm/swappiness
 elif [ "$SWAP" -gt "0" ]; then
+ SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  $B echo "SWAP detected. Tuning.."
  $B echo "SWAP size is $SWAP MB"
  $B echo "Tuning system.."
@@ -100,6 +104,7 @@ else
  $B echo 0 > /proc/sys/vm/swappiness
 fi;
 $B echo " "
+SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
 if [ "$SWAP" -gt "0" ]; then
  if [ -e /sys/kernel/mm/ksm/run ]; then
   $B echo "KSM detected. Tuning.."

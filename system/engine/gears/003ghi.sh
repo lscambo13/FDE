@@ -67,6 +67,9 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B mkswap /dev/block/zram0
  $B swapon /dev/block/zram0
  $B echo 99 > /proc/sys/vm/swappiness
+ $B echo 3 > /proc/sys/vm/page-cluster
+ $B sysctl -e -w vm.swappiness=99
+ $B sysctl -e -w vm.page-cluster=3
 elif [ -e /sys/block/ramzswap0/size ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  RZ=$($B cat /sys/block/ramzswap0/size)
@@ -88,12 +91,18 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  $B sleep 1
  $B swapon /dev/block/ramzswap0
  $B echo 99 > /proc/sys/vm/swappiness
+ $B echo 3 > /proc/sys/vm/page-cluster
+ $B sysctl -e -w vm.swappiness=99
+ $B sysctl -e -w vm.page-cluster=3
 elif [ "$SWAP" -gt "0" ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  $B echo "SWAP detected. Tuning.."
  $B echo "SWAP size is $SWAP MB"
  $B echo "Tuning system.."
  $B echo 50 > /proc/sys/vm/swappiness
+ $B echo 1 > /proc/sys/vm/page-cluster
+ $B sysctl -e -w vm.swappiness=50
+ $B sysctl -e -w vm.page-cluster=1
  if [ -e /sys/module/zswap/parameters/enabled ]; then
   $B echo "ZSWAP detected. Enabling/tuning it.."
   $B echo 1 > /sys/module/zswap/parameters/enabled
@@ -102,6 +111,9 @@ elif [ "$SWAP" -gt "0" ]; then
 else
  $B echo "No SWAP/ZRAM was detected. Tuning system.."
  $B echo 0 > /proc/sys/vm/swappiness
+ $B echo 0 > /proc/sys/vm/page-cluster
+ $B sysctl -e -w vm.swappiness=0
+ $B sysctl -e -w vm.page-cluster=0
 fi;
 $B echo " "
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)

@@ -7,10 +7,13 @@ $B echo "***Kernel configuration gear***"
 $B echo " "
 $B echo " "
 $B echo "Creating kernel config file.."
+$B mount -o remount,rw /system
 $B rm -f /system/etc/sysctl.conf
 $B touch /system/etc/sysctl.conf
 $B echo "Setting proper permissions.."
 $B chmod 777 /system/etc/sysctl.conf
+RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
+FM=$((RAM*64))
 
 $B sysctl -e -w kernel.random.read_wakeup_threshold=1536
 $B sysctl -e -w kernel.random.write_wakeup_threshold=256
@@ -23,6 +26,7 @@ $B sysctl -e -w vm.dirty_ratio=50
 $B sysctl -e -w vm.dirty_background_ratio=10
 $B sysctl -e -w vm.dirty_writeback_centisecs=6000
 $B sysctl -e -w vm.dirty_expire_centisecs=600
+$B sysctl -e -w fs.file-max=$FM
 
 $B echo 1536 > /proc/sys/kernel/random/read_wakeup_threshold
 $B echo 256 > /proc/sys/kernel/random/write_wakeup_threshold
@@ -35,6 +39,10 @@ $B echo 50 > /proc/sys/vm/dirty_ratio
 $B echo 10 > /proc/sys/vm/dirty_background_ratio
 $B echo 6000 > /proc/sys/vm/dirty_writeback_centisecs
 $B echo 600 > /proc/sys/vm/dirty_expire_centisecs
+$B echo $FM > /proc/sys/fs/file-max
+if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
+$B echo "1" > /sys/kernel/dyn_fsync/Dyn_fsync_active
+fi;
 
 sysctl -p
 $B echo " "

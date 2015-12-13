@@ -137,6 +137,7 @@ $B echo "Cached:             $RAMcached MB"
 $B echo "SWAP/ZRAM total:    $SWAP MB"
 $B echo "SWAP/ZRAM used:     $SWAPused MB"
 $B echo " "
+$B echo " "
 $B echo "***Check***"
 sync;
 

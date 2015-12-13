@@ -66,11 +66,38 @@ $B echo 2 > /proc/sys/kernel/randomize_va_space
 $B echo 1 > /proc/sys/kernel/sysrq
 $B echo 1 > /proc/sys/kernel/sched_compat_yield
 $B echo 0 > /proc/sys/kernel/scan_unevictable_pages
+
+$B echo "kernel.random.read_wakeup_threshold=1536" >> /system/etc/sysctl.conf
+$B echo "kernel.random.write_wakeup_threshold=256" >> /system/etc/sysctl.conf
+$B echo "vm.vfs_cache_pressure=50" >> /system/etc/sysctl.conf
+$B echo "vm.min_free_kbytes=4096" >> /system/etc/sysctl.conf
+$B echo "vm.extra_free_kbytes=4096" >> /system/etc/sysctl.conf
+$B echo "vm.drop_caches=3" >> /system/etc/sysctl.conf
+$B echo "vm.oom_kill_allocating_task=1" >> /system/etc/sysctl.conf
+$B echo "vm.dirty_ratio=50" >> /system/etc/sysctl.conf
+$B echo "vm.dirty_background_ratio=10" >> /system/etc/sysctl.conf
+$B echo "vm.dirty_writeback_centisecs=6000" >> /system/etc/sysctl.conf
+$B echo "vm.dirty_expire_centisecs=600" >> /system/etc/sysctl.conf
+$B echo "vm.panic_on_oom=0" >> /system/etc/sysctl.conf
+$B echo "vm.overcommit_memory=1" >> /system/etc/sysctl.conf
+$B echo "vm.overcommit_ratio=100" >> /system/etc/sysctl.conf
+$B echo "vm.laptop_mode=0" >> /system/etc/sysctl.conf
+$B echo "vm.block_dump=0" >> /system/etc/sysctl.conf
+$B echo "vm.oom_dump_tasks=0" >> /system/etc/sysctl.conf
+$B echo "vm.min_free_order_shift=4" >> /system/etc/sysctl.conf
+$B echo "fs.file-max=$FM" >> /system/etc/sysctl.conf
+$B echo "fs.leases-enable=1" >> /system/etc/sysctl.conf
+$B echo "fs.lease-break-time=10" >> /system/etc/sysctl.conf
+$B echo "kernel.randomize_va_space=2" >> /system/etc/sysctl.conf
+$B echo "kernel.sysrq=1" >> /system/etc/sysctl.conf
+$B echo "kernel.sched_compat_yield=1" >> /system/etc/sysctl.conf
+$B echo "kernel.scan_unevictable_pages=0" >> /system/etc/sysctl.conf
+
 if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
 $B echo "1" > /sys/kernel/dyn_fsync/Dyn_fsync_active
 fi;
 
-sysctl -p
+sysctl -p /system/etc/sysctl.conf
 $B echo " "
 $B echo " "
 $B echo "***Check***"

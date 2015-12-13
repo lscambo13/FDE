@@ -21,12 +21,25 @@ $B sysctl -e -w vm.vfs_cache_pressure=50
 $B sysctl -e -w vm.min_free_kbytes=4096
 $B sysctl -e -w vm.extra_free_kbytes=4096
 $B sysctl -e -w vm.drop_caches=3
-$B sysctl -e -w vm.oom_kill_allocating_task=0
+$B sysctl -e -w vm.oom_kill_allocating_task=1
 $B sysctl -e -w vm.dirty_ratio=50
 $B sysctl -e -w vm.dirty_background_ratio=10
 $B sysctl -e -w vm.dirty_writeback_centisecs=6000
 $B sysctl -e -w vm.dirty_expire_centisecs=600
+$B sysctl -e -w vm.panic_on_oom=0
+$B sysctl -e -w vm.overcommit_memory=1
+$B sysctl -e -w vm.overcommit_ratio=100
+$B sysctl -e -w vm.laptop_mode=0
+$B sysctl -e -w vm.block_dump=0
+$B sysctl -e -w vm.oom_dump_tasks=0
+$B sysctl -e -w vm.min_free_order_shift=4
 $B sysctl -e -w fs.file-max=$FM
+$B sysctl -e -w fs.leases-enable=1
+$B sysctl -e -w fs.lease-break-time=10
+$B sysctl -e -w kernel.randomize_va_space=2
+$B sysctl -e -w kernel.sysrq=1
+$B sysctl -e -w kernel.sched_compat_yield=1
+$B sysctl -e -w kernel.scan_unevictable_pages=0
 
 $B echo 1536 > /proc/sys/kernel/random/read_wakeup_threshold
 $B echo 256 > /proc/sys/kernel/random/write_wakeup_threshold
@@ -34,12 +47,25 @@ $B echo 50 > /proc/sys/vm/vfs_cache_pressure
 $B echo 4096 > /proc/sys/vm/min_free_kbytes
 $B echo 4096 > /proc/sys/vm/extra_free_kbytes
 $B echo 3 > /proc/sys/vm/drop_caches
-$B echo 0 > /proc/sys/vm/oom_kill_allocating_task
+$B echo 1 > /proc/sys/vm/oom_kill_allocating_task
 $B echo 50 > /proc/sys/vm/dirty_ratio
 $B echo 10 > /proc/sys/vm/dirty_background_ratio
 $B echo 6000 > /proc/sys/vm/dirty_writeback_centisecs
 $B echo 600 > /proc/sys/vm/dirty_expire_centisecs
+$B echo 0 > /proc/sys/vm/panic_on_oom
+$B echo 1 > /proc/sys/vm/overcommit_memory
+$B echo 100 > /proc/sys/vm/overcommit_ratio
+$B echo 0 > /proc/sys/vm/laptop_mode
+$B echo 0 > /proc/sys/vm/block_dump
+$B echo 0 > /proc/sys/vm/oom_dump_tasks
+$B echo 4 > /proc/sys/vm/min_free_order_shift
 $B echo $FM > /proc/sys/fs/file-max
+$B echo 1 > /proc/sys/fs/leases-enable
+$B echo 10 > /proc/sys/fs/lease-break-time
+$B echo 2 > /proc/sys/kernel/randomize_va_space
+$B echo 1 > /proc/sys/kernel/sysrq
+$B echo 1 > /proc/sys/kernel/sched_compat_yield
+$B echo 0 > /proc/sys/kernel/scan_unevictable_pages
 if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
 $B echo "1" > /sys/kernel/dyn_fsync/Dyn_fsync_active
 fi;

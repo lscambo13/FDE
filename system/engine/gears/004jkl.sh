@@ -31,7 +31,6 @@ if [ -e "${i}"/queue/read_ahead_kb ]; then
  $B echo "Applying new parameters.."
  $B echo $KB > "${i}"/queue/read_ahead_kb
  $B echo $KB > "${i}"/bdi/read_ahead_kb
- $B echo "noop" > "${i}"/queue/scheduler
  $B echo 0 > "${i}"/queue/iostats
  $B echo 0 > "${i}"/queue/rotational
 fi;

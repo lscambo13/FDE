@@ -53,6 +53,10 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B echo "Basing on your RAM.."
  $B echo "Calculated ZRAM0 size is $FZRAM MB"
  $B echo "Applying parameter.."
+ if [ "$ZZRAM" = "$FZRAM" ]; then
+ $B echo "Size is fine..tuning.."
+  sync;
+ else
  if [ "$SWAP" -gt "0" ]; then
   $B swapoff /dev/block/zram0
   $B sleep 1
@@ -66,6 +70,7 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B echo $((FZRAM*1024*1024)) > /sys/block/zram0/disksize
  $B mkswap /dev/block/zram0
  $B swapon /dev/block/zram0
+ fi;
  $B echo 99 > /proc/sys/vm/swappiness
  $B echo 3 > /proc/sys/vm/page-cluster
  $B sysctl -e -w vm.swappiness=99
@@ -83,6 +88,10 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  $B echo "Calculated RAMZSWAP size is $FRZ MB"
  ZRF=$((FRZ*1024))
  $B echo "Applying parameter.."
+ if [ "$ZRZ" = "$FRZ" ]; then
+ $B echo "Size is fine..tuning.."
+  sync;
+ else
  if [ "$SWAP" -gt "0" ]; then
   $B swapoff /dev/block/ramzswap0
   $B sleep 1
@@ -92,6 +101,7 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  $RZS /dev/block/ramzswap0 -i -d $ZRF
  $B sleep 1
  $B swapon /dev/block/ramzswap0
+ fi;
  $B echo 99 > /proc/sys/vm/swappiness
  $B echo 3 > /proc/sys/vm/page-cluster
  $B sysctl -e -w vm.swappiness=99

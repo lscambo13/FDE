@@ -4,7 +4,8 @@
 B=/system/engine/bin/busybox
 SH=/system/engine/bin/sh
 
-chmod -R 777 /system/engine/bin/*
+$B mount -o remount,rw /system
+$B chmod -R 777 /system/engine/bin/*
 $B mount -o remount,rw /system
 $B mount -o remount,rw /data
 if [ -e /sbin/sysrw ]; then
@@ -20,7 +21,7 @@ $B chmod -R 777 /system/engine/assets/*
 $B chmod -R 777 /system/engine/bin/*
 $B chmod -R 777 /system/engine/gears/*
 $B chmod -R 777 /system/engine/prop/*
-$B sync;
+sync;
 $B mount -o remount,rw /system
 $SH /system/engine/gears/001abc.sh
 $B mount -o remount,rw /system
@@ -41,5 +42,5 @@ $B mount -o remount,rw /system
 $SH /system/engine/gears/009yza.sh
 $B mount -o remount,ro /system
 $B sleep 1
-$B sync;
+sync;
 

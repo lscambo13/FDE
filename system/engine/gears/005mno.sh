@@ -24,7 +24,7 @@ $B sysctl -e -w vm.drop_caches=3
 $B sysctl -e -w vm.oom_kill_allocating_task=1
 $B sysctl -e -w vm.dirty_ratio=50
 $B sysctl -e -w vm.dirty_background_ratio=10
-$B sysctl -e -w vm.dirty_writeback_centisecs=6000
+$B sysctl -e -w vm.dirty_writeback_centisecs=3600
 $B sysctl -e -w vm.dirty_expire_centisecs=600
 $B sysctl -e -w vm.panic_on_oom=0
 $B sysctl -e -w vm.overcommit_memory=1
@@ -50,7 +50,7 @@ $B echo 3 > /proc/sys/vm/drop_caches
 $B echo 1 > /proc/sys/vm/oom_kill_allocating_task
 $B echo 50 > /proc/sys/vm/dirty_ratio
 $B echo 10 > /proc/sys/vm/dirty_background_ratio
-$B echo 6000 > /proc/sys/vm/dirty_writeback_centisecs
+$B echo 3600 > /proc/sys/vm/dirty_writeback_centisecs
 $B echo 600 > /proc/sys/vm/dirty_expire_centisecs
 $B echo 0 > /proc/sys/vm/panic_on_oom
 $B echo 1 > /proc/sys/vm/overcommit_memory
@@ -76,7 +76,7 @@ $B echo "vm.drop_caches=3" >> /system/etc/sysctl.conf
 $B echo "vm.oom_kill_allocating_task=1" >> /system/etc/sysctl.conf
 $B echo "vm.dirty_ratio=50" >> /system/etc/sysctl.conf
 $B echo "vm.dirty_background_ratio=10" >> /system/etc/sysctl.conf
-$B echo "vm.dirty_writeback_centisecs=6000" >> /system/etc/sysctl.conf
+$B echo "vm.dirty_writeback_centisecs=3600" >> /system/etc/sysctl.conf
 $B echo "vm.dirty_expire_centisecs=600" >> /system/etc/sysctl.conf
 $B echo "vm.panic_on_oom=0" >> /system/etc/sysctl.conf
 $B echo "vm.overcommit_memory=1" >> /system/etc/sysctl.conf

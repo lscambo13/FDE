@@ -6,12 +6,6 @@ B=/system/engine/bin/busybox
 $B echo "***Kernel configuration gear***"
 $B echo " "
 $B echo " "
-$B echo "Creating kernel config file.."
-$B mount -o remount,rw /system
-$B rm -f /system/etc/sysctl.conf
-$B touch /system/etc/sysctl.conf
-$B echo "Setting proper permissions.."
-$B chmod 777 /system/etc/sysctl.conf
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 FM=$((RAM*64))
 
@@ -97,7 +91,6 @@ if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
 $B echo "1" > /sys/kernel/dyn_fsync/Dyn_fsync_active
 fi;
 
-sysctl -p /system/etc/sysctl.conf
 $B echo " "
 $B echo " "
 $B echo "***Check***"

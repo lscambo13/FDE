@@ -70,6 +70,8 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B echo 3 > /proc/sys/vm/page-cluster
  $B sysctl -e -w vm.swappiness=99
  $B sysctl -e -w vm.page-cluster=3
+ $B echo "vm.swappiness=99" >> /system/etc/sysctl.conf
+ $B echo "vm.page-cluster=3" >> /system/etc/sysctl.conf
 elif [ -e /sys/block/ramzswap0/size ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  RZ=$($B cat /sys/block/ramzswap0/size)
@@ -94,6 +96,8 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  $B echo 3 > /proc/sys/vm/page-cluster
  $B sysctl -e -w vm.swappiness=99
  $B sysctl -e -w vm.page-cluster=3
+ $B echo "vm.swappiness=99" >> /system/etc/sysctl.conf
+ $B echo "vm.page-cluster=3" >> /system/etc/sysctl.conf
 elif [ "$SWAP" -gt "0" ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  $B echo "SWAP detected. Tuning.."
@@ -103,6 +107,8 @@ elif [ "$SWAP" -gt "0" ]; then
  $B echo 1 > /proc/sys/vm/page-cluster
  $B sysctl -e -w vm.swappiness=50
  $B sysctl -e -w vm.page-cluster=1
+ $B echo "vm.swappiness=50" >> /system/etc/sysctl.conf
+ $B echo "vm.page-cluster=1" >> /system/etc/sysctl.conf
  if [ -e /sys/module/zswap/parameters/enabled ]; then
   $B echo "ZSWAP detected. Enabling/tuning it.."
   $B echo 1 > /sys/module/zswap/parameters/enabled
@@ -114,6 +120,8 @@ else
  $B echo 0 > /proc/sys/vm/page-cluster
  $B sysctl -e -w vm.swappiness=0
  $B sysctl -e -w vm.page-cluster=0
+ $B echo "vm.swappiness=0" >> /system/etc/sysctl.conf
+ $B echo "vm.page-cluster=0" >> /system/etc/sysctl.conf
 fi;
 $B echo " "
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)

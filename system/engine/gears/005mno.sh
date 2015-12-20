@@ -31,7 +31,6 @@ $B sysctl -e -w fs.file-max=$FM
 $B sysctl -e -w fs.leases-enable=1
 $B sysctl -e -w fs.lease-break-time=10
 $B sysctl -e -w kernel.randomize_va_space=2
-$B sysctl -e -w kernel.sysrq=1
 $B sysctl -e -w kernel.sched_compat_yield=1
 $B sysctl -e -w kernel.scan_unevictable_pages=0
 $B sysctl -e -w kernel.hung_task_timeout_secs=0
@@ -58,7 +57,6 @@ $B echo $FM > /proc/sys/fs/file-max
 $B echo 1 > /proc/sys/fs/leases-enable
 $B echo 10 > /proc/sys/fs/lease-break-time
 $B echo 2 > /proc/sys/kernel/randomize_va_space
-$B echo 1 > /proc/sys/kernel/sysrq
 
 $B echo "kernel.random.read_wakeup_threshold=1536" >> /system/etc/sysctl.conf
 $B echo "kernel.random.write_wakeup_threshold=256" >> /system/etc/sysctl.conf
@@ -82,7 +80,6 @@ $B echo "fs.file-max=$FM" >> /system/etc/sysctl.conf
 $B echo "fs.leases-enable=1" >> /system/etc/sysctl.conf
 $B echo "fs.lease-break-time=10" >> /system/etc/sysctl.conf
 $B echo "kernel.randomize_va_space=2" >> /system/etc/sysctl.conf
-$B echo "kernel.sysrq=1" >> /system/etc/sysctl.conf
 $B echo "kernel.sched_compat_yield=1" >> /system/etc/sysctl.conf
 $B echo "kernel.scan_unevictable_pages=0" >> /system/etc/sysctl.conf
 $B echo "kernel.hung_task_timeout_secs=0" >> /system/etc/sysctl.conf

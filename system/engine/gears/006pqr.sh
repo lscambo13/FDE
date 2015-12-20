@@ -37,25 +37,25 @@ if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
 fi;
 
 $B echo "Tuning system environment.."
-setprop debug.sf.hw=1
-setprop debug.egl.hw=1
-setprop debug.egl.profiler=1
-setprop debug.egl.swapinterval=1 
-setprop debug.gr.numframebuffers=3
-setprop debug.gr.swapinterval=1
-setprop debug.mdpcomp.logs=0
-setprop debug.mdpcomp.maxlayer=3
-setprop debug.mdpcomp.idletime=-1
-setprop debug.performance.tuning=1
+setprop debug.sf.hw 1
+setprop debug.egl.hw 1
+setprop debug.egl.profiler 1
+setprop debug.egl.swapinterval 1 
+setprop debug.gr.numframebuffers 3
+setprop debug.gr.swapinterval 1
+setprop debug.mdpcomp.logs 0
+setprop debug.mdpcomp.maxlayer 3
+setprop debug.mdpcomp.idletime -1
+setprop debug.performance.tuning 1
 setprop debug.enabletr true
-setprop dev.pm.dyn_samplingrate=1
-setprop ro.floatingtouch.available=1
-setprop ro.min.fling_velocity=7000
+setprop dev.pm.dyn_samplingrate 1
+setprop ro.floatingtouch.available 1
+setprop ro.min.fling_velocity 7000
 setprop ro.max.fling_velocity 12000
-setprop persist.sys.ui.hw=1
-setprop video.accelerate.hw=1
-setprop windowsmgr.max_events_per_sec=72
-setprop windowsmgr.support_rotation_270=true
+setprop persist.sys.ui.hw 1
+setprop video.accelerate.hw 1
+setprop windowsmgr.max_events_per_sec 72
+setprop windowsmgr.support_rotation_270 true
 setprop hwui.render_dirty_regions false
 $B echo " "
 $B echo " "

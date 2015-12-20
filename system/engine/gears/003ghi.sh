@@ -53,7 +53,7 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B echo "Basing on your RAM.."
  $B echo "Calculated ZRAM0 size is $FZRAM MB"
  $B echo "Applying parameter.."
- if [ "$ZZRAM" = "$FZRAM" ]; then
+ if [ "$ZZRAM" -ge "$FZRAM" ]; then
  $B echo "Size is fine..tuning.."
   sync;
  else
@@ -88,7 +88,7 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  $B echo "Calculated RAMZSWAP size is $FRZ MB"
  ZRF=$((FRZ*1024))
  $B echo "Applying parameter.."
- if [ "$ZRZ" = "$FRZ" ]; then
+ if [ "$ZRZ" -ge "$FRZ" ]; then
  $B echo "Size is fine..tuning.."
   sync;
  else

@@ -88,6 +88,10 @@ if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
 $B echo "1" > /sys/kernel/dyn_fsync/Dyn_fsync_active
 fi;
 
+setprop ro.config.nocheckin 1
+setprop ro.kernel.android.checkjni 0
+setprop ro.kernel.checkjni 0
+
 $B echo " "
 $B echo " "
 $B echo "***Check***"

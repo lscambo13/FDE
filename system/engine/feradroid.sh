@@ -47,4 +47,22 @@ $B mount -o remount,ro /system
 sysctl -p /system/etc/sysctl.conf
 $B sleep 1
 sync;
+$B sleep 1
+$B echo 3 > /proc/sys/vm/drop_caches
+$B sleep 1
+sync;
+$B sleep 1
+$B echo 2 > /proc/sys/vm/drop_caches
+$B sleep 1
+sync;
+$B sleep 1
+$B echo 1 > /proc/sys/vm/drop_caches
+$B sleep 1
+sync;
+$B sleep 1
+$B echo 3 > /proc/sys/vm/drop_caches
+$B sleep 3
+sync;
+
+
 

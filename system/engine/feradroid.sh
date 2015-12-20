@@ -43,6 +43,8 @@ $B mount -o remount,rw /system
 $SH /system/engine/gears/008vwx.sh
 $B mount -o remount,rw /system
 $SH /system/engine/gears/009yza.sh
+$B mount -o remount,rw /system
+$SH /system/engine/gears/010bcd.sh
 $B mount -o remount,ro /system
 sysctl -p /system/etc/sysctl.conf
 $B sleep 1

@@ -7,7 +7,6 @@ set_perm_recursive(0, 0, 0777, 0777, "/system/engine/bin");
 set_perm(0, 0, 0777, "/system/etc/install-recovery.sh");
 set_perm(0, 0, 0777, "/system/etc/install-recovery-2.sh");
 run_program("/system/engine/bin/busybox", "--install", "-s", "/system/xbin");
-run_program("/system/engine/fde-deploy.sh");
 ui_print("");
 ui_print("");
 ui_print("");

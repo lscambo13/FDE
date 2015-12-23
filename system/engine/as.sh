@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.19 | By FeraVolt. 2015 ###
+### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
 
 chmod 777 /system/engine/bin/*
 

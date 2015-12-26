@@ -118,9 +118,6 @@ $B echo " Tuning Android.." >> $LOG
 setprop ro.config.nocheckin 1
 setprop ro.kernel.android.checkjni 0
 setprop ro.kernel.checkjni 0
-setprop persist.service.lgospd.enable false
-setprop persist.service.pcsync.enable false
-setprop touch.presure.scale 0.001
 $B echo "" >> $LOG
 $B echo "[$TIME] 005 - ***Kernel gear*** - OK" >> $LOG
 sync;

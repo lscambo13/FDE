@@ -18,6 +18,9 @@ if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
  $B chmod 777 /system/engine/assets/adreno_config.txt
  $B ln -s /system/engine/assets/adreno_config.txt /data/local/tmp/adreno_config.txt
  fi;
+ if [ -e /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction ]; then
+ $B echo 50 > /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction
+ fi;
  if [ "$AV" -ne "1712" ]; then
  $B echo " Forcing GPU to render UI.." >> $LOG
  $B rm /system/lib/egl/libGLES_android.so
@@ -69,6 +72,7 @@ setprop persist.sys.NV_PROFVER 15
 setprop persist.sys.NV_STEREOCTRL 0
 setprop persist.sys.NV_STEREOSEPCHG 0
 setprop persist.sys.NV_STEREOSEP 20
+setprop persist.sys.scrollingcache 3
 setprop ro.media.dec.jpeg.memcap 8000000
 setprop ro.media.enc.hprof.vid.bps 8000000
 setprop ro.media.enc.jpeg.quality 100
@@ -79,6 +83,18 @@ setprop media.stagefright.enable-http true
 setprop media.stagefright.enable-aac true
 setprop media.stagefright.enable-qcp true
 setprop media.stagefright.enable-record true
+setprop touch.presure.scale 0.001
+setprop persist.service.lgospd.enable false
+setprop persist.service.pcsync.enable false
+
+if [ -e /sys/module/tpd_setting/parameters/tpd_mode ]; then
+$B chmod 644 /sys/module/tpd_setting/parameters/tpd_mode
+$B echo 1 > /sys/module/tpd_setting/parameters/tpd_mode
+else [ -e /sys/module/hid_magicmouse/parameters/scroll_speed ]; then
+$B chmod 644 /sys/module/hid_magicmouse/parameters/scroll_speed
+$B echo 63 > /sys/module/hid_magicmouse/parameters/scroll_speed
+fi;
+
 $B echo "" >> $LOG
 $B echo "[$TIME] 006 - ***GPU gear*** - OK" >> $LOG
 sync;

@@ -91,6 +91,9 @@ TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 009 gear.." >> $LOG
 $SH /system/engine/gears/009yza.sh
 TIME=$($B date | $B awk '{ print $4 }')
+$B echo "[$TIME] Fix permissions and zipalign.." >> $LOG
+$SH /system/engine/fix.sh
+TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Remounting /data and /system - RO" >> $LOG
 $B mount -o remount,ro /system
 $B echo "[$TIME] Applying kernel configuration.." >> $LOG

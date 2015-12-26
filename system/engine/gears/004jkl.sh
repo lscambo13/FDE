@@ -13,6 +13,9 @@ KB=$((((RAM+(SWAP/2))/64+1)*128))
 AA="/sys/block/*"
 BB="/sys/devices/virtual/block/*"
 
+$B echo " Device has $RAM MB of RAM and $SWAP MB of SWAP/ZRAM" >> $LOG
+$B echo " Basing on your RAM + SWAP/ZRAM, calculated readahead parameter is $KB KB" >> $LOG
+
 if [ -e /mnt/sd-ext ]; then
  $B echo " Trying to mount SD-EXT partition.." >> $LOG
  $B mount -t ext3 -o rw /dev/block/vold/179:2 /mnt/sd-ext
@@ -23,20 +26,17 @@ if [ -e /mnt/sd-ext ]; then
  $B sleep 1
 fi;
 
-for i in $($B mount | grep relatime | cut -d " " -f3);
+for y in $($B mount | grep relatime | cut -d " " -f3);
 do
- $B mount -o noatime,remount $i
+ $B mount -o noatime,remount "${y}"
  $B echo "  Remounting relatime partitions.." >> $LOG
 done;
 
 for x in $($B mount | grep ext4 | cut -d " " -f3);
 do
- $B mount -o noatime,remount,rw,discard,barrier=0,commit=60,noauto_da_alloc,delalloc $x
+ $B mount -o noatime,remount,rw,discard,barrier=0,commit=60,noauto_da_alloc,delalloc "${x}"
  $B echo "  Remounting EXT4 partitions.." >> $LOG
 done;
-
-$B echo " Device has $RAM MB of RAM and $SWAP MB of SWAP/ZRAM" >> $LOG
-$B echo " Basing on your RAM + SWAP/ZRAM, calculated readahead parameter is $KB KB" >> $LOG
 
 for i in $AA $BB; do
 if [ -e "${i}"/queue/read_ahead_kb ]; then

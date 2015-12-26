@@ -13,6 +13,10 @@ if [ "$A" = "100" ] ; then
  $B mount -o remount,rw /data
  $B rm -f /data/system/batterystats.bin
 fi;
+if [ -e /sys/devices/system/cpu/sched_mc_power_savings ]; then 
+$B echo " Tuning Kernel power-saving.." >> $LOG
+$B echo "2" > /sys/devices/system/cpu/sched_mc_power_savings
+fi;
 $B echo " Tuning Android power-saving.." >> $LOG
 setprop ro.mot.eri.losalert.delay 1000
 setprop power.saving.mode 1

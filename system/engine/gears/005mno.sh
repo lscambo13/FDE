@@ -33,6 +33,10 @@ $B echo $FM > /proc/sys/fs/file-max
 $B echo 1 > /proc/sys/fs/leases-enable
 $B echo 10 > /proc/sys/fs/lease-break-time
 $B echo 2 > /proc/sys/kernel/randomize_va_space
+$B echo 0 > /proc/sys/kernel/softlockup_panic
+$B echo 0 > /proc/sys/kernel/hung_task_timeout_secs
+$B echo 0 > /proc/sys/kernel/panic_on_oops
+$B echo 0 > /proc/sys/kernel/panic
 $B echo " Writing optimized kernel parameters to sysctl.." >> $LOG
 $B echo "kernel.random.read_wakeup_threshold=1536" >> /system/etc/sysctl.conf
 $B echo "kernel.random.write_wakeup_threshold=256" >> /system/etc/sysctl.conf
@@ -59,6 +63,9 @@ $B echo "kernel.randomize_va_space=2" >> /system/etc/sysctl.conf
 $B echo "kernel.sched_compat_yield=1" >> /system/etc/sysctl.conf
 $B echo "kernel.scan_unevictable_pages=0" >> /system/etc/sysctl.conf
 $B echo "kernel.hung_task_timeout_secs=0" >> /system/etc/sysctl.conf
+$B echo "kernel.panic=0" >> /system/etc/sysctl.conf
+$B echo "kernel.panic_on_oops=0" >> /system/etc/sysctl.conf
+$B echo "kernel.softlockup_panic=0" >> /system/etc/sysctl.conf
 $B echo " Executing optimized kernel parameters via sysctl.." >> $LOG
 $B sysctl -e -w kernel.random.read_wakeup_threshold=1536
 $B sysctl -e -w kernel.random.write_wakeup_threshold=256
@@ -85,16 +92,35 @@ $B sysctl -e -w kernel.randomize_va_space=2
 $B sysctl -e -w kernel.sched_compat_yield=1
 $B sysctl -e -w kernel.scan_unevictable_pages=0
 $B sysctl -e -w kernel.hung_task_timeout_secs=0
+$B sysctl -e -w kernel.panic=0
+$B sysctl -e -w kernel.panic_on_oops=0
+$B sysctl -e -w kernel.softlockup_panic=0
 
 if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
  $B echo " Dynamic fsync detected. Activating.." >> $LOG
  $B echo "1" > /sys/kernel/dyn_fsync/Dyn_fsync_active
 fi;
 
+$B echo " Tuning kernel scheduling.." >> $LOG
+$B mount -t debugfs none /sys/kernel/debug;
+$B echo "NO_HRTICK" > /sys/kernel/debug/sched_features
+$B echo "NO_CACHE_HOT_BUDDY" > /sys/kernel/debug/sched_features
+$B echo "NO_LB_BIAS" > /sys/kernel/debug/sched_features
+$B echo "NO_OWNER_SPIN" > /sys/kernel/debug/sched_features
+$B echo "NO_START_DEBIT" > /sys/kernel/debug/sched_features
+$B echo "NO_NEW_FAIR_SLEEPERS" > /sys/kernel/debug/sched_features
+$B echo "NO_NORMALIZED_SLEEPERS" > /sys/kernel/debug/sched_features
+$B echo "NO_DOUBLE_TICK" > /sys/kernel/debug/sched_features
+$B echo "NO_AFFINE_WAKEUPS" > /sys/kernel/debug/sched_features
+$B echo "NO_NEXT_BUDDY" > /sys/kernel/debug/sched_features
+$B echo "NO_WAKEUP_OVERLAP" > /sys/kernel/debug/sched_features
 $B echo " Tuning Android.." >> $LOG
 setprop ro.config.nocheckin 1
 setprop ro.kernel.android.checkjni 0
 setprop ro.kernel.checkjni 0
+setprop persist.service.lgospd.enable false
+setprop persist.service.pcsync.enable false
+setprop touch.presure.scale 0.001
 $B echo "" >> $LOG
 $B echo "[$TIME] 005 - ***Kernel gear*** - OK" >> $LOG
 sync;

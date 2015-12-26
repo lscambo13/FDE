@@ -46,7 +46,7 @@ $B echo " Tuning Android graphics.." >> $LOG
 setprop debug.sf.hw 1
 setprop debug.egl.hw 1
 setprop debug.egl.profiler 1
-setprop debug.egl.swapinterval 1 
+setprop debug.egl.swapinterval -60
 setprop debug.gr.numframebuffers 3
 setprop debug.gr.swapinterval 1
 setprop debug.mdpcomp.logs 0
@@ -63,6 +63,22 @@ setprop video.accelerate.hw 1
 setprop windowsmgr.max_events_per_sec 72
 setprop windowsmgr.support_rotation_270 true
 setprop hwui.render_dirty_regions false
+setprop persist.sys.NV_FPSLIMIT 90
+setprop persist.sys.NV_POWERMODE 1
+setprop persist.sys.NV_PROFVER 15
+setprop persist.sys.NV_STEREOCTRL 0
+setprop persist.sys.NV_STEREOSEPCHG 0
+setprop persist.sys.NV_STEREOSEP 20
+setprop ro.media.dec.jpeg.memcap 8000000
+setprop ro.media.enc.hprof.vid.bps 8000000
+setprop ro.media.enc.jpeg.quality 100
+setprop media.stagefright.enable-player true
+setprop media.stagefright.enable-meta true
+setprop media.stagefright.enable-scan true
+setprop media.stagefright.enable-http true
+setprop media.stagefright.enable-aac true
+setprop media.stagefright.enable-qcp true
+setprop media.stagefright.enable-record true
 $B echo "" >> $LOG
 $B echo "[$TIME] 006 - ***GPU gear*** - OK" >> $LOG
 sync;

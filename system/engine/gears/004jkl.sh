@@ -14,7 +14,7 @@ AA="/sys/block/*"
 BB="/sys/devices/virtual/block/*"
 
 if [ -e /mnt/sd-ext ]; then
- $B echo " Trying to mount EXT partition.." >> $LOG
+ $B echo " Trying to mount SD-EXT partition.." >> $LOG
  $B mount -t ext3 -o rw /dev/block/vold/179:2 /mnt/sd-ext
  $B mount -t ext3 -o rw /dev/block/mmcblk0p2 /mnt/sd-ext
  $B sleep 1
@@ -22,6 +22,18 @@ if [ -e /mnt/sd-ext ]; then
  $B mount -t ext4 -o rw /dev/block/mmcblk0p2 /mnt/sd-ext
  $B sleep 1
 fi;
+
+for i in $($B mount | grep relatime | cut -d " " -f3);
+do
+ $B mount -o noatime,remount $i
+ $B echo "  Remounting relatime partitions.." >> $LOG
+done;
+
+for x in $($B mount | grep ext4 | cut -d " " -f3);
+do
+ $B mount -o noatime,remount,rw,discard,barrier=0,commit=60,noauto_da_alloc,delalloc $x
+ $B echo "  Remounting EXT4 partitions.." >> $LOG
+done;
 
 $B echo " Device has $RAM MB of RAM and $SWAP MB of SWAP/ZRAM" >> $LOG
 $B echo " Basing on your RAM + SWAP/ZRAM, calculated readahead parameter is $KB KB" >> $LOG

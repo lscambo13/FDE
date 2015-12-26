@@ -7,7 +7,7 @@ TIME=$($B date | $B awk '{ print $4 }')
 
 $B echo "[$TIME] 001 - ***Cleaning gear***" >> $LOG
 $B echo "" >> $LOG
-$B echo " Remmounting /data and /system - RW" >> $LOG
+$B echo " Remounting /data and /system - RW" >> $LOG
 $B mount -o remount,rw /system
 $B mount -o remount,rw /data
 $B echo " Cleaning trash.." >> $LOG

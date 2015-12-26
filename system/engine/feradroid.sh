@@ -9,6 +9,10 @@ TIME=$($B date | $B awk '{ print $4 }')
 mount -o remount,rw /system
 chmod -R 777 /system/engine/bin/*
 setprop ro.feralab.engine 19
+if [ -e /engine.sh ]; then
+ $B sleep 45
+fi;
+
 $B rm -f $LOG
 $B touch $LOG
 $B echo "### FeraLab ###" > $LOG
@@ -33,7 +37,7 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B rm -f /system/engine/prop/firstboot
  $B --install -s /system/xbin
 fi;
-$B echo "[$TIME] Remmounting /data and /system - RW" >> $LOG
+$B echo "[$TIME] Remounting /data and /system - RW" >> $LOG
 $B mount -o remount,rw /system
 $B mount -o remount,rw /data
 if [ -e /sbin/sysrw ]; then
@@ -58,21 +62,34 @@ sync;
 $B mount -o remount,rw /system
 $B echo "[$TIME] Running 001 gear.." >> $LOG
 $SH /system/engine/gears/001abc.sh
+TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 002 gear.." >> $LOG
 $SH /system/engine/gears/002def.sh
+TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 003 gear.." >> $LOG
 $SH /system/engine/gears/003ghi.sh
+TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 004 gear.." >> $LOG
+TIME=$($B date | $B awk '{ print $4 }')
 $SH /system/engine/gears/004jkl.sh
+TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 005 gear.." >> $LOG
+TIME=$($B date | $B awk '{ print $4 }')
 $SH /system/engine/gears/005mno.sh
+TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 006 gear.." >> $LOG
 $SH /system/engine/gears/006pqr.sh
+TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 007 gear.." >> $LOG
 $SH /system/engine/gears/007stu.sh
+TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 008 gear.." >> $LOG
 $SH /system/engine/gears/008vwx.sh
-$B echo "[$TIME] Remmounting /data and /system - RO" >> $LOG
+TIME=$($B date | $B awk '{ print $4 }')
+$B echo "[$TIME] Running 009 gear.." >> $LOG
+$SH /system/engine/gears/009yza.sh
+TIME=$($B date | $B awk '{ print $4 }')
+$B echo "[$TIME] Remounting /data and /system - RO" >> $LOG
 $B mount -o remount,ro /system
 $B echo "[$TIME] Applying kernel configuration.." >> $LOG
 sysctl -p /system/etc/sysctl.conf

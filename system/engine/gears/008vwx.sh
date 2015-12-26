@@ -36,6 +36,7 @@ $B sysctl -e -w net.ipv4.ip_forward=1
 
 $B echo " Tuning Android networking settings.." >> $LOG
 setprop wifi.supplicant_scan_interval 180
+sync;
 
 if [ -e /system/xbin/sqlite3 ]; then
  $B echo " Tuning WiFi.." >> $LOG
@@ -47,7 +48,6 @@ if [ -e /system/xbin/sqlite3 ]; then
  else
   /system/xbin/sqlite3 /data/data/com.android.providers.settings/databases/settings.db "update secure set value=$wifi_idle_wait where name='wifi_idle_ms'"
  fi;
- sync;
 fi;
 
 $B echo "" >> $LOG

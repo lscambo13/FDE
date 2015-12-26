@@ -6,7 +6,7 @@ RZS=/system/engine/bin/rzscontrol
 LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
 
-$B echo "[$TIME] 001 - ***RAM gear***" >> $LOG
+$B echo "[$TIME] 003 - ***RAM gear***" >> $LOG
 $B echo "" >> $LOG
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p)
@@ -171,6 +171,6 @@ $B echo "  Cached:             $RAMcached MB" >> $LOG
 $B echo "  SWAP/ZRAM total:    $SWAP MB" >> $LOG
 $B echo "  SWAP/ZRAM used:     $SWAPused MB" >> $LOG
 $B echo "" >> $LOG
-$B echo "[$TIME] 001 - ***RAM gear*** - OK" >> $LOG
+$B echo "[$TIME] 003 - ***RAM gear*** - OK" >> $LOG
 sync;
 

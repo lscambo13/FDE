@@ -5,6 +5,7 @@ B=/system/engine/bin/busybox
 SH=/system/engine/bin/sh
 LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
+KERNEL=$($B uname -a)
 
 mount -o remount,rw /system
 chmod -R 777 /system/engine/bin/*
@@ -23,8 +24,8 @@ $B echo "[$TIME] FeraDroid Engine v0.19" >> $LOG
 $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
 $B echo "[$TIME] Android version: $(getprop ro.build.version.release)" >> $LOG
+$B echo "[$TIME] Kernel: $KERNEL" >> $LOG
 $B echo "[$TIME] ROM version: $(getprop ro.build.display.id)" >> $LOG
-$B echo "[$TIME] Kernel: $($B uname -a)" >> $LOG
 
 if [ -e /system/engine/prop/firstboot ]; then
  $B echo "[$TIME] First boot after deploy" >> $LOG
@@ -37,6 +38,7 @@ if [ -e /system/engine/prop/firstboot ]; then
  chmod -R 777 /system/engine/gears/*
  chmod -R 777 /system/engine/prop/*
  $B chmod 644 /system/build.prop
+ $B cp /system/engine/bin/zipalign /system/xbin/zipalign
  $B rm -f /system/engine/prop/firstboot
  if [ -e /system/engine/prop/ferakernel ]; then
   $B echo "[$TIME] FeraKernel detected" >> $LOG

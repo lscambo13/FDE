@@ -38,6 +38,12 @@ if [ -e /system/engine/prop/firstboot ]; then
  chmod -R 777 /system/engine/prop/*
  $B chmod 644 /system/build.prop
  $B rm -f /system/engine/prop/firstboot
+ if [ -e /system/engine/prop/ferakernel ]; then
+  $B echo "[$TIME] FeraKernel detected" >> $LOG
+ else
+  $B echo "[$TIME] Flush init.d scripts (if any) to be safe" >> $LOG
+  $B rm -Rf /system/etc/init.d
+ fi;
  $B --install -s /system/xbin
 fi;
 $B echo "[$TIME] Remounting /data and /system - RW" >> $LOG

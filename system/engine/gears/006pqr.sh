@@ -90,7 +90,7 @@ setprop persist.service.pcsync.enable false
 if [ -e /sys/module/tpd_setting/parameters/tpd_mode ]; then
 $B chmod 644 /sys/module/tpd_setting/parameters/tpd_mode
 $B echo 1 > /sys/module/tpd_setting/parameters/tpd_mode
-else [ -e /sys/module/hid_magicmouse/parameters/scroll_speed ]; then
+elif [ -e /sys/module/hid_magicmouse/parameters/scroll_speed ]; then
 $B chmod 644 /sys/module/hid_magicmouse/parameters/scroll_speed
 $B echo 63 > /sys/module/hid_magicmouse/parameters/scroll_speed
 fi;

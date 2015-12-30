@@ -6,10 +6,12 @@ SH=/system/engine/bin/sh
 LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
 KERNEL=$($B uname -a)
+ROM=$(getprop ro.build.display.id)
 
 mount -o remount,rw /system
 chmod -R 777 /system/engine/bin/*
 setprop ro.feralab.engine 19
+setprop ro.build.display.id $ROM | FDE v0.19
 if [ -e /engine.sh ]; then
  $B sleep 45
 else

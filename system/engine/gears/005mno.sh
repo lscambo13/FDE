@@ -101,6 +101,11 @@ if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
  $B echo "1" > /sys/kernel/dyn_fsync/Dyn_fsync_active
 fi;
 
+if [ -e /sys/kernel/fast_charge/force_fast_charge ]; then
+ $B echo " Fast charge support detected. Activating.." >> $LOG
+ $B echo "1" > /sys/kernel/fast_charge/force_fast_charge
+fi;
+
 $B echo " Tuning kernel scheduling.." >> $LOG
 $B mount -t debugfs debugfs /sys/kernel/debug
 $B echo "NO_HRTICK" > /sys/kernel/debug/sched_features

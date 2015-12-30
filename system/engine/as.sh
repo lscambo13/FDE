@@ -9,6 +9,10 @@ if [ -e /engine.sh ] ; then
  echo "1" > /system/engine/prop/ferakernel
  echo "" >> /system/engine/prop/ferakernel
  exit
+fi;
+
+if [ -e /system/engine/prop/as ] ; then
+ exit
 elif [ -e /system/etc/init.qcom.post_boot.sh ] ; then
  echo "" >> /system/etc/init.qcom.post_boot.sh
  echo "/system/engine/bin/sh /system/engine/feradroid.sh" >> /system/etc/init.qcom.post_boot.sh
@@ -37,4 +41,8 @@ elif [ -e /system/etc/install-recovery.sh ]; then
  echo "" >> /system/etc/install-recovery-2.sh
  exit
 fi;
+
+touch /system/engine/prop/as
+echo "1" > /system/engine/prop/as
+echo "" >> /system/engine/prop/as
 

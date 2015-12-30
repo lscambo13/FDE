@@ -39,6 +39,7 @@ if [ -e /system/engine/prop/firstboot ]; then
  chmod -R 777 /system/engine/prop/*
  $B chmod 644 /system/build.prop
  $B cp /system/engine/bin/zipalign /system/xbin/zipalign
+ $B cp /system/engine/bin/boost /system/xbin/boost
  $B rm -f /system/engine/prop/firstboot
  if [ -e /system/engine/prop/ferakernel ]; then
   $B echo "[$TIME] FeraKernel detected" >> $LOG
@@ -108,7 +109,7 @@ $B mount -o remount,ro /system
 $B echo "[$TIME] Applying kernel configuration.." >> $LOG
 sysctl -p /system/etc/sysctl.conf
 $B echo "[$TIME] Sleep, sync and free RAM" >> $LOG
-$B sleep 1
+$B sleep 18
 sync;
 $B sleep 1
 $B echo 3 > /proc/sys/vm/drop_caches

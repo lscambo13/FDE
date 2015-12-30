@@ -48,14 +48,14 @@ if [ -e /system/engine/prop/firstboot ]; then
  fi;
  $B --install -s /system/xbin
 fi;
-$B echo "[$TIME] Remounting /data and /system - RW" >> $LOG
-$B mount -o remount,rw /system
-$B mount -o remount,rw /data
 if [ -e /sbin/sysrw ]; then
  $B echo "[$TIME] Remapped partition mount detected" >> $LOG
  /sbin/sysrw
  $B sleep 1
 fi;
+$B echo "[$TIME] Remounting /data and /system - RW" >> $LOG
+$B mount -o remount,rw /system
+$B mount -o remount,rw /data
 $B echo "[$TIME] Correcting permissions.." >> $LOG
 $B chmod 644 /system/build.prop
 $B chmod 777 /system/engine

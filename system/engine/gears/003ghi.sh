@@ -39,6 +39,7 @@ sync;
 $B sleep 1
 $B echo 3 > /proc/sys/vm/drop_caches
 $B sleep 3
+$B mount -o remount,rw /system
 sync;
 $B echo " Paging check.." >> $LOG
 if [ -e /sys/block/zram0/disksize ]; then
@@ -103,7 +104,6 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  $RZS /dev/block/ramzswap0 -i -d $ZRF
  $B sleep 1
  $B echo "  Starting swappiness.." >> $LOG
- $B mkswap /dev/block/ramzswap0
  $B swapon /dev/block/ramzswap0
  fi;
  $B echo " Configuring kernel & RAMZSWAP frienship.." >> $LOG

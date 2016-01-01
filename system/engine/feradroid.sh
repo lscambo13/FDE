@@ -105,6 +105,9 @@ $SH /system/engine/gears/009yza.sh
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Fix permissions and zipalign.." >> $LOG
 $SH /system/engine/fix.sh
+$B echo "[$TIME] Run init.d scripts.." >> $LOG
+$B chmod 777 /system/etc/init.d/*
+$B run-parts /system/etc/init.d
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Remounting /data and /system - RO" >> $LOG
 $B mount -o remount,ro /system

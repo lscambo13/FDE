@@ -52,11 +52,11 @@ CHK=$($B cat /sys/devices/virtual/bdi/179:0/read_ahead_kb)
 $B echo " Checking if worked. Current parameter is $CHK KB" >> $LOG
 $B echo " FStrim init.." >> $LOG
 $B echo "  Trim /system" >> $LOG
-$B fstrim -v /system
+$B fstrim -v /system | $B tee -a $LOG
 $B echo "  Trim /data" >> $LOG
-$B fstrim -v /data
+$B fstrim -v /data | $B tee -a $LOG
 $B echo "  Trim /cache" >> $LOG
-$B fstrim -v /cache
+$B fstrim -v /cache | $B tee -a $LOG
 $B sleep 1
 $B echo "" >> $LOG
 $B echo "[$TIME] 004 - ***Memory gear*** - OK" >> $LOG

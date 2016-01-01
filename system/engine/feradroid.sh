@@ -8,14 +8,14 @@ TIME=$($B date | $B awk '{ print $4 }')
 KERNEL=$($B uname -a)
 ROM=$(getprop ro.build.display.id)
 
-mount -o remount,rw /system
+mount -o remount,rw /system | $B tee -a $LOG
 chmod -R 777 /system/engine/bin/*
-setprop ro.feralab.engine 19
-setprop ro.build.display.id $ROM | FDE v0.19
+setprop ro.feralab.engine 19 | $B tee -a $LOG
+setprop ro.build.display.id $ROM | FDE v0.19 | $B tee -a $LOG
 if [ -e /engine.sh ]; then
- $B sleep 45
+ $B sleep 45 | $B tee -a $LOG
 else
- $B sleep 9
+ $B sleep 9 | $B tee -a $LOG
 fi;
 
 $B rm -f $LOG
@@ -112,7 +112,7 @@ TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Remounting /data and /system - RO" >> $LOG
 $B mount -o remount,ro /system
 $B echo "[$TIME] Applying kernel configuration.." >> $LOG
-sysctl -p /system/etc/sysctl.conf
+sysctl -p /system/etc/sysctl.conf | $B tee -a $LOG
 $B echo "[$TIME] Sleep, sync and free RAM" >> $LOG
 $B sleep 18
 sync;
@@ -132,6 +132,10 @@ $B sleep 1
 $B echo 3 > /proc/sys/vm/drop_caches
 $B sleep 3
 sync;
+$B echo "" >> $LOG
+$B echo "[$TIME] BP dump" >> $LOG
+getprop  | $B tee -a $LOG
+$B echo "" >> $LOG
 $B echo "[$TIME] FDE status - OK" >> $LOG
 $B echo "" >> $LOG
 

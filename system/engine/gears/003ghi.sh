@@ -56,7 +56,7 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B echo " Applying new ZRAM parameters.." >> $LOG
  if [ "$SWAP" -gt "0" ]; then
   $B echo "  Stopping swappiness.." >> $LOG
-  $B swapoff /dev/block/zram0
+  $B swapoff /dev/block/zram0 | $B tee -a $LOG
   $B sleep 1
   sync;
  fi;
@@ -65,12 +65,12 @@ if [ -e /sys/block/zram0/disksize ]; then
   $B echo "lz4" > /sys/block/zram0/comp_algorithm
  fi;
  $B echo "  Resetting ZRAM blockdev.." >> $LOG
- $B echo 1 > /sys/block/zram0/reset
+ $B echo 1 > /sys/block/zram0/reset | $B tee -a $LOG
  $B echo "  Creating ZRAM blockdev - $FZRAM MB" >> $LOG
- $B echo $((FZRAM*1024*1024)) > /sys/block/zram0/disksize
+ $B echo $((FZRAM*1024*1024)) > /sys/block/zram0/disksize | $B tee -a $LOG
  $B echo "  Starting swappiness.." >> $LOG
- $B mkswap /dev/block/zram0
- $B swapon /dev/block/zram0
+ $B mkswap /dev/block/zram0 | $B tee -a $LOG
+ $B swapon /dev/block/zram0 | $B tee -a $LOG
  fi;
  $B echo " Configuring kernel & ZRAM frienship.." >> $LOG
  $B echo 99 > /proc/sys/vm/swappiness
@@ -94,17 +94,17 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  $B echo " Applying new RAMZSWAP parameters.." >> $LOG
  if [ "$SWAP" -gt "0" ]; then
   $B echo "  Stopping swappiness.." >> $LOG
-  $B swapoff /dev/block/ramzswap0
+  $B swapoff /dev/block/ramzswap0 | $B tee -a $LOG
   $B sleep 1
   sync;
  fi;
  $B echo "  Resetting RAMZSWAP blockdev.." >> $LOG
- $RZS /dev/block/ramzswap0 --reset
+ $RZS /dev/block/ramzswap0 --reset | $B tee -a $LOG
  $B echo "  Creating RAMZSWAP blockdev - $FRZ MB" >> $LOG
- $RZS /dev/block/ramzswap0 -i -d $ZRF
+ $RZS /dev/block/ramzswap0 -i -d $ZRF | $B tee -a $LOG
  $B sleep 1
  $B echo "  Starting swappiness.." >> $LOG
- $B swapon /dev/block/ramzswap0
+ $B swapon /dev/block/ramzswap0 | $B tee -a $LOG
  fi;
  $B echo " Configuring kernel & RAMZSWAP frienship.." >> $LOG
  $B echo 99 > /proc/sys/vm/swappiness

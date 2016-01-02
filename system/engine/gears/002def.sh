@@ -8,7 +8,7 @@ TIME=$($B date | $B awk '{ print $4 }')
 $B echo "" >> $LOG
 $B echo "[$TIME] 002 - ***Ad-block gear***" >> $LOG
 if [ -e /system/engine/prop/nohost ]; then
- $B echo " Hosts were not updated. Dealing.." >> $LOG
+ $B echo "Hosts were not updated. Dealing.." >> $LOG
  $B mount -o remount,rw /system
  $B rm -f /system/etc/hosts
  $B cp /system/engine/assets/hosts /system/etc/hosts
@@ -18,6 +18,5 @@ if [ -e /system/engine/prop/nohost ]; then
 fi;
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 002 - ***Ad-block gear*** - OK" >> $LOG
-$B echo "" >> $LOG
 sync;
 

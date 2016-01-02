@@ -96,6 +96,5 @@ fi;
 
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 006 - ***GPU gear*** - OK" >> $LOG
-$B echo "" >> $LOG
 sync;
 

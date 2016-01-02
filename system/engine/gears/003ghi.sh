@@ -68,7 +68,7 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B echo 1 > /sys/block/zram0/reset | $B tee -a $LOG
  $B echo "Creating ZRAM blockdev - $FZRAM MB" >> $LOG
  $B echo $((FZRAM*1024*1024)) > /sys/block/zram0/disksize | $B tee -a $LOG
- $B echo "  Starting swappiness.." >> $LOG
+ $B echo "Starting swappiness.." >> $LOG
  $B mkswap /dev/block/zram0 | $B tee -a $LOG
  $B swapon /dev/block/zram0 | $B tee -a $LOG
  fi;
@@ -174,6 +174,5 @@ $B echo "  SWAP/ZRAM used:     $SWAPused MB" >> $LOG
 $B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 003 - ***RAM gear*** - OK" >> $LOG
-$B echo "" >> $LOG
 sync;
 

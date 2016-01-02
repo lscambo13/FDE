@@ -164,7 +164,6 @@ do \
 done;
 fi;
 
-$B echo "" >> $LOG
 $B echo "[$TIME] 009 - ***VM gear*** - OK" >> $LOG
 sync;
 

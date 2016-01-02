@@ -37,7 +37,7 @@ $B echo 0 > /proc/sys/kernel/softlockup_panic
 $B echo 0 > /proc/sys/kernel/hung_task_timeout_secs
 $B echo 0 > /proc/sys/kernel/panic_on_oops
 $B echo 0 > /proc/sys/kernel/panic
-$B echo " Writing optimized kernel parameters to sysctl.." >> $LOG
+$B echo "Writing optimized kernel parameters to sysctl.." >> $LOG
 $B echo "kernel.random.read_wakeup_threshold=1536" >> /system/etc/sysctl.conf
 $B echo "kernel.random.write_wakeup_threshold=256" >> /system/etc/sysctl.conf
 $B echo "vm.vfs_cache_pressure=50" >> /system/etc/sysctl.conf
@@ -104,20 +104,18 @@ if [ -e /sys/kernel/fast_charge/force_fast_charge ]; then
  $B echo "Fast charge support detected. Activating.." >> $LOG
  $B echo "1" > /sys/kernel/fast_charge/force_fast_charge
 fi;
-
 if [ "$SDK" -le "14" ]; then
  $B echo "Trying to enable Seeder entropy generator.. " >> $LOG
  if [ -e /system/bin/qrngd -o -e /system/xbin/qrngd ]; then
   $B echo "qrngd found in /system. Seeder will not be started!" >> $LOG
  else
-  /system/engine/bin/rngd -t 2 -T 1 -s 256 --fill-watermark=80%
+  /system/engine/bin/rngd -t 2 -T 1 -s 256 --fill-watermark=80% | $B tee -a $LOG
   $B sleep 3
   $B echo -8 > /proc/$(pgrep rngd)/oom_adj
   renice 5 `pidof rngd`
   $B echo "Seeder entropy generator activated." >> $LOG
  fi;
 fi;
-
 for n in /sys/module/*
 do
  if [ -e $n/parameters/debug_mask ]; then
@@ -125,7 +123,6 @@ do
   $B echo "0" > $n/parameters/debug_mask
  fi;
 done;
-
 $B echo "Tuning kernel scheduling.." >> $LOG
 $B mount -t debugfs debugfs /sys/kernel/debug
 $B echo "NO_HRTICK" > /sys/kernel/debug/sched_features
@@ -139,12 +136,11 @@ $B echo "NO_DOUBLE_TICK" > /sys/kernel/debug/sched_features
 $B echo "NO_AFFINE_WAKEUPS" > /sys/kernel/debug/sched_features
 $B echo "NO_NEXT_BUDDY" > /sys/kernel/debug/sched_features
 $B echo "NO_WAKEUP_OVERLAP" > /sys/kernel/debug/sched_features
-$B echo " Tuning Android.." >> $LOG
+$B echo "Tuning Android.." >> $LOG
 setprop ro.config.nocheckin 1
 setprop ro.kernel.android.checkjni 0
 setprop ro.kernel.checkjni 0
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 005 - ***Kernel gear*** - OK" >> $LOG
-$B echo "" >> $LOG
 sync;
 

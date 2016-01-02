@@ -8,7 +8,7 @@ TIME=$($B date | $B awk '{ print $4 }')
 
 $B echo "" >> $LOG
 $B echo "[$TIME] 007 - ***Battery gear***" >> $LOG
-if [ "$A" = "100" ] ; then
+if [ "$A" -eq "100" ] ; then
  $B echo "Re-calibrating battery.." >> $LOG
  $B mount -o remount,rw /data
  $B rm -f /data/system/batterystats.bin
@@ -29,6 +29,5 @@ setprop ro.config.hw_power_saving 1
 setprop ro.config.hw_power_saving true
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 007 - ***Battery gear*** - OK" >> $LOG
-$B echo "" >> $LOG
 sync;
 

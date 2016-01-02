@@ -60,6 +60,5 @@ $B chmod 000 /data/tombstones
 $B sleep 1
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 001 - ***Cleaning gear*** - OK" >> $LOG
-$B echo "" >> $LOG
 sync;
 

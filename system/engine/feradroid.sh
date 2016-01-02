@@ -132,6 +132,7 @@ $B echo 3 > /proc/sys/vm/drop_caches
 $B sleep 3
 sync;
 TIME=$($B date | $B awk '{ print $4 }')
+$B echo "" >> $LOG
 $B echo "[$TIME] Applying kernel configuration.." >> $LOG
 sysctl -p /system/etc/sysctl.conf | $B tee -a $LOG
 $B echo "" >> $LOG

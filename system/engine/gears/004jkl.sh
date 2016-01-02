@@ -62,6 +62,5 @@ $B fstrim -v /cache | $B tee -a $LOG
 $B sleep 1
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 004 - ***Memory gear*** - OK" >> $LOG
-$B echo "" >> $LOG
 sync;
 

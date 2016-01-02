@@ -7,6 +7,18 @@ TIME=$($B date | $B awk '{ print $4 }')
 
 $B echo "[$TIME] 009 - ***VM gear***" >> $LOG
 $B echo "" >> $LOG
+$B echo "Tuning LMK.." >> $LOG
+if [ -e /sys/module/lowmemorykiller/parameters/cost ]; then
+ $B chmod 644 /sys/module/lowmemorykiller/parameters/cost
+ $B echo "16" > /sys/module/lowmemorykiller/parameters/cost
+ $B echo "LMK cost fine-tuning.." >> $LOG
+fi
+if [ -e /sys/module/lowmemorykiller/parameters/fudgeswap ]; then
+ $B chmod 644 /sys/module/lowmemorykiller/parameters/fudgeswap
+ $B echo "1024" > /sys/module/lowmemorykiller/parameters/fudgeswap
+ $B echo "FudgeSwap supported. Tuning.." >> $LOG
+fi
+
 $B echo "Tuning Android proc.." >> $LOG
 setprop MAX_SERVICE_INACTIVITY false
 setprop MIN_HIDDEN_APPS false

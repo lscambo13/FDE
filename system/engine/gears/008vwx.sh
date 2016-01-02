@@ -8,6 +8,7 @@ TIME=$($B date | $B awk '{ print $4 }')
 
 $B echo "" >> $LOG
 $B echo "[$TIME] 008 - ***Network gear***" >> $LOG
+$B mount -o remount,rw /system
 $B echo " Writing optimized network parameters to sysctl" >> $LOG
 $B echo "net.ipv4.tcp_congestion_control=cubic" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.tcp_rfc1337=1" >> /system/etc/sysctl.conf
@@ -37,6 +38,13 @@ $B sysctl -e -w net.ipv4.ip_forward=1
 
 $B echo " Tuning Android networking settings.." >> $LOG
 setprop wifi.supplicant_scan_interval 900
+setprop net.dns1 8.8.8.8
+setprop net.dns2 8.8.4.4
+setprop net.rmnet0.dns1 8.8.8.8
+setprop net.rmnet0.dns2 8.8.4.4
+$B echo "nameserver 8.8.8.8" > /system/etc/resolv.conf
+$B echo "nameserver 8.8.4.4" >> /system/etc/resolv.conf
+$B echo "" >> /system/etc/resolv.conf
 sync;
 
 if [ "$SDK" -le "14" ]; then

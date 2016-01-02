@@ -38,6 +38,16 @@ $B sysctl -e -w net.ipv4.ip_forward=1
 
 $B echo " Tuning Android networking settings.." >> $LOG
 setprop wifi.supplicant_scan_interval 900
+setprop ro.ril.enable.3g.prefix 1
+setprop ro.ril.enable.sdr 1
+setprop ro.ril.enable.gea3 1
+setprop ro.ril.enable.a52 0
+setprop ro.ril.enable.a53 1
+setprop ro.ril.hsxpa 3
+setprop ro.ril.gprsclass 12
+setprop ro.ril.hep 1
+setprop ro.ril.hsdpa.category 8
+setprop ro.ril.hsupa.category 6
 setprop net.dns1 8.8.8.8
 setprop net.dns2 8.8.4.4
 setprop net.rmnet0.dns1 8.8.8.8

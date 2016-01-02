@@ -106,6 +106,14 @@ if [ -e /sys/kernel/fast_charge/force_fast_charge ]; then
  $B echo "1" > /sys/kernel/fast_charge/force_fast_charge
 fi;
 
+for n in /sys/module/*
+do
+ if [ -e $n/parameters/debug_mask ]; then
+  $B echo "Turning debugging OFF.." >> $LOG
+  $B echo "0" > $n/parameters/debug_mask
+ fi;
+done;
+
 $B echo "Tuning kernel scheduling.." >> $LOG
 $B mount -t debugfs debugfs /sys/kernel/debug
 $B echo "NO_HRTICK" > /sys/kernel/debug/sched_features

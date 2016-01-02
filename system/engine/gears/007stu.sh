@@ -25,6 +25,8 @@ setprop persist.sys.purgeable_assets 1
 setprop pm.sleep_mode 1
 setprop ro.ril.disable.power.collapse 0
 setprop persist.radio.add_power_save 1
+setprop ro.config.hw_power_saving 1
+setprop ro.config.hw_power_saving true
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 007 - ***Battery gear*** - OK" >> $LOG
 $B echo "" >> $LOG

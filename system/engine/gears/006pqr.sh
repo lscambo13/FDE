@@ -79,9 +79,12 @@ setprop media.stagefright.enable-http true
 setprop media.stagefright.enable-aac true
 setprop media.stagefright.enable-qcp true
 setprop media.stagefright.enable-record true
-setprop touch.presure.scale 0.001
+setprop touch.presure.scale 0.1
 setprop persist.service.lgospd.enable false
 setprop persist.service.pcsync.enable false
+setprop ro.lge.proximity.delay 25
+setprop mot.proximity.delay 25
+setprop ro.telephony.call_ring.delay 0
 
 if [ -e /sys/module/tpd_setting/parameters/tpd_mode ]; then
 $B chmod 644 /sys/module/tpd_setting/parameters/tpd_mode

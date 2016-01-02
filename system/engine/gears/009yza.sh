@@ -38,6 +38,11 @@ setprop SERVICE_TIMEOUT false
 setprop MIN_CRASH_INTERVAL false
 
 $B echo "Optimizing GP services.." >> $LOG
+$B killall -9 com.google.android.gms
+$B killall -9 com.google.android.gms.persistent
+$B killall -9 com.google.process.gapps
+$B killall -9 com.google.android.gsf
+$B killall -9 com.google.android.gsf.persistent
 pm disable com.google.android.gms/.ads.settings.AdsSettingsActivity
 pm disable com.google.android.gms/com.google.android.location.places.ui.aliaseditor.AliasEditorActivity
 pm disable com.google.android.gms/com.google.android.location.places.ui.aliaseditor.AliasEditorMapActivity

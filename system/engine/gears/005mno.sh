@@ -100,10 +100,22 @@ if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
  $B echo "Dynamic fsync detected. Activating.." >> $LOG
  $B echo "1" > /sys/kernel/dyn_fsync/Dyn_fsync_active
 fi;
-
 if [ -e /sys/kernel/fast_charge/force_fast_charge ]; then
  $B echo "Fast charge support detected. Activating.." >> $LOG
  $B echo "1" > /sys/kernel/fast_charge/force_fast_charge
+fi;
+
+if [ "$SDK" -le "14" ]; then
+ $B echo "Trying to enable Seeder entropy generator.. " >> $LOG
+ if [ -e /system/bin/qrngd -o -e /system/xbin/qrngd ]; then
+  $B echo "qrngd found in /system. Seeder will not be started!" >> $LOG
+ else
+  /system/engine/bin/rngd -t 2 -T 1 -s 256 --fill-watermark=80%
+  $B sleep 3
+  $B echo -8 > /proc/$(pgrep rngd)/oom_adj
+  renice 5 `pidof rngd`
+  $B echo "Seeder entropy generator activated." >> $LOG
+ fi;
 fi;
 
 for n in /sys/module/*

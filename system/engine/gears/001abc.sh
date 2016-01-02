@@ -54,7 +54,6 @@ $B rm -Rf /mnt/sdcard/albumthumbs
 $B rm -Rf /mnt/sdcard/kunlun
 $B rm -Rf /mnt/sdcard/.antutu
 $B rm -Rf /mnt/sdcard/.estrongs
-$B rm -Rf /mnt/sdcard/.kate
 $B rm -Rf /mnt/sdcard/baidu
 $B rm -f /mnt/sdcard/fix_permissions.log
 $B chmod 000 /data/tombstones

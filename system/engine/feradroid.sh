@@ -50,7 +50,9 @@ if [ -e /system/engine/prop/firstboot ]; then
   $B echo "[$TIME] Flush init.d scripts (if any) to be safe" >> $LOG
   $B rm -Rf /system/etc/init.d
  fi;
+ $B echo "[$TIME] Install Busybox.." >> $LOG
  $B --install -s /system/xbin
+ $B echo "[$TIME] Fix GP services.." >> $LOG
 fi;
 if [ -e /sbin/sysrw ]; then
  $B echo "[$TIME] Remapped partition mount detected" >> $LOG
@@ -139,6 +141,11 @@ $B echo "" >> $LOG
 $B echo "[$TIME] BP dump" >> $LOG
 getprop  | $B tee -a $LOG
 $B echo "" >> $LOG
+TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] FDE status - OK" >> $LOG
 $B echo "" >> $LOG
+$B echo "[$TIME] GP services fix" >> $LOG
+$SH /system/engine/gp.sh
+$B echo "" >> $LOG
+
 

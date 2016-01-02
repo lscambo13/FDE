@@ -124,7 +124,7 @@ do
  fi;
 done;
 $B echo "Tuning kernel scheduling.." >> $LOG
-$B mount -t debugfs debugfs /sys/kernel/debug
+$B mount -t debugfs none /sys/kernel/debug
 $B echo "NO_HRTICK" > /sys/kernel/debug/sched_features
 $B echo "NO_CACHE_HOT_BUDDY" > /sys/kernel/debug/sched_features
 $B echo "NO_LB_BIAS" > /sys/kernel/debug/sched_features

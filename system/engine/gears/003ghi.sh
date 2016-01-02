@@ -152,8 +152,8 @@ elif [ "$SWAP" = "0" ]; then
  if [ -e /sys/kernel/mm/ksm/run ]; then
   $B echo "KSM detected" >> $LOG
   $B echo "Starting and tuning KSM.." >> $LOG
-  $B echo 90 > /sys/kernel/mm/ksm/pages_to_scan
-  $B echo 5000 > /sys/kernel/mm/ksm/sleep_millisecs
+  $B echo 64 > /sys/kernel/mm/ksm/pages_to_scan
+  $B echo 3000 > /sys/kernel/mm/ksm/sleep_millisecs
   $B echo 1 > /sys/kernel/mm/ksm/run
  fi;
 fi;

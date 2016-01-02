@@ -3,7 +3,7 @@
 
 B=/system/engine/bin/busybox
 LOG=/sdcard/Android/FDE.txt
-SDK=$(ro.build.version.sdk)
+SDK=$(getprop ro.build.version.sdk)
 TIME=$($B date | $B awk '{ print $4 }')
 
 $B echo "" >> $LOG

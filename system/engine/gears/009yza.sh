@@ -7,6 +7,7 @@ TIME=$($B date | $B awk '{ print $4 }')
 
 $B echo "[$TIME] 009 - ***VM gear***" >> $LOG
 $B echo "" >> $LOG
+$B echo "Tuning Android proc.." >> $LOG
 setprop MAX_SERVICE_INACTIVITY false
 setprop MIN_HIDDEN_APPS false
 setprop CONTENT_APP_IDLE_OFFSET false
@@ -21,7 +22,7 @@ setprop SERVICE_TIMEOUT false
 setprop MIN_CRASH_INTERVAL false
 
 if [ -e /system/xbin/sqlite3 ]; then
-$B echo " Optimizing DataBases.." >> $LOG
+$B echo "Optimizing DataBases.." >> $LOG
 for i in \
 $($B find /data -iname "*.db") 
 do \

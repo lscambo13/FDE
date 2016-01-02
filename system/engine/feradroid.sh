@@ -7,7 +7,7 @@ LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
 KERNEL=$($B uname -a)
 ROM=$(getprop ro.build.display.id)
-SDK=$(ro.build.version.sdk)
+SDK=$(getprop ro.build.version.sdk)
 
 mount -o remount,rw /system
 chmod -R 777 /system/engine/bin/*
@@ -27,8 +27,8 @@ $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
 $B echo "[$TIME] Android version: $(getprop ro.build.version.release)" >> $LOG
 $B echo "[$TIME] Kernel: $KERNEL" >> $LOG
-$B echo "[$TIME] ROM version: $(getprop ro.build.display.id)" >> $LOG
-$B echo "[$TIME] SDK: $(getprop ro.build.display.id)" >> $LOG
+$B echo "[$TIME] ROM version: $ROM" >> $LOG
+$B echo "[$TIME] SDK: $SDK" >> $LOG
 
 if [ -e /system/engine/prop/firstboot ]; then
  $B echo "[$TIME] First boot after deploy" >> $LOG

@@ -5,12 +5,12 @@ B=/system/engine/bin/busybox
 LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
 
-$B echo "[$TIME] 001 - ***Cleaning gear***" >> $LOG
 $B echo "" >> $LOG
-$B echo " Remounting /data and /system - RW" >> $LOG
+$B echo "[$TIME] 001 - ***Cleaning gear***" >> $LOG
+$B echo "Remounting /data and /system - RW" >> $LOG
 $B mount -o remount,rw /system
 $B mount -o remount,rw /data
-$B echo " Cleaning trash.." >> $LOG
+$B echo "Cleaning trash.." >> $LOG
 $B rm -f /cache/*.apk
 $B rm -f /cache/*.tmp
 $B rm -f /cache/recovery/*.tmp
@@ -40,7 +40,8 @@ $B rm -Rf /mnt/sdcard/baidu/*
 $B rm -Rf /mnt/sdcard/DCIM/.thumbnails/*
 $B rm -f /mnt/sdcard/fix_permissions.log
 $B sleep 1
-$B echo "" >> $LOG
+TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 001 - ***Cleaning gear*** - OK" >> $LOG
+$B echo "" >> $LOG
 sync;
 

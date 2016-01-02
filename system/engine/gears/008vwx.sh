@@ -3,10 +3,11 @@
 
 B=/system/engine/bin/busybox
 LOG=/sdcard/Android/FDE.txt
+SDK=$(ro.build.version.sdk)
 TIME=$($B date | $B awk '{ print $4 }')
 
-$B echo "[$TIME] 008 - ***Network gear***" >> $LOG
 $B echo "" >> $LOG
+$B echo "[$TIME] 008 - ***Network gear***" >> $LOG
 $B echo " Writing optimized network parameters to sysctl" >> $LOG
 $B echo "net.ipv4.tcp_congestion_control=cubic" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.tcp_rfc1337=1" >> /system/etc/sysctl.conf
@@ -38,12 +39,15 @@ $B echo " Tuning Android networking settings.." >> $LOG
 setprop wifi.supplicant_scan_interval 900
 sync;
 
-if [ -e /system/xbin/sqlite3 ]; then
- $B echo " Tuning WiFi.." >> $LOG
- /system/xbin/sqlite3 /data/data/com.android.providers.settings/databases/settings.db "INSERT INTO secure (name, value) VALUES ('wifi_country_code', 'JP');"
+if [ "$SDK" -le "14" ]; then
+ if [ -e /system/xbin/sqlite3 ]; then
+  $B echo " Tuning WiFi.." >> $LOG
+  /system/xbin/sqlite3 /data/data/com.android.providers.settings/databases/settings.db "INSERT INTO secure (name, value) VALUES ('wifi_country_code', 'JP');"
+ fi;
 fi;
 
-$B echo "" >> $LOG
+TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 008 - ***Network gear*** - OK" >> $LOG
+$B echo "" >> $LOG
 sync;
 

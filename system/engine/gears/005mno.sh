@@ -5,12 +5,12 @@ B=/system/engine/bin/busybox
 LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
 
-$B echo "[$TIME] 005 - ***Kernel gear***" >> $LOG
 $B echo "" >> $LOG
+$B echo "[$TIME] 005 - ***Kernel gear***" >> $LOG
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 FM=$((RAM*64))
 
-$B echo " Writing optimized kernel parameters to sysfs.." >> $LOG
+$B echo "Writing optimized kernel parameters to sysfs.." >> $LOG
 $B echo 1536 > /proc/sys/kernel/random/read_wakeup_threshold
 $B echo 256 > /proc/sys/kernel/random/write_wakeup_threshold
 $B echo 50 > /proc/sys/vm/vfs_cache_pressure
@@ -66,7 +66,7 @@ $B echo "kernel.hung_task_timeout_secs=0" >> /system/etc/sysctl.conf
 $B echo "kernel.panic=0" >> /system/etc/sysctl.conf
 $B echo "kernel.panic_on_oops=0" >> /system/etc/sysctl.conf
 $B echo "kernel.softlockup_panic=0" >> /system/etc/sysctl.conf
-$B echo " Executing optimized kernel parameters via sysctl.." >> $LOG
+$B echo "Executing optimized kernel parameters via sysctl.." >> $LOG
 $B sysctl -e -w kernel.random.read_wakeup_threshold=1536
 $B sysctl -e -w kernel.random.write_wakeup_threshold=256
 $B sysctl -e -w vm.vfs_cache_pressure=50
@@ -97,16 +97,16 @@ $B sysctl -e -w kernel.panic_on_oops=0
 $B sysctl -e -w kernel.softlockup_panic=0
 
 if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
- $B echo " Dynamic fsync detected. Activating.." >> $LOG
+ $B echo "Dynamic fsync detected. Activating.." >> $LOG
  $B echo "1" > /sys/kernel/dyn_fsync/Dyn_fsync_active
 fi;
 
 if [ -e /sys/kernel/fast_charge/force_fast_charge ]; then
- $B echo " Fast charge support detected. Activating.." >> $LOG
+ $B echo "Fast charge support detected. Activating.." >> $LOG
  $B echo "1" > /sys/kernel/fast_charge/force_fast_charge
 fi;
 
-$B echo " Tuning kernel scheduling.." >> $LOG
+$B echo "Tuning kernel scheduling.." >> $LOG
 $B mount -t debugfs debugfs /sys/kernel/debug
 $B echo "NO_HRTICK" > /sys/kernel/debug/sched_features
 $B echo "NO_CACHE_HOT_BUDDY" > /sys/kernel/debug/sched_features
@@ -123,7 +123,8 @@ $B echo " Tuning Android.." >> $LOG
 setprop ro.config.nocheckin 1
 setprop ro.kernel.android.checkjni 0
 setprop ro.kernel.checkjni 0
-$B echo "" >> $LOG
+TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 005 - ***Kernel gear*** - OK" >> $LOG
+$B echo "" >> $LOG
 sync;
 

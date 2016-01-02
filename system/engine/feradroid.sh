@@ -7,15 +7,15 @@ LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
 KERNEL=$($B uname -a)
 ROM=$(getprop ro.build.display.id)
+SDK=$(ro.build.version.sdk)
 
-mount -o remount,rw /system | $B tee -a $LOG
+mount -o remount,rw /system
 chmod -R 777 /system/engine/bin/*
-setprop ro.feralab.engine 19 | $B tee -a $LOG
-setprop ro.build.display.id $ROM | FDE v0.19 | $B tee -a $LOG
+setprop ro.feralab.engine 19
 if [ -e /engine.sh ]; then
- $B sleep 45 | $B tee -a $LOG
+ $B sleep 45
 else
- $B sleep 9 | $B tee -a $LOG
+ $B sleep 9
 fi;
 
 $B rm -f $LOG
@@ -28,6 +28,7 @@ $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)
 $B echo "[$TIME] Android version: $(getprop ro.build.version.release)" >> $LOG
 $B echo "[$TIME] Kernel: $KERNEL" >> $LOG
 $B echo "[$TIME] ROM version: $(getprop ro.build.display.id)" >> $LOG
+$B echo "[$TIME] SDK: $(getprop ro.build.display.id)" >> $LOG
 
 if [ -e /system/engine/prop/firstboot ]; then
  $B echo "[$TIME] First boot after deploy" >> $LOG
@@ -111,8 +112,6 @@ $B run-parts /system/etc/init.d
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Remounting /data and /system - RO" >> $LOG
 $B mount -o remount,ro /system
-$B echo "[$TIME] Applying kernel configuration.." >> $LOG
-sysctl -p /system/etc/sysctl.conf | $B tee -a $LOG
 $B echo "[$TIME] Sleep, sync and free RAM" >> $LOG
 $B sleep 18
 sync;
@@ -132,6 +131,9 @@ $B sleep 1
 $B echo 3 > /proc/sys/vm/drop_caches
 $B sleep 3
 sync;
+TIME=$($B date | $B awk '{ print $4 }')
+$B echo "[$TIME] Applying kernel configuration.." >> $LOG
+sysctl -p /system/etc/sysctl.conf | $B tee -a $LOG
 $B echo "" >> $LOG
 $B echo "[$TIME] BP dump" >> $LOG
 getprop  | $B tee -a $LOG

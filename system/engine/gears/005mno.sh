@@ -10,8 +10,8 @@ $B echo "" >> $LOG
 $B echo "[$TIME] 005 - ***Kernel gear***" >> $LOG
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 FM=$((RAM*64))
-EF=$((RAM*16))
-FK=$((EF/2))
+EF=$((RAM*8))
+FK=$((RAM*4))
 
 $B echo "Writing optimized kernel parameters to sysfs.." >> $LOG
 $B echo 1536 > /proc/sys/kernel/random/read_wakeup_threshold

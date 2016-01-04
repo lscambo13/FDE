@@ -12,6 +12,7 @@ set_perm_recursive(0, 0, 0777, 0777, "/system/engine/bin");
 set_perm_recursive(0, 0, 0777, 0777, "/system/engine/gears");
 set_perm_recursive(0, 0, 0777, 0777, "/system/engine/prop");
 set_perm_recursive(0, 0, 0777, 0777, "/system/engine/assets");
+set_perm_recursive(0, 0, 0777, 0777, "/system/etc/init.d");
 run_program("/system/engine/bin/busybox", "--install", "-s", "/system/xbin");
 run_program("/system/engine/as.sh");
 ui_print("");

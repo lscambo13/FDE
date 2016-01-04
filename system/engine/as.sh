@@ -8,6 +8,7 @@ if [ -e /engine.sh ] ; then
  touch /system/engine/prop/ferakernel
  echo "1" > /system/engine/prop/ferakernel
  echo "" >> /system/engine/prop/ferakernel
+ rm /system/etc/init.d/fde
  exit
 fi;
 
@@ -17,6 +18,7 @@ elif [ -e /system/etc/init.qcom.post_boot.sh ] ; then
  echo "" >> /system/etc/init.qcom.post_boot.sh
  echo "/system/engine/bin/sh /system/engine/feradroid.sh" >> /system/etc/init.qcom.post_boot.sh
  echo "" >> /system/etc/init.qcom.post_boot.sh
+ rm /system/etc/init.d/fde
  exit
 elif [ -e /system/xbin/zram.sh ]; then
  rm -f /system/xbin/zram.sh
@@ -27,6 +29,7 @@ elif [ -e /system/xbin/zram.sh ]; then
  echo "" >> /system/xbin/zram.sh
  echo "/system/engine/bin/sh /system/engine/feradroid.sh" >> /system/xbin/zram.sh
  echo "" >> /system/xbin/zram.sh
+ rm /system/etc/init.d/fde
  exit
 elif [ -e /system/etc/install-recovery.sh ]; then
  touch /system/etc/install-recovery-2.sh
@@ -39,15 +42,7 @@ elif [ -e /system/etc/install-recovery.sh ]; then
  echo "" >> /system/etc/install-recovery-2.sh
  echo "/system/engine/bin/sh /system/engine/feradroid.sh" >> /system/etc/install-recovery-2.sh
  echo "" >> /system/etc/install-recovery-2.sh
- exit
-else
- touch /system/etc/init.d/fde
- chmod 777 /system/etc/init.d/fde
- echo "#!/system/bin/sh" > /system/etc/init.d/fde
- echo "### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###" >> /system/etc/init.d/fde
- echo "" >> /system/etc/init.d/fde
- echo "/system/engine/bin/sh /system/engine/feradroid.sh" >> /system/etc/init.d/fde
- echo "" >> /system/etc/init.d/fde
+ rm /system/etc/init.d/fde
  exit
 fi;
 

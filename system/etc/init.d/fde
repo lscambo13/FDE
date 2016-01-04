@@ -1,0 +1,11 @@
+#!/system/bin/sh
+### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
+
+mount -o remount,rw /system
+chmod -R 777 /system/engine/*
+chmod -R 777 /system/engine/assets/*
+chmod -R 777 /system/engine/bin/*
+chmod -R 777 /system/engine/gears/*
+chmod -R 777 /system/engine/prop/*
+/system/engine/bin/sh /system/engine/feradroid.sh
+

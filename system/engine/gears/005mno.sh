@@ -11,12 +11,13 @@ $B echo "[$TIME] 005 - ***Kernel gear***" >> $LOG
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 FM=$((RAM*64))
 EF=$((RAM*16))
+FK=$((EF/2))
 
 $B echo "Writing optimized kernel parameters to sysfs.." >> $LOG
 $B echo 1536 > /proc/sys/kernel/random/read_wakeup_threshold
 $B echo 256 > /proc/sys/kernel/random/write_wakeup_threshold
 $B echo 50 > /proc/sys/vm/vfs_cache_pressure
-$B echo $EF > /proc/sys/vm/min_free_kbytes
+$B echo $FK > /proc/sys/vm/min_free_kbytes
 $B echo $EF > /proc/sys/vm/extra_free_kbytes
 $B echo 3 > /proc/sys/vm/drop_caches
 $B echo 1 > /proc/sys/vm/oom_kill_allocating_task
@@ -43,7 +44,7 @@ $B echo "Writing optimized kernel parameters to sysctl.." >> $LOG
 $B echo "kernel.random.read_wakeup_threshold=1536" >> /system/etc/sysctl.conf
 $B echo "kernel.random.write_wakeup_threshold=256" >> /system/etc/sysctl.conf
 $B echo "vm.vfs_cache_pressure=50" >> /system/etc/sysctl.conf
-$B echo "vm.min_free_kbytes=$EF" >> /system/etc/sysctl.conf
+$B echo "vm.min_free_kbytes=$FK" >> /system/etc/sysctl.conf
 $B echo "vm.extra_free_kbytes=$EF" >> /system/etc/sysctl.conf
 $B echo "vm.drop_caches=3" >> /system/etc/sysctl.conf
 $B echo "vm.oom_kill_allocating_task=1" >> /system/etc/sysctl.conf
@@ -72,7 +73,7 @@ $B echo "Executing optimized kernel parameters via sysctl.." >> $LOG
 $B sysctl -e -w kernel.random.read_wakeup_threshold=1536
 $B sysctl -e -w kernel.random.write_wakeup_threshold=256
 $B sysctl -e -w vm.vfs_cache_pressure=50
-$B sysctl -e -w vm.min_free_kbytes=$EF
+$B sysctl -e -w vm.min_free_kbytes=$FK
 $B sysctl -e -w vm.extra_free_kbytes=$EF
 $B sysctl -e -w vm.drop_caches=3
 $B sysctl -e -w vm.oom_kill_allocating_task=1
@@ -126,7 +127,7 @@ do
  fi;
 done;
 $B echo "Tuning kernel scheduling.." >> $LOG
-$B mount -t debugfs none /sys/kernel/debug
+$B mount -t debugfs none /sys/kernel/debug | $B tee -a $LOG
 $B echo "NO_HRTICK" > /sys/kernel/debug/sched_features
 $B echo "NO_CACHE_HOT_BUDDY" > /sys/kernel/debug/sched_features
 $B echo "NO_LB_BIAS" > /sys/kernel/debug/sched_features

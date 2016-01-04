@@ -32,7 +32,12 @@ $B echo "[$TIME] SDK: $SDK" >> $LOG
 
 if [ -e /system/engine/prop/firstboot ]; then
  $B echo "[$TIME] First boot after deploy" >> $LOG
- mount -o remount,rw /system
+ $B mount -o remount,rw /system
+ if [ -e /sbin/sysrw ]; then
+  $B echo "[$TIME] Remapped partition mount detected" >> $LOG
+  /sbin/sysrw
+  $B sleep 1
+ fi;
  $B echo "[$TIME] Setting permissions.. Installing Busybox.." >> $LOG
  chmod 777 /system/engine
  chmod -R 777 /system/engine/*
@@ -52,7 +57,6 @@ if [ -e /system/engine/prop/firstboot ]; then
  fi;
  $B echo "[$TIME] Install Busybox.." >> $LOG
  $B --install -s /system/xbin
- $B echo "[$TIME] Fix GP services.." >> $LOG
 fi;
 if [ -e /sbin/sysrw ]; then
  $B echo "[$TIME] Remapped partition mount detected" >> $LOG

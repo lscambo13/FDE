@@ -40,6 +40,15 @@ elif [ -e /system/etc/install-recovery.sh ]; then
  echo "/system/engine/bin/sh /system/engine/feradroid.sh" >> /system/etc/install-recovery-2.sh
  echo "" >> /system/etc/install-recovery-2.sh
  exit
+else
+ touch /system/etc/init.d/fde
+ chmod 777 /system/etc/init.d/fde
+ echo "#!/system/bin/sh" > /system/etc/init.d/fde
+ echo "### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###" >> /system/etc/init.d/fde
+ echo "" >> /system/etc/init.d/fde
+ echo "/system/engine/bin/sh /system/engine/feradroid.sh" >> /system/etc/init.d/fde
+ echo "" >> /system/etc/init.d/fde
+ exit
 fi;
 
 touch /system/engine/prop/as

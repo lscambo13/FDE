@@ -51,7 +51,9 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B rm -f /system/engine/prop/firstboot
  if [ -e /system/engine/prop/ferakernel ]; then
   $B echo "[$TIME] FeraKernel detected" >> $LOG
- else
+ elif [ -e /system/etc/init.d/fde ]; then
+  $B echo "[$TIME] FDE init.d init detected" >> $LOG
+ else 
   $B echo "[$TIME] Flush init.d scripts (if any) to be safe" >> $LOG
   $B rm -Rf /system/etc/init.d
  fi;
@@ -112,9 +114,13 @@ $SH /system/engine/gears/009yza.sh
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Fix permissions and zipalign.." >> $LOG
 $SH /system/engine/fix.sh
-$B echo "[$TIME] Run init.d scripts.." >> $LOG
-$B chmod 777 /system/etc/init.d/*
-$B run-parts /system/etc/init.d
+if [ -e /system/etc/init.d/fde ]; then
+ $B echo "[$TIME] Don't run init.d scripts.." >> $LOG
+else
+ $B echo "[$TIME] Run init.d scripts.." >> $LOG
+ $B chmod 777 /system/etc/init.d/*
+ $B run-parts /system/etc/init.d
+fi;
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Remounting /data and /system - RO" >> $LOG
 $B mount -o remount,ro /system

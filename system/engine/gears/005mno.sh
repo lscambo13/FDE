@@ -4,18 +4,20 @@
 B=/system/engine/bin/busybox
 LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
+SDK=$(getprop ro.build.version.sdk)
 
 $B echo "" >> $LOG
 $B echo "[$TIME] 005 - ***Kernel gear***" >> $LOG
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 FM=$((RAM*64))
+EF=$((RAM*16))
 
 $B echo "Writing optimized kernel parameters to sysfs.." >> $LOG
 $B echo 1536 > /proc/sys/kernel/random/read_wakeup_threshold
 $B echo 256 > /proc/sys/kernel/random/write_wakeup_threshold
 $B echo 50 > /proc/sys/vm/vfs_cache_pressure
-$B echo 4096 > /proc/sys/vm/min_free_kbytes
-$B echo 4096 > /proc/sys/vm/extra_free_kbytes
+$B echo $EF > /proc/sys/vm/min_free_kbytes
+$B echo $EF > /proc/sys/vm/extra_free_kbytes
 $B echo 3 > /proc/sys/vm/drop_caches
 $B echo 1 > /proc/sys/vm/oom_kill_allocating_task
 $B echo 90 > /proc/sys/vm/dirty_ratio
@@ -41,8 +43,8 @@ $B echo "Writing optimized kernel parameters to sysctl.." >> $LOG
 $B echo "kernel.random.read_wakeup_threshold=1536" >> /system/etc/sysctl.conf
 $B echo "kernel.random.write_wakeup_threshold=256" >> /system/etc/sysctl.conf
 $B echo "vm.vfs_cache_pressure=50" >> /system/etc/sysctl.conf
-$B echo "vm.min_free_kbytes=4096" >> /system/etc/sysctl.conf
-$B echo "vm.extra_free_kbytes=4096" >> /system/etc/sysctl.conf
+$B echo "vm.min_free_kbytes=$EF" >> /system/etc/sysctl.conf
+$B echo "vm.extra_free_kbytes=$EF" >> /system/etc/sysctl.conf
 $B echo "vm.drop_caches=3" >> /system/etc/sysctl.conf
 $B echo "vm.oom_kill_allocating_task=1" >> /system/etc/sysctl.conf
 $B echo "vm.dirty_ratio=90" >> /system/etc/sysctl.conf
@@ -70,8 +72,8 @@ $B echo "Executing optimized kernel parameters via sysctl.." >> $LOG
 $B sysctl -e -w kernel.random.read_wakeup_threshold=1536
 $B sysctl -e -w kernel.random.write_wakeup_threshold=256
 $B sysctl -e -w vm.vfs_cache_pressure=50
-$B sysctl -e -w vm.min_free_kbytes=4096
-$B sysctl -e -w vm.extra_free_kbytes=4096
+$B sysctl -e -w vm.min_free_kbytes=$EF
+$B sysctl -e -w vm.extra_free_kbytes=$EF
 $B sysctl -e -w vm.drop_caches=3
 $B sysctl -e -w vm.oom_kill_allocating_task=1
 $B sysctl -e -w vm.dirty_ratio=90
@@ -104,7 +106,7 @@ if [ -e /sys/kernel/fast_charge/force_fast_charge ]; then
  $B echo "Fast charge support detected. Activating.." >> $LOG
  $B echo "1" > /sys/kernel/fast_charge/force_fast_charge
 fi;
-if [ "$SDK" -le "14" ]; then
+if [ "$SDK" -le "17" ]; then
  $B echo "Trying to enable Seeder entropy generator.. " >> $LOG
  if [ -e /system/bin/qrngd -o -e /system/xbin/qrngd ]; then
   $B echo "qrngd found in /system. Seeder will not be started!" >> $LOG

@@ -15,7 +15,7 @@ setprop ro.feralab.engine 19
 if [ -e /engine.sh ]; then
  $B sleep 45
 else
- $B sleep 9
+ $B sleep 12
 fi;
 
 $B rm -f $LOG
@@ -157,5 +157,4 @@ $B echo "" >> $LOG
 $B echo "[$TIME] GP services fix" >> $LOG
 $SH /system/engine/gp.sh
 $B echo "" >> $LOG
-
 

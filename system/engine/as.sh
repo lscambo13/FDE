@@ -12,7 +12,7 @@ if [ -e /engine.sh ] ; then
  exit
 fi;
 
-if [ -e /system/engine/prop/as ] ; then
+if [ -e /system/etc/fde ] ; then
  exit
 elif [ -e /system/etc/init.qcom.post_boot.sh ] ; then
  echo "" >> /system/etc/init.qcom.post_boot.sh
@@ -52,7 +52,8 @@ elif [ -e /system/etc/install-recovery.sh ]; then
  exit
 fi;
 
-touch /system/engine/prop/as
-echo "1" > /system/engine/prop/as
-echo "" >> /system/engine/prop/as
+mount -o remount,rw /system
+touch /system/etc/fde
+echo "1" > /system/etc/fde
+echo "" >> /system/etc/fde
 

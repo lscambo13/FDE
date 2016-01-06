@@ -73,11 +73,11 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B swapon /dev/block/zram0 | $B tee -a $LOG
  fi;
  $B echo "Configuring kernel & ZRAM frienship.." >> $LOG
- $B echo 99 > /proc/sys/vm/swappiness
+ $B echo 40 > /proc/sys/vm/swappiness
  $B echo 3 > /proc/sys/vm/page-cluster
- $B sysctl -e -w vm.swappiness=99
+ $B sysctl -e -w vm.swappiness=40
  $B sysctl -e -w vm.page-cluster=3
- $B echo "vm.swappiness=99" >> /system/etc/sysctl.conf
+ $B echo "vm.swappiness=40" >> /system/etc/sysctl.conf
  $B echo "vm.page-cluster=3" >> /system/etc/sysctl.conf
  setprop zram.disksize $FZRAM
 elif [ -e /sys/block/ramzswap0/size ]; then
@@ -108,21 +108,21 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  $B swapon /dev/block/ramzswap0 | $B tee -a $LOG
  fi;
  $B echo "Configuring kernel & RAMZSWAP frienship.." >> $LOG
- $B echo 99 > /proc/sys/vm/swappiness
+ $B echo 40 > /proc/sys/vm/swappiness
  $B echo 3 > /proc/sys/vm/page-cluster
- $B sysctl -e -w vm.swappiness=99
+ $B sysctl -e -w vm.swappiness=40
  $B sysctl -e -w vm.page-cluster=3
- $B echo "vm.swappiness=99" >> /system/etc/sysctl.conf
+ $B echo "vm.swappiness=40" >> /system/etc/sysctl.conf
  $B echo "vm.page-cluster=3" >> /system/etc/sysctl.conf
 elif [ "$SWAP" -gt "0" ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  $B echo "SWAP detected. Size is $SWAP MB" >> $LOG
  $B echo "Configuring kernel & SWAP frienship.." >> $LOG
- $B echo 50 > /proc/sys/vm/swappiness
+ $B echo 25 > /proc/sys/vm/swappiness
  $B echo 1 > /proc/sys/vm/page-cluster
- $B sysctl -e -w vm.swappiness=50
+ $B sysctl -e -w vm.swappiness=25
  $B sysctl -e -w vm.page-cluster=1
- $B echo "vm.swappiness=50" >> /system/etc/sysctl.conf
+ $B echo "vm.swappiness=25" >> /system/etc/sysctl.conf
  $B echo "vm.page-cluster=1" >> /system/etc/sysctl.conf
  if [ -e /sys/module/zswap/parameters/enabled ]; then
   $B echo "ZSWAP detected. Enabling.." >> $LOG
@@ -152,7 +152,7 @@ elif [ "$SWAP" = "0" ]; then
  if [ -e /sys/kernel/mm/ksm/run ]; then
   $B echo "KSM detected" >> $LOG
   $B echo "Starting and tuning KSM.." >> $LOG
-  $B echo 64 > /sys/kernel/mm/ksm/pages_to_scan
+  $B echo 128 > /sys/kernel/mm/ksm/pages_to_scan
   $B echo 3000 > /sys/kernel/mm/ksm/sleep_millisecs
   $B echo 1 > /sys/kernel/mm/ksm/run
  fi;

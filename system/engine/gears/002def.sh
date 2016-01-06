@@ -16,6 +16,7 @@ if [ -e /system/engine/prop/nohost ]; then
  $B chmod 755 /system/etc/hosts
  $B sleep 1
 fi;
+$B echo "Hosts were updated." >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 002 - ***Ad-block gear*** - OK" >> $LOG
 sync;

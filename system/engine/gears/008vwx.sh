@@ -60,7 +60,7 @@ sync;
 
 if [ "$SDK" -le "14" ]; then
  if [ -e /system/xbin/sqlite3 ]; then
-  $B echo " Tuning WiFi.." >> $LOG
+  $B echo "Tuning WiFi.." >> $LOG
   /system/xbin/sqlite3 /data/data/com.android.providers.settings/databases/settings.db "INSERT INTO secure (name, value) VALUES ('wifi_country_code', 'JP');"
  fi;
 fi;

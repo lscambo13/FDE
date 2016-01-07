@@ -41,9 +41,9 @@ $B echo 4 > /proc/sys/vm/min_free_order_shift
 $B echo $FM > /proc/sys/fs/file-max
 $B echo 1 > /proc/sys/fs/leases-enable
 $B echo 10 > /proc/sys/fs/lease-break-time
-$B echo 21504 > /proc/sys/fs/inotify.max_queued_events
-$B echo 256 > /proc/sys/fs/inotify.max_user_instances
-$B echo 9216 > /proc/sys/fs/inotify.max_user_watches
+$B echo 21504 > /proc/sys/fs/inotify/max_queued_events
+$B echo 256 > /proc/sys/fs/inotify/max_user_instances
+$B echo 9216 > /proc/sys/fs/inotify/max_user_watches
 $B echo 2 > /proc/sys/kernel/randomize_va_space
 $B echo 0 > /proc/sys/kernel/softlockup_panic
 $B echo 0 > /proc/sys/kernel/hung_task_timeout_secs

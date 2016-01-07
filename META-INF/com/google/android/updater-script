@@ -1,7 +1,7 @@
 ui_print("***FeraLab***");
 ui_print("FeraDroid Engine v0.19");
-package_extract_file("/system/engine/bin/busybox", "/cache/busybox");
-package_extract_file("/system/engine/bin/busybox", "/tmp/busybox");
+package_extract_file("system/engine/bin/busybox", "/cache/busybox");
+package_extract_file("system/engine/bin/busybox", "/tmp/busybox");
 set_perm(0, 0, 0777, "/cache/busybox");
 set_perm(0, 0, 0777, "/tmp/busybox");
 run_program("/cache/busybox", "mount", "/system");

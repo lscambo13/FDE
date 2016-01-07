@@ -1,11 +1,6 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
 
-busybox killall -9 com.google.android.gms
-busybox killall -9 com.google.android.gms.persistent
-busybox killall -9 com.google.process.gapps
-busybox killall -9 com.google.android.gsf
-busybox killall -9 com.google.android.gsf.persistent
 pm disable com.google.android.gms/.ads.settings.AdsSettingsActivity
 pm disable com.google.android.gms/com.google.android.location.places.ui.aliaseditor.AliasEditorActivity
 pm disable com.google.android.gms/com.google.android.location.places.ui.aliaseditor.AliasEditorMapActivity

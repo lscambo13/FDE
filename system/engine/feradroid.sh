@@ -122,6 +122,29 @@ else
  $B run-parts /system/etc/init.d
 fi;
 TIME=$($B date | $B awk '{ print $4 }')
+$B echo "" >> $LOG
+$B echo "[$TIME] Applying kernel configuration.." >> $LOG
+sysctl -p /system/etc/sysctl.conf | $B tee -a $LOG
+$B echo "" >> $LOG
+$B echo "[$TIME] BP dump" >> $LOG
+getprop  | $B tee -a $LOG
+$B echo "" >> $LOG
+TIME=$($B date | $B awk '{ print $4 }')
+$B echo "[$TIME] FDE status - OK" >> $LOG
+$B echo "" >> $LOG
+$B echo "[$TIME] GP services fix" >> $LOG
+$B sleep 1
+$B killall -9 com.google.android.gms
+$B killall -9 com.google.android.gms.persistent
+$B killall -9 com.google.process.gapps
+$B killall -9 com.google.android.gsf
+$B killall -9 com.google.android.gsf.persistent
+$SH /system/engine/gp.sh
+$B echo "[$TIME] Mediaserver kill" >> $LOG
+$B sleep 9
+$B killall -9 android.process.media
+$B killall -9 mediaserver
+TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Remounting /data and /system - RO" >> $LOG
 $B mount -o remount,ro /system
 $B echo "[$TIME] Sleep, sync and free RAM" >> $LOG
@@ -143,18 +166,5 @@ $B sleep 1
 $B echo 3 > /proc/sys/vm/drop_caches
 $B sleep 3
 sync;
-TIME=$($B date | $B awk '{ print $4 }')
-$B echo "" >> $LOG
-$B echo "[$TIME] Applying kernel configuration.." >> $LOG
-sysctl -p /system/etc/sysctl.conf | $B tee -a $LOG
-$B echo "" >> $LOG
-$B echo "[$TIME] BP dump" >> $LOG
-getprop  | $B tee -a $LOG
-$B echo "" >> $LOG
-TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] FDE status - OK" >> $LOG
-$B echo "" >> $LOG
-$B echo "[$TIME] GP services fix" >> $LOG
-$SH /system/engine/gp.sh
 $B echo "" >> $LOG
 

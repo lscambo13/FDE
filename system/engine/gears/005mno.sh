@@ -122,10 +122,6 @@ if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
  $B echo "Dynamic fsync detected. Activating.." >> $LOG
  $B echo "1" > /sys/kernel/dyn_fsync/Dyn_fsync_active
 fi;
-if [ -e /sys/kernel/fast_charge/force_fast_charge ]; then
- $B echo "Fast charge support detected. Activating.." >> $LOG
- $B echo "1" > /sys/kernel/fast_charge/force_fast_charge
-fi;
 if [ "$SDK" -le "17" ]; then
  $B echo "Trying to enable Seeder entropy generator.. " >> $LOG
  if [ -e /system/bin/qrngd -o -e /system/xbin/qrngd ]; then

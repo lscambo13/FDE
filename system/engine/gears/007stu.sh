@@ -17,6 +17,10 @@ if [ -e /sys/devices/system/cpu/sched_mc_power_savings ]; then
 $B echo "Tuning Kernel power-saving.." >> $LOG
 $B echo "2" > /sys/devices/system/cpu/sched_mc_power_savings
 fi;
+if [ -e /sys/kernel/fast_charge/force_fast_charge ]; then
+ $B echo "Fast charge support detected. Activating.." >> $LOG
+ $B echo "1" > /sys/kernel/fast_charge/force_fast_charge
+fi;
 $B echo "Tuning Android power-saving.." >> $LOG
 setprop ro.mot.eri.losalert.delay 1000
 setprop power.saving.mode 1

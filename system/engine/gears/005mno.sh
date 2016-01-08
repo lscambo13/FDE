@@ -20,16 +20,16 @@ fi;
 $B echo "Writing optimized kernel parameters to sysfs.." >> $LOG
 $B echo 1536 > /proc/sys/kernel/random/read_wakeup_threshold
 $B echo 256 > /proc/sys/kernel/random/write_wakeup_threshold
-$B echo 70 > /proc/sys/vm/vfs_cache_pressure
+$B echo 100 > /proc/sys/vm/vfs_cache_pressure
 $B echo $FK > /proc/sys/vm/min_free_kbytes
 if [ -e /proc/sys/vm/extra_free_kbytes ]; then
 $B echo $EF > /proc/sys/vm/extra_free_kbytes
 fi;
 $B echo 3 > /proc/sys/vm/drop_caches
 $B echo 0 > /proc/sys/vm/oom_kill_allocating_task
-$B echo 40 > /proc/sys/vm/dirty_ratio
-$B echo 10 > /proc/sys/vm/dirty_background_ratio
-$B echo 1200 > /proc/sys/vm/dirty_writeback_centisecs
+$B echo 15 > /proc/sys/vm/dirty_ratio
+$B echo 5 > /proc/sys/vm/dirty_background_ratio
+$B echo 3600 > /proc/sys/vm/dirty_writeback_centisecs
 $B echo 3600 > /proc/sys/vm/dirty_expire_centisecs
 $B echo 0 > /proc/sys/vm/panic_on_oom
 $B echo 1 > /proc/sys/vm/overcommit_memory
@@ -52,16 +52,16 @@ $B echo 0 > /proc/sys/kernel/panic
 $B echo "Writing optimized kernel parameters to sysctl.." >> $LOG
 $B echo "kernel.random.read_wakeup_threshold=1536" >> /system/etc/sysctl.conf
 $B echo "kernel.random.write_wakeup_threshold=256" >> /system/etc/sysctl.conf
-$B echo "vm.vfs_cache_pressure=70" >> /system/etc/sysctl.conf
+$B echo "vm.vfs_cache_pressure=100" >> /system/etc/sysctl.conf
 $B echo "vm.min_free_kbytes=$FK" >> /system/etc/sysctl.conf
 if [ -e /proc/sys/vm/extra_free_kbytes ]; then
 $B echo "vm.extra_free_kbytes=$EF" >> /system/etc/sysctl.conf
 fi;
 $B echo "vm.drop_caches=3" >> /system/etc/sysctl.conf
 $B echo "vm.oom_kill_allocating_task=0" >> /system/etc/sysctl.conf
-$B echo "vm.dirty_ratio=40" >> /system/etc/sysctl.conf
-$B echo "vm.dirty_background_ratio=10" >> /system/etc/sysctl.conf
-$B echo "vm.dirty_writeback_centisecs=1200" >> /system/etc/sysctl.conf
+$B echo "vm.dirty_ratio=15" >> /system/etc/sysctl.conf
+$B echo "vm.dirty_background_ratio=5" >> /system/etc/sysctl.conf
+$B echo "vm.dirty_writeback_centisecs=3600" >> /system/etc/sysctl.conf
 $B echo "vm.dirty_expire_centisecs=3600" >> /system/etc/sysctl.conf
 $B echo "vm.panic_on_oom=0" >> /system/etc/sysctl.conf
 $B echo "vm.overcommit_memory=1" >> /system/etc/sysctl.conf
@@ -86,16 +86,16 @@ $B echo "kernel.softlockup_panic=0" >> /system/etc/sysctl.conf
 $B echo "Executing optimized kernel parameters via sysctl.." >> $LOG
 $B sysctl -e -w kernel.random.read_wakeup_threshold=1536
 $B sysctl -e -w kernel.random.write_wakeup_threshold=256
-$B sysctl -e -w vm.vfs_cache_pressure=70
+$B sysctl -e -w vm.vfs_cache_pressure=100
 $B sysctl -e -w vm.min_free_kbytes=$FK
 if [ -e /proc/sys/vm/extra_free_kbytes ]; then
 $B sysctl -e -w vm.extra_free_kbytes=$EF
 fi;
 $B sysctl -e -w vm.drop_caches=3
 $B sysctl -e -w vm.oom_kill_allocating_task=0
-$B sysctl -e -w vm.dirty_ratio=40
-$B sysctl -e -w vm.dirty_background_ratio=10
-$B sysctl -e -w vm.dirty_writeback_centisecs=1200
+$B sysctl -e -w vm.dirty_ratio=15
+$B sysctl -e -w vm.dirty_background_ratio=5
+$B sysctl -e -w vm.dirty_writeback_centisecs=3600
 $B sysctl -e -w vm.dirty_expire_centisecs=3600
 $B sysctl -e -w vm.panic_on_oom=0
 $B sysctl -e -w vm.overcommit_memory=1

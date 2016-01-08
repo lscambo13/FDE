@@ -73,11 +73,11 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B swapon /dev/block/zram0 | $B tee -a $LOG
  fi;
  $B echo "Configuring kernel & ZRAM frienship.." >> $LOG
- $B echo 40 > /proc/sys/vm/swappiness
+ $B echo 70 > /proc/sys/vm/swappiness
  $B echo 3 > /proc/sys/vm/page-cluster
- $B sysctl -e -w vm.swappiness=40
+ $B sysctl -e -w vm.swappiness=70
  $B sysctl -e -w vm.page-cluster=3
- $B echo "vm.swappiness=40" >> /system/etc/sysctl.conf
+ $B echo "vm.swappiness=70" >> /system/etc/sysctl.conf
  $B echo "vm.page-cluster=3" >> /system/etc/sysctl.conf
  setprop zram.disksize $FZRAM
 elif [ -e /sys/block/ramzswap0/size ]; then
@@ -108,17 +108,17 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  $B swapon /dev/block/ramzswap0 | $B tee -a $LOG
  fi;
  $B echo "Configuring kernel & RAMZSWAP frienship.." >> $LOG
- $B echo 40 > /proc/sys/vm/swappiness
+ $B echo 100 > /proc/sys/vm/swappiness
  $B echo 3 > /proc/sys/vm/page-cluster
- $B sysctl -e -w vm.swappiness=40
+ $B sysctl -e -w vm.swappiness=100
  $B sysctl -e -w vm.page-cluster=3
- $B echo "vm.swappiness=40" >> /system/etc/sysctl.conf
+ $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf
  $B echo "vm.page-cluster=3" >> /system/etc/sysctl.conf
 elif [ "$SWAP" -gt "0" ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  $B echo "SWAP detected. Size is $SWAP MB" >> $LOG
  $B echo "Configuring kernel & SWAP frienship.." >> $LOG
- $B echo 25 > /proc/sys/vm/swappiness
+ $B echo 50 > /proc/sys/vm/swappiness
  $B echo 1 > /proc/sys/vm/page-cluster
  $B sysctl -e -w vm.swappiness=25
  $B sysctl -e -w vm.page-cluster=1

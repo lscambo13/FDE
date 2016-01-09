@@ -15,7 +15,7 @@ setprop ro.feralab.engine 19
 if [ -e /engine.sh ]; then
  $B sleep 45
 else
- $B sleep 12
+ $B sleep 18
 fi;
 
 $B rm -f $LOG
@@ -77,12 +77,12 @@ $B chmod -R 777 /system/engine/*
 $B chmod -R 777 /system/engine/assets/*
 $B chmod -R 777 /system/engine/gears/*
 $B chmod -R 777 /system/engine/prop/*
-$B rm -f /system/etc/sysctl.conf
-$B touch /system/etc/sysctl.conf
-$B chmod 777 /system/etc/sysctl.conf
 $B echo "[$TIME] SYNC. Remount - RW." >> $LOG
 sync;
 $B mount -o remount,rw /system
+$B rm -f /system/etc/sysctl.conf
+$B touch /system/etc/sysctl.conf
+$B chmod 777 /system/etc/sysctl.conf
 $B echo "[$TIME] Running 001 gear.." >> $LOG
 $SH /system/engine/gears/001abc.sh
 TIME=$($B date | $B awk '{ print $4 }')

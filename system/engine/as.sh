@@ -11,6 +11,7 @@ if [ -e /engine.sh ] ; then
  echo "" >> /system/engine/prop/ferakernel
  rm /system/etc/init.d/999fde
  touch /system/etc/fde
+ chmod 777 /system/etc/fde
  echo "1" > /system/etc/fde
  echo "" >> /system/etc/fde
  exit
@@ -26,6 +27,7 @@ elif [ -e /system/etc/init.qcom.post_boot.sh ] ; then
  echo "" >> /system/etc/init.qcom.post_boot.sh
  rm /system/etc/init.d/999fde
  touch /system/etc/fde
+ chmod 777 /system/etc/fde
  echo "1" > /system/etc/fde
  echo "" >> /system/etc/fde
  exit
@@ -36,6 +38,7 @@ elif [ -e /system/etc/hw_config.sh ] ; then
  echo "" >> /system/etc/hw_config.sh 
  rm /system/etc/init.d/999fde
  touch /system/etc/fde
+ chmod 777 /system/etc/fde
  echo "1" > /system/etc/fde
  echo "" >> /system/etc/fde
  exit
@@ -51,6 +54,7 @@ elif [ -e /system/xbin/zram.sh ]; then
  echo "" >> /system/xbin/zram.sh
  rm /system/etc/init.d/999fde
  touch /system/etc/fde
+ chmod 777 /system/etc/fde
  echo "1" > /system/etc/fde
  echo "" >> /system/etc/fde
  exit
@@ -68,6 +72,7 @@ elif [ -e /system/etc/install-recovery.sh ]; then
  echo "" >> /system/etc/install-recovery-2.sh
  rm /system/etc/init.d/999fde
  touch /system/etc/fde
+ chmod 777 /system/etc/fde
  echo "1" > /system/etc/fde
  echo "" >> /system/etc/fde
  exit

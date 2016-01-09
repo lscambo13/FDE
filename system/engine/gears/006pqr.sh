@@ -34,9 +34,6 @@ if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
  $B chmod 666 /dev/msm_aac_in
  $B chmod 666 /dev/msm_amr_in
  $B chmod 666 /dev/genlock
- $B chmod 777 /dev/graphics/fb0
- $B echo "Disabling VSYNC.." >> $LOG
- $B echo 0 > /sys/kernel/debug/msm_fb/0/vsync_enable
  $B echo "Tuning Android and Adreno frienship.." >> $LOG
  setprop com.qc.hardware true
  setprop com.qc.hdmi_out false
@@ -44,7 +41,10 @@ if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
  setprop debug.qctwa.statusbar 1
  setprop debug.qctwa.perservebuf 1
 fi;
-
+$B mount -t debugfs debugfs /sys/kernel/debug
+$B chmod 777 /dev/graphics/fb0
+$B echo "Disabling VSYNC.." >> $LOG
+$B echo 0 > /sys/kernel/debug/msm_fb/0/vsync_enable
 if [ -e /system/xbin/sqlite3 ]; then
  if [ ! -e /data/local/animset ]; then
   if [ -e /data/data/com.android.providers.settings/databases/settings.db ]; then

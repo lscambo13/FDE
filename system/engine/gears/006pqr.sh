@@ -50,14 +50,9 @@ if [ -e /sys/kernel/debug/msm_fb/0/vsync_enable ]; then
 fi;
 
 if [ -e /system/xbin/sqlite3 ]; then
- if [ ! -e /data/local/animset ]; then
-  if [ -e /data/data/com.android.providers.settings/databases/settings.db ]; then
-   $B echo "Tuning Android animations.." >> $LOG
-   echo "REPLACE INTO \"system\" VALUES(26,'window_animation_scale','0.25');REPLACE INTO \"system\" VALUES(27,'transition_animation_scale','0.25');" | sqlite3 /data/data/com.android.providers.settings/databases/settings.db
-   $B kill `$B pidof system_server`
-   $B echo "yes" > /data/local/animset
-  fi;
- fi;
+ $B echo "Tuning Android animations.." >> $LOG
+ echo "REPLACE INTO \"system\" VALUES(26,'window_animation_scale','0.25');REPLACE INTO \"system\" VALUES(27,'transition_animation_scale','0.25');" | sqlite3 /data/data/com.android.providers.settings/databases/settings.db
+ $B kill `$B pidof system_server`
 fi;
 
 $B echo "Tuning Android graphics.." >> $LOG

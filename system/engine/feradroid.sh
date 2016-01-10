@@ -171,5 +171,6 @@ $B sleep 1
 $B echo 3 > /proc/sys/vm/drop_caches
 $B sleep 3
 sync;
+$B free -m | $B tee -a $LOG
 $B echo "" >> $LOG
 

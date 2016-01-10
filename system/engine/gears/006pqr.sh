@@ -79,6 +79,7 @@ setprop windowsmgr.support_rotation_270 true
 setprop hwui.render_dirty_regions false
 setprop persist.sys.NV_FPSLIMIT 90
 setprop persist.sys.NV_POWERMODE 1
+setprop persist.sys.NV_POWER_MODE 1
 setprop persist.sys.scrollingcache 3
 setprop ro.media.dec.jpeg.memcap 8000000
 setprop ro.media.enc.hprof.vid.bps 8000000

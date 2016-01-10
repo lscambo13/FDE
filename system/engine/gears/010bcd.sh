@@ -65,18 +65,22 @@ $B echo "100000" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_rate
 fi;
 if [ -e /system/engine/prop/ferakernel ]; then
 $B echo "Boosting X10.." >> $LOG
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 $B echo "576000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 fi;
 if [ -e /sys/module/workqueue/parameters/power_efficient ]; then
 $B echo "Enabling power-save workqueues.." >> $LOG
+$B chmod 644 /sys/module/workqueue/parameters/power_efficient
 $B echo "1" > /sys/module/workqueue/parameters/power_efficient
 fi;
 if [ -e /sys/module/subsystem_restart/parameters/enable_ramdumps ]; then
 $B echo "Disabling RAMdumps.." >> $LOG
+$B chmod 644 /sys/module/subsystem_restart/parameters/enable_ramdumps
 $B echo "0" > /sys/module/subsystem_restart/parameters/enable_ramdumps
 fi;
 if [ -e /sys/devices/system/cpu/sched_mc_power_savings ]; then 
 $B echo "Enabling Multi-core power-saving.." >> $LOG
+$B chmod 644 /sys/devices/system/cpu/sched_mc_power_savings
 $B echo "2" > /sys/devices/system/cpu/sched_mc_power_savings
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels ]; then

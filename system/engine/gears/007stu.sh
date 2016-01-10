@@ -13,10 +13,6 @@ if [ "$A" -eq "100" ] ; then
  $B mount -o remount,rw /data
  $B rm -f /data/system/batterystats.bin
 fi;
-if [ -e /sys/devices/system/cpu/sched_mc_power_savings ]; then 
-$B echo "Tuning Kernel power-saving.." >> $LOG
-$B echo "2" > /sys/devices/system/cpu/sched_mc_power_savings
-fi;
 if [ -e /sys/kernel/fast_charge/force_fast_charge ]; then
  $B echo "Fast charge support detected. Activating.." >> $LOG
  $B echo "1" > /sys/kernel/fast_charge/force_fast_charge

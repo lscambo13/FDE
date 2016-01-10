@@ -68,6 +68,11 @@ fi;
 $B echo "[$TIME] Remounting /data and /system - RW" >> $LOG
 $B mount -o remount,rw /system
 $B mount -o remount,rw /data
+$B echo "[$TIME] Set SElinux permissive.." >> $LOG
+$B chmod 666 /sys/fs/selinux/enforce
+setenforce 0
+$B echo 0 > /sys/fs/selinux/enforce
+$B chmod 444 /sys/fs/selinux/enforce
 $B echo "[$TIME] Correcting permissions.." >> $LOG
 $B chmod 644 /system/build.prop
 $B chmod 777 /system/engine

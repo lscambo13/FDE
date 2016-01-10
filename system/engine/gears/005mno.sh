@@ -49,6 +49,7 @@ $B echo 0 > /proc/sys/kernel/softlockup_panic
 $B echo 0 > /proc/sys/kernel/hung_task_timeout_secs
 $B echo 0 > /proc/sys/kernel/panic_on_oops
 $B echo 0 > /proc/sys/kernel/panic
+$B echo 0 > /sys/kernel/sched/gentle_fair_sleepers
 $B echo "Writing optimized kernel parameters to sysctl.." >> $LOG
 $B echo "kernel.random.read_wakeup_threshold=1536" >> /system/etc/sysctl.conf
 $B echo "kernel.random.write_wakeup_threshold=256" >> /system/etc/sysctl.conf

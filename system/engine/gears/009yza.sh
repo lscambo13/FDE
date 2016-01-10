@@ -24,6 +24,7 @@ if [ -e /sys/module/lowmemorykiller/parameters/debug_level ]; then
 fi;
 
 $B echo "Tuning Android proc.." >> $LOG
+setprop ro.HOME_APP_ADJ 1
 setprop MAX_SERVICE_INACTIVITY false
 setprop MIN_HIDDEN_APPS false
 setprop CONTENT_APP_IDLE_OFFSET false

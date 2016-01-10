@@ -73,11 +73,11 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B swapon /dev/block/zram0 | $B tee -a $LOG
  fi;
  $B echo "Configuring kernel & ZRAM frienship.." >> $LOG
- $B echo 80 > /proc/sys/vm/swappiness
+ $B echo 100 > /proc/sys/vm/swappiness
  $B echo 1 > /proc/sys/vm/page-cluster
- $B sysctl -e -w vm.swappiness=80
+ $B sysctl -e -w vm.swappiness=100
  $B sysctl -e -w vm.page-cluster=1
- $B echo "vm.swappiness=80" >> /system/etc/sysctl.conf
+ $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf
  $B echo "vm.page-cluster=1" >> /system/etc/sysctl.conf
  setprop zram.disksize $FZRAM
 elif [ -e /sys/block/ramzswap0/size ]; then

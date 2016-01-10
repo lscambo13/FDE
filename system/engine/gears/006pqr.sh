@@ -14,19 +14,19 @@ if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
  $B sleep 1
  $B echo "Adreno GPU detected" >> $LOG
  if [ ! -h /data/local/tmp/adreno_config.txt ]; then
- $B echo "Applying Adreno configurations.." >> $LOG
- $B chmod 777 /system/engine/assets/adreno_config.txt
- $B ln -s /system/engine/assets/adreno_config.txt /data/local/tmp/adreno_config.txt
+  $B echo "Applying Adreno configurations.." >> $LOG
+  $B chmod 777 /system/engine/assets/adreno_config.txt
+  $B ln -s /system/engine/assets/adreno_config.txt /data/local/tmp/adreno_config.txt
  fi;
  if [ -e /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction ]; then
- $B echo 50 > /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction
+  $B echo 50 > /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction
  fi;
  if [ "$AV" -ne "1712" ]; then
- $B echo "Forcing GPU to render UI.." >> $LOG
- $B rm /system/lib/egl/libGLES_android.so
- $B sed -i '/0 0 android/d' /system/lib/egl/egl.cfg
+  $B echo "Forcing GPU to render UI.." >> $LOG
+  $B rm /system/lib/egl/libGLES_android.so
+  $B sed -i '/0 0 android/d' /system/lib/egl/egl.cfg
  else
- $B echo "You have legacy adreno libs. No HWA for you." >> $LOG
+  $B echo "You have legacy adreno libs. No HWA for you." >> $LOG
  fi;
  $B mount -t debugfs debugfs /sys/kernel/debug
  $B echo "Setting correct device permissions.." >> $LOG
@@ -43,8 +43,12 @@ if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
 fi;
 $B mount -t debugfs debugfs /sys/kernel/debug
 $B chmod 777 /dev/graphics/fb0
-$B echo "Disabling VSYNC.." >> $LOG
-$B echo 0 > /sys/kernel/debug/msm_fb/0/vsync_enable
+if [ -e /sys/kernel/debug/msm_fb/0/vsync_enable ]; then
+ $B echo "Disabling VSYNC.." >> $LOG
+ $B chmod 644 /sys/kernel/debug/msm_fb/0/vsync_enable
+ $B echo 0 > /sys/kernel/debug/msm_fb/0/vsync_enable
+fi;
+
 if [ -e /system/xbin/sqlite3 ]; then
  if [ ! -e /data/local/animset ]; then
   if [ -e /data/data/com.android.providers.settings/databases/settings.db ]; then
@@ -74,7 +78,7 @@ setprop ro.min.fling_velocity 7000
 setprop ro.max.fling_velocity 12000
 setprop persist.sys.ui.hw 1
 setprop video.accelerate.hw 1
-setprop windowsmgr.max_events_per_sec 72
+setprop windowsmgr.max_events_per_sec 90
 setprop windowsmgr.support_rotation_270 true
 setprop hwui.render_dirty_regions false
 setprop persist.sys.NV_FPSLIMIT 90

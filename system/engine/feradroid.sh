@@ -117,6 +117,9 @@ TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 009 gear.." >> $LOG
 $SH /system/engine/gears/009yza.sh
 TIME=$($B date | $B awk '{ print $4 }')
+$B echo "[$TIME] Running 010 gear.." >> $LOG
+$SH /system/engine/gears/010bcd.sh
+TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Fix permissions and zipalign.." >> $LOG
 $SH /system/engine/fix.sh
 if [ -e /system/etc/init.d/fde ]; then

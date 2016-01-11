@@ -12,7 +12,7 @@ RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 FM=$((RAM*(64+1)))
 if [ -e /proc/sys/vm/extra_free_kbytes ]; then
  EF=$((RAM*8))
- FK=$((RAM*4))
+ FK=$((RAM*6))
 else
  FK=$((RAM*8))
 fi;
@@ -107,7 +107,7 @@ $B sysctl -e -w vm.oom_dump_tasks=0
 $B sysctl -e -w vm.min_free_order_shift=4
 $B sysctl -e -w fs.file-max=$FM
 $B sysctl -e -w fs.leases-enable=1
-$B sysctl -e -w fs.lease-break-time=10
+$B sysctl -e -w fs.lease-break-time=9
 $B sysctl -e -w fs.inotify.max_queued_events=21504
 $B sysctl -e -w fs.inotify.max_user_instances=256
 $B sysctl -e -w fs.inotify.max_user_watches=9216

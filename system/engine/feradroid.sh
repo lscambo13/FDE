@@ -9,6 +9,7 @@ KERNEL=$($B uname -a)
 ROM=$(getprop ro.build.display.id)
 SDK=$(getprop ro.build.version.sdk)
 
+rm -f $LOG
 mount -o remount,rw /system
 chmod -R 777 /system/engine/bin/*
 setprop ro.feralab.engine 19
@@ -38,17 +39,8 @@ if [ -e /system/engine/prop/firstboot ]; then
   /sbin/sysrw
   $B sleep 1
  fi;
- $B echo "[$TIME] Setting permissions.. Installing Busybox.." >> $LOG
- chmod 777 /system/engine
- chmod -R 777 /system/engine/*
- chmod -R 777 /system/engine/assets/*
- chmod -R 777 /system/engine/bin/*
- chmod -R 777 /system/engine/gears/*
- chmod -R 777 /system/engine/prop/*
- $B chmod 644 /system/build.prop
  $B cp /system/engine/bin/zipalign /system/xbin/zipalign
  $B cp /system/engine/bin/boost /system/xbin/boost
- $B rm -f /system/engine/prop/firstboot
  $B echo "[$TIME] Install Busybox.." >> $LOG
  $B --install -s /system/xbin
 fi;
@@ -145,7 +137,11 @@ $B sleep 9
 $B killall -9 android.process.media
 $B killall -9 mediaserver
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] Remounting /data and /system - RO" >> $LOG
+if [ -e /system/engine/prop/firstboot ]; then
+ $B mount -o remount,rw /system
+ $B rm -f /system/engine/prop/firstboot
+fi;
+$B echo "[$TIME] Remounting /system - RO" >> $LOG
 $B mount -o remount,ro /system
 $B echo "[$TIME] Sleep, sync and free RAM" >> $LOG
 $B sleep 18

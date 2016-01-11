@@ -49,14 +49,6 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B cp /system/engine/bin/zipalign /system/xbin/zipalign
  $B cp /system/engine/bin/boost /system/xbin/boost
  $B rm -f /system/engine/prop/firstboot
- if [ -e /system/engine/prop/ferakernel ]; then
-  $B echo "[$TIME] FeraKernel detected" >> $LOG
- elif [ -e /system/etc/init.d/fde ]; then
-  $B echo "[$TIME] FDE init.d init detected" >> $LOG
- else 
-  $B echo "[$TIME] Flush init.d scripts (if any) to be safe" >> $LOG
-  $B rm -Rf /system/etc/init.d
- fi;
  $B echo "[$TIME] Install Busybox.." >> $LOG
  $B --install -s /system/xbin
 fi;

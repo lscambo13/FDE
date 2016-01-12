@@ -10,7 +10,7 @@ $B echo "" >> $LOG
 $B echo "[$TIME] 005 - ***Kernel gear***" >> $LOG
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 FM=$((RAM*(64+1)))
-ME=$((RAM*(32-1)))
+ME=$((RAM*27))
 if [ -e /proc/sys/vm/extra_free_kbytes ]; then
  EF=$((RAM*8))
  FK=$((RAM*6))

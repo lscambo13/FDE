@@ -9,7 +9,6 @@ if [ -e /engine.sh ] ; then
  touch /system/engine/prop/ferakernel
  echo "1" > /system/engine/prop/ferakernel
  echo "" >> /system/engine/prop/ferakernel
- rm /system/etc/init.d/999fde
  touch /system/etc/fde
  chmod 777 /system/etc/fde
  echo "1" > /system/etc/fde
@@ -25,18 +24,17 @@ elif [ -e /system/etc/init.qcom.post_boot.sh ] ; then
  echo "" >> /system/etc/init.qcom.post_boot.sh
  echo "/system/engine/bin/sh /system/engine/feradroid.sh" >> /system/etc/init.qcom.post_boot.sh
  echo "" >> /system/etc/init.qcom.post_boot.sh
- rm /system/etc/init.d/999fde
  touch /system/etc/fde
  chmod 777 /system/etc/fde
  echo "1" > /system/etc/fde
  echo "" >> /system/etc/fde
  exit
 elif [ -e /system/etc/hw_config.sh ] ; then
+ mount -o remount,rw /system
  chmod 777 /system/etc/hw_config.sh
  echo "" >> /system/etc/hw_config.sh
  echo "/system/engine/bin/sh /system/engine/feradroid.sh" >> /system/etc/hw_config.sh
- echo "" >> /system/etc/hw_config.sh 
- rm /system/etc/init.d/999fde
+ echo "" >> /system/etc/hw_config.sh
  touch /system/etc/fde
  chmod 777 /system/etc/fde
  echo "1" > /system/etc/fde
@@ -52,7 +50,6 @@ elif [ -e /system/xbin/zram.sh ]; then
  echo "" >> /system/xbin/zram.sh
  echo "/system/engine/bin/sh /system/engine/feradroid.sh" >> /system/xbin/zram.sh
  echo "" >> /system/xbin/zram.sh
- rm /system/etc/init.d/999fde
  touch /system/etc/fde
  chmod 777 /system/etc/fde
  echo "1" > /system/etc/fde
@@ -70,7 +67,6 @@ elif [ -e /system/etc/install-recovery.sh ]; then
  echo "" >> /system/etc/install-recovery-2.sh
  echo "/system/engine/bin/sh /system/engine/feradroid.sh" >> /system/etc/install-recovery-2.sh
  echo "" >> /system/etc/install-recovery-2.sh
- rm /system/etc/init.d/999fde
  touch /system/etc/fde
  chmod 777 /system/etc/fde
  echo "1" > /system/etc/fde

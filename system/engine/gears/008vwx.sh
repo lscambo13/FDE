@@ -24,7 +24,6 @@ $B echo "net.ipv4.tcp_synack_retries=2" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.tcp_fin_timeout=30" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.conf.all.rp_filter=2" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.conf.default.rp_filter=2" >> /system/etc/sysctl.conf
-$B echo "net.ipv4.tcp_synack_retries=2" >> /system/etc/sysctl.conf
 $B echo "Executing optimized network parameters via sysctl" >> $LOG
 $B sysctl -e -w net.ipv4.tcp_congestion_control=cubic
 $B sysctl -e -w net.ipv4.tcp_rfc1337=1
@@ -39,7 +38,6 @@ $B sysctl -e -w net.ipv4.tcp_synack_retries=2
 $B sysctl -e -w net.ipv4.tcp_fin_timeout=30
 $B sysctl -e -w net.ipv4.conf.all.rp_filter=2
 $B sysctl -e -w net.ipv4.conf.default.rp_filter=2
-$B sysctl -e -w net.ipv4.tcp_synack_retries=2
 
 $B echo "Tuning Android networking settings.." >> $LOG
 setprop wifi.supplicant_scan_interval 900

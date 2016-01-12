@@ -35,7 +35,6 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B echo "[$TIME] First boot after deploy" >> $LOG
  $B mount -o remount,rw /system
  if [ -e /sbin/sysrw ]; then
-  $B echo "[$TIME] Remapped partition mount detected" >> $LOG
   /sbin/sysrw
   $B sleep 1
  fi;
@@ -106,13 +105,6 @@ $SH /system/engine/gears/010bcd.sh
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Fix permissions and zipalign.." >> $LOG
 $SH /system/engine/fix.sh
-if [ -e /system/etc/init.d/fde ]; then
- $B echo "[$TIME] Don't run init.d scripts.." >> $LOG
-else
- $B echo "[$TIME] Run init.d scripts.." >> $LOG
- $B chmod 777 /system/etc/init.d/*
- $B run-parts /system/etc/init.d
-fi;
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "" >> $LOG
 $B echo "[$TIME] Applying kernel configuration.." >> $LOG
@@ -139,8 +131,28 @@ $B killall -9 mediaserver
 TIME=$($B date | $B awk '{ print $4 }')
 if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,rw /system
+ if [ -e /sbin/sysrw ]; then
+  /sbin/sysrw
+  $B sleep 1
+ fi;
  $B rm -f /system/engine/prop/firstboot
 fi;
+if [ -e /system/etc/init.d/fde ]; then
+ $B echo "[$TIME] Don't run init.d scripts.." >> $LOG
+else
+ $B echo "[$TIME] Run init.d scripts.." >> $LOG
+ $B chmod 777 /system/etc/init.d/*
+ $B run-parts /system/etc/init.d
+fi;
+$B echo "FStrim init.." >> $LOG
+$B echo "Trim /system" >> $LOG
+$B fstrim -v /system | $B tee -a $LOG
+$B echo "Trim /data" >> $LOG
+$B fstrim -v /data | $B tee -a $LOG
+$B echo "Trim /cache" >> $LOG
+$B fstrim -v /cache | $B tee -a $LOG
+$B sleep 1
+sync;
 $B echo "[$TIME] Remounting /system - RO" >> $LOG
 $B mount -o remount,ro /system
 $B echo "[$TIME] Sleep, sync and free RAM" >> $LOG

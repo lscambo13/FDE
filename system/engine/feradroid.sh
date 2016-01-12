@@ -13,7 +13,7 @@ rm -f $LOG
 mount -o remount,rw /system
 chmod -R 777 /system/engine/bin/*
 setprop ro.feralab.engine 19
-if [ -e /engine.sh ]; then
+if [ -e /system/etc/hw_config.sh ]; then
  $B sleep 45
 else
  $B sleep 18

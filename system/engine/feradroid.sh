@@ -23,7 +23,7 @@ $B rm -f $LOG
 $B touch $LOG
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
-$B echo "[$TIME] FeraDroid Engine v0.19" >> $LOG
+$B echo "[$TIME] FeraDroid Engine v0.19.6" >> $LOG
 $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
 $B echo "[$TIME] Android version: $(getprop ro.build.version.release)" >> $LOG
@@ -65,7 +65,6 @@ $B chmod -R 777 /system/engine/*
 $B chmod -R 777 /system/engine/assets/*
 $B chmod -R 777 /system/engine/gears/*
 $B chmod -R 777 /system/engine/prop/*
-$B echo "[$TIME] SYNC. Remount - RW." >> $LOG
 sync;
 $B mount -o remount,rw /system
 $B rm -f /system/etc/sysctl.conf
@@ -103,77 +102,37 @@ TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 010 gear.." >> $LOG
 $SH /system/engine/gears/010bcd.sh
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] Fix permissions and zipalign.." >> $LOG
-$SH /system/engine/fix.sh
-TIME=$($B date | $B awk '{ print $4 }')
 $B echo "" >> $LOG
 $B echo "[$TIME] Applying kernel configuration.." >> $LOG
 sysctl -p /system/etc/sysctl.conf | $B tee -a $LOG
-$B echo "" >> $LOG
-$B echo "[$TIME] BP dump" >> $LOG
-getprop  | $B tee -a $LOG
-$B echo "" >> $LOG
-TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] FDE status - OK" >> $LOG
-$B echo "" >> $LOG
-$B echo "[$TIME] GP services fix" >> $LOG
-$B sleep 1
-$B killall -9 com.google.android.gms
-$B killall -9 com.google.android.gms.persistent
-$B killall -9 com.google.process.gapps
-$B killall -9 com.google.android.gsf
-$B killall -9 com.google.android.gsf.persistent
-$SH /system/engine/gp.sh
 $B echo "[$TIME] Mediaserver kill" >> $LOG
-$B sleep 9
 $B killall -9 android.process.media
 $B killall -9 mediaserver
 TIME=$($B date | $B awk '{ print $4 }')
+$B mount -o remount,rw /system
 if [ -e /system/engine/prop/firstboot ]; then
- $B mount -o remount,rw /system
- if [ -e /sbin/sysrw ]; then
-  /sbin/sysrw
-  $B sleep 1
- fi;
  $B rm -f /system/engine/prop/firstboot
 fi;
+TIME=$($B date | $B awk '{ print $4 }')
+$B echo "[$TIME] Fix permissions and zipalign.." >> $LOG
+$SH /system/engine/fix.sh
+$B echo "[$TIME] END start" >> $LOG
+$SH /system/engine/end.sh
+$B echo "" >> $LOG
+$B echo "[$TIME] FDE status - OK" >> $LOG
+$B echo "" >> $LOG
 if [ -e /system/etc/init.d/fde ]; then
  $B echo "[$TIME] Don't run init.d scripts.." >> $LOG
+elif [ -e /system/xbin/sysinit ]; then
+ $B rm -f /system/xbin/sysinit
 else
  $B echo "[$TIME] Run init.d scripts.." >> $LOG
  $B chmod 777 /system/etc/init.d/*
  $B run-parts /system/etc/init.d
 fi;
-$B echo "FStrim init.." >> $LOG
-$B echo "Trim /system" >> $LOG
-$B fstrim -v /system | $B tee -a $LOG
-$B echo "Trim /data" >> $LOG
-$B fstrim -v /data | $B tee -a $LOG
-$B echo "Trim /cache" >> $LOG
-$B fstrim -v /cache | $B tee -a $LOG
-$B sleep 1
-sync;
-$B echo "[$TIME] Remounting /system - RO" >> $LOG
-$B mount -o remount,ro /system
-$B echo "[$TIME] Sleep, sync and free RAM" >> $LOG
-$B sleep 18
-sync;
-$B sleep 1
-$B echo 3 > /proc/sys/vm/drop_caches
-$B sleep 1
-sync;
-$B sleep 1
-$B echo 2 > /proc/sys/vm/drop_caches
-$B sleep 1
-sync;
-$B sleep 1
-$B echo 1 > /proc/sys/vm/drop_caches
-$B sleep 1
-sync;
-$B sleep 1
-$B echo 3 > /proc/sys/vm/drop_caches
-$B sleep 3
-sync;
-$B free -m | $B tee -a $LOG
 $B echo "" >> $LOG
-
+$B echo "" >> $LOG
+$B echo "" >> $LOG
+$B echo "[$TIME] BP dump" >> $LOG
+getprop  | $B tee -a $LOG
+$B echo "" >> $LOG

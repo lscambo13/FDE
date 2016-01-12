@@ -38,22 +38,6 @@ setprop GC_TIMEOUT false
 setprop SERVICE_TIMEOUT false
 setprop MIN_CRASH_INTERVAL false
 
-if [ -e /system/xbin/sqlite3 ]; then
-$B echo "Optimizing DataBases.." >> $LOG
-for i in \
-$($B find /data -iname "*.db") 
-do \
- /system/xbin/sqlite3 "$i" 'VACUUM;'
- /system/xbin/sqlite3 "$i" 'REINDEX;'
-done;
-for i in \
-$($B find /sdcard -iname "*.db")
-do \
- /system/xbin/sqlite3 "$i" 'VACUUM;'
- /system/xbin/sqlite3 "$i" 'REINDEX;'
-done;
-fi;
-
 $B echo "[$TIME] 009 - ***VM gear*** - OK" >> $LOG
 sync;
 

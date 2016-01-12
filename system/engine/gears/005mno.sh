@@ -10,6 +10,7 @@ $B echo "" >> $LOG
 $B echo "[$TIME] 005 - ***Kernel gear***" >> $LOG
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 FM=$((RAM*(64+1)))
+ME=$((RAM*(32-1)))
 if [ -e /proc/sys/vm/extra_free_kbytes ]; then
  EF=$((RAM*8))
  FK=$((RAM*6))
@@ -41,9 +42,9 @@ $B echo 4 > /proc/sys/vm/min_free_order_shift
 $B echo $FM > /proc/sys/fs/file-max
 $B echo 1 > /proc/sys/fs/leases-enable
 $B echo 10 > /proc/sys/fs/lease-break-time
-$B echo 21504 > /proc/sys/fs/inotify/max_queued_events
+$B echo $ME > /proc/sys/fs/inotify/max_queued_events
 $B echo 256 > /proc/sys/fs/inotify/max_user_instances
-$B echo 9216 > /proc/sys/fs/inotify/max_user_watches
+$B echo 14336 > /proc/sys/fs/inotify/max_user_watches
 $B echo 2 > /proc/sys/kernel/randomize_va_space
 $B echo 0 > /proc/sys/kernel/softlockup_panic
 $B echo 0 > /proc/sys/kernel/hung_task_timeout_secs
@@ -74,9 +75,9 @@ $B echo "vm.min_free_order_shift=4" >> /system/etc/sysctl.conf
 $B echo "fs.file-max=$FM" >> /system/etc/sysctl.conf
 $B echo "fs.leases-enable=1" >> /system/etc/sysctl.conf
 $B echo "fs.lease-break-time=10" >> /system/etc/sysctl.conf
-$B echo "fs.inotify.max_queued_events=21504" >> /system/etc/sysctl.conf
+$B echo "fs.inotify.max_queued_events=$ME" >> /system/etc/sysctl.conf
 $B echo "fs.inotify.max_user_instances=256" >> /system/etc/sysctl.conf
-$B echo "fs.inotify.max_user_watches=9216" >> /system/etc/sysctl.conf
+$B echo "fs.inotify.max_user_watches=14336" >> /system/etc/sysctl.conf
 $B echo "kernel.randomize_va_space=2" >> /system/etc/sysctl.conf
 $B echo "kernel.sched_compat_yield=1" >> /system/etc/sysctl.conf
 $B echo "kernel.scan_unevictable_pages=0" >> /system/etc/sysctl.conf
@@ -108,9 +109,9 @@ $B sysctl -e -w vm.min_free_order_shift=4
 $B sysctl -e -w fs.file-max=$FM
 $B sysctl -e -w fs.leases-enable=1
 $B sysctl -e -w fs.lease-break-time=9
-$B sysctl -e -w fs.inotify.max_queued_events=21504
+$B sysctl -e -w fs.inotify.max_queued_events=$ME
 $B sysctl -e -w fs.inotify.max_user_instances=256
-$B sysctl -e -w fs.inotify.max_user_watches=9216
+$B sysctl -e -w fs.inotify.max_user_watches=14336
 $B sysctl -e -w kernel.randomize_va_space=2
 $B sysctl -e -w kernel.sched_compat_yield=1
 $B sysctl -e -w kernel.scan_unevictable_pages=0

@@ -34,7 +34,7 @@ elif [ -e /system/etc/init.qcom.post_boot.sh ] ; then
 elif [ -e /system/etc/hw_config.sh ] ; then
  chmod 777 /system/etc/hw_config.sh
  echo "" >> /system/etc/hw_config.sh
- echo "/system/engine/bin/sh /system/engine/feradroid.sh" >> /system/etc/init.qcom.post_boot.sh
+ echo "/system/engine/bin/sh /system/engine/feradroid.sh" >> /system/etc/hw_config.sh
  echo "" >> /system/etc/hw_config.sh 
  rm /system/etc/init.d/999fde
  touch /system/etc/fde

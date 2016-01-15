@@ -4,10 +4,14 @@
 B=/system/engine/bin/busybox
 LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
+HS=$(du -k "/system/etc/hosts" | cut -f1)
 
 $B echo "" >> $LOG
 $B echo "[$TIME] 002 - ***Ad-block gear***" >> $LOG
-if [ -e /system/engine/prop/nohost ]; then
+if [ "$HS" -le "128" ]; then
+ $B echo "Another ad-blocker detected. Skipping.." >> $LOG
+ exit
+elif [ -e /system/engine/prop/nohost ]; then
  $B echo "Hosts were not updated. Dealing.." >> $LOG
  $B mount -o remount,rw /system
  $B rm -f /system/etc/hosts

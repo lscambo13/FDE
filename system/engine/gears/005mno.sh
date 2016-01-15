@@ -124,6 +124,10 @@ if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
  $B echo "Dynamic fsync detected. Activating.." >> $LOG
  $B echo "1" > /sys/kernel/dyn_fsync/Dyn_fsync_active
 fi;
+if [ -e /sys/class/misc/fsynccontrol/fsync_enabled ]; then
+ $B echo "Fsync control detected. Tuning.." >> $LOG
+ $B echo "0" > /sys/class/misc/fsynccontrol/fsync_enabled
+fi;
 if [ "$SDK" -le "17" ]; then
  $B echo "Trying to enable Seeder entropy generator.. " >> $LOG
  if [ -e /system/bin/qrngd -o -e /system/xbin/qrngd ]; then

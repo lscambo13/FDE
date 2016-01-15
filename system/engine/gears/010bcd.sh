@@ -10,57 +10,72 @@ $B echo "" >> $LOG
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold ]; then
 $B echo "CPU0 ondemand tuning.." >> $LOG
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold
-$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_rate
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/down_differential
-$B echo "85" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/io_is_busy
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_down_factor
+$B echo "90" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold
 $B echo "10" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/down_differential
 $B echo "10000" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_rate
+$B echo "3" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias ]; then
   $B echo "Powersave bias - on" >> $LOG
   $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias
-  $B echo "10" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias
+  $B echo "90" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias
  fi;
 fi;
 if [ -e /sys/devices/system/cpu/cpu1/cpufreq/ondemand/up_threshold ]; then
 $B echo "CPU1 ondemand tuning.." >> $LOG
 $B chmod 644 /sys/devices/system/cpu/cpu1/cpufreq/ondemand/up_threshold
-$B chmod 644 /sys/devices/system/cpu/cpu1/cpufreq/ondemand/up_threshold
+$B chmod 644 /sys/devices/system/cpu/cpu1/cpufreq/ondemand/sampling_rate
 $B chmod 644 /sys/devices/system/cpu/cpu1/cpufreq/ondemand/down_differential
-$B echo "85" > /sys/devices/system/cpu/cpu1/cpufreq/ondemand/up_threshold
+$B chmod 644 /sys/devices/system/cpu/cpu1/cpufreq/ondemand/io_is_busy
+$B chmod 644 /sys/devices/system/cpu/cpu1/cpufreq/ondemand/sampling_down_factor
+$B echo "90" > /sys/devices/system/cpu/cpu1/cpufreq/ondemand/up_threshold
 $B echo "10" > /sys/devices/system/cpu/cpu1/cpufreq/ondemand/down_differential
 $B echo "10000" > /sys/devices/system/cpu/cpu1/cpufreq/ondemand/sampling_rate
+$B echo "1" > /sys/devices/system/cpu/cpu1/cpufreq/ondemand/io_is_busy
+$B echo "3" > /sys/devices/system/cpu/cpu1/cpufreq/ondemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpu1/cpufreq/ondemand/powersave_bias ]; then
   $B echo "Powersave bias - on" >> $LOG
   $B chmod 644 /sys/devices/system/cpu/cpu1/cpufreq/ondemand/powersave_bias
-  $B echo "10" > /sys/devices/system/cpu/cpu1/cpufreq/ondemand/powersave_bias
+  $B echo "90" > /sys/devices/system/cpu/cpu1/cpufreq/ondemand/powersave_bias
  fi;
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/ondemand/up_threshold ]; then
 $B echo "CPU ondemand tuning.." >> $LOG
 $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
-$B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
+$B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
 $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/down_differential
-$B echo "85" > /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
+$B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
+$B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
+$B echo "90" > /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
 $B echo "10" > /sys/devices/system/cpu/cpufreq/ondemand/down_differential
 $B echo "10000" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
+$B echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
+$B echo "3" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias ]; then
   $B echo "Powersave bias - on" >> $LOG
   $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
-  $B echo "10" > /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
+  $B echo "90" > /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
  fi;
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/up_threshold ]; then
 $B echo "CPU sprdemand tuning.." >> $LOG
 $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
-$B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
+$B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
 $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/down_differential
-$B echo "85" > /sys/devices/system/cpu/cpufreq/sprdemand/up_threshold
+$B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
+$B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
+$B echo "90" > /sys/devices/system/cpu/cpufreq/sprdemand/up_threshold
 $B echo "10" > /sys/devices/system/cpu/cpufreq/sprdemand/down_differential
 $B echo "10000" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_rate
+$B echo "1" > /sys/devices/system/cpu/cpufreq/sprdemand/io_is_busy
+$B echo "3" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias ]; then
   $B echo "Powersave bias - on" >> $LOG
   $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
-  $B echo "10" > /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias
+  $B echo "90" > /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias
  fi;
 fi;
 if [ -e /system/engine/prop/ferakernel ]; then

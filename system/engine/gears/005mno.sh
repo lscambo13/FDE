@@ -17,6 +17,10 @@ if [ -e /proc/sys/vm/extra_free_kbytes ]; then
 else
  FK=$((RAM*8))
 fi;
+if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
+ UR=$((RAM*(32-1)))
+fi;
+
 
 $B echo "Writing optimized kernel parameters to sysfs.." >> $LOG
 $B echo 1536 > /proc/sys/kernel/random/read_wakeup_threshold
@@ -24,7 +28,10 @@ $B echo 256 > /proc/sys/kernel/random/write_wakeup_threshold
 $B echo 90 > /proc/sys/vm/vfs_cache_pressure
 $B echo $FK > /proc/sys/vm/min_free_kbytes
 if [ -e /proc/sys/vm/extra_free_kbytes ]; then
-$B echo $EF > /proc/sys/vm/extra_free_kbytes
+ $B echo $EF > /proc/sys/vm/extra_free_kbytes
+fi;
+if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
+ $B echo $UR > /proc/sys/vm/user_reserve_kbytes
 fi;
 $B echo 3 > /proc/sys/vm/drop_caches
 $B echo 1 > /proc/sys/vm/oom_kill_allocating_task
@@ -59,6 +66,9 @@ $B echo "vm.min_free_kbytes=$FK" >> /system/etc/sysctl.conf
 if [ -e /proc/sys/vm/extra_free_kbytes ]; then
 $B echo "vm.extra_free_kbytes=$EF" >> /system/etc/sysctl.conf
 fi;
+if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
+$B echo "vm.user_reserve_kbytes=$UR" >> /system/etc/sysctl.conf
+fi;
 $B echo "vm.drop_caches=3" >> /system/etc/sysctl.conf
 $B echo "vm.oom_kill_allocating_task=1" >> /system/etc/sysctl.conf
 $B echo "vm.dirty_ratio=30" >> /system/etc/sysctl.conf
@@ -91,7 +101,10 @@ $B sysctl -e -w kernel.random.write_wakeup_threshold=256
 $B sysctl -e -w vm.vfs_cache_pressure=90
 $B sysctl -e -w vm.min_free_kbytes=$FK
 if [ -e /proc/sys/vm/extra_free_kbytes ]; then
-$B sysctl -e -w vm.extra_free_kbytes=$EF
+ $B sysctl -e -w vm.extra_free_kbytes=$EF
+fi;
+if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
+ $B sysctl -e -w vm.user_reserve_kbytes=$UR
 fi;
 $B sysctl -e -w vm.drop_caches=3
 $B sysctl -e -w vm.oom_kill_allocating_task=1

@@ -55,7 +55,10 @@ setprop net.dns1 8.8.8.8
 setprop net.dns2 8.8.4.4
 setprop net.rmnet0.dns1 8.8.8.8
 setprop net.rmnet0.dns2 8.8.4.4
+setprop dhcp.wlan0.dns1 8.8.8.8
+setprop dhcp.wlan0.dns2 8.8.4.4
 setprop ro.ril.enable.amr.wideband 1
+setprop ro.wifi.channels 13
 if [ "$RAM" -le "1024" ]; then
 $B echo "Set smaller net-buffer sizes.." >> $LOG
 setprop net.tcp.buffersize.gprs 4092,8760,11680,4096,8760,11680

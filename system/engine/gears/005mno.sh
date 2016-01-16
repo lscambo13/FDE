@@ -165,6 +165,7 @@ $B echo "Tuning Android.." >> $LOG
 setprop ro.config.nocheckin 1
 setprop ro.kernel.android.checkjni 0
 setprop ro.kernel.checkjni 0
+setprop sys.sysctl.extra_free_kbytes $EF
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 005 - ***Kernel gear*** - OK" >> $LOG
 sync;

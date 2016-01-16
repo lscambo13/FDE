@@ -69,6 +69,7 @@ fi;
 
 $B echo "Tuning Android graphics.." >> $LOG
 setprop debug.sf.hw 1
+setprop debug.sf.no_hw_vsync 1
 setprop debug.egl.hw 1
 setprop debug.egl.profiler 1
 setprop debug.egl.swapinterval 1
@@ -84,6 +85,7 @@ setprop ro.floatingtouch.available 1
 setprop ro.min.fling_velocity 7000
 setprop ro.max.fling_velocity 12000
 setprop persist.sys.ui.hw 1
+setprop persist.hwc.mdpcomp.enable true
 setprop video.accelerate.hw 1
 setprop windowsmgr.max_events_per_sec 90
 setprop windowsmgr.support_rotation_270 true
@@ -105,7 +107,8 @@ setprop persist.service.pcsync.enable false
 setprop ro.lge.proximity.delay 25
 setprop mot.proximity.delay 25
 setprop ro.telephony.call_ring.delay 0
-persist.sys.strictmode.disable true
+setprop persist.sys.strictmode.disable true
+setprop vidc.debug.level 0
 
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 006 - ***GPU gear*** - OK" >> $LOG

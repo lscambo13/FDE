@@ -17,6 +17,11 @@ if [ -e /sys/kernel/fast_charge/force_fast_charge ]; then
  $B echo "Fast charge support detected. Activating.." >> $LOG
  $B echo "1" > /sys/kernel/fast_charge/force_fast_charge
 fi;
+if [ -e /sys/module/lpm_levels/parameters/sleep_disabled ]; then
+ $B echo "LP mode support detected. Activating.." >> $LOG
+ $B echo "0" > /sys/module/lpm_levels/parameters/sleep_disabled
+fi;
+
 $B echo "Tuning Android power-saving.." >> $LOG
 setprop ro.mot.eri.losalert.delay 1000
 setprop power.saving.mode 1

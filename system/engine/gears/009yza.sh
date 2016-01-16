@@ -24,7 +24,8 @@ if [ -e /sys/module/lowmemorykiller/parameters/debug_level ]; then
 fi;
 if [ -e /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk ]; then
  $B echo "1" > /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk
- $B echo "Adaptive LMK detected. Enabled." >> $LOG
+ $B echo "40960" > /sys/module/lowmemorykiller/parameters/vmpressure_file_min 40960
+ $B echo "Adaptive LMK detected. Tuned." >> $LOG
 fi;
 
 $B echo "Tuning Android proc.." >> $LOG

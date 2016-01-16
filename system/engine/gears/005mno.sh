@@ -141,6 +141,10 @@ if [ -e /sys/class/misc/fsynccontrol/fsync_enabled ]; then
  $B echo "Fsync control detected. Tuning.." >> $LOG
  $B echo "0" > /sys/class/misc/fsynccontrol/fsync_enabled
 fi;
+if [ -e /sys/module/sync/parameters/fsync ]; then
+ $B echo "0" > /sys/module/sync/parameters/fsync
+ $B echo "Fsync - OFF" >> $LOG
+fi;
 if [ "$SDK" -le "17" ]; then
  $B echo "Trying to enable Seeder entropy generator.. " >> $LOG
  if [ -e /system/bin/qrngd -o -e /system/xbin/qrngd ]; then
@@ -179,6 +183,8 @@ setprop ro.config.nocheckin 1
 setprop ro.kernel.android.checkjni 0
 setprop ro.kernel.checkjni 0
 setprop sys.sysctl.extra_free_kbytes $EF
+setprop profiler.force_disable_err_rpt 1
+setprop profiler.force_disable_ulog 1
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 005 - ***Kernel gear*** - OK" >> $LOG
 sync;

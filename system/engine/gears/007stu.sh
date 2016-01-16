@@ -21,6 +21,10 @@ if [ -e /sys/module/lpm_levels/parameters/sleep_disabled ]; then
  $B echo "LP mode support detected. Activating.." >> $LOG
  $B echo "0" > /sys/module/lpm_levels/parameters/sleep_disabled
 fi;
+if [ -e /sys/class/lcd/panel/power_reduce ]; then
+ $B echo "LCD power reduce detected. Activating.." >> $LOG
+ $B echo "1" > /sys/class/lcd/panel/power_reduce
+fi;
 
 $B echo "Tuning Android power-saving.." >> $LOG
 setprop ro.mot.eri.losalert.delay 1000

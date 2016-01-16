@@ -10,6 +10,7 @@ $B echo "" >> $LOG
 $B echo "[$TIME] 006 - ***GPU gear***" >> $LOG
 $B echo "Remounting /system - RW" >> $LOG
 $B mount -o remount,rw /system
+$B mount -t debugfs debugfs /sys/kernel/debug
 if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
  AV=$(du -k "/system/lib/egl/libGLESv2_adreno200.so" | cut -f1)
  $B sleep 1
@@ -29,7 +30,6 @@ if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
    $B echo "You have legacy adreno libs. No HWA for you." >> $LOG
   fi;
  fi;
- $B mount -t debugfs debugfs /sys/kernel/debug
  $B echo "Setting correct device permissions.." >> $LOG
  $B chmod 666 /dev/kgsl-3d0
  $B chmod 666 /dev/msm_aac_in
@@ -43,6 +43,36 @@ if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
  setprop debug.qctwa.perservebuf 1
 fi;
 $B mount -t debugfs debugfs /sys/kernel/debug
+if [ -e /sys/module/mali/parameters/mali_debug_level ]; then
+ $B echo "Mali GPU detected. Tuning.." >> $LOG
+ $B chown 0:0 /sys/module/mali/parameters/mali_debug_level
+ $B chmod 644 /sys/module/mali/parameters/mali_debug_level
+ $B echo 0 > /sys/module/mali/parameters/mali_debug_level
+ if [ -e /sys/module/mali/parameters/mali_gpu_utilization_timeout ]; then
+  $B echo "Mali util-timiout tuned." >> $LOG
+  $B chown 0:0 /sys/module/mali/parameters/mali_gpu_utilization_timeout
+  $B chmod 644 /sys/module/mali/parameters/mali_gpu_utilization_timeout
+  $B echo 100 > /sys/module/mali/parameters/mali_gpu_utilization_timeout
+ fi;
+ if [ -e /sys/module/mali/parameters/mali_touch_boost_level ]; then
+  $B echo "Mali touch-boost tuned." >> $LOG
+  $B chown 0:0 /sys/module/mali/parameters/mali_touch_boost_level
+  $B chmod 644 /sys/module/mali/parameters/mali_touch_boost_level
+  $B echo 1 > /sys/module/mali/parameters/mali_touch_boost_level
+ fi;
+ if [ -e /sys/module/mali/parameters/mali_l2_max_reads ]; then
+  $B echo "Mali L2 cache tuned." >> $LOG
+  $B chown 0:0 /sys/module/mali/parameters/mali_l2_max_reads
+  $B chmod 644 /sys/module/mali/parameters/mali_l2_max_reads
+  $B echo 48 > /sys/module/mali/parameters/mali_l2_max_reads
+ fi;
+ if [ -e /sys/module/mali/parameters/mali_pp_scheduler_balance_jobs ]; then
+  $B echo "Mali PP tuned." >> $LOG
+  $B chown 0:0 /sys/module/mali/parameters/mali_pp_scheduler_balance_jobs
+  $B chmod 644 /sys/module/mali/parameters/mali_pp_scheduler_balance_jobs
+  $B echo 1 > /sys/module/mali/parameters/mali_pp_scheduler_balance_jobs
+ fi;
+fi;
 $B chmod 777 /dev/graphics/fb0
 if [ -e /sys/kernel/debug/msm_fb/0/vsync_enable ]; then
  $B echo "Disabling VSYNC.." >> $LOG
@@ -50,6 +80,7 @@ if [ -e /sys/kernel/debug/msm_fb/0/vsync_enable ]; then
 fi;
 if [ -e /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction ]; then
  $B echo 50 > /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction
+ $B echo "KGSL tune-up.." >> $LOG
 fi;
 if [ "$SDK" -le "17" ]; then
  if [ -e /system/engine/prop/firstboot ]; then
@@ -62,9 +93,11 @@ fi;
 if [ -e /sys/module/tpd_setting/parameters/tpd_mode ]; then
  $B chmod 644 /sys/module/tpd_setting/parameters/tpd_mode
  $B echo 1 > /sys/module/tpd_setting/parameters/tpd_mode
+ $B echo "TPD tune-up.." >> $LOG
 elif [ -e /sys/module/hid_magicmouse/parameters/scroll_speed ]; then
  $B chmod 644 /sys/module/hid_magicmouse/parameters/scroll_speed
  $B echo 63 > /sys/module/hid_magicmouse/parameters/scroll_speed
+ $B echo "HID-magic tune-up" >> $LOG
 fi;
 
 $B echo "Tuning Android graphics.." >> $LOG

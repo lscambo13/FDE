@@ -27,6 +27,7 @@ setprop ro.ril.disable.power.collapse 0
 setprop persist.radio.add_power_save 1
 setprop ro.config.hw_power_saving 1
 setprop ro.config.hw_power_saving true
+setprop persist.radio.add_power_save 1
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 007 - ***Battery gear*** - OK" >> $LOG
 sync;

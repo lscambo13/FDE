@@ -12,6 +12,8 @@ SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
 KB=$((((RAM+(SWAP/2))/64+1)*128))
 AA="/sys/block/*"
 BB="/sys/devices/virtual/block/*"
+MMC="/sys/block/mmc*"
+MTD="/sys/block/mtd*"
 
 $B echo "Device has $RAM MB of RAM and $SWAP MB of SWAP/ZRAM" >> $LOG
 $B echo "Basing on your RAM + SWAP/ZRAM, calculated readahead parameter is $KB KB" >> $LOG
@@ -40,13 +42,20 @@ done;
 
 for i in $AA $BB; do
 if [ -e "${i}"/queue/read_ahead_kb ]; then
- $B echo "Applying new parameters.." >> $LOG
+ $B echo "Applying new I/O parameters.." >> $LOG
  $B echo $KB > "${i}"/queue/read_ahead_kb
  $B echo $KB > "${i}"/bdi/read_ahead_kb
  $B echo 0 > "${i}"/queue/iostats
  $B echo 0 > "${i}"/queue/rotational
  $B echo 1 > "${i}"/queue/rq_affinity
  $B echo 1 > "${i}"/queue/nomerges
+fi;
+done;
+
+for b in $MMC $MTD; do
+if [ -e "${b}"/queue/add_random ]; then
+ $B echo "Applying new rnd parameters.." >> $LOG
+ $B echo 0 > "${b}"/queue/add_random
 fi;
 done;
 

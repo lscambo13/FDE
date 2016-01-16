@@ -148,6 +148,11 @@ if [ "$SWAP" -gt "0" ]; then
   $B echo "KSM + swappiness is a bad. Disabling KSM.." >> $LOG
   $B echo 0 > /sys/kernel/mm/ksm/run
  fi;
+ if [ -e /sys/kernel/mm/uksm/run ]; then
+  $B echo "uKSM detected" >> $LOG
+  $B echo "uKSM + swappiness is a bad. Disabling KSM.." >> $LOG
+  $B echo 0 > /sys/kernel/mm/uksm/run
+ fi;
 elif [ "$SWAP" = "0" ]; then
  if [ -e /sys/kernel/mm/ksm/run ]; then
   $B echo "KSM detected" >> $LOG
@@ -155,6 +160,14 @@ elif [ "$SWAP" = "0" ]; then
   $B echo 128 > /sys/kernel/mm/ksm/pages_to_scan
   $B echo 3000 > /sys/kernel/mm/ksm/sleep_millisecs
   $B echo 1 > /sys/kernel/mm/ksm/run
+ fi;
+ if [ -e /sys/kernel/mm/ksm/run ]; then
+  $B echo "uKSM detected" >> $LOG
+  $B echo "Starting and tuning uKSM.." >> $LOG
+  $B echo 128 > /sys/kernel/mm/uksm/pages_to_scan
+  $B echo 3000 > /sys/kernel/mm/uksm/sleep_millisecs
+  $B echo 50 > /sys/kernel/mm/uksm/max_cpu_percentage
+  $B echo 1 > /sys/kernel/mm/uksm/run
  fi;
 fi;
 $B echo "Paging check completed" >> $LOG

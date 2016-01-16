@@ -9,18 +9,22 @@ $B echo "[$TIME] 009 - ***VM gear***" >> $LOG
 $B echo "" >> $LOG
 $B echo "Tuning LMK.." >> $LOG
 if [ -e /sys/module/lowmemorykiller/parameters/cost ]; then
+ $B echo "LMK cost fine-tuning.." >> $LOG
  $B chmod 644 /sys/module/lowmemorykiller/parameters/cost
  $B echo "16" > /sys/module/lowmemorykiller/parameters/cost
- $B echo "LMK cost fine-tuning.." >> $LOG
 fi;
 if [ -e /sys/module/lowmemorykiller/parameters/fudgeswap ]; then
+ $B echo "FudgeSwap supported. Tuning.." >> $LOG
  $B chmod 644 /sys/module/lowmemorykiller/parameters/fudgeswap
  $B echo "1024" > /sys/module/lowmemorykiller/parameters/fudgeswap
- $B echo "FudgeSwap supported. Tuning.." >> $LOG
 fi;
 if [ -e /sys/module/lowmemorykiller/parameters/debug_level ]; then
  $B echo "0" > /sys/module/lowmemorykiller/parameters/debug_level
  $B echo "LMK debugging disabled" >> $LOG
+fi;
+if [ -e /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk ]; then
+ $B echo "1" > /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk
+ $B echo "Adaptive LMK detected. Enabled." >> $LOG
 fi;
 
 $B echo "Tuning Android proc.." >> $LOG

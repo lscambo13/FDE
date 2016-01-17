@@ -20,6 +20,8 @@ mount -o remount,rw /system
 chmod -R 777 /system/engine/bin/*
 setprop ro.feralab.engine 19
 if [ -e /system/etc/hw_config.sh ]; then
+ $B sleep 45
+elif [ -e /engine.sh ]; then
  $B sleep 36
 else
  $B sleep 18
@@ -41,7 +43,6 @@ $B echo "[$TIME] Kernel version: $KERNEL" >> $LOG
 $B echo "[$TIME] ROM version: $ROM" >> $LOG
 $B echo "[$TIME] Android version: $(getprop ro.build.version.release)" >> $LOG
 $B echo "[$TIME] SDK: $SDK" >> $LOG
-$B echo "" >> $LOG
 
 if [ -e /system/engine/prop/firstboot ]; then
  $B echo "[$TIME] First boot after deploy" >> $LOG
@@ -141,8 +142,6 @@ $B echo "[$TIME] FDE status - OK" >> $LOG
 $B echo "" >> $LOG
 if [ -e /system/etc/init.d/999fde ]; then
  $B echo "[$TIME] Not FDE init.d run." >> $LOG
-elif [ -e /system/xbin/sysinit ]; then
- $B rm -f /system/xbin/sysinit
 else
  $B echo "[$TIME] Run init.d scripts.." >> $LOG
  $B chmod 777 /system/etc/init.d/*

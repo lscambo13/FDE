@@ -2,11 +2,14 @@
 ### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
 
 B=/system/engine/bin/busybox
-LOG=/sdcard/Android/FDE.txt
+if [ -e /system/engine/prop/firstboot ]; then
+ LOG=/sdcard/Android/FDE.txt
+else
+ LOG=/dev/null
+fi;
 TIME=$($B date | $B awk '{ print $4 }')
 
 $B echo "[$TIME] 010 - ***CPU gear***" >> $LOG
-$B echo "" >> $LOG
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold ]; then
 $B echo "CPU0 ondemand tuning.." >> $LOG
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold

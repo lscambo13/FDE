@@ -2,10 +2,13 @@
 ### FeraDroid Engine v0.19 | By FeraVolt. 2015 ###
 
 B=/system/engine/bin/busybox
-LOG=/sdcard/Android/FDE.txt
+if [ -e /system/engine/prop/firstboot ]; then
+ LOG=/sdcard/Android/FDE.txt
+else
+ LOG=/dev/null
+fi;
 TIME=$($B date | $B awk '{ print $4 }')
 
-$B echo "" >> $LOG
 $B echo "[$TIME] 004 - ***Memory gear***" >> $LOG
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)

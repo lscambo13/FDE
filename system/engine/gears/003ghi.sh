@@ -3,10 +3,13 @@
 
 B=/system/engine/bin/busybox
 RZS=/system/engine/bin/rzscontrol
-LOG=/sdcard/Android/FDE.txt
+if [ -e /system/engine/prop/firstboot ]; then
+ LOG=/sdcard/Android/FDE.txt
+else
+ LOG=/dev/null
+fi;
 TIME=$($B date | $B awk '{ print $4 }')
 
-$B echo "" >> $LOG
 $B echo "[$TIME] 003 - ***RAM gear***" >> $LOG
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p)
@@ -171,7 +174,7 @@ elif [ "$SWAP" = "0" ]; then
  fi;
 fi;
 $B echo "Paging check completed" >> $LOG
-
+$B echo "" >> $LOG
 RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p)
 RAMcached=$($B free -m | $B awk '{ print $7 }' | $B sed -n 2p)
 RAMreported=$((RAMfree + RAMcached))
@@ -184,7 +187,6 @@ $B echo "  Real free:          $RAMfree MB" >> $LOG
 $B echo "  Cached:             $RAMcached MB" >> $LOG
 $B echo "  SWAP/ZRAM total:    $SWAP MB" >> $LOG
 $B echo "  SWAP/ZRAM used:     $SWAPused MB" >> $LOG
-$B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 003 - ***RAM gear*** - OK" >> $LOG
 sync;

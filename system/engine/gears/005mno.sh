@@ -2,11 +2,14 @@
 ### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
 
 B=/system/engine/bin/busybox
-LOG=/sdcard/Android/FDE.txt
+if [ -e /system/engine/prop/firstboot ]; then
+ LOG=/sdcard/Android/FDE.txt
+else
+ LOG=/dev/null
+fi;
 TIME=$($B date | $B awk '{ print $4 }')
 SDK=$(getprop ro.build.version.sdk)
 
-$B echo "" >> $LOG
 $B echo "[$TIME] 005 - ***Kernel gear***" >> $LOG
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 FM=$((RAM*(64+1)))

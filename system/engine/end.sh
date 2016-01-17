@@ -2,8 +2,12 @@
 ### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
 
 B=/system/engine/bin/busybox
-LOG=/sdcard/Android/FDE.txt
-$B echo "GP services fix" >> $LOG
+if [ -e /system/engine/prop/firstboot ]; then
+ LOG=/sdcard/Android/FDE.txt
+else
+ LOG=/dev/null
+fi;
+$B echo "Google Play services fix" >> $LOG
 $B sleep 1
 $B killall -9 com.google.android.gms
 $B killall -9 com.google.android.gms.persistent
@@ -18,7 +22,6 @@ $B echo "Trim /data" >> $LOG
 $B fstrim -v /data | $B tee -a $LOG
 $B echo "Trim /cache" >> $LOG
 $B fstrim -v /cache | $B tee -a $LOG
-$B sleep 1
 sync;
 $B sleep 1
 if [ -e /system/xbin/sqlite3 ]; then

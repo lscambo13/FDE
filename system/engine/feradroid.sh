@@ -3,24 +3,29 @@
 
 B=/system/engine/bin/busybox
 SH=/system/engine/bin/sh
-LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
 KERNEL=$($B uname -a)
 ROM=$(getprop ro.build.display.id)
 SDK=$(getprop ro.build.version.sdk)
+if [ -e /system/engine/prop/firstboot ]; then
+ LOG=/sdcard/Android/FDE.txt
+else
+ LOG=/dev/null
+fi;
 
-rm -f $LOG
 mount -o remount,rw /system
 chmod -R 777 /system/engine/bin/*
 setprop ro.feralab.engine 19
 if [ -e /system/etc/hw_config.sh ]; then
- $B sleep 45
+ $B sleep 36
 else
  $B sleep 18
 fi;
 
-$B rm -f $LOG
-$B touch $LOG
+if [ -e /system/engine/prop/firstboot ]; then
+ $B rm -f $LOG
+ $B touch $LOG
+fi;
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
 $B echo "[$TIME] FeraDroid Engine v0.19.6" >> $LOG
@@ -70,52 +75,56 @@ $B mount -o remount,rw /system
 $B rm -f /system/etc/sysctl.conf
 $B touch /system/etc/sysctl.conf
 $B chmod 777 /system/etc/sysctl.conf
+TIME=$($B date | $B awk '{ print $4 }')
+$B echo "" >> $LOG
 $B echo "[$TIME] Running 001 gear.." >> $LOG
 $SH /system/engine/gears/001abc.sh
+$B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 002 gear.." >> $LOG
 $SH /system/engine/gears/002def.sh
+$B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 003 gear.." >> $LOG
 $SH /system/engine/gears/003ghi.sh
+$B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 004 gear.." >> $LOG
-TIME=$($B date | $B awk '{ print $4 }')
 $SH /system/engine/gears/004jkl.sh
+$B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 005 gear.." >> $LOG
-TIME=$($B date | $B awk '{ print $4 }')
 $SH /system/engine/gears/005mno.sh
+$B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 006 gear.." >> $LOG
 $SH /system/engine/gears/006pqr.sh
+$B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 007 gear.." >> $LOG
 $SH /system/engine/gears/007stu.sh
+$B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 008 gear.." >> $LOG
 $SH /system/engine/gears/008vwx.sh
+$B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 009 gear.." >> $LOG
 $SH /system/engine/gears/009yza.sh
+$B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 010 gear.." >> $LOG
 $SH /system/engine/gears/010bcd.sh
-TIME=$($B date | $B awk '{ print $4 }')
 $B echo "" >> $LOG
+TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Applying kernel configuration.." >> $LOG
 sysctl -p /system/etc/sysctl.conf | $B tee -a $LOG
 $B echo "[$TIME] Mediaserver kill" >> $LOG
 $B killall -9 android.process.media
 $B killall -9 mediaserver
-TIME=$($B date | $B awk '{ print $4 }')
-$B mount -o remount,rw /system
-if [ -e /system/engine/prop/firstboot ]; then
- $B rm -f /system/engine/prop/firstboot
-fi;
-TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Fix permissions and zipalign.." >> $LOG
 $SH /system/engine/fix.sh
+TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] END start" >> $LOG
 $SH /system/engine/end.sh
 $B echo "" >> $LOG
@@ -136,3 +145,9 @@ $B echo "" >> $LOG
 $B echo "[$TIME] BP dump" >> $LOG
 getprop  | $B tee -a $LOG
 $B echo "" >> $LOG
+if [ -e /system/engine/prop/firstboot ]; then
+ $B mount -o remount,rw /system
+ $B rm -f /system/engine/prop/firstboot
+ $B mount -o remount,ro /system
+fi;
+

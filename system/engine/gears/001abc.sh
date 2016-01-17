@@ -2,10 +2,13 @@
 ### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
 
 B=/system/engine/bin/busybox
-LOG=/sdcard/Android/FDE.txt
+if [ -e /system/engine/prop/firstboot ]; then
+ LOG=/sdcard/Android/FDE.txt
+else
+ LOG=/dev/null
+fi;
 TIME=$($B date | $B awk '{ print $4 }')
 
-$B echo "" >> $LOG
 $B echo "[$TIME] 001 - ***Cleaning gear***" >> $LOG
 $B echo "Remounting /data and /system - RW" >> $LOG
 $B mount -o remount,rw /system

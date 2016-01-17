@@ -2,11 +2,14 @@
 ### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
 
 B=/system/engine/bin/busybox
-LOG=/sdcard/Android/FDE.txt
+if [ -e /system/engine/prop/firstboot ]; then
+ LOG=/sdcard/Android/FDE.txt
+else
+ LOG=/dev/null
+fi;
 TIME=$($B date | $B awk '{ print $4 }')
 
 $B echo "[$TIME] 009 - ***VM gear***" >> $LOG
-$B echo "" >> $LOG
 $B echo "Tuning LMK.." >> $LOG
 if [ -e /sys/module/lowmemorykiller/parameters/cost ]; then
  $B echo "LMK cost fine-tuning.." >> $LOG
@@ -27,7 +30,6 @@ if [ -e /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk ]; then
  $B echo "40960" > /sys/module/lowmemorykiller/parameters/vmpressure_file_min 40960
  $B echo "Adaptive LMK detected. Tuned." >> $LOG
 fi;
-
 $B echo "Tuning Android proc.." >> $LOG
 setprop ro.HOME_APP_ADJ 1
 setprop MAX_SERVICE_INACTIVITY false
@@ -42,7 +44,6 @@ setprop CPU_MIN_CHECK_DURATION false
 setprop GC_TIMEOUT false
 setprop SERVICE_TIMEOUT false
 setprop MIN_CRASH_INTERVAL false
-
 $B echo "[$TIME] 009 - ***VM gear*** - OK" >> $LOG
 sync;
 

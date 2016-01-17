@@ -2,11 +2,14 @@
 ### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
 
 B=/system/engine/bin/busybox
-LOG=/sdcard/Android/FDE.txt
+if [ -e /system/engine/prop/firstboot ]; then
+ LOG=/sdcard/Android/FDE.txt
+else
+ LOG=/dev/null
+fi;
 TIME=$($B date | $B awk '{ print $4 }')
 HS=$(du -k "/system/etc/hosts" | cut -f1)
 
-$B echo "" >> $LOG
 $B echo "[$TIME] 002 - ***Ad-block gear***" >> $LOG
 if [ "$HS" -le "128" ]; then
  $B echo "Another ad-blocker detected. Skipping.." >> $LOG

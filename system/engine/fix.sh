@@ -1,7 +1,6 @@
 #!/system/bin/sh
 ### FeraDroid Engine v19 | By FeraVolt. 2016 ###
 
-sysrw
 zipalign="yes"
 clear
 sleep 1

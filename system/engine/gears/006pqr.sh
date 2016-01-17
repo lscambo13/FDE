@@ -15,22 +15,12 @@ $B echo "Remounting /system - RW" >> $LOG
 $B mount -o remount,rw /system
 $B mount -t debugfs debugfs /sys/kernel/debug
 if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
- AV=$(du -k "/system/lib/egl/libGLESv2_adreno200.so" | cut -f1)
- $B sleep 1
  $B echo "Adreno GPU detected" >> $LOG
- if [ ! -h /data/local/tmp/adreno_config.txt ]; then
-  $B echo "Applying Adreno configurations.." >> $LOG
-  $B chmod 777 /system/engine/assets/adreno_config.txt
-  $B ln -s /system/engine/assets/adreno_config.txt /data/local/tmp/adreno_config.txt
- fi;
- if [ -e /system/lib/egl/libGLES_android.so ]; then
-  if [ "$AV" -ne "1712" ]; then
-   $B echo "Forcing GPU to render UI.." >> $LOG
-   $B mount -o remount,rw /system
-   $B rm /system/lib/egl/libGLES_android.so
-   $B sed -i '/0 0 android/d' /system/lib/egl/egl.cfg
-  else
-   $B echo "You have legacy adreno libs. No HWA for you." >> $LOG
+ if [ "$SDK" -eq "10" ]; then
+  if [ ! -h /data/local/tmp/adreno_config.txt ]; then
+   $B echo "Applying Adreno configurations.." >> $LOG
+   $B chmod 777 /system/engine/assets/adreno_config.txt
+   $B ln -s /system/engine/assets/adreno_config.txt /data/local/tmp/adreno_config.txt
   fi;
  fi;
  $B echo "Setting correct device permissions.." >> $LOG
@@ -84,6 +74,23 @@ fi;
 if [ -e /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction ]; then
  $B echo 50 > /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction
  $B echo "KGSL tune-up.." >> $LOG
+fi;
+if [ "$SDK" -eq "10" ]; then
+ if [ -e /system/lib/egl/libGLES_android.so ]; then
+  if [ -e /system/lib/egl/egl.cfg ]; then
+   if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
+    AV=$(du -k "/system/lib/egl/libGLESv2_adreno200.so" | cut -f1)
+    if [ "$AV" -eq "1712" ]; then
+     $B echo "You have legacy adreno libs. No HWA for you." >> $LOG
+     exit
+    fi;
+   fi;
+   $B echo "Forcing GPU to render UI.." >> $LOG
+   $B mount -o remount,rw /system
+   $B sed -i '/0 0 android/d' /system/lib/egl/egl.cfg
+   $B rm /system/lib/egl/libGLES_android.so
+  fi;
+ fi;
 fi;
 if [ "$SDK" -le "17" ]; then
  if [ -e /system/engine/prop/firstboot ]; then

@@ -7,6 +7,7 @@ if [ -e /system/engine/prop/firstboot ]; then
 else
  LOG=/dev/null
 fi;
+ARCH=$($B uname -m)
 TIME=$($B date | $B awk '{ print $4 }')
 SDK=$(getprop ro.build.version.sdk)
 
@@ -30,7 +31,6 @@ if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
  $B chmod 666 /dev/genlock
  $B echo "Tuning Android and Adreno frienship.." >> $LOG
  setprop com.qc.hardware true
- setprop com.qc.hdmi_out false
  setprop debug.qc.hardware true
  setprop debug.qctwa.statusbar 1
  setprop debug.qctwa.perservebuf 1
@@ -110,48 +110,50 @@ elif [ -e /sys/module/hid_magicmouse/parameters/scroll_speed ]; then
  $B echo "HID-magic tune-up" >> $LOG
 fi;
 
-$B echo "Tuning Android graphics.." >> $LOG
-setprop debug.sf.hw 1
-setprop debug.sf.no_hw_vsync 1
-setprop debug.egl.hw 1
-setprop debug.egl.profiler 1
-setprop debug.egl.swapinterval 1
-setprop debug.gr.numframebuffers 3
-setprop debug.gr.swapinterval 1
-setprop debug.mdpcomp.logs 0
-setprop debug.mdpcomp.maxlayer 3
-setprop debug.mdpcomp.idletime -1
-setprop debug.performance.tuning 1
-setprop debug.enabletr true
-setprop dev.pm.dyn_samplingrate 1
-setprop ro.floatingtouch.available 1
-setprop ro.min.fling_velocity 7000
-setprop ro.max.fling_velocity 12000
-setprop persist.sys.ui.hw 1
-setprop persist.hwc.mdpcomp.enable true
-setprop video.accelerate.hw 1
-setprop windowsmgr.max_events_per_sec 90
-setprop windowsmgr.support_rotation_270 true
-setprop hwui.render_dirty_regions false
-setprop persist.sys.scrollingcache 3
-setprop ro.media.dec.jpeg.memcap 8000000
-setprop ro.media.enc.hprof.vid.bps 8000000
-setprop ro.media.enc.jpeg.quality 100
-setprop media.stagefright.enable-player true
-setprop media.stagefright.enable-meta true
-setprop media.stagefright.enable-scan true
-setprop media.stagefright.enable-http true
-setprop media.stagefright.enable-aac true
-setprop media.stagefright.enable-qcp true
-setprop media.stagefright.enable-record true
-setprop touch.presure.scale 0.1
-setprop persist.service.lgospd.enable false
-setprop persist.service.pcsync.enable false
-setprop ro.lge.proximity.delay 25
-setprop mot.proximity.delay 25
-setprop ro.telephony.call_ring.delay 0
-setprop persist.sys.strictmode.disable true
-setprop vidc.debug.level 0
+if [ "$ARCH" == "armv6l" ]; then
+ $B echo "NO hard tuning for ARMv6 yet.." >> $LOG
+else
+ $B echo "Tuning Android graphics.." >> $LOG
+ setprop debug.sf.hw 1
+ setprop debug.sf.no_hw_vsync 1
+ setprop debug.egl.hw 1
+ setprop debug.egl.profiler 1
+ setprop debug.egl.swapinterval 1
+ setprop debug.gr.swapinterval 1
+ setprop debug.mdpcomp.logs 0
+ setprop debug.mdpcomp.maxlayer 3
+ setprop debug.mdpcomp.idletime -1
+ setprop debug.performance.tuning 1
+ setprop dev.pm.dyn_samplingrate 1
+ setprop ro.floatingtouch.available 1
+ setprop ro.min.fling_velocity 7000
+ setprop ro.max.fling_velocity 12000
+ setprop persist.sys.ui.hw 1
+ setprop persist.hwc.mdpcomp.enable true
+ setprop video.accelerate.hw 1
+ setprop windowsmgr.max_events_per_sec 90
+ setprop windowsmgr.support_rotation_270 true
+ setprop hwui.render_dirty_regions false
+ setprop persist.sys.scrollingcache 3
+ setprop ro.media.dec.jpeg.memcap 8000000
+ setprop ro.media.enc.hprof.vid.bps 8000000
+ setprop ro.media.enc.jpeg.quality 100
+ setprop media.stagefright.enable-player true
+ setprop media.stagefright.enable-meta true
+ setprop media.stagefright.enable-scan true
+ setprop media.stagefright.enable-http true
+ setprop media.stagefright.enable-aac true
+ setprop media.stagefright.enable-qcp true
+ setprop media.stagefright.enable-record true
+ setprop touch.presure.scale 0.1
+ setprop persist.service.lgospd.enable false
+ setprop persist.service.pcsync.enable false
+ setprop ro.lge.proximity.delay 25
+ setprop mot.proximity.delay 25
+ setprop ro.telephony.call_ring.delay 0
+ setprop persist.sys.strictmode.disable true
+ setprop vidc.debug.level 0
+fi;
 
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 006 - ***GPU gear*** - OK" >> $LOG

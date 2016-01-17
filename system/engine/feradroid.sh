@@ -5,6 +5,9 @@ B=/system/engine/bin/busybox
 SH=/system/engine/bin/sh
 TIME=$($B date | $B awk '{ print $4 }')
 KERNEL=$($B uname -a)
+CPU=$($B grep -m 1 "model name" /proc/cpuinfo)
+ARCH=$($B uname -m)
+RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 ROM=$(getprop ro.build.display.id)
 SDK=$(getprop ro.build.version.sdk)
 if [ -e /system/engine/prop/firstboot ]; then
@@ -28,13 +31,17 @@ if [ -e /system/engine/prop/firstboot ]; then
 fi;
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
-$B echo "[$TIME] FeraDroid Engine v0.19.6" >> $LOG
+$B echo "[$TIME] FeraDroid Engine v0.19.b7" >> $LOG
 $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
-$B echo "[$TIME] Android version: $(getprop ro.build.version.release)" >> $LOG
+$B echo "[$TIME] CPU: $CPU" >> $LOG
+$B echo "[$TIME] Architecture: $ARCH" >> $LOG
+$B echo "[$TIME] RAM: $RAM" >> $LOG
 $B echo "[$TIME] Kernel: $KERNEL" >> $LOG
 $B echo "[$TIME] ROM version: $ROM" >> $LOG
+$B echo "[$TIME] Android version: $(getprop ro.build.version.release)" >> $LOG
 $B echo "[$TIME] SDK: $SDK" >> $LOG
+$B echo "" >> $LOG
 
 if [ -e /system/engine/prop/firstboot ]; then
  $B echo "[$TIME] First boot after deploy" >> $LOG
@@ -58,7 +65,7 @@ $B mount -o remount,rw /system
 $B mount -o remount,rw /data
 $B echo "[$TIME] Set SElinux permissive.." >> $LOG
 $B chmod 666 /sys/fs/selinux/enforce
-setenforce 0
+$B setenforce 0
 $B echo 0 > /sys/fs/selinux/enforce
 $B chmod 444 /sys/fs/selinux/enforce
 $B echo "[$TIME] Correcting permissions.." >> $LOG

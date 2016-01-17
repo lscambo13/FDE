@@ -182,6 +182,9 @@ $B echo "NO_AFFINE_WAKEUPS" > /sys/kernel/debug/sched_features
 $B echo "NO_NEXT_BUDDY" > /sys/kernel/debug/sched_features
 $B echo "NO_WAKEUP_OVERLAP" > /sys/kernel/debug/sched_features
 $B echo "Tuning Android.." >> $LOG
+if [ "$RAM" -le "512" ]; then
+ setprop ro.config.low_ram true
+fi;
 setprop ro.config.nocheckin 1
 setprop ro.kernel.android.checkjni 0
 setprop ro.kernel.checkjni 0

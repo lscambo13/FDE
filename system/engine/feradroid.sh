@@ -4,7 +4,7 @@
 B=/system/engine/bin/busybox
 SH=/system/engine/bin/sh
 TIME=$($B date | $B awk '{ print $4 }')
-KERNEL=$($B uname -a)
+KERNEL=$($B uname -r)
 CPU=$($B grep -m 1 "model name" /proc/cpuinfo)
 ARCH=$($B uname -m)
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
@@ -34,10 +34,10 @@ $B echo "" >> $LOG
 $B echo "[$TIME] FeraDroid Engine v0.19.b7" >> $LOG
 $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
-$B echo "[$TIME] CPU: $CPU" >> $LOG
+$B echo "[$TIME] CPU $CPU" >> $LOG
 $B echo "[$TIME] Architecture: $ARCH" >> $LOG
-$B echo "[$TIME] RAM: $RAM" >> $LOG
-$B echo "[$TIME] Kernel: $KERNEL" >> $LOG
+$B echo "[$TIME] RAM: $RAM MB" >> $LOG
+$B echo "[$TIME] Kernel version: $KERNEL" >> $LOG
 $B echo "[$TIME] ROM version: $ROM" >> $LOG
 $B echo "[$TIME] Android version: $(getprop ro.build.version.release)" >> $LOG
 $B echo "[$TIME] SDK: $SDK" >> $LOG
@@ -55,6 +55,12 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B echo "[$TIME] Install Busybox.." >> $LOG
  $B --install -s /system/xbin
 fi;
+if [ -e /sys/fs/selinux/enforce ]; then
+ $B chmod 666 /sys/fs/selinux/enforce
+ $B setenforce 0
+ $B echo 0 > /sys/fs/selinux/enforce
+ $B chmod 444 /sys/fs/selinux/enforce
+fi;
 if [ -e /sbin/sysrw ]; then
  $B echo "[$TIME] Remapped partition mount detected" >> $LOG
  /sbin/sysrw
@@ -64,10 +70,6 @@ $B echo "[$TIME] Remounting /data and /system - RW" >> $LOG
 $B mount -o remount,rw /system
 $B mount -o remount,rw /data
 $B echo "[$TIME] Set SElinux permissive.." >> $LOG
-$B chmod 666 /sys/fs/selinux/enforce
-$B setenforce 0
-$B echo 0 > /sys/fs/selinux/enforce
-$B chmod 444 /sys/fs/selinux/enforce
 $B echo "[$TIME] Correcting permissions.." >> $LOG
 $B chmod 644 /system/build.prop
 $B chmod 777 /system/engine
@@ -151,10 +153,11 @@ $B echo "" >> $LOG
 $B echo "" >> $LOG
 $B echo "[$TIME] BP dump" >> $LOG
 getprop  | $B tee -a $LOG
-$B echo "" >> $LOG
 if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,rw /system
  $B rm -f /system/engine/prop/firstboot
  $B mount -o remount,ro /system
+ $B echo "[$TIME] First boot completed." >> $LOG
 fi;
+$B echo "" >> $LOG
 

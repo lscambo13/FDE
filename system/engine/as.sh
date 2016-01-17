@@ -72,5 +72,18 @@ elif [ -e /system/etc/install-recovery.sh ]; then
  echo "1" > /system/etc/fde
  echo "" >> /system/etc/fde
  exit
+elif [ -e /init.cm.rc ]; then
+ touch /system/etc/init.d/999fde
+ chmod 777 /system/etc/init.d/999fde
+ echo "#!/system/bin/sh" > /system/etc/init.d/999fde
+ echo "### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###" >> /system/etc/init.d/999fde
+ echo "" >> /system/etc/init.d/999fde
+ echo "/system/engine/bin/sh /system/engine/feradroid.sh" >> /system/etc/init.d/999fde
+ echo "" >> /system/etc/init.d/999fde
+ touch /system/etc/fde
+ chmod 777 /system/etc/fde
+ echo "1" > /system/etc/fde
+ echo "" >> /system/etc/fde
+ exit
 fi;
 

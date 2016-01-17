@@ -137,8 +137,8 @@ $SH /system/engine/end.sh
 $B echo "" >> $LOG
 $B echo "[$TIME] FDE status - OK" >> $LOG
 $B echo "" >> $LOG
-if [ -e /system/etc/init.d/fde ]; then
- $B echo "[$TIME] Don't run init.d scripts.." >> $LOG
+if [ -e /system/etc/init.d/999fde ]; then
+ $B echo "[$TIME] Not FDE init.d run." >> $LOG
 elif [ -e /system/xbin/sysinit ]; then
  $B rm -f /system/xbin/sysinit
 else

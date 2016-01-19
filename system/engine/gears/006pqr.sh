@@ -18,7 +18,9 @@ $B mount -t debugfs debugfs /sys/kernel/debug
 if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
  $B echo "Adreno GPU detected" >> $LOG
  if [ "$SDK" -eq "10" ]; then
-  if [ ! -h /data/local/tmp/adreno_config.txt ]; then
+  if [ -e /init.es209ra.rc ]; then
+   $B echo "X10.." >> $LOG
+  elif [ ! -h /data/local/tmp/adreno_config.txt ]; then
    $B echo "Applying Adreno configurations.." >> $LOG
    $B chmod 777 /system/engine/assets/adreno_config.txt
    $B ln -s /system/engine/assets/adreno_config.txt /data/local/tmp/adreno_config.txt
@@ -115,7 +117,6 @@ if [ "$ARCH" == "armv6l" ]; then
 else
  $B echo "Tuning Android graphics.." >> $LOG
  setprop debug.sf.hw 1
- setprop debug.sf.no_hw_vsync 1
  setprop debug.egl.hw 1
  setprop debug.egl.profiler 1
  setprop debug.egl.swapinterval 1

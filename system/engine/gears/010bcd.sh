@@ -137,10 +137,11 @@ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels ]; then
  $B chown root system /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
  $B chmod 664 /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
  if [ -e /init.es209ra.rc ]; then
-  $B echo '245760 950' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
-  $B echo '384000 950' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
-  $B echo '576000 1000' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
-  $B echo '768000 1100' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo "X10 CPU vdd.." >> $LOG
+  $B echo '245760 925' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '384000 925' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '576000 975' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '768000 1075' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
   $B echo '998400 1250' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
   $B echo '1036800 1275' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
   $B echo '1075200 1300' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels

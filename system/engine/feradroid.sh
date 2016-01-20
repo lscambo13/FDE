@@ -21,8 +21,6 @@ chmod -R 777 /system/engine/bin/*
 setprop ro.feralab.engine 19
 if [ -e /system/etc/hw_config.sh ]; then
  $B sleep 45
-elif [ -e /engine.sh ]; then
- $B sleep 36
 else
  $B sleep 18
 fi;

@@ -101,11 +101,11 @@ $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sleep_wakeup_freq
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sample_rate_jiffies
 $B echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/debug_mask
 $B echo "998400" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/awake_ideal_freq
-$B echo "384000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sleep_ideal_freq
+$B echo "576000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sleep_ideal_freq
 $B echo "192000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/ramp_up_step
 $B echo "192000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/ramp_down_step
-$B echo "60" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/max_cpu_load
-$B echo "20" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/min_cpu_load
+$B echo "63" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/max_cpu_load
+$B echo "21" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/min_cpu_load
 $B echo "18000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/up_rate_us
 $B echo "18000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/down_rate_us
 $B echo "768000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sleep_wakeup_freq
@@ -136,6 +136,21 @@ fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels ]; then
  $B chown root system /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
  $B chmod 664 /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+ if [ -e /init.es209ra.rc ]; then
+  $B echo '245760 950' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '384000 950' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '576000 1000' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '768000 1100' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '998400 1250' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '1036800 1275' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '1075200 1300' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '1113600 1325' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '1152000 1325' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '1190400 1350' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '1228800 1375' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '1267200 1425' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '1305600 1425' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+ fi;
 fi;
 $B echo "[$TIME] 010 - ***CPU gear*** - OK" >> $LOG
 sync;

@@ -15,15 +15,22 @@ RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 FM=$((RAM*(64+1)))
 ME=$((RAM*27))
 if [ -e /proc/sys/vm/extra_free_kbytes ]; then
- EF=$((RAM*8))
- FK=$((RAM*6))
+ if [ "$RAM" -gt "2048" ]; then
+  EF=$((RAM*4))
+  FK=$((RAM*3))
+ elif [ "$RAM" -gt "1024" ]; then
+  EF=$((RAM*6))
+  FK=$((RAM*4))
+ else
+  EF=$((RAM*8))
+  FK=$((RAM*6))
+ fi;
 else
  FK=$((RAM*8))
 fi;
 if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
- UR=$((RAM*(32-1)))
+ UR=$((RAM*16))
 fi;
-
 
 $B echo "Writing optimized kernel parameters to sysfs.." >> $LOG
 $B echo 1536 > /proc/sys/kernel/random/read_wakeup_threshold

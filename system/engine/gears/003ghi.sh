@@ -49,7 +49,11 @@ if [ -e /sys/block/zram0/disksize ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  ZRAM0=$($B cat /sys/block/zram0/disksize)
  ZZRAM=$((ZRAM0/1024/1024))
- FZRAM=$((RAM/2))
+ if [ "$RAM" -gt "1700" ]; then
+  FZRAM=$((RAM/4))
+ else
+  FZRAM=$((RAM/2))
+ fi;
  $B echo "ZRAM detected. Size is $ZZRAM MB" >> $LOG
  $B echo "Perfect ZRAM size according to your RAM should be $FZRAM MB" >> $LOG
  if [ "$ZZRAM" -ge "$FZRAM" ]; then
@@ -121,11 +125,11 @@ elif [ "$SWAP" -gt "0" ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  $B echo "SWAP detected. Size is $SWAP MB" >> $LOG
  $B echo "Configuring kernel & SWAP frienship.." >> $LOG
- $B echo 25 > /proc/sys/vm/swappiness
+ $B echo 27 > /proc/sys/vm/swappiness
  $B echo 1 > /proc/sys/vm/page-cluster
- $B sysctl -e -w vm.swappiness=25
+ $B sysctl -e -w vm.swappiness=27
  $B sysctl -e -w vm.page-cluster=1
- $B echo "vm.swappiness=30" >> /system/etc/sysctl.conf
+ $B echo "vm.swappiness=27" >> /system/etc/sysctl.conf
  $B echo "vm.page-cluster=1" >> /system/etc/sysctl.conf
  if [ -e /sys/module/zswap/parameters/enabled ]; then
   $B echo "ZSWAP detected. Enabling.." >> $LOG

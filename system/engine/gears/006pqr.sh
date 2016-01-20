@@ -113,7 +113,7 @@ elif [ -e /sys/module/hid_magicmouse/parameters/scroll_speed ]; then
 fi;
 
 if [ "$ARCH" == "armv6l" ]; then
- $B echo "NO hard tuning for ARMv6 yet.." >> $LOG
+ $B echo "No hard tuning for ARMv6 yet.." >> $LOG
 else
  $B echo "Tuning Android graphics.." >> $LOG
  setprop debug.sf.hw 1

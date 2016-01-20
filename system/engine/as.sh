@@ -18,6 +18,19 @@ fi;
 
 if [ -e /system/etc/fde ] ; then
  exit
+elif [ -e /system/etc/init.d/* ]; then
+ touch /system/etc/init.d/999fde
+ chmod 777 /system/etc/init.d/999fde
+ echo "#!/system/bin/sh" > /system/etc/init.d/999fde
+ echo "### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###" >> /system/etc/init.d/999fde
+ echo "" >> /system/etc/init.d/999fde
+ echo "/system/engine/bin/sh /system/engine/feradroid.sh" >> /system/etc/init.d/999fde
+ echo "" >> /system/etc/init.d/999fde
+ touch /system/etc/fde
+ chmod 777 /system/etc/fde
+ echo "1" > /system/etc/fde
+ echo "" >> /system/etc/fde
+ exit
 elif [ -e /system/etc/init.qcom.post_boot.sh ] ; then
  mount -o remount,rw /system
  chmod 777 /system/etc/init.qcom.post_boot.sh
@@ -67,19 +80,6 @@ elif [ -e /system/etc/install-recovery.sh ]; then
  echo "" >> /system/etc/install-recovery-2.sh
  echo "/system/engine/bin/sh /system/engine/feradroid.sh" >> /system/etc/install-recovery-2.sh
  echo "" >> /system/etc/install-recovery-2.sh
- touch /system/etc/fde
- chmod 777 /system/etc/fde
- echo "1" > /system/etc/fde
- echo "" >> /system/etc/fde
- exit
-elif [ -e /init.cm.rc ]; then
- touch /system/etc/init.d/999fde
- chmod 777 /system/etc/init.d/999fde
- echo "#!/system/bin/sh" > /system/etc/init.d/999fde
- echo "### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###" >> /system/etc/init.d/999fde
- echo "" >> /system/etc/init.d/999fde
- echo "/system/engine/bin/sh /system/engine/feradroid.sh" >> /system/etc/init.d/999fde
- echo "" >> /system/etc/init.d/999fde
  touch /system/etc/fde
  chmod 777 /system/etc/fde
  echo "1" > /system/etc/fde

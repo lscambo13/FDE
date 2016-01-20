@@ -82,28 +82,28 @@ $B echo "3" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_down_factor
  fi;
 fi;
 if [ -e /system/engine/prop/ferakernel ]; then
-$B echo "Boosting X10.." >> $LOG
-$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-$B echo "576000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+ $B echo "Boosting X10.." >> $LOG
+ $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+ $B echo "576000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 fi;
 if [ -e /sys/module/workqueue/parameters/power_efficient ]; then
-$B echo "Enabling power-save workqueues.." >> $LOG
-$B chmod 644 /sys/module/workqueue/parameters/power_efficient
-$B echo "1" > /sys/module/workqueue/parameters/power_efficient
+ $B echo "Enabling power-save workqueues.." >> $LOG
+ $B chmod 644 /sys/module/workqueue/parameters/power_efficient
+ $B echo "1" > /sys/module/workqueue/parameters/power_efficient
 fi;
 if [ -e /sys/module/subsystem_restart/parameters/enable_ramdumps ]; then
-$B echo "Disabling RAMdumps.." >> $LOG
-$B chmod 644 /sys/module/subsystem_restart/parameters/enable_ramdumps
-$B echo "0" > /sys/module/subsystem_restart/parameters/enable_ramdumps
+ $B echo "Disabling RAM-umps.." >> $LOG
+ $B chmod 644 /sys/module/subsystem_restart/parameters/enable_ramdumps
+ $B echo "0" > /sys/module/subsystem_restart/parameters/enable_ramdumps
 fi;
 if [ -e /sys/devices/system/cpu/sched_mc_power_savings ]; then 
-$B echo "Enabling Multi-core power-saving.." >> $LOG
-$B chmod 644 /sys/devices/system/cpu/sched_mc_power_savings
-$B echo "2" > /sys/devices/system/cpu/sched_mc_power_savings
+ $B echo "Enabling Multi-core power-saving.." >> $LOG
+ $B chmod 644 /sys/devices/system/cpu/sched_mc_power_savings
+ $B echo "2" > /sys/devices/system/cpu/sched_mc_power_savings
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels ]; then
-$B chown root system /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
-$B chmod 664 /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+ $B chown root system /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+ $B chmod 664 /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
 fi;
 $B echo "[$TIME] 010 - ***CPU gear*** - OK" >> $LOG
 sync;

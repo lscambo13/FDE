@@ -58,7 +58,7 @@ if [ -e /system/engine/prop/firstboot ]; then
 fi;
 if [ -e /sys/fs/selinux/enforce ]; then
  $B chmod 666 /sys/fs/selinux/enforce
- $B setenforce 0
+ setenforce 0
  $B echo 0 > /sys/fs/selinux/enforce
  $B chmod 444 /sys/fs/selinux/enforce
 fi;

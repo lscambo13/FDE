@@ -21,7 +21,7 @@ if [ -e /sys/kernel/fast_charge/force_fast_charge ]; then
  $B echo "1" > /sys/kernel/fast_charge/force_fast_charge
 fi;
 if [ -e /sys/module/lpm_levels/parameters/sleep_disabled ]; then
- $B echo "LP mode support detected. Activating.." >> $LOG
+ $B echo "LowPower mode support detected. Activating.." >> $LOG
  $B echo "0" > /sys/module/lpm_levels/parameters/sleep_disabled
 fi;
 if [ -e /sys/class/lcd/panel/power_reduce ]; then

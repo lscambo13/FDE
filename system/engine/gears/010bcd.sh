@@ -86,6 +86,38 @@ if [ -e /system/engine/prop/ferakernel ]; then
  $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
  $B echo "576000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 fi;
+if [ -e /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/max_cpu_load ]; then
+$B echo "CPU0 SmartassH3 tuning.." >> $LOG
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/debug_mask
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/awake_ideal_freq
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sleep_ideal_freq
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/ramp_up_step
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/ramp_down_step
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/max_cpu_load
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/min_cpu_load
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/up_rate_us
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/down_rate_us
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sleep_wakeup_freq
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sample_rate_jiffies
+$B echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/debug_mask
+$B echo "998400" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/awake_ideal_freq
+$B echo "384000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sleep_ideal_freq
+$B echo "192000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/ramp_up_step
+$B echo "192000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/ramp_down_step
+$B echo "60" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/max_cpu_load
+$B echo "20" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/min_cpu_load
+$B echo "18000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/up_rate_us
+$B echo "18000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/down_rate_us
+$B echo "768000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sleep_wakeup_freq
+$B echo "2" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sample_rate_jiffies
+ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/boost_enabled ]; then
+  $B echo "Boost-pulse - on" >> $LOG
+  $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/boost_pulse
+  $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/boost_enabled
+  $B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/boost_enabled
+  $B echo "3000000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/boost_pulse
+ fi;
+fi;
 if [ -e /sys/module/workqueue/parameters/power_efficient ]; then
  $B echo "Enabling power-save workqueues.." >> $LOG
  $B chmod 644 /sys/module/workqueue/parameters/power_efficient

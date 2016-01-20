@@ -145,7 +145,7 @@ if [ -e /system/etc/init.d/999fde ]; then
 else
  $B echo "[$TIME] Run init.d scripts.." >> $LOG
  $B chmod 777 /system/etc/init.d/*
- $B run-parts /system/etc/init.d
+ $B run-parts /system/etc/init.d | $B tee -a $LOG
 fi;
 $B echo "" >> $LOG
 $B echo "" >> $LOG

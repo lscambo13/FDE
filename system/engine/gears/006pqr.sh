@@ -26,7 +26,7 @@ if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
    $B echo "X10 adreno 'config'.." >> $LOG
   elif [ ! -h /data/local/tmp/adreno_config.txt ]; then
    $B echo "Applying Adreno configurations.." >> $LOG
-   $B chmod 777 /system/engine/assets/adreno_config.txt
+   $B chmod 755 /system/engine/assets/adreno_config.txt
    $B ln -s /system/engine/assets/adreno_config.txt /data/local/tmp/adreno_config.txt
   fi;
  fi;

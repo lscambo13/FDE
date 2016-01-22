@@ -24,17 +24,15 @@ if [ -e /system/etc/hw_config.sh ]; then
 else
  $B sleep 18
 fi;
-
 if [ -e /system/engine/prop/firstboot ]; then
  $B rm -f $LOG
  $B touch $LOG
 fi;
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
-$B echo "[$TIME] FeraDroid Engine v0.19.b7" >> $LOG
+$B echo "[$TIME] FeraDroid Engine v0.19.b8" >> $LOG
 $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
-$B echo "[$TIME] CPU $CPU" >> $LOG
 $B echo "[$TIME] Architecture: $ARCH" >> $LOG
 $B echo "[$TIME] RAM: $RAM MB" >> $LOG
 $B echo "[$TIME] Kernel version: $KERNEL" >> $LOG
@@ -71,18 +69,18 @@ $B mount -o remount,rw /data
 $B echo "[$TIME] Set SElinux permissive.." >> $LOG
 $B echo "[$TIME] Correcting permissions.." >> $LOG
 $B chmod 644 /system/build.prop
-$B chmod 777 /system/engine
-$B chmod 777 /cache
+$B chmod 755 /system/engine
+$B chmod 755 /cache
 $B chmod -R 777 /cache/*
-$B chmod -R 777 /system/engine/*
-$B chmod -R 777 /system/engine/assets/*
-$B chmod -R 777 /system/engine/gears/*
-$B chmod -R 777 /system/engine/prop/*
+$B chmod -R 755 /system/engine/*
+$B chmod -R 755 /system/engine/assets/*
+$B chmod -R 755 /system/engine/gears/*
+$B chmod -R 755 /system/engine/prop/*
 sync;
 $B mount -o remount,rw /system
 $B rm -f /system/etc/sysctl.conf
 $B touch /system/etc/sysctl.conf
-$B chmod 777 /system/etc/sysctl.conf
+$B chmod 755 /system/etc/sysctl.conf
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "" >> $LOG
 $B echo "[$TIME] Running 001 gear.." >> $LOG
@@ -137,14 +135,6 @@ $B echo "[$TIME] END start" >> $LOG
 $SH /system/engine/end.sh
 $B echo "" >> $LOG
 $B echo "[$TIME] FDE status - OK" >> $LOG
-$B echo "" >> $LOG
-if [ -e /system/etc/init.d/999fde ]; then
- $B echo "[$TIME] Not FDE init.d run." >> $LOG
-else
- $B echo "[$TIME] Run init.d scripts.." >> $LOG
- $B chmod 777 /system/etc/init.d/*
- $B run-parts /system/etc/init.d | $B tee -a $LOG
-fi;
 $B echo "" >> $LOG
 $B echo "" >> $LOG
 $B echo "" >> $LOG

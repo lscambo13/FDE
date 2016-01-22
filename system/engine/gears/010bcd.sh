@@ -104,10 +104,10 @@ $B echo "998400" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/awake_ideal_f
 $B echo "576000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sleep_ideal_freq
 $B echo "192000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/ramp_up_step
 $B echo "192000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/ramp_down_step
-$B echo "63" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/max_cpu_load
-$B echo "21" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/min_cpu_load
-$B echo "18000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/up_rate_us
-$B echo "18000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/down_rate_us
+$B echo "60" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/max_cpu_load
+$B echo "20" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/min_cpu_load
+$B echo "12000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/up_rate_us
+$B echo "12000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/down_rate_us
 $B echo "768000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sleep_wakeup_freq
 $B echo "2" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sample_rate_jiffies
  if [ -e /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/boost_enabled ]; then

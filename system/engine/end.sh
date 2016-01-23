@@ -15,6 +15,13 @@ $B killall -9 com.google.process.gapps
 $B killall -9 com.google.android.gsf
 $B killall -9 com.google.android.gsf.persistent
 $SH /system/engine/gp.sh
+$B mount -o remount,rw /system
+if [ -e /etc/fstab ]; then
+ $B echo "FStab onboard.." >> $LOG
+else
+ $B cp /fstab.* /etc/fstab
+fi;
+$B fsck -A -C -V -T | $B tee -a $LOG
 $B echo "FStrim init.." >> $LOG
 $B echo "Trim /system" >> $LOG
 $B fstrim -v /system | $B tee -a $LOG

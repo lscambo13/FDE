@@ -8,14 +8,12 @@ id=`id`; id=`echo ${id#*=}`; id=`echo ${id%%\(*}`; id=`echo ${id%%gid*}`
 if [ "$id" != "0" ] && [ "$id" != "root" ]; then
 	sleep 1
 	echo "You are NOT running this script as root"
-	sleep 1
 	exit 69
 elif [ ! "`which zipalign`" ]; then
 	zipalign=
 	sleep 1
 	echo "Zipalign binary was NOT found."
 	echo ""
-	sleep 1
 fi 2>/dev/null
 busybox mount -o remount,rw /data 2>/dev/null
 busybox mount -o remount,rw /system 2>/dev/null

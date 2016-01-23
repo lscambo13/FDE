@@ -10,6 +10,7 @@ ARCH=$($B uname -m)
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 ROM=$(getprop ro.build.display.id)
 SDK=$(getprop ro.build.version.sdk)
+SF=$($B df -Ph /system | $B grep -v ^Filesystem | $B awk '{print $4}')
 if [ -e /system/engine/prop/firstboot ]; then
  LOG=/sdcard/Android/FDE.txt
 else
@@ -39,6 +40,7 @@ $B echo "[$TIME] Kernel version: $KERNEL" >> $LOG
 $B echo "[$TIME] ROM version: $ROM" >> $LOG
 $B echo "[$TIME] Android version: $(getprop ro.build.version.release)" >> $LOG
 $B echo "[$TIME] SDK: $SDK" >> $LOG
+$B echo "[$TIME] /system free space: $SDK" >> $LOG
 
 if [ -e /system/engine/prop/firstboot ]; then
  $B echo "[$TIME] First boot after deploy" >> $LOG

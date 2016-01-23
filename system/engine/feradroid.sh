@@ -51,8 +51,12 @@ if [ -e /system/engine/prop/firstboot ]; then
  fi;
  $B cp /system/engine/bin/zipalign /system/xbin/zipalign
  $B cp /system/engine/bin/boost /system/xbin/boost
- $B echo "[$TIME] Install Busybox.." >> $LOG
- $B --install -s /system/xbin
+ if [ -e /system/xbin/busybox ]; then
+  $B echo "[$TIME] Busybox was already installed." >> $LOG
+ else
+  $B echo "[$TIME] Install Busybox.." >> $LOG
+  $B --install -s /system/xbin
+ fi;
 fi;
 if [ -e /sys/fs/selinux/enforce ]; then
  $B chmod 666 /sys/fs/selinux/enforce

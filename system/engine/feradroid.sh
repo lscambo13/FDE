@@ -18,7 +18,7 @@ else
 fi;
 
 mount -o remount,rw /system
-chmod -R 777 /system/engine/bin/*
+chmod -R 755 /system/engine/bin/*
 setprop ro.feralab.engine 19
 if [ -e /system/etc/hw_config.sh ]; then
  $B sleep 45
@@ -71,8 +71,6 @@ $B mount -o remount,rw /data
 $B echo "[$TIME] Set SElinux permissive.." >> $LOG
 $B echo "[$TIME] Correcting permissions.." >> $LOG
 $B chmod 644 /system/build.prop
-$B chmod 755 /system/engine
-$B chmod 755 /cache
 $B chmod -R 777 /cache/*
 $B chmod -R 755 /system/engine/*
 $B chmod -R 755 /system/engine/assets/*

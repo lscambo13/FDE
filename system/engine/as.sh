@@ -4,6 +4,10 @@
 mount -o remount,rw /system
 chmod 755 /system/engine/bin/*
 
+if [ -e /sdcard/Android/FDE.txt ] ; then
+ rm -f /sdcard/Android/FDE.txt
+fi;
+
 if [ -e /engine.sh ] ; then
  mount -o remount,rw /system
  touch /system/engine/prop/ferakernel

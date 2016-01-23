@@ -40,7 +40,7 @@ $B echo "[$TIME] Kernel version: $KERNEL" >> $LOG
 $B echo "[$TIME] ROM version: $ROM" >> $LOG
 $B echo "[$TIME] Android version: $(getprop ro.build.version.release)" >> $LOG
 $B echo "[$TIME] SDK: $SDK" >> $LOG
-$B echo "[$TIME] /system free space: $SDK" >> $LOG
+$B echo "[$TIME] /system free space: $SF" >> $LOG
 
 if [ -e /system/engine/prop/firstboot ]; then
  $B echo "[$TIME] First boot after deploy" >> $LOG

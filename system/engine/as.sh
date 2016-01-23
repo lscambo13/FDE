@@ -17,6 +17,17 @@ if [ -e /engine.sh ] ; then
  exit
 fi;
 
+mount -o remount,rw /system
+if [ -e /system/etc/init.qcom.post_boot.sh ] ; then
+ rm -f /system/etc/init.d/999fde
+elif [ -e /system/etc/hw_config.sh ] ; then
+ rm -f /system/etc/init.d/999fde
+elif [ -e /system/xbin/zram.sh ]; then
+ rm -f /system/etc/init.d/999fde
+elif [ -e /system/etc/install-recovery.sh ]; then
+ rm -f /system/etc/init.d/999fde
+fi;
+
 if [ -e /system/etc/fde ] ; then
  exit
 elif [ -e /system/etc/init.qcom.post_boot.sh ] ; then
@@ -29,7 +40,6 @@ elif [ -e /system/etc/init.qcom.post_boot.sh ] ; then
  chmod 755 /system/etc/fde
  echo "1" > /system/etc/fde
  echo "" >> /system/etc/fde
- rm -f /system/etc/init.d/999fde
  exit
 elif [ -e /system/etc/hw_config.sh ] ; then
  mount -o remount,rw /system
@@ -41,7 +51,6 @@ elif [ -e /system/etc/hw_config.sh ] ; then
  chmod 755 /system/etc/fde
  echo "1" > /system/etc/fde
  echo "" >> /system/etc/fde
- rm -f /system/etc/init.d/999fde
  exit
 elif [ -e /system/xbin/zram.sh ]; then
  mount -o remount,rw /system
@@ -57,7 +66,6 @@ elif [ -e /system/xbin/zram.sh ]; then
  chmod 755 /system/etc/fde
  echo "1" > /system/etc/fde
  echo "" >> /system/etc/fde
- rm -f /system/etc/init.d/999fde
  exit
 elif [ -e /system/etc/install-recovery.sh ]; then
  mount -o remount,rw /system
@@ -75,7 +83,6 @@ elif [ -e /system/etc/install-recovery.sh ]; then
  chmod 755 /system/etc/fde
  echo "1" > /system/etc/fde
  echo "" >> /system/etc/fde
- rm -f /system/etc/init.d/999fde
  exit
 fi;
 

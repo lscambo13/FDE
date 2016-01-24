@@ -133,6 +133,22 @@ if [ -e /sys/devices/system/cpu/sched_mc_power_savings ]; then
  $B chmod 644 /sys/devices/system/cpu/sched_mc_power_savings
  $B echo "2" > /sys/devices/system/cpu/sched_mc_power_savings
 fi;
+if [ -e /system/etc/thermald.conf ]; then 
+ $B mount -o remount,rw /system
+ $B echo "Thermal control tune-up.." >> $LOG
+ $B rm -f /system/etc/thermald.conf
+ $B rm -f /system/etc/thermald-8974.conf
+ $B rm -f /system/etc/thermal-engine.conf
+ $B rm -f /system/etc/thermal-engine-8974.conf
+ $B cp -f /system/engine/assets/thermald.conf /system/etc/thermald.conf
+ $B cp -f /system/engine/assets/thermald-8974.conf /system/etc/thermald-8974.conf
+ $B cp -f /system/engine/assets/thermal-engine.conf /system/etc/thermal-engine.conf
+ $B cp -f /system/engine/assets/thermal-engine-8974.conf /system/etc/thermal-engine-8974.conf
+ $B chmod 644 /system/etc/thermald.conf
+ $B chmod 644 /system/etc/thermald-8974.conf
+ $B chmod 644 /system/etc/thermal-engine.conf
+ $B chmod 644 /system/etc/thermal-engine-8974.conf
+fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels ]; then
  $B chown root system /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
  $B chmod 664 /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels

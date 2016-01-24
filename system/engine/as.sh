@@ -24,11 +24,14 @@ fi;
 mount -o remount,rw /system
 if [ -e /system/etc/init.qcom.post_boot.sh ] ; then
  rm -f /system/etc/init.d/999fde
-elif [ -e /system/etc/hw_config.sh ] ; then
+fi;
+if [ -e /system/etc/hw_config.sh ] ; then
  rm -f /system/etc/init.d/999fde
-elif [ -e /system/xbin/zram.sh ]; then
+fi;
+if [ -e /system/xbin/zram.sh ]; then
  rm -f /system/etc/init.d/999fde
-elif [ -e /system/etc/install-recovery.sh ]; then
+fi;
+if [ -e /system/xbin/install-recovery-2.sh ]; then
  rm -f /system/etc/init.d/999fde
 fi;
 

@@ -20,6 +20,11 @@ if [ -e /sys/kernel/fast_charge/force_fast_charge ]; then
  $B echo "Fast charge support detected. Activating.." >> $LOG
  $B echo "1" > /sys/kernel/fast_charge/force_fast_charge
 fi;
+if [ -e /sys/devices/platform/sec-battery/power_supply/battery/charge_current_override ]; then
+ $B echo "(2)Fast charge support detected. Activating.." >> $LOG
+ $B echo "1200" > /sys/devices/platform/sec-battery/power_supply/battery/charge_current_override
+ $B echo "1200" > /sys/devices/platform/i2c-gpio.15/i2c-15/15-0034/power_supply/sec-charger/charge_current_override
+fi;
 if [ -e /sys/module/lpm_levels/parameters/sleep_disabled ]; then
  $B echo "LowPower mode support detected. Activating.." >> $LOG
  $B echo "0" > /sys/module/lpm_levels/parameters/sleep_disabled

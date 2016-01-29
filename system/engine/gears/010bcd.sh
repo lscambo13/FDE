@@ -118,6 +118,56 @@ $B echo "2" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sample_rate_jiffie
   $B echo "3000000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/boost_pulse
  fi;
 fi;
+if [ -e /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/max_cpu_load ]; then
+$B echo "CPU0 SmartassH3 tuning.." >> $LOG
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/debug_mask
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/awake_ideal_freq
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/sleep_ideal_freq
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/ramp_up_step
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/ramp_down_step
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/max_cpu_load
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/min_cpu_load
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/up_rate_us
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/down_rate_us
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/sleep_wakeup_freq
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/sample_rate_jiffies
+$B echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/debug_mask
+$B echo "998400" > /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/awake_ideal_freq
+$B echo "576000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/sleep_ideal_freq
+$B echo "192000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/ramp_up_step
+$B echo "192000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/ramp_down_step
+$B echo "60" > /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/max_cpu_load
+$B echo "20" > /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/min_cpu_load
+$B echo "18000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/up_rate_us
+$B echo "18000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/down_rate_us
+$B echo "768000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/sleep_wakeup_freq
+$B echo "2" > /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/sample_rate_jiffies
+fi;
+if [ -e /sys/devices/system/cpu/cpu0/cpufreq/smartass/max_cpu_load ]; then
+$B echo "CPU0 SmartassH3 tuning.." >> $LOG
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartass/debug_mask
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartass/awake_ideal_freq
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartass/sleep_ideal_freq
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartass/ramp_up_step
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartass/ramp_down_step
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartass/max_cpu_load
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartass/min_cpu_load
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartass/up_rate_us
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartass/down_rate_us
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartass/sleep_wakeup_freq
+$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartass/sample_rate_jiffies
+$B echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/smartass/debug_mask
+$B echo "998400" > /sys/devices/system/cpu/cpu0/cpufreq/smartass/awake_ideal_freq
+$B echo "576000" > /sys/devices/system/cpu/cpu0/cpufreq/smartass/sleep_ideal_freq
+$B echo "192000" > /sys/devices/system/cpu/cpu0/cpufreq/smartass/ramp_up_step
+$B echo "192000" > /sys/devices/system/cpu/cpu0/cpufreq/smartass/ramp_down_step
+$B echo "60" > /sys/devices/system/cpu/cpu0/cpufreq/smartass/max_cpu_load
+$B echo "20" > /sys/devices/system/cpu/cpu0/cpufreq/smartass/min_cpu_load
+$B echo "18000" > /sys/devices/system/cpu/cpu0/cpufreq/smartass/up_rate_us
+$B echo "18000" > /sys/devices/system/cpu/cpu0/cpufreq/smartass/down_rate_us
+$B echo "768000" > /sys/devices/system/cpu/cpu0/cpufreq/smartass/sleep_wakeup_freq
+$B echo "2" > /sys/devices/system/cpu/cpu0/cpufreq/smartass/sample_rate_jiffies
+fi;
 if [ -e /sys/module/workqueue/parameters/power_efficient ]; then
  $B echo "Enabling power-save workqueues.." >> $LOG
  $B chmod 644 /sys/module/workqueue/parameters/power_efficient

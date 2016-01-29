@@ -89,12 +89,20 @@ $B echo "nameserver 8.8.8.8" > /system/etc/resolv.conf
 $B echo "nameserver 8.8.4.4" >> /system/etc/resolv.conf
 $B echo "" >> /system/etc/resolv.conf
 sync;
+$B mount -o remount,rw /system
+if [ -e /system/engine/prop/firstboot ]; then
+ $B rm /system/etc/ppp/options
+ $B cp /system/engine/assets/options /system/etc/ppp/options
+ $B chmod 555 /system/etc/ppp/options
+ $B echo "Data compression enabled." >> $LOG
+fi;
 if [ "$SDK" -le "14" ]; then
  if [ -e /system/xbin/sqlite3 ]; then
   $B echo "Tuning WiFi.." >> $LOG
   /system/xbin/sqlite3 /data/data/com.android.providers.settings/databases/settings.db "INSERT INTO secure (name, value) VALUES ('wifi_country_code', 'JP');"
  fi;
 fi;
+
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 008 - ***Network gear*** - OK" >> $LOG
 sync;

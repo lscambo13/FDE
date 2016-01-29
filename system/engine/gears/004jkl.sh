@@ -31,15 +31,9 @@ if [ -e /mnt/sd-ext ]; then
  $B sleep 1
 fi;
 
-for y in $($B mount | grep relatime | cut -d " " -f3);
-do
- $B mount -o noatime,remount "${y}"
- $B echo "Remounting relatime partitions.." >> $LOG
-done;
-
 for x in $($B mount | grep ext4 | cut -d " " -f3);
 do
- $B mount -o noatime,remount,rw,discard,barrier=0,commit=60,noauto_da_alloc,delalloc "${x}"
+ $B mount -o remount,noatime,delalloc,nosuid,nodev,nodiratime,barrier=0,nobh,commit=90,discard,data=writeback,rw "${x}"
  $B echo "Remounting EXT4 partitions.." >> $LOG
 done;
 

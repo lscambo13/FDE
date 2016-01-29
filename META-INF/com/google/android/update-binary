@@ -25,6 +25,7 @@ chmod 755 /fde/system/engine/*
 export PATH=$PATH:/fde/system/engine/bin
 rm -Rf /system/engine/*
 rm -Rf /system/etc/init.d/*
+rm -f /sdcard/Android/FDE.txt
 unzip -o "$ZIP"
 chmod -R 755 /system/engine
 chmod -R 755 /system/engine/*
@@ -35,6 +36,7 @@ chmod -R 755 /system/engine/prop/*
 chmod -R 755 /system/etc/init.d/*
 /system/engine/bin/busybox --install -s /system/xbin
 /system/engine/as.sh
+rm -Rf /fde/*
 umount /system
 ui_print ""
 ui_print ""

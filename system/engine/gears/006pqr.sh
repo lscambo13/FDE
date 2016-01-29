@@ -131,7 +131,7 @@ else
  setprop debug.performance.tuning 1
  setprop dev.pm.dyn_samplingrate 1
  setprop ro.floatingtouch.available 1
- setprop ro.min.fling_velocity 7000
+ setprop ro.min.fling_velocity 9000
  setprop ro.max.fling_velocity 12000
  setprop persist.sys.ui.hw 1
  setprop persist.hwc.mdpcomp.enable true
@@ -144,12 +144,6 @@ else
  setprop ro.media.enc.hprof.vid.bps 8000000
  setprop ro.media.enc.jpeg.quality 100
  setprop media.stagefright.enable-player true
- setprop media.stagefright.enable-meta true
- setprop media.stagefright.enable-scan true
- setprop media.stagefright.enable-http true
- setprop media.stagefright.enable-aac true
- setprop media.stagefright.enable-qcp true
- setprop media.stagefright.enable-record true
  setprop touch.presure.scale 0.1
  setprop persist.service.lgospd.enable false
  setprop persist.service.pcsync.enable false
@@ -158,6 +152,7 @@ else
  setprop ro.telephony.call_ring.delay 0
  setprop persist.sys.strictmode.disable true
  setprop vidc.debug.level 0
+ ro.wmt.blcr.enable 0
 fi;
 
 TIME=$($B date | $B awk '{ print $4 }')

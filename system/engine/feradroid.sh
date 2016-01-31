@@ -137,8 +137,8 @@ TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] END start" >> $LOG
 /system/engine/end.sh
 $B echo "" >> $LOG
+TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] FDE status - OK" >> $LOG
-$B echo "" >> $LOG
 if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,rw /system
  $B rm -f /system/engine/prop/firstboot

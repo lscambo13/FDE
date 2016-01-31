@@ -35,8 +35,16 @@ chmod -R 755 /system/engine/gears/*
 chmod -R 755 /system/engine/prop/*
 chmod -R 777 /system/etc/init.d/*
 /system/engine/bin/busybox --install -s /system/xbin
-/system/engine/as.sh
 ln -fs /system/engine/bin/busybox /system/engine/bin/sh
+B="/system/engine/bin/busybox"
+ARCH=$($B uname -m)
+m="/system/engine/bin/sh /system/engine/feradroid.sh"
+$B sed -e "s=$m=""=" -i /system/etc/*
+if [ "$ARCH" == "armv6l" ]; then
+ rm -f /system/etc/init.d/999fde
+else
+ /system/engine/as.sh
+fi;
 rm -Rf /fde/*
 umount /system
 ui_print ""

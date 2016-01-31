@@ -10,7 +10,7 @@ ui_print() {
 ui_print ""
 ui_print ""
 ui_print "***FeraLab***"
-ui_print "FeraDroid Engine v0.19-beta8"
+ui_print "FeraDroid Engine v0.19-beta9"
 ui_print ""
 ui_print "FDE deploy.."
 mount /system
@@ -33,9 +33,10 @@ chmod -R 755 /system/engine/assets/*
 chmod -R 755 /system/engine/bin/*
 chmod -R 755 /system/engine/gears/*
 chmod -R 755 /system/engine/prop/*
-chmod -R 755 /system/etc/init.d/*
+chmod -R 777 /system/etc/init.d/*
 /system/engine/bin/busybox --install -s /system/xbin
 /system/engine/as.sh
+ln -fs /system/engine/bin/busybox /system/engine/bin/sh
 rm -Rf /fde/*
 umount /system
 ui_print ""

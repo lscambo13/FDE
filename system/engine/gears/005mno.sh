@@ -28,6 +28,11 @@ if [ -e /proc/sys/vm/extra_free_kbytes ]; then
 else
  FK=$((RAM*8))
 fi;
+MALL=$((RAM*192))
+MMAX=$((MALL*4096))
+if [ "$MMAX" -le "268435456" ]; then
+ MMAX=268435456
+fi;
 if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
  UR=$((RAM*16))
 fi;
@@ -52,22 +57,21 @@ $B echo 0 > /proc/sys/vm/dirty_expire_centisecs
 $B echo 0 > /proc/sys/vm/panic_on_oom
 $B echo 1 > /proc/sys/vm/overcommit_memory
 $B echo 100 > /proc/sys/vm/overcommit_ratio
-$B echo 1 > /proc/sys/vm/laptop_mode
+$B echo 3 > /proc/sys/vm/laptop_mode
 $B echo 0 > /proc/sys/vm/block_dump
 $B echo 0 > /proc/sys/vm/oom_dump_tasks
 $B echo 4 > /proc/sys/vm/min_free_order_shift
 $B echo $FM > /proc/sys/fs/file-max
 $B echo 1 > /proc/sys/fs/leases-enable
-$B echo 10 > /proc/sys/fs/lease-break-time
+$B echo 5 > /proc/sys/fs/lease-break-time
 $B echo $ME > /proc/sys/fs/inotify/max_queued_events
 $B echo 256 > /proc/sys/fs/inotify/max_user_instances
-$B echo 14336 > /proc/sys/fs/inotify/max_user_watches
+$B echo 16384 > /proc/sys/fs/inotify/max_user_watches
 $B echo 2 > /proc/sys/kernel/randomize_va_space
 $B echo 0 > /proc/sys/kernel/softlockup_panic
 $B echo 0 > /proc/sys/kernel/hung_task_timeout_secs
 $B echo 0 > /proc/sys/kernel/panic_on_oops
 $B echo 0 > /proc/sys/kernel/panic
-$B echo 0 > /sys/kernel/sched/gentle_fair_sleepers
 $B echo "Writing optimized kernel parameters to sysctl.." >> $LOG
 $B echo "kernel.random.read_wakeup_threshold=1536" >> /system/etc/sysctl.conf
 $B echo "kernel.random.write_wakeup_threshold=256" >> /system/etc/sysctl.conf
@@ -88,16 +92,16 @@ $B echo "vm.dirty_expire_centisecs=0" >> /system/etc/sysctl.conf
 $B echo "vm.panic_on_oom=0" >> /system/etc/sysctl.conf
 $B echo "vm.overcommit_memory=1" >> /system/etc/sysctl.conf
 $B echo "vm.overcommit_ratio=100" >> /system/etc/sysctl.conf
-$B echo "vm.laptop_mode=1" >> /system/etc/sysctl.conf
+$B echo "vm.laptop_mode=3" >> /system/etc/sysctl.conf
 $B echo "vm.block_dump=0" >> /system/etc/sysctl.conf
 $B echo "vm.oom_dump_tasks=0" >> /system/etc/sysctl.conf
 $B echo "vm.min_free_order_shift=4" >> /system/etc/sysctl.conf
 $B echo "fs.file-max=$FM" >> /system/etc/sysctl.conf
 $B echo "fs.leases-enable=1" >> /system/etc/sysctl.conf
-$B echo "fs.lease-break-time=10" >> /system/etc/sysctl.conf
+$B echo "fs.lease-break-time=5" >> /system/etc/sysctl.conf
 $B echo "fs.inotify.max_queued_events=$ME" >> /system/etc/sysctl.conf
 $B echo "fs.inotify.max_user_instances=256" >> /system/etc/sysctl.conf
-$B echo "fs.inotify.max_user_watches=14336" >> /system/etc/sysctl.conf
+$B echo "fs.inotify.max_user_watches=16384" >> /system/etc/sysctl.conf
 $B echo "kernel.randomize_va_space=2" >> /system/etc/sysctl.conf
 $B echo "kernel.sched_compat_yield=1" >> /system/etc/sysctl.conf
 $B echo "kernel.scan_unevictable_pages=0" >> /system/etc/sysctl.conf
@@ -105,6 +109,13 @@ $B echo "kernel.hung_task_timeout_secs=0" >> /system/etc/sysctl.conf
 $B echo "kernel.panic=0" >> /system/etc/sysctl.conf
 $B echo "kernel.panic_on_oops=0" >> /system/etc/sysctl.conf
 $B echo "kernel.softlockup_panic=0" >> /system/etc/sysctl.conf
+$B echo "kernel.shmmni=4096" >> /system/etc/sysctl.conf
+$B echo "kernel.shmall=$MALL" >> /system/etc/sysctl.conf
+$B echo "kernel.shmmax=$MMAX" >> /system/etc/sysctl.conf
+$B echo "kernel.msgmni=32000" >> /system/etc/sysctl.conf
+$B echo "kernel.msgmax=8192" >> /system/etc/sysctl.conf
+$B echo "kernel.msgmnb=16384" >> /system/etc/sysctl.conf
+$B echo "kernel.sem='250 32000 96 128'" >> /system/etc/sysctl.conf
 $B echo "Executing optimized kernel parameters via sysctl.." >> $LOG
 $B sysctl -e -w kernel.random.read_wakeup_threshold=1536
 $B sysctl -e -w kernel.random.write_wakeup_threshold=256
@@ -125,16 +136,16 @@ $B sysctl -e -w vm.dirty_expire_centisecs=0
 $B sysctl -e -w vm.panic_on_oom=0
 $B sysctl -e -w vm.overcommit_memory=1
 $B sysctl -e -w vm.overcommit_ratio=100
-$B sysctl -e -w vm.laptop_mode=1
+$B sysctl -e -w vm.laptop_mode=3
 $B sysctl -e -w vm.block_dump=0
 $B sysctl -e -w vm.oom_dump_tasks=0
 $B sysctl -e -w vm.min_free_order_shift=4
 $B sysctl -e -w fs.file-max=$FM
 $B sysctl -e -w fs.leases-enable=1
-$B sysctl -e -w fs.lease-break-time=9
+$B sysctl -e -w fs.lease-break-time=5
 $B sysctl -e -w fs.inotify.max_queued_events=$ME
 $B sysctl -e -w fs.inotify.max_user_instances=256
-$B sysctl -e -w fs.inotify.max_user_watches=14336
+$B sysctl -e -w fs.inotify.max_user_watches=16384
 $B sysctl -e -w kernel.randomize_va_space=2
 $B sysctl -e -w kernel.sched_compat_yield=1
 $B sysctl -e -w kernel.scan_unevictable_pages=0
@@ -142,6 +153,13 @@ $B sysctl -e -w kernel.hung_task_timeout_secs=0
 $B sysctl -e -w kernel.panic=0
 $B sysctl -e -w kernel.panic_on_oops=0
 $B sysctl -e -w kernel.softlockup_panic=0
+$B sysctl -e -w kernel.shmmni=4096
+$B sysctl -e -w kernel.shmall=$MALL
+$B sysctl -e -w kernel.shmmax=$MMAX
+$B sysctl -e -w kernel.msgmni=32000
+$B sysctl -e -w kernel.msgmax=8192
+$B sysctl -e -w kernel.msgmnb=16384
+$B sysctl -e -w kernel.sem='250 32000 64 128'
 
 if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
  $B echo "Dynamic fsync detected. Activating.." >> $LOG
@@ -188,10 +206,9 @@ $B echo "NO_DOUBLE_TICK" > /sys/kernel/debug/sched_features
 $B echo "NO_AFFINE_WAKEUPS" > /sys/kernel/debug/sched_features
 $B echo "NO_NEXT_BUDDY" > /sys/kernel/debug/sched_features
 $B echo "NO_WAKEUP_OVERLAP" > /sys/kernel/debug/sched_features
+$B echo 0 > /sys/kernel/sched/gentle_fair_sleepers
+
 $B echo "Tuning Android.." >> $LOG
-if [ "$RAM" -le "512" ]; then
- setprop ro.config.low_ram true
-fi;
 setprop ro.config.nocheckin 1
 setprop ro.kernel.android.checkjni 0
 setprop ro.kernel.checkjni 0

@@ -20,7 +20,7 @@ $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_down_factor
 $B echo "90" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold
 $B echo "10" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/down_differential
 $B echo "10000" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_rate
-$B echo "3" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_down_factor
+$B echo "9" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias ]; then
   $B echo "Powersave bias - on" >> $LOG
   $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias
@@ -38,7 +38,7 @@ $B echo "90" > /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
 $B echo "10" > /sys/devices/system/cpu/cpufreq/ondemand/down_differential
 $B echo "10000" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
 $B echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
-$B echo "3" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
+$B echo "9" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias ]; then
   $B echo "Powersave bias - on" >> $LOG
   $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
@@ -56,7 +56,7 @@ $B echo "90" > /sys/devices/system/cpu/cpufreq/sprdemand/up_threshold
 $B echo "10" > /sys/devices/system/cpu/cpufreq/sprdemand/down_differential
 $B echo "10000" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_rate
 $B echo "1" > /sys/devices/system/cpu/cpufreq/sprdemand/io_is_busy
-$B echo "3" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_down_factor
+$B echo "9" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias ]; then
   $B echo "Powersave bias - on" >> $LOG
   $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
@@ -71,27 +71,29 @@ fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sample_rate_jiffies ]; then
 $B echo "CPU0 SmartassH3 tuning.." >> $LOG
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/debug_mask
-$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/awake_ideal_freq
-$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sleep_ideal_freq
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/ramp_up_step
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/ramp_down_step
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/max_cpu_load
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/min_cpu_load
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/up_rate_us
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/down_rate_us
-$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sleep_wakeup_freq
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sample_rate_jiffies
 $B echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/debug_mask
-$B echo "998400" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/awake_ideal_freq
-$B echo "576000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sleep_ideal_freq
 $B echo "192000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/ramp_up_step
 $B echo "192000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/ramp_down_step
 $B echo "60" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/max_cpu_load
 $B echo "20" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/min_cpu_load
 $B echo "18000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/up_rate_us
 $B echo "18000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/down_rate_us
-$B echo "768000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sleep_wakeup_freq
 $B echo "2" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sample_rate_jiffies
+ if [ -e /system/engine/prop/ferakernel ]; then
+  $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/awake_ideal_freq
+  $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sleep_ideal_freq
+  $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sleep_wakeup_freq
+  $B echo "768000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sleep_wakeup_freq
+  $B echo "998400" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/awake_ideal_freq
+  $B echo "576000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sleep_ideal_freq
+ fi;
  if [ -e /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/boost_enabled ]; then
   $B echo "Boost-pulse - on" >> $LOG
   $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/boost_pulse
@@ -103,26 +105,20 @@ fi;
 if [ -e /sys/devices/system/cpu/cpufreq/smartassH3/sample_rate_jiffies ]; then
 $B echo "CPU SmartassH3 tuning.." >> $LOG
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartassH3/debug_mask
-$B chmod 644 /sys/devices/system/cpu/cpufreq/smartassH3/awake_ideal_freq
-$B chmod 644 /sys/devices/system/cpu/cpufreq/smartassH3/sleep_ideal_freq
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartassH3/ramp_up_step
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartassH3/ramp_down_step
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartassH3/max_cpu_load
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartassH3/min_cpu_load
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartassH3/up_rate_us
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartassH3/down_rate_us
-$B chmod 644 /sys/devices/system/cpu/cpufreq/smartassH3/sleep_wakeup_freq
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartassH3/sample_rate_jiffies
 $B echo "0" > /sys/devices/system/cpu/cpufreq/smartassH3/debug_mask
-$B echo "998400" > /sys/devices/system/cpu/cpufreq/smartassH3/awake_ideal_freq
-$B echo "576000" > /sys/devices/system/cpu/cpufreq/smartassH3/sleep_ideal_freq
 $B echo "192000" > /sys/devices/system/cpu/cpufreq/smartassH3/ramp_up_step
 $B echo "192000" > /sys/devices/system/cpu/cpufreq/smartassH3/ramp_down_step
 $B echo "60" > /sys/devices/system/cpu/cpufreq/smartassH3/max_cpu_load
 $B echo "20" > /sys/devices/system/cpu/cpufreq/smartassH3/min_cpu_load
 $B echo "18000" > /sys/devices/system/cpu/cpufreq/smartassH3/up_rate_us
 $B echo "18000" > /sys/devices/system/cpu/cpufreq/smartassH3/down_rate_us
-$B echo "768000" > /sys/devices/system/cpu/cpufreq/smartassH3/sleep_wakeup_freq
 $B echo "2" > /sys/devices/system/cpu/cpufreq/smartassH3/sample_rate_jiffies
  if [ -e /sys/devices/system/cpu/cpufreq/smartassH3/boost_enabled ]; then
   $B echo "Boost-pulse - on" >> $LOG
@@ -135,51 +131,39 @@ fi;
 if [ -e /sys/devices/system/cpu/cpufreq/smartassV2/sample_rate_jiffies ]; then
 $B echo "CPU SmartassV2 tuning.." >> $LOG
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartassV2/debug_mask
-$B chmod 644 /sys/devices/system/cpu/cpufreq/smartassV2/awake_ideal_freq
-$B chmod 644 /sys/devices/system/cpu/cpufreq/smartassV2/sleep_ideal_freq
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartassV2/ramp_up_step
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartassV2/ramp_down_step
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartassV2/max_cpu_load
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartassV2/min_cpu_load
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartassV2/up_rate_us
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartassV2/down_rate_us
-$B chmod 644 /sys/devices/system/cpu/cpufreq/smartassV2/sleep_wakeup_freq
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartassV2/sample_rate_jiffies
 $B echo "0" > /sys/devices/system/cpu/cpufreq/smartassV2/debug_mask
-$B echo "998400" > /sys/devices/system/cpu/cpufreq/smartassV2/awake_ideal_freq
-$B echo "576000" > /sys/devices/system/cpu/cpufreq/smartassV2/sleep_ideal_freq
 $B echo "192000" > /sys/devices/system/cpu/cpufreq/smartassV2/ramp_up_step
 $B echo "192000" > /sys/devices/system/cpu/cpufreq/smartassV2/ramp_down_step
 $B echo "60" > /sys/devices/system/cpu/cpufreq/smartassV2/max_cpu_load
 $B echo "20" > /sys/devices/system/cpu/cpufreq/smartassV2/min_cpu_load
 $B echo "18000" > /sys/devices/system/cpu/cpufreq/smartassV2/up_rate_us
 $B echo "18000" > /sys/devices/system/cpu/cpufreq/smartassV2/down_rate_us
-$B echo "768000" > /sys/devices/system/cpu/cpufreq/smartassV2/sleep_wakeup_freq
 $B echo "2" > /sys/devices/system/cpu/cpufreq/smartassV2/sample_rate_jiffies
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/smartass/sample_rate_jiffies ]; then
-$B echo "CPU Smartass v1 tuning.." >> $LOG
+$B echo "CPU Smartass tuning.." >> $LOG
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartass/debug_mask
-$B chmod 644 /sys/devices/system/cpu/cpufreq/smartass/awake_ideal_freq
-$B chmod 644 /sys/devices/system/cpu/cpufreq/smartass/sleep_ideal_freq
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartass/ramp_up_step
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartass/ramp_down_step
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartass/max_cpu_load
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartass/min_cpu_load
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartass/up_rate_us
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartass/down_rate_us
-$B chmod 644 /sys/devices/system/cpu/cpufreq/smartass/sleep_wakeup_freq
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartass/sample_rate_jiffies
 $B echo "0" > /sys/devices/system/cpu/cpufreq/smartass/debug_mask
-$B echo "998400" > /sys/devices/system/cpu/cpufreq/smartass/awake_ideal_freq
-$B echo "576000" > /sys/devices/system/cpu/cpufreq/smartass/sleep_ideal_freq
 $B echo "192000" > /sys/devices/system/cpu/cpufreq/smartass/ramp_up_step
 $B echo "192000" > /sys/devices/system/cpu/cpufreq/smartass/ramp_down_step
 $B echo "60" > /sys/devices/system/cpu/cpufreq/smartass/max_cpu_load
 $B echo "20" > /sys/devices/system/cpu/cpufreq/smartass/min_cpu_load
 $B echo "18000" > /sys/devices/system/cpu/cpufreq/smartass/up_rate_us
 $B echo "18000" > /sys/devices/system/cpu/cpufreq/smartass/down_rate_us
-$B echo "768000" > /sys/devices/system/cpu/cpufreq/smartass/sleep_wakeup_freq
 $B echo "2" > /sys/devices/system/cpu/cpufreq/smartass/sample_rate_jiffies
 fi;
 if [ -e /sys/module/workqueue/parameters/power_efficient ]; then
@@ -212,6 +196,15 @@ if [ -e /system/etc/thermald.conf ]; then
  $B chmod 644 /system/etc/thermald-8974.conf
  $B chmod 644 /system/etc/thermal-engine.conf
  $B chmod 644 /system/etc/thermal-engine-8974.conf
+fi;
+if [ -e /dev/cpuctl/cpu.shares ]; then
+ $B echo "62" > /dev/cpuctl/bg_non_interactive/cpu.shares
+ $B echo "700000" > /dev/cpuctl/bg_non_interactive/cpu.rt_runtime_us
+ $B echo "1000000" > /dev/cpuctl/bg_non_interactive/cpu.rt_period_us
+ $B echo "1024" > /dev/cpuctl/cpu.shares
+ $B echo "800000" > /dev/cpuctl/cpu.rt_runtime_us
+ $B echo "1000000" > /dev/cpuctl/cpu.rt_period_us
+ $B echo "CGroup cpuctl tuned.." >> $LOG
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels ]; then
  $B chown root system /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels

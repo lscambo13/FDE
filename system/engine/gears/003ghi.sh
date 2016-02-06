@@ -192,6 +192,9 @@ $B echo "  Cached:             $RAMcached MB" >> $LOG
 $B echo "  SWAP/ZRAM total:    $SWAP MB" >> $LOG
 $B echo "  SWAP/ZRAM used:     $SWAPused MB" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
+if [ "$RAM" -le "512" ]; then
+ setprop ro.config.low_ram true
+fi;
 $B echo "[$TIME] 003 - ***RAM gear*** - OK" >> $LOG
 sync;
 

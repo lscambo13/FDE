@@ -100,7 +100,7 @@ $B echo "2" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sample_rate_jiffie
   $B echo "3000000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/boost_pulse
  fi;
 fi;
-if [ -e /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sample_rate_jiffies ]; then
+if [ -e /sys/devices/system/cpu/cpufreq/smartassH3/sample_rate_jiffies ]; then
 $B echo "CPU SmartassH3 tuning.." >> $LOG
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartassH3/debug_mask
 $B chmod 644 /sys/devices/system/cpu/cpufreq/smartassH3/awake_ideal_freq

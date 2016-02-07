@@ -64,6 +64,9 @@ $B sleep 1
 $B echo 3 > /proc/sys/vm/drop_caches
 $B sleep 2
 sync;
+TIME=$($B date | $B awk '{ print $4 }')
+$B echo "[$TIME] Applying kernel configuration.." >> $LOG
+sysctl -p | $B tee -a $LOG
 $B echo "Remounting /system - RO" >> $LOG
 $B mount -o remount,ro /system
 $B free -m | $B tee -a $LOG

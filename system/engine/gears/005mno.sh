@@ -72,7 +72,21 @@ $B echo 0 > /proc/sys/kernel/softlockup_panic
 $B echo 0 > /proc/sys/kernel/hung_task_timeout_secs
 $B echo 0 > /proc/sys/kernel/panic_on_oops
 $B echo 0 > /proc/sys/kernel/panic
+$B echo 4096 > /proc/sys/kernel/shmmni
+$B echo $MALL > /proc/sys/kernel/shmall
+$B echo $MMAX > /proc/sys/kernel/shmmax
+$B echo 16384 > /proc/sys/kernel/msgmni
+$B echo 8192 > /proc/sys/kernel/msgmax
+$B echo 8192 > /proc/sys/kernel/msgmnb
+$B echo '250 32000 96 128' > /proc/sys/kernel/sem
+$B echo 6000000 > /proc/sys/kernel/sched_latency_ns
+$B echo 1200000 > /proc/sys/kernel/sched_wakeup_granularity_ns
+$B echo 120000 > /proc/sys/kernel/sched_min_granularity_ns
+$B echo 256000 > /proc/sys/kernel/sched_shares_ratelimit
+$B echo 990000 > /proc/sys/kernel/sched_rt_runtime_us
+$B echo 1000000 > /proc/sys/kernel/sched_rt_period_us
 $B echo "Writing optimized kernel parameters to sysctl.." >> $LOG
+$B mount -o remount,rw /system
 $B echo "kernel.random.read_wakeup_threshold=1536" >> /system/etc/sysctl.conf
 $B echo "kernel.random.write_wakeup_threshold=256" >> /system/etc/sysctl.conf
 $B echo "vm.vfs_cache_pressure=90" >> /system/etc/sysctl.conf
@@ -112,10 +126,16 @@ $B echo "kernel.softlockup_panic=0" >> /system/etc/sysctl.conf
 $B echo "kernel.shmmni=4096" >> /system/etc/sysctl.conf
 $B echo "kernel.shmall=$MALL" >> /system/etc/sysctl.conf
 $B echo "kernel.shmmax=$MMAX" >> /system/etc/sysctl.conf
-$B echo "kernel.msgmni=32000" >> /system/etc/sysctl.conf
+$B echo "kernel.msgmni=16384" >> /system/etc/sysctl.conf
 $B echo "kernel.msgmax=8192" >> /system/etc/sysctl.conf
-$B echo "kernel.msgmnb=16384" >> /system/etc/sysctl.conf
+$B echo "kernel.msgmnb=8192" >> /system/etc/sysctl.conf
 $B echo "kernel.sem='250 32000 96 128'" >> /system/etc/sysctl.conf
+$B echo "kernel.sched_latency_ns=6000000" >> /system/etc/sysctl.conf
+$B echo "kernel.sched_wakeup_granularity_ns=1200000" >> /system/etc/sysctl.conf
+$B echo "kernel.sched_min_granularity_ns=120000" >> /system/etc/sysctl.conf
+$B echo "kernel.sched_shares_ratelimit=256000" >> /system/etc/sysctl.conf
+$B echo "kernel.sched_rt_runtime_us=990000" >> /system/etc/sysctl.conf
+$B echo "kernel.sched_rt_period_us=1000000" >> /system/etc/sysctl.conf
 $B echo "Executing optimized kernel parameters via sysctl.." >> $LOG
 $B sysctl -e -w kernel.random.read_wakeup_threshold=1536
 $B sysctl -e -w kernel.random.write_wakeup_threshold=256
@@ -156,10 +176,16 @@ $B sysctl -e -w kernel.softlockup_panic=0
 $B sysctl -e -w kernel.shmmni=4096
 $B sysctl -e -w kernel.shmall=$MALL
 $B sysctl -e -w kernel.shmmax=$MMAX
-$B sysctl -e -w kernel.msgmni=32000
+$B sysctl -e -w kernel.msgmni=16384
 $B sysctl -e -w kernel.msgmax=8192
-$B sysctl -e -w kernel.msgmnb=16384
-$B sysctl -e -w kernel.sem='250 32000 64 128'
+$B sysctl -e -w kernel.msgmnb=8192
+$B sysctl -e -w kernel.sem='250 32000 96 128'
+$B sysctl -e -w kernel.sched_latency_ns=6000000
+$B sysctl -e -w kernel.sched_wakeup_granularity_ns=1200000
+$B sysctl -e -w kernel.sched_min_granularity_ns=120000
+$B sysctl -e -w kernel.sched_shares_ratelimit=256000
+$B sysctl -e -w kernel.sched_rt_runtime_us=990000
+$B sysctl -e -w kernel.sched_rt_period_us=1000000
 
 if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
  $B echo "Dynamic fsync detected. Activating.." >> $LOG
@@ -200,7 +226,7 @@ $B echo "NO_CACHE_HOT_BUDDY" > /sys/kernel/debug/sched_features
 $B echo "NO_LB_BIAS" > /sys/kernel/debug/sched_features
 $B echo "NO_OWNER_SPIN" > /sys/kernel/debug/sched_features
 $B echo "NO_START_DEBIT" > /sys/kernel/debug/sched_features
-$B echo "NO_NEW_FAIR_SLEEPERS" > /sys/kernel/debug/sched_features
+$B echo "NO_GENTLE_FAIR_SLEEPERS" > /sys/kernel/debug/sched_features
 $B echo "NO_NORMALIZED_SLEEPERS" > /sys/kernel/debug/sched_features
 $B echo "NO_DOUBLE_TICK" > /sys/kernel/debug/sched_features
 $B echo "NO_AFFINE_WAKEUPS" > /sys/kernel/debug/sched_features

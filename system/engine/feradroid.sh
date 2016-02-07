@@ -125,9 +125,6 @@ TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 010 gear.." >> $LOG
 /system/engine/gears/010bcd.sh
 $B echo "" >> $LOG
-TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] Applying kernel configuration.." >> $LOG
-sysctl -p /system/etc/sysctl.conf | $B tee -a $LOG
 $B echo "[$TIME] Mediaserver kill" >> $LOG
 $B killall -9 android.process.media
 $B killall -9 mediaserver

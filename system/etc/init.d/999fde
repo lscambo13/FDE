@@ -1,5 +1,5 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
 
-/system/engine/bin/sh /system/engine/feradroid.sh
+/system/engine/feradroid.sh
 

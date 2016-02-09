@@ -7,7 +7,6 @@ if [ -e /system/engine/prop/firstboot ]; then
 else
  LOG=/dev/null
 fi;
-LAT=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_transition_latency)
 TIME=$($B date | $B awk '{ print $4 }')
 
 $B echo "[$TIME] 010 - ***CPU gear***" >> $LOG
@@ -20,7 +19,7 @@ $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/io_is_busy
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_down_factor
 $B echo "80" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold
 $B echo "10" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/down_differential
-$B echo "$LAT" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_rate
+$B echo "21000" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_rate
 $B echo "9" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias ]; then
   $B echo "Powersave bias - on" >> $LOG
@@ -37,7 +36,7 @@ $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
 $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
 $B echo "80" > /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
 $B echo "10" > /sys/devices/system/cpu/cpufreq/ondemand/down_differential
-$B echo "$LAT" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
+$B echo "21000" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
 $B echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
 $B echo "9" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias ]; then
@@ -47,21 +46,22 @@ $B echo "9" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
  fi;
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/up_threshold ]; then
-$B echo "CPU sprdemand tuning.." >> $LOG
+$B echo "Spreadtrum CPU detected. Tuning.." >> $LOG
+$B echo "ondemand" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
 $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
 $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/down_differential
 $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
 $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
-$B echo "80" > /sys/devices/system/cpu/cpufreq/sprdemand/up_threshold
-$B echo "10" > /sys/devices/system/cpu/cpufreq/sprdemand/down_differential
-$B echo "$LAT" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_rate
-$B echo "1" > /sys/devices/system/cpu/cpufreq/sprdemand/io_is_busy
-$B echo "9" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_down_factor
- if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias ]; then
-  $B echo "Powersave bias - on" >> $LOG
+$B echo "80" > /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
+$B echo "10" > /sys/devices/system/cpu/cpufreq/ondemand/down_differential
+$B echo "21000" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
+$B echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
+$B echo "9" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
+ if [ -e /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias ]; then
+  $B echo "Powersave bias - off" >> $LOG
   $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
-  $B echo "90" > /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias
+  $B echo "0" > /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
  fi;
 fi;
 if [ -e /system/engine/prop/ferakernel ]; then
@@ -84,8 +84,8 @@ $B echo "192000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/ramp_up_step
 $B echo "192000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/ramp_down_step
 $B echo "60" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/max_cpu_load
 $B echo "20" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/min_cpu_load
-$B echo "$LAT" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/up_rate_us
-$B echo "$LAT" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/down_rate_us
+$B echo "21000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/up_rate_us
+$B echo "21000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/down_rate_us
 $B echo "2" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sample_rate_jiffies
  if [ -e /system/engine/prop/ferakernel ]; then
   $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/awake_ideal_freq
@@ -118,8 +118,8 @@ $B echo "192000" > /sys/devices/system/cpu/cpufreq/smartassH3/ramp_up_step
 $B echo "192000" > /sys/devices/system/cpu/cpufreq/smartassH3/ramp_down_step
 $B echo "60" > /sys/devices/system/cpu/cpufreq/smartassH3/max_cpu_load
 $B echo "20" > /sys/devices/system/cpu/cpufreq/smartassH3/min_cpu_load
-$B echo "$LAT" > /sys/devices/system/cpu/cpufreq/smartassH3/up_rate_us
-$B echo "$LAT" > /sys/devices/system/cpu/cpufreq/smartassH3/down_rate_us
+$B echo "21000" > /sys/devices/system/cpu/cpufreq/smartassH3/up_rate_us
+$B echo "21000" > /sys/devices/system/cpu/cpufreq/smartassH3/down_rate_us
 $B echo "2" > /sys/devices/system/cpu/cpufreq/smartassH3/sample_rate_jiffies
  if [ -e /sys/devices/system/cpu/cpufreq/smartassH3/boost_enabled ]; then
   $B echo "Boost-pulse - on" >> $LOG
@@ -144,8 +144,8 @@ $B echo "192000" > /sys/devices/system/cpu/cpufreq/smartassV2/ramp_up_step
 $B echo "192000" > /sys/devices/system/cpu/cpufreq/smartassV2/ramp_down_step
 $B echo "60" > /sys/devices/system/cpu/cpufreq/smartassV2/max_cpu_load
 $B echo "20" > /sys/devices/system/cpu/cpufreq/smartassV2/min_cpu_load
-$B echo "$LAT" > /sys/devices/system/cpu/cpufreq/smartassV2/up_rate_us
-$B echo "$LAT" > /sys/devices/system/cpu/cpufreq/smartassV2/down_rate_us
+$B echo "21000" > /sys/devices/system/cpu/cpufreq/smartassV2/up_rate_us
+$B echo "21000" > /sys/devices/system/cpu/cpufreq/smartassV2/down_rate_us
 $B echo "2" > /sys/devices/system/cpu/cpufreq/smartassV2/sample_rate_jiffies
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/smartass/sample_rate_jiffies ]; then
@@ -163,8 +163,8 @@ $B echo "192000" > /sys/devices/system/cpu/cpufreq/smartass/ramp_up_step
 $B echo "192000" > /sys/devices/system/cpu/cpufreq/smartass/ramp_down_step
 $B echo "60" > /sys/devices/system/cpu/cpufreq/smartass/max_cpu_load
 $B echo "20" > /sys/devices/system/cpu/cpufreq/smartass/min_cpu_load
-$B echo "$LAT" > /sys/devices/system/cpu/cpufreq/smartass/up_rate_us
-$B echo "$LAT" > /sys/devices/system/cpu/cpufreq/smartass/down_rate_us
+$B echo "21000" > /sys/devices/system/cpu/cpufreq/smartass/up_rate_us
+$B echo "21000" > /sys/devices/system/cpu/cpufreq/smartass/down_rate_us
 $B echo "2" > /sys/devices/system/cpu/cpufreq/smartass/sample_rate_jiffies
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/interactive/min_sample_time ]; then
@@ -172,7 +172,14 @@ $B echo "CPU Interactive tuning.." >> $LOG
 $B echo "80" > /sys/devices/system/cpu/cpufreq/interactive/go_highspeed_load
 $B echo "80" > /sys/devices/system/cpu/cpufreq/interactive/go_maxspeed_load
 $B echo "40000" > /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
-$B echo "$LAT" > /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+$B echo "30000" > /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+fi;
+if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time ]; then
+$B echo "CPU0 Interactive tuning.." >> $LOG
+$B echo "80" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_highspeed_load
+$B echo "80" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_maxspeed_load
+$B echo "40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
+$B echo "30000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time ]; then
 $B echo "CPU InteractiveX tuning.." >> $LOG
@@ -186,7 +193,7 @@ $B echo "CPU Pegasusq tuning.." >> $LOG
 $B echo "80" > /sys/devices/system/cpu/cpufreq/pegasusq/up_threshold
 $B echo "10" > /sys/devices/system/cpu/cpufreq/pegasusq/down_differential
 $B echo "3" > /sys/devices/system/cpu/cpufreq/pegasusq/sampling_down_factor
-$B echo "$LAT" > /sys/devices/system/cpu/cpufreq/pegasusq/sampling_rate
+$B echo "21000" > /sys/devices/system/cpu/cpufreq/pegasusq/sampling_rate
 $B echo "192" > /sys/devices/system/cpu/cpufreq/pegasusq/freq_step
 fi;
 if [ -e /sys/module/workqueue/parameters/power_efficient ]; then

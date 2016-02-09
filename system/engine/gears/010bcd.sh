@@ -170,23 +170,23 @@ fi;
 if [ -e /sys/devices/system/cpu/cpufreq/interactive/min_sample_time ]; then
 $B echo "CPU Interactive tuning.." >> $LOG
 $B echo "80" > /sys/devices/system/cpu/cpufreq/interactive/go_highspeed_load
-$B echo "80" > /sys/devices/system/cpu/cpufreq/interactive/go_maxspeed_load
+$B echo "85" > /sys/devices/system/cpu/cpufreq/interactive/go_maxspeed_load
 $B echo "40000" > /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
 $B echo "30000" > /sys/devices/system/cpu/cpufreq/interactive/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time ]; then
 $B echo "CPU0 Interactive tuning.." >> $LOG
 $B echo "80" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_highspeed_load
-$B echo "80" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_maxspeed_load
+$B echo "85" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_maxspeed_load
 $B echo "40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
 $B echo "30000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time ]; then
 $B echo "CPU InteractiveX tuning.." >> $LOG
 $B echo "80" > /sys/devices/system/cpu/cpufreq/interactivex/go_highspeed_load
-$B echo "80" > /sys/devices/system/cpu/cpufreq/interactivex/go_maxspeed_load
+$B echo "85" > /sys/devices/system/cpu/cpufreq/interactivex/go_maxspeed_load
 $B echo "30000" > /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time
-$B echo "$LAT" > /sys/devices/system/cpu/cpufreq/interactivex/timer_rate
+$B echo "30000" > /sys/devices/system/cpu/cpufreq/interactivex/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/pegasusq/up_threshold ]; then
 $B echo "CPU Pegasusq tuning.." >> $LOG

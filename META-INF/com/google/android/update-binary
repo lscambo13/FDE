@@ -4,13 +4,13 @@ FD=$2
 ZIP=$3
 set -o pipefail
 ui_print() {
-  echo -n -e "ui_print $1\n" > /proc/self/fd/$FD
-  echo -n -e "ui_print\n" > /proc/self/fd/$FD
+  echo "ui_print $1" > /proc/self/fd/"$FD"
+  echo "ui_print" > /proc/self/fd/"$FD"
 }
 ui_print ""
 ui_print ""
 ui_print "***FeraLab***"
-ui_print "FeraDroid Engine v0.19-beta9"
+ui_print "FeraDroid Engine v0.19"
 ui_print ""
 ui_print "FDE deploy.."
 mount /system
@@ -25,6 +25,7 @@ chmod 755 /fde/system/engine/*
 export PATH=$PATH:/fde/system/engine/bin
 rm -Rf /system/engine/*
 rm -Rf /system/etc/init.d/*
+rm -Rf /system/etc/fde
 rm -f /sdcard/Android/FDE.txt
 unzip -o "$ZIP"
 chmod -R 755 /system/engine
@@ -35,57 +36,60 @@ chmod -R 755 /system/engine/gears/*
 chmod -R 755 /system/engine/prop/*
 chmod -R 777 /system/etc/init.d/*
 /system/engine/bin/busybox --install -s /system/xbin
-ln -fs /system/engine/bin/busybox /system/engine/bin/sh
+ln -s /system/engine/bin/busybox /system/engine/bin/sh
 B="/system/engine/bin/busybox"
 m="/system/engine/bin/sh /system/engine/feradroid.sh"
-$B sed -e "s=$m=""=" -i /system/etc/*
+if [ -e /system/etc/init.qcom.post_boot.sh ]; then
+ $B sed -e "s=$m=""=" -i /system/etc/init.qcom.post_boot.sh
+elif [ -e /system/etc/hw_config.sh ]; then
+ $B sed -e "s=$m=""=" -i /system/etc/hw_config.sh
+elif [ -e /system/xbin/zram.sh ]; then
+ $B sed -e "s=$m=""=" -i /system/xbin/zram.sh
+elif [ -e /system/etc/install-recovery-2.sh ]; then
+ $B sed -e "s=$m=""=" -i /system/etc/install-recovery.sh
+ $B sed -e "s=$m=""=" -i /system/etc/install-recovery-2.sh
+fi;
 ARCH=$($B uname -m)
 if [ "$ARCH" == "armv6l" ]; then
  rm -f /system/etc/init.d/999fde
-elif [ -e /system/etc/init.qcom.post_boot.sh ] ; then
+elif [ -e /system/etc/init.qcom.post_boot.sh ]; then
  rm -f /system/etc/init.d/999fde
-elif [ -e /engine.sh ] ; then
+elif [ -e /engine.sh ]; then
  rm -f /system/etc/init.d/999fde
-elif [ -e /system/etc/hw_config.sh ] ; then
+elif [ -e /system/etc/hw_config.sh ]; then
  rm -f /system/etc/init.d/999fde
 elif [ -e /system/xbin/zram.sh ]; then
  rm -f /system/etc/init.d/999fde
-elif [ -e /system/xbin/install-recovery-2.sh ]; then
- rm -f /system/etc/init.d/999fde
-elif [ -e /init.gt-s5660.rc ]; then
+elif [ -e /system/etc/install-recovery-2.sh ]; then
  rm -f /system/etc/init.d/999fde
 fi;
-if [ -e /engine.sh ] ; then
+if [ -e /engine.sh ]; then
  touch /system/engine/prop/ferakernel
  echo "1" > /system/engine/prop/ferakernel
  echo "" >> /system/engine/prop/ferakernel
  touch /system/etc/fde
  chmod 755 /system/etc/fde
- echo "1" > /system/etc/fde
- echo "" >> /system/etc/fde
-elif [ -e /system/etc/fde ] ; then
+ echo "19" > /system/etc/fde
+elif [ -e /system/etc/fde ]; then
  chmod 755 /system/etc/fde
- echo "1" > /system/etc/fde
- echo "" >> /system/etc/fde
-elif [ -e /system/etc/init.qcom.post_boot.sh ] ; then
+ echo "19" > /system/etc/fde
+elif [ -e /system/etc/init.qcom.post_boot.sh ]; then
  chmod 755 /system/etc/init.qcom.post_boot.sh
  echo "" >> /system/etc/init.qcom.post_boot.sh
  echo "/system/engine/feradroid.sh" >> /system/etc/init.qcom.post_boot.sh
  echo "" >> /system/etc/init.qcom.post_boot.sh
  touch /system/etc/fde
  chmod 755 /system/etc/fde
- echo "1" > /system/etc/fde
- echo "" >> /system/etc/fde
+ echo "19" > /system/etc/fde
  exit
-elif [ -e /system/etc/hw_config.sh ] ; then
+elif [ -e /system/etc/hw_config.sh ]; then
  chmod 755 /system/etc/hw_config.sh
  echo "" >> /system/etc/hw_config.sh
  echo "/system/engine/feradroid.sh" >> /system/etc/hw_config.sh
  echo "" >> /system/etc/hw_config.sh
  touch /system/etc/fde
  chmod 755 /system/etc/fde
- echo "1" > /system/etc/fde
- echo "" >> /system/etc/fde
+ echo "19" > /system/etc/fde
  exit
 elif [ -e /system/xbin/zram.sh ]; then
  rm -f /system/xbin/zram.sh
@@ -98,10 +102,10 @@ elif [ -e /system/xbin/zram.sh ]; then
  echo "" >> /system/xbin/zram.sh
  touch /system/etc/fde
  chmod 755 /system/etc/fde
- echo "1" > /system/etc/fde
- echo "" >> /system/etc/fde
+ echo "19" > /system/etc/fde
  exit
 elif [ -e /system/etc/install-recovery.sh ]; then
+ rm -f /system/etc/install-recovery-2.sh
  touch /system/etc/install-recovery-2.sh
  chmod 755 /system/etc/install-recovery.sh
  chmod 755 /system/etc/install-recovery-2.sh
@@ -114,8 +118,7 @@ elif [ -e /system/etc/install-recovery.sh ]; then
  echo "" >> /system/etc/install-recovery-2.sh
  touch /system/etc/fde
  chmod 755 /system/etc/fde
- echo "1" > /system/etc/fde
- echo "" >> /system/etc/fde
+ echo "19" > /system/etc/fde
  exit
 fi;
 rm -Rf /fde/*

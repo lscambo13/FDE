@@ -1,14 +1,8 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
-
 B=/system/engine/bin/busybox
-if [ -e /system/engine/prop/firstboot ]; then
- LOG=/sdcard/Android/FDE.txt
-else
- LOG=/dev/null
-fi;
+LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
-
 $B echo "[$TIME] 001 - ***Cleaning gear***" >> $LOG
 $B echo "Remounting /data and /system - RW" >> $LOG
 $B mount -o remount,rw /system
@@ -41,7 +35,6 @@ $B rm -f /data/last_alog/*.txt
 $B rm -f /data/last_kmsg/*.log
 $B rm -f /data/last_kmsg/*.txt
 $B rm -f /data/mlog/*
-$B rm -f /data/tombstones/*
 $B rm -f /data/system/*.log
 $B rm -f /data/system/*.txt
 $B rm -f /data/system/dropbox/*.log
@@ -58,9 +51,10 @@ $B rm -Rf /mnt/sdcard/.antutu
 $B rm -Rf /mnt/sdcard/.estrongs
 $B rm -Rf /mnt/sdcard/baidu
 $B rm -f /mnt/sdcard/fix_permissions.log
-$B chmod 000 /data/tombstones
+$B chmod -R 777 /data/tombstones
+$B rm -f /data/tombstones/*
+$B chmod -R 000 /data/tombstones
 $B sleep 1
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 001 - ***Cleaning gear*** - OK" >> $LOG
 sync;
-

@@ -1,14 +1,8 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
-
 B=/system/engine/bin/busybox
-if [ -e /system/engine/prop/firstboot ]; then
- LOG=/sdcard/Android/FDE.txt
-else
- LOG=/dev/null
-fi;
+LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
-
 $B echo "[$TIME] 010 - ***CPU gear***" >> $LOG
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold ]; then
 $B echo "CPU0 ondemand tuning.." >> $LOG
@@ -18,9 +12,9 @@ $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/down_differential
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/io_is_busy
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_down_factor
 $B echo "80" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold
-$B echo "10" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/down_differential
-$B echo "21000" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_rate
-$B echo "9" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_down_factor
+$B echo "20" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/down_differential
+$B echo "10000" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_rate
+$B echo "3" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias ]; then
   $B echo "Powersave bias - on" >> $LOG
   $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias
@@ -35,10 +29,10 @@ $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/down_differential
 $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
 $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
 $B echo "80" > /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
-$B echo "10" > /sys/devices/system/cpu/cpufreq/ondemand/down_differential
-$B echo "21000" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
+$B echo "20" > /sys/devices/system/cpu/cpufreq/ondemand/down_differential
+$B echo "10000" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
 $B echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
-$B echo "9" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
+$B echo "3" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias ]; then
   $B echo "Powersave bias - on" >> $LOG
   $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
@@ -54,10 +48,10 @@ $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/down_differential
 $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
 $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
 $B echo "80" > /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
-$B echo "10" > /sys/devices/system/cpu/cpufreq/ondemand/down_differential
-$B echo "21000" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
+$B echo "20" > /sys/devices/system/cpu/cpufreq/ondemand/down_differential
+$B echo "10000" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
 $B echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
-$B echo "9" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
+$B echo "3" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias ]; then
   $B echo "Powersave bias - off" >> $LOG
   $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
@@ -191,9 +185,9 @@ fi;
 if [ -e /sys/devices/system/cpu/cpufreq/pegasusq/up_threshold ]; then
 $B echo "CPU Pegasusq tuning.." >> $LOG
 $B echo "80" > /sys/devices/system/cpu/cpufreq/pegasusq/up_threshold
-$B echo "10" > /sys/devices/system/cpu/cpufreq/pegasusq/down_differential
+$B echo "20" > /sys/devices/system/cpu/cpufreq/pegasusq/down_differential
 $B echo "3" > /sys/devices/system/cpu/cpufreq/pegasusq/sampling_down_factor
-$B echo "21000" > /sys/devices/system/cpu/cpufreq/pegasusq/sampling_rate
+$B echo "10000" > /sys/devices/system/cpu/cpufreq/pegasusq/sampling_rate
 $B echo "192" > /sys/devices/system/cpu/cpufreq/pegasusq/freq_step
 fi;
 if [ -e /sys/module/workqueue/parameters/power_efficient ]; then
@@ -258,4 +252,3 @@ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels ]; then
 fi;
 $B echo "[$TIME] 010 - ***CPU gear*** - OK" >> $LOG
 sync;
-

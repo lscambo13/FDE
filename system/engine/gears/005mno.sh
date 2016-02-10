@@ -1,15 +1,9 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
-
 B=/system/engine/bin/busybox
-if [ -e /system/engine/prop/firstboot ]; then
- LOG=/sdcard/Android/FDE.txt
-else
- LOG=/dev/null
-fi;
+LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
 SDK=$(getprop ro.build.version.sdk)
-
 $B echo "[$TIME] 005 - ***Kernel gear***" >> $LOG
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 FM=$((RAM*(64+1)))
@@ -34,9 +28,8 @@ if [ "$MMAX" -le "268435456" ]; then
  MMAX=268435456
 fi;
 if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
- UR=$((RAM*16))
+ UR=$((RAM*12))
 fi;
-
 $B echo "Writing optimized kernel parameters to sysfs.." >> $LOG
 $B echo 1536 > /proc/sys/kernel/random/read_wakeup_threshold
 $B echo 256 > /proc/sys/kernel/random/write_wakeup_threshold
@@ -168,7 +161,6 @@ $B sysctl -e -w kernel.msgmni=16384
 $B sysctl -e -w kernel.msgmax=8192
 $B sysctl -e -w kernel.msgmnb=8192
 $B sysctl -e -w kernel.sem='250 32000 96 128'
-
 if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
  $B echo "Dynamic fsync detected. Activating.." >> $LOG
  $B echo "1" > /sys/kernel/dyn_fsync/Dyn_fsync_active
@@ -183,24 +175,23 @@ if [ -e /sys/module/sync/parameters/fsync ]; then
 fi;
 if [ "$SDK" -le "17" ]; then
  $B echo "Trying to enable Seeder entropy generator.. " >> $LOG
- if [ -e /system/bin/qrngd -o -e /system/xbin/qrngd ]; then
-  $B echo "qrngd found in /system. Seeder will not be started!" >> $LOG
+ if [ -e /system/xbin/qrngd ]; then
+  $B echo "qrngd detected. Seeder will not be started." >> $LOG
  else
   /system/engine/bin/rngd -t 2 -T 1 -s 256 --fill-watermark=80% | $B tee -a $LOG
   $B sleep 3
-  $B echo -8 > /proc/$(pgrep rngd)/oom_adj
-  renice 5 `pidof rngd`
+  $B echo -8 > /proc/"$(pgrep rngd)"/oom_adj | $B tee -a $LOG
+  renice 5 "$(pidof rngd)" | $B tee -a $LOG
   $B echo "Seeder entropy generator activated." >> $LOG
  fi;
 fi;
 for n in /sys/module/*
 do
- if [ -e $n/parameters/debug_mask ]; then
+ if [ -e "$n"/parameters/debug_mask ]; then
   $B echo "Turning debugging OFF.." >> $LOG
-  $B echo "0" > $n/parameters/debug_mask
+  $B echo "0" > "$n"/parameters/debug_mask
  fi;
 done;
-
 $B echo "Tuning kernel scheduling.." >> $LOG
 $B mount -t debugfs none /sys/kernel/debug | $B tee -a $LOG
 $B echo "NO_HRTICK" > /sys/kernel/debug/sched_features
@@ -215,7 +206,6 @@ $B echo "NO_AFFINE_WAKEUPS" > /sys/kernel/debug/sched_features
 $B echo "NO_NEXT_BUDDY" > /sys/kernel/debug/sched_features
 $B echo "NO_WAKEUP_OVERLAP" > /sys/kernel/debug/sched_features
 $B echo 0 > /sys/kernel/sched/gentle_fair_sleepers
-
 $B echo "Tuning Android.." >> $LOG
 setprop ro.config.nocheckin 1
 setprop ro.kernel.android.checkjni 0
@@ -226,4 +216,3 @@ setprop profiler.force_disable_ulog 1
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 005 - ***Kernel gear*** - OK" >> $LOG
 sync;
-

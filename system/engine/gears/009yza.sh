@@ -1,14 +1,8 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
-
 B=/system/engine/bin/busybox
-if [ -e /system/engine/prop/firstboot ]; then
- LOG=/sdcard/Android/FDE.txt
-else
- LOG=/dev/null
-fi;
+LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
-
 $B echo "[$TIME] 009 - ***VM gear***" >> $LOG
 $B echo "Tuning LMK.." >> $LOG
 if [ -e /sys/module/lowmemorykiller/parameters/cost ]; then
@@ -44,6 +38,8 @@ setprop CPU_MIN_CHECK_DURATION false
 setprop GC_TIMEOUT false
 setprop SERVICE_TIMEOUT false
 setprop MIN_CRASH_INTERVAL false
+setprop dalvik.vm.checkjni false
+setprop dalvik.vm.dexopt-data-only 1
+setprop persist.sys.purgeable_assets 1
 $B echo "[$TIME] 009 - ***VM gear*** - OK" >> $LOG
 sync;
-

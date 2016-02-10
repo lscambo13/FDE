@@ -1,6 +1,5 @@
 #!/system/bin/sh
 ### FeraDroid Engine v19 | By FeraVolt. 2016 ###
-
 zipalign="yes"
 clear
 sleep 1
@@ -179,4 +178,3 @@ echo ""
 sleep 1
 if [ "$zipalign" ]; then echo "Done!"; fi
 echo ""
-

@@ -2,19 +2,19 @@
 ### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
 
 B=/system/engine/bin/busybox
-if [ -e /system/engine/prop/firstboot ]; then
- LOG=/sdcard/Android/FDE.txt
-else
- LOG=/dev/null
-fi;
-$B echo "Google Play services fix" >> $LOG
+LOG=/sdcard/Android/FDE.txt
+$B echo "Fix permissions and zipalign.." >> $LOG
+/system/engine/fix.sh
+sync;
 $B sleep 1
+$B echo "Google Play services fix" >> $LOG
 $B killall -9 com.google.android.gms
 $B killall -9 com.google.android.gms.persistent
 $B killall -9 com.google.process.gapps
 $B killall -9 com.google.android.gsf
 $B killall -9 com.google.android.gsf.persistent
-$SH /system/engine/gp.sh
+/system/engine/gp.sh
+sync;
 $B mount -o remount,rw /system
 if [ -e /etc/fstab ]; then
  $B echo "FStab onboard.." >> $LOG
@@ -46,29 +46,12 @@ do \
  /system/xbin/sqlite3 "$i" 'REINDEX;'
 done;
 fi;
-sync;
-$B echo "Sleep, sync and free RAM" >> $LOG
-$B sleep 1
-$B echo 3 > /proc/sys/vm/drop_caches
-$B sleep 1
-sync;
-$B sleep 1
-$B echo 2 > /proc/sys/vm/drop_caches
-$B sleep 1
-sync;
-$B sleep 1
-$B echo 1 > /proc/sys/vm/drop_caches
-$B sleep 1
-sync;
-$B sleep 1
-$B echo 3 > /proc/sys/vm/drop_caches
-$B sleep 2
-sync;
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Applying kernel configuration.." >> $LOG
 sysctl -p | $B tee -a $LOG
+$B echo "Sleep, sync and free RAM" >> $LOG
+/system/engine/bin/boost | $B tee -a $LOG
 $B echo "Remounting /system - RO" >> $LOG
 $B mount -o remount,ro /system
-$B free -m | $B tee -a $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] END end" >> $LOG

@@ -1,16 +1,10 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
-
 B=/system/engine/bin/busybox
-if [ -e /system/engine/prop/firstboot ]; then
- LOG=/sdcard/Android/FDE.txt
-else
- LOG=/dev/null
-fi;
+LOG=/sdcard/Android/FDE.txt
 ARCH=$($B uname -m)
 TIME=$($B date | $B awk '{ print $4 }')
 SDK=$(getprop ro.build.version.sdk)
-
 $B echo "[$TIME] 006 - ***GPU gear***" >> $LOG
 $B echo "Remounting /system - RW" >> $LOG
 $B mount -o remount,rw /system
@@ -115,26 +109,27 @@ elif [ -e /sys/module/hid_magicmouse/parameters/scroll_speed ]; then
  $B echo 63 > /sys/module/hid_magicmouse/parameters/scroll_speed
  $B echo "HID-magic tune-up" >> $LOG
 fi;
-
 if [ "$ARCH" == "armv6l" ]; then
  $B echo "No hard tuning for ARMv6 yet.." >> $LOG
 else
  $B echo "Tuning Android graphics.." >> $LOG
+ if [ -e /system/lib/libC2D2.so ]; then
+  if [ "$SDK" -gt "10" ]; then
+   setprop debug.composition.type c2d
+  fi;
+ elif [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
+  setprop debug.composition.type mdp
+  setprop debug.mdpcomp.logs 0
+  setprop debug.mdpcomp.maxlayer 3
+  setprop debug.mdpcomp.idletime -1
+ else
+  setprop debug.composition.type gpu
+ fi;
  setprop debug.sf.hw 1
  setprop debug.egl.hw 1
- setprop debug.egl.profiler 1
  setprop debug.egl.swapinterval 1
  setprop debug.gr.swapinterval 1
- setprop debug.mdpcomp.logs 0
- setprop debug.mdpcomp.maxlayer 3
- setprop debug.mdpcomp.idletime -1
- setprop debug.performance.tuning 1
- setprop dev.pm.dyn_samplingrate 1
- setprop ro.floatingtouch.available 1
- setprop ro.min.fling_velocity 9000
- setprop ro.max.fling_velocity 12000
  setprop persist.sys.ui.hw 1
- setprop persist.hwc.mdpcomp.enable true
  setprop video.accelerate.hw 1
  setprop windowsmgr.max_events_per_sec 90
  setprop windowsmgr.support_rotation_270 true
@@ -145,17 +140,12 @@ else
  setprop ro.media.enc.jpeg.quality 100
  setprop media.stagefright.enable-player true
  setprop touch.presure.scale 0.1
- setprop persist.service.lgospd.enable false
- setprop persist.service.pcsync.enable false
- setprop ro.lge.proximity.delay 25
- setprop mot.proximity.delay 25
- setprop ro.telephony.call_ring.delay 0
+ setprop ro.floatingtouch.available 1
+ setprop ro.min.fling_velocity 9000
+ setprop ro.max.fling_velocity 12000
  setprop persist.sys.strictmode.disable true
  setprop vidc.debug.level 0
- ro.wmt.blcr.enable 0
 fi;
-
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 006 - ***GPU gear*** - OK" >> $LOG
 sync;
-

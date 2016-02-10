@@ -1,16 +1,10 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
-
 B=/system/engine/bin/busybox
-if [ -e /system/engine/prop/firstboot ]; then
- LOG=/sdcard/Android/FDE.txt
-else
- LOG=/dev/null
-fi;
+LOG=/sdcard/Android/FDE.txt
 SDK=$(getprop ro.build.version.sdk)
 TIME=$($B date | $B awk '{ print $4 }')
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
-
 $B echo "[$TIME] 008 - ***Network gear***" >> $LOG
 $B mount -o remount,rw /system
 $B echo "Writing optimized network parameters to sysctl" >> $LOG
@@ -43,6 +37,7 @@ $B sysctl -e -w net.ipv4.conf.all.rp_filter=2
 $B sysctl -e -w net.ipv4.conf.default.rp_filter=2
 $B echo "Tuning Android networking settings.." >> $LOG
 setprop wifi.supplicant_scan_interval 900
+setprop ro.telephony.call_ring.delay 0
 setprop ro.ril.enable.3g.prefix 1
 setprop ro.ril.enable.sdr 1
 setprop ro.ril.enable.gea3 1
@@ -102,8 +97,6 @@ if [ "$SDK" -le "14" ]; then
   /system/xbin/sqlite3 /data/data/com.android.providers.settings/databases/settings.db "INSERT INTO secure (name, value) VALUES ('wifi_country_code', 'JP');"
  fi;
 fi;
-
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 008 - ***Network gear*** - OK" >> $LOG
 sync;
-

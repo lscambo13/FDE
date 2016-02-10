@@ -1,15 +1,9 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
-
 B=/system/engine/bin/busybox
 A=$(cat /sys/class/power_supply/battery/capacity)
-if [ -e /system/engine/prop/firstboot ]; then
- LOG=/sdcard/Android/FDE.txt
-else
- LOG=/dev/null
-fi;
+LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
-
 $B echo "[$TIME] 007 - ***Battery gear***" >> $LOG
 if [ "$A" -eq "100" ] ; then
  $B echo "Re-calibrating battery.." >> $LOG
@@ -34,17 +28,12 @@ if [ -e /sys/class/lcd/panel/power_reduce ]; then
  $B echo "1" > /sys/class/lcd/panel/power_reduce
 fi;
 $B echo "Tuning Android power-saving.." >> $LOG
-setprop ro.mot.eri.losalert.delay 1000
 setprop power.saving.mode 1
 setprop ro.vold.umsdirtyratio 20
-setprop persist.sys.purgeable_assets 1
 setprop pm.sleep_mode 1
 setprop ro.ril.disable.power.collapse 0
-setprop persist.radio.add_power_save 1
 setprop ro.config.hw_power_saving 1
-setprop ro.config.hw_power_saving true
-setprop persist.radio.add_power_save 1
+setprop dev.pm.dyn_samplingrate 1
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 007 - ***Battery gear*** - OK" >> $LOG
 sync;
-

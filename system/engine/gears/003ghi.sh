@@ -1,15 +1,9 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
-
 B=/system/engine/bin/busybox
 RZS=/system/engine/bin/rzscontrol
-if [ -e /system/engine/prop/firstboot ]; then
- LOG=/sdcard/Android/FDE.txt
-else
- LOG=/dev/null
-fi;
+LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
-
 $B echo "[$TIME] 003 - ***RAM gear***" >> $LOG
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p)
@@ -64,27 +58,38 @@ if [ -e /sys/block/zram0/disksize ]; then
  if [ "$SWAP" -gt "0" ]; then
   $B echo "Stopping swappiness.." >> $LOG
   $B swapoff /dev/block/zram0 | $B tee -a $LOG
+  if [ -e /sys/block/zram1/disksize ]; then
+   $B swapoff /dev/block/zram1 | $B tee -a $LOG
+   $B sleep 1
+   $B echo 1 > /sys/block/zram1/reset | $B tee -a $LOG
+  fi;
   $B sleep 1
   sync;
- fi;
- if [ -e /sys/block/zram0/comp_algorithm ]; then
-  $B echo "Setting compression algorithm to LZ4.." >> $LOG
-  $B echo "lz4" > /sys/block/zram0/comp_algorithm
  fi;
  $B echo "Resetting ZRAM blockdev.." >> $LOG
  $B echo 1 > /sys/block/zram0/reset | $B tee -a $LOG
  $B echo "Creating ZRAM blockdev - $FZRAM MB" >> $LOG
  $B echo $((FZRAM*1024*1024)) > /sys/block/zram0/disksize | $B tee -a $LOG
+ if [ -e /sys/block/zram0/comp_algorithm ]; then
+  $B echo "Setting compression algorithm to LZ4.." >> $LOG
+  $B echo "lz4" > /sys/block/zram0/comp_algorithm
+ fi;
  $B echo "Starting swappiness.." >> $LOG
  $B mkswap /dev/block/zram0 | $B tee -a $LOG
  $B swapon /dev/block/zram0 | $B tee -a $LOG
  fi;
  $B echo "Configuring kernel & ZRAM frienship.." >> $LOG
- $B echo 60 > /proc/sys/vm/swappiness
+ if [ "$RAM" -gt "1700" ]; then
+  $B echo 30 > /proc/sys/vm/swappiness
+  $B echo "vm.swappiness=30" >> /system/etc/sysctl.conf
+  $B sysctl -e -w vm.swappiness=30
+ else
+  $B echo 60 > /proc/sys/vm/swappiness
+  $B echo "vm.swappiness=60" >> /system/etc/sysctl.conf
+  $B sysctl -e -w vm.swappiness=60
+ fi;
  $B echo 1 > /proc/sys/vm/page-cluster
- $B sysctl -e -w vm.swappiness=60
  $B sysctl -e -w vm.page-cluster=1
- $B echo "vm.swappiness=60" >> /system/etc/sysctl.conf
  $B echo "vm.page-cluster=1" >> /system/etc/sysctl.conf
  setprop zram.disksize $FZRAM
 elif [ -e /sys/block/ramzswap0/size ]; then
@@ -115,22 +120,22 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  $B swapon /dev/block/ramzswap0 | $B tee -a $LOG
  fi;
  $B echo "Configuring kernel & RAMZSWAP frienship.." >> $LOG
- $B echo 70 > /proc/sys/vm/swappiness
+ $B echo 75 > /proc/sys/vm/swappiness
  $B echo 1 > /proc/sys/vm/page-cluster
- $B sysctl -e -w vm.swappiness=70
- $B sysctl -e -w vm.page-cluster=1
- $B echo "vm.swappiness=70" >> /system/etc/sysctl.conf
+ $B echo "vm.swappiness=75" >> /system/etc/sysctl.conf
  $B echo "vm.page-cluster=1" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.swappiness=75
+ $B sysctl -e -w vm.page-cluster=1
 elif [ "$SWAP" -gt "0" ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  $B echo "SWAP detected. Size is $SWAP MB" >> $LOG
  $B echo "Configuring kernel & SWAP frienship.." >> $LOG
- $B echo 27 > /proc/sys/vm/swappiness
+ $B echo 25 > /proc/sys/vm/swappiness
  $B echo 1 > /proc/sys/vm/page-cluster
- $B sysctl -e -w vm.swappiness=27
- $B sysctl -e -w vm.page-cluster=1
- $B echo "vm.swappiness=27" >> /system/etc/sysctl.conf
+ $B echo "vm.swappiness=25" >> /system/etc/sysctl.conf
  $B echo "vm.page-cluster=1" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.swappiness=25
+ $B sysctl -e -w vm.page-cluster=1
  if [ -e /sys/module/zswap/parameters/enabled ]; then
   $B echo "ZSWAP detected. Enabling.." >> $LOG
   $B echo 1 > /sys/module/zswap/parameters/enabled
@@ -142,10 +147,10 @@ else
  $B echo "Configuring kernel for swappless system.." >> $LOG
  $B echo 0 > /proc/sys/vm/swappiness
  $B echo 0 > /proc/sys/vm/page-cluster
- $B sysctl -e -w vm.swappiness=0
- $B sysctl -e -w vm.page-cluster=0
  $B echo "vm.swappiness=0" >> /system/etc/sysctl.conf
  $B echo "vm.page-cluster=0" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.swappiness=0
+ $B sysctl -e -w vm.page-cluster=0
 fi;
 $B echo " "
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
@@ -197,4 +202,3 @@ if [ "$RAM" -le "512" ]; then
 fi;
 $B echo "[$TIME] 003 - ***RAM gear*** - OK" >> $LOG
 sync;
-

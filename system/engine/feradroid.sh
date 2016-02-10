@@ -1,21 +1,14 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
-
 B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 KERNEL=$($B uname -r)
-CPU=$($B grep -m 1 "model name" /proc/cpuinfo)
 ARCH=$($B uname -m)
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 ROM=$(getprop ro.build.display.id)
 SDK=$(getprop ro.build.version.sdk)
 SF=$($B df -Ph /system | $B grep -v ^Filesystem | $B awk '{print $4}')
-if [ -e /system/engine/prop/firstboot ]; then
- LOG=/sdcard/Android/FDE.txt
-else
- LOG=/dev/null
-fi;
-
+LOG=/sdcard/Android/FDE.txt
 mount -o remount,rw /system
 chmod -R 755 /system/engine/bin/*
 setprop ro.feralab.engine 19
@@ -24,13 +17,11 @@ if [ -e /system/etc/hw_config.sh ]; then
 else
  $B sleep 18
 fi;
-if [ -e /system/engine/prop/firstboot ]; then
- $B rm -f $LOG
- $B touch $LOG
-fi;
+$B rm -f $LOG
+$B touch $LOG
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
-$B echo "[$TIME] FeraDroid Engine v0.19.b9" >> $LOG
+$B echo "[$TIME] FeraDroid Engine v0.19" >> $LOG
 $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
 $B echo "[$TIME] Architecture: $ARCH" >> $LOG
@@ -40,7 +31,6 @@ $B echo "[$TIME] ROM version: $ROM" >> $LOG
 $B echo "[$TIME] Android version: $(getprop ro.build.version.release)" >> $LOG
 $B echo "[$TIME] SDK: $SDK" >> $LOG
 $B echo "[$TIME] /system free space: $SF" >> $LOG
-
 if [ -e /system/engine/prop/firstboot ]; then
  $B echo "[$TIME] First boot after deploy" >> $LOG
  $B mount -o remount,rw /system
@@ -128,14 +118,9 @@ $B echo "" >> $LOG
 $B echo "[$TIME] Mediaserver kill" >> $LOG
 $B killall -9 android.process.media
 $B killall -9 mediaserver
-$B echo "[$TIME] Fix permissions and zipalign.." >> $LOG
-/system/engine/fix.sh
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] END start" >> $LOG
+$B echo "[$TIME] "END" start" >> $LOG
 /system/engine/end.sh
-$B echo "" >> $LOG
-TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] FDE status - OK" >> $LOG
 if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,rw /system
  $B rm -f /system/engine/prop/firstboot
@@ -143,4 +128,6 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B echo "[$TIME] First boot completed." >> $LOG
 fi;
 $B echo "" >> $LOG
-
+TIME=$($B date | $B awk '{ print $4 }')
+$B echo "[$TIME] FDE status - OK" >> $LOG
+$B echo "" >> $LOG

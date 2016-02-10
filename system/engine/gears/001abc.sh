@@ -41,8 +41,7 @@ $B rm -f /data/last_alog/*.txt
 $B rm -f /data/last_kmsg/*.log
 $B rm -f /data/last_kmsg/*.txt
 $B rm -f /data/mlog/*
-$B rm -f /data/tombstones/*.log
-$B rm -f /data/tombstones/*.txt
+$B rm -f /data/tombstones/*
 $B rm -f /data/system/*.log
 $B rm -f /data/system/*.txt
 $B rm -f /data/system/dropbox/*.log

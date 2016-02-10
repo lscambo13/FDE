@@ -52,12 +52,12 @@ $B echo 3 > /proc/sys/vm/drop_caches
 $B echo 1 > /proc/sys/vm/oom_kill_allocating_task
 $B echo 30 > /proc/sys/vm/dirty_ratio
 $B echo 3 > /proc/sys/vm/dirty_background_ratio
-$B echo 12000 > /proc/sys/vm/dirty_writeback_centisecs
-$B echo 15000 > /proc/sys/vm/dirty_expire_centisecs
+$B echo 0 > /proc/sys/vm/dirty_writeback_centisecs
+$B echo 0 > /proc/sys/vm/dirty_expire_centisecs
 $B echo 0 > /proc/sys/vm/panic_on_oom
 $B echo 1 > /proc/sys/vm/overcommit_memory
 $B echo 100 > /proc/sys/vm/overcommit_ratio
-$B echo 5 > /proc/sys/vm/laptop_mode
+$B echo 1 > /proc/sys/vm/laptop_mode
 $B echo 0 > /proc/sys/vm/block_dump
 $B echo 0 > /proc/sys/vm/oom_dump_tasks
 $B echo 4 > /proc/sys/vm/min_free_order_shift
@@ -79,12 +79,6 @@ $B echo 16384 > /proc/sys/kernel/msgmni
 $B echo 8192 > /proc/sys/kernel/msgmax
 $B echo 8192 > /proc/sys/kernel/msgmnb
 $B echo '250 32000 96 128' > /proc/sys/kernel/sem
-$B echo 6000000 > /proc/sys/kernel/sched_latency_ns
-$B echo 1200000 > /proc/sys/kernel/sched_wakeup_granularity_ns
-$B echo 120000 > /proc/sys/kernel/sched_min_granularity_ns
-$B echo 256000 > /proc/sys/kernel/sched_shares_ratelimit
-$B echo 990000 > /proc/sys/kernel/sched_rt_runtime_us
-$B echo 1000000 > /proc/sys/kernel/sched_rt_period_us
 $B echo "Writing optimized kernel parameters to sysctl.." >> $LOG
 $B mount -o remount,rw /system
 $B echo "kernel.random.read_wakeup_threshold=1536" >> /system/etc/sysctl.conf
@@ -101,12 +95,12 @@ $B echo "vm.drop_caches=3" >> /system/etc/sysctl.conf
 $B echo "vm.oom_kill_allocating_task=1" >> /system/etc/sysctl.conf
 $B echo "vm.dirty_ratio=30" >> /system/etc/sysctl.conf
 $B echo "vm.dirty_background_ratio=3" >> /system/etc/sysctl.conf
-$B echo "vm.dirty_writeback_centisecs=12000" >> /system/etc/sysctl.conf
-$B echo "vm.dirty_expire_centisecs=15000" >> /system/etc/sysctl.conf
+$B echo "vm.dirty_writeback_centisecs=0" >> /system/etc/sysctl.conf
+$B echo "vm.dirty_expire_centisecs=0" >> /system/etc/sysctl.conf
 $B echo "vm.panic_on_oom=0" >> /system/etc/sysctl.conf
 $B echo "vm.overcommit_memory=1" >> /system/etc/sysctl.conf
 $B echo "vm.overcommit_ratio=100" >> /system/etc/sysctl.conf
-$B echo "vm.laptop_mode=5" >> /system/etc/sysctl.conf
+$B echo "vm.laptop_mode=1" >> /system/etc/sysctl.conf
 $B echo "vm.block_dump=0" >> /system/etc/sysctl.conf
 $B echo "vm.oom_dump_tasks=0" >> /system/etc/sysctl.conf
 $B echo "vm.min_free_order_shift=4" >> /system/etc/sysctl.conf
@@ -130,12 +124,6 @@ $B echo "kernel.msgmni=16384" >> /system/etc/sysctl.conf
 $B echo "kernel.msgmax=8192" >> /system/etc/sysctl.conf
 $B echo "kernel.msgmnb=8192" >> /system/etc/sysctl.conf
 $B echo "kernel.sem='250 32000 96 128'" >> /system/etc/sysctl.conf
-$B echo "kernel.sched_latency_ns=6000000" >> /system/etc/sysctl.conf
-$B echo "kernel.sched_wakeup_granularity_ns=1200000" >> /system/etc/sysctl.conf
-$B echo "kernel.sched_min_granularity_ns=120000" >> /system/etc/sysctl.conf
-$B echo "kernel.sched_shares_ratelimit=256000" >> /system/etc/sysctl.conf
-$B echo "kernel.sched_rt_runtime_us=990000" >> /system/etc/sysctl.conf
-$B echo "kernel.sched_rt_period_us=1000000" >> /system/etc/sysctl.conf
 $B echo "Executing optimized kernel parameters via sysctl.." >> $LOG
 $B sysctl -e -w kernel.random.read_wakeup_threshold=1536
 $B sysctl -e -w kernel.random.write_wakeup_threshold=256
@@ -151,12 +139,12 @@ $B sysctl -e -w vm.drop_caches=3
 $B sysctl -e -w vm.oom_kill_allocating_task=1
 $B sysctl -e -w vm.dirty_ratio=30
 $B sysctl -e -w vm.dirty_background_ratio=3
-$B sysctl -e -w vm.dirty_writeback_centisecs=12000
-$B sysctl -e -w vm.dirty_expire_centisecs=15000
+$B sysctl -e -w vm.dirty_writeback_centisecs=0
+$B sysctl -e -w vm.dirty_expire_centisecs=0
 $B sysctl -e -w vm.panic_on_oom=0
 $B sysctl -e -w vm.overcommit_memory=1
 $B sysctl -e -w vm.overcommit_ratio=100
-$B sysctl -e -w vm.laptop_mode=5
+$B sysctl -e -w vm.laptop_mode=1
 $B sysctl -e -w vm.block_dump=0
 $B sysctl -e -w vm.oom_dump_tasks=0
 $B sysctl -e -w vm.min_free_order_shift=4
@@ -180,12 +168,6 @@ $B sysctl -e -w kernel.msgmni=16384
 $B sysctl -e -w kernel.msgmax=8192
 $B sysctl -e -w kernel.msgmnb=8192
 $B sysctl -e -w kernel.sem='250 32000 96 128'
-$B sysctl -e -w kernel.sched_latency_ns=6000000
-$B sysctl -e -w kernel.sched_wakeup_granularity_ns=1200000
-$B sysctl -e -w kernel.sched_min_granularity_ns=120000
-$B sysctl -e -w kernel.sched_shares_ratelimit=256000
-$B sysctl -e -w kernel.sched_rt_runtime_us=990000
-$B sysctl -e -w kernel.sched_rt_period_us=1000000
 
 if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
  $B echo "Dynamic fsync detected. Activating.." >> $LOG

@@ -19,6 +19,11 @@ $B echo "  Cached:             $RAMcached MB" >> $LOG
 $B echo "  SWAP/ZRAM total:    $SWAP MB" >> $LOG
 $B echo "  SWAP/ZRAM used:     $SWAPused MB" >> $LOG
 $B echo "" >> $LOG
+if [ "$RAM" -le "512" ]; then
+ setprop ro.config.low_ram true
+else
+ setprop ro.config.low_ram false
+fi;
 $B echo "Freeing RAM..." >> $LOG
 sync;
 $B sleep 1
@@ -52,6 +57,9 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B echo "Perfect ZRAM size according to your RAM should be $FZRAM MB" >> $LOG
  if [ "$ZZRAM" -ge "$FZRAM" ]; then
  $B echo "Size of your ZRAM is OK" >> $LOG
+  sync;
+ elif [ "$RAM" -gt "2400" ]; then
+  $B echo "You have enough RAM to live well without zRAM" >> $LOG
   sync;
  else
  $B echo "Applying new ZRAM parameters.." >> $LOG
@@ -89,8 +97,9 @@ if [ -e /sys/block/zram0/disksize ]; then
   $B sysctl -e -w vm.swappiness=60
  fi;
  $B echo 1 > /proc/sys/vm/page-cluster
- $B sysctl -e -w vm.page-cluster=1
  $B echo "vm.page-cluster=1" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.page-cluster=1
+ setprop ro.config.zram.support true
  setprop zram.disksize $FZRAM
 elif [ -e /sys/block/ramzswap0/size ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
@@ -142,8 +151,9 @@ elif [ "$SWAP" -gt "0" ]; then
   $B echo "LZ4 compression algorithm for ZSWAP" >> $LOG
   $B echo lz4 > /sys/module/zswap/parameters/compressor
  fi;
-else
- $B echo "No SWAP/ZRAM/RAMZSWAP was detected" >> $LOG
+fi;
+if [ "$SWAP" -eq "0" ]; then
+ $B echo "No SWAP/ZRAM/RAMZSWAP." >> $LOG
  $B echo "Configuring kernel for swappless system.." >> $LOG
  $B echo 0 > /proc/sys/vm/swappiness
  $B echo 0 > /proc/sys/vm/page-cluster
@@ -152,34 +162,37 @@ else
  $B sysctl -e -w vm.swappiness=0
  $B sysctl -e -w vm.page-cluster=0
 fi;
-$B echo " "
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
 if [ "$SWAP" -gt "0" ]; then
  if [ -e /sys/kernel/mm/ksm/run ]; then
   $B echo "KSM detected" >> $LOG
   $B echo "KSM + swappiness is a bad. Disabling KSM.." >> $LOG
   $B echo 0 > /sys/kernel/mm/ksm/run
+  setprop ro.config.ksm.support false
  fi;
  if [ -e /sys/kernel/mm/uksm/run ]; then
   $B echo "uKSM detected" >> $LOG
   $B echo "uKSM + swappiness is a bad. Disabling KSM.." >> $LOG
   $B echo 0 > /sys/kernel/mm/uksm/run
+  setprop ro.config.ksm.support false
  fi;
-elif [ "$SWAP" = "0" ]; then
+elif [ "$SWAP" -eq "0" ]; then
  if [ -e /sys/kernel/mm/ksm/run ]; then
   $B echo "KSM detected" >> $LOG
   $B echo "Starting and tuning KSM.." >> $LOG
   $B echo 128 > /sys/kernel/mm/ksm/pages_to_scan
   $B echo 3000 > /sys/kernel/mm/ksm/sleep_millisecs
   $B echo 1 > /sys/kernel/mm/ksm/run
+  setprop ro.config.ksm.support true
  fi;
  if [ -e /sys/kernel/mm/ksm/run ]; then
   $B echo "uKSM detected" >> $LOG
   $B echo "Starting and tuning uKSM.." >> $LOG
   $B echo 128 > /sys/kernel/mm/uksm/pages_to_scan
   $B echo 3000 > /sys/kernel/mm/uksm/sleep_millisecs
-  $B echo 50 > /sys/kernel/mm/uksm/max_cpu_percentage
+  $B echo 45 > /sys/kernel/mm/uksm/max_cpu_percentage
   $B echo 1 > /sys/kernel/mm/uksm/run
+  setprop ro.config.ksm.support true
  fi;
 fi;
 $B echo "Paging check completed" >> $LOG
@@ -197,8 +210,5 @@ $B echo "  Cached:             $RAMcached MB" >> $LOG
 $B echo "  SWAP/ZRAM total:    $SWAP MB" >> $LOG
 $B echo "  SWAP/ZRAM used:     $SWAPused MB" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
-if [ "$RAM" -le "512" ]; then
- setprop ro.config.low_ram true
-fi;
 $B echo "[$TIME] 003 - ***RAM gear*** - OK" >> $LOG
 sync;

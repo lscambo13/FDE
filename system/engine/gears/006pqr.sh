@@ -116,14 +116,17 @@ else
  if [ -e /system/lib/libC2D2.so ]; then
   if [ "$SDK" -gt "10" ]; then
    setprop debug.composition.type c2d
+   $B echo "C2D composition.." >> $LOG
   fi;
  elif [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
   setprop debug.composition.type mdp
   setprop debug.mdpcomp.logs 0
   setprop debug.mdpcomp.maxlayer 3
   setprop debug.mdpcomp.idletime -1
+  $B echo "MDP composition.." >> $LOG
  else
   setprop debug.composition.type gpu
+  $B echo "GPU composition.." >> $LOG
  fi;
  setprop debug.sf.hw 1
  setprop debug.egl.hw 1
@@ -134,6 +137,7 @@ else
  setprop windowsmgr.max_events_per_sec 90
  setprop windowsmgr.support_rotation_270 true
  setprop hwui.render_dirty_regions false
+ setprop debug.hwui.render_dirty_regions false
  setprop persist.sys.scrollingcache 3
  setprop ro.media.dec.jpeg.memcap 8000000
  setprop ro.media.enc.hprof.vid.bps 8000000

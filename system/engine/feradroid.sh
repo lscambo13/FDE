@@ -75,46 +75,35 @@ $B rm -f /system/etc/sysctl.conf
 $B touch /system/etc/sysctl.conf
 $B chmod 755 /system/etc/sysctl.conf
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "" >> $LOG
 $B echo "[$TIME] Running 001 gear.." >> $LOG
 /system/engine/gears/001abc.sh
-$B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 002 gear.." >> $LOG
 /system/engine/gears/002def.sh
-$B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 003 gear.." >> $LOG
 /system/engine/gears/003ghi.sh
-$B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 004 gear.." >> $LOG
 /system/engine/gears/004jkl.sh
-$B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 005 gear.." >> $LOG
 /system/engine/gears/005mno.sh
-$B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 006 gear.." >> $LOG
 /system/engine/gears/006pqr.sh
-$B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 007 gear.." >> $LOG
 /system/engine/gears/007stu.sh
-$B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 008 gear.." >> $LOG
 /system/engine/gears/008vwx.sh
-$B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 009 gear.." >> $LOG
 /system/engine/gears/009yza.sh
-$B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 010 gear.." >> $LOG
 /system/engine/gears/010bcd.sh
-$B echo "" >> $LOG
 $B echo "[$TIME] Mediaserver kill" >> $LOG
 $B killall -9 android.process.media
 $B killall -9 mediaserver

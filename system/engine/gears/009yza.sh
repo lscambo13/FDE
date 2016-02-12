@@ -22,7 +22,10 @@ fi;
 if [ -e /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk ]; then
  $B echo "1" > /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk
  $B echo "40960" > /sys/module/lowmemorykiller/parameters/vmpressure_file_min 40960
+ setprop lmk.autocalc true
  $B echo "Adaptive LMK detected. Tuned." >> $LOG
+else
+ setprop lmk.autocalc false
 fi;
 $B echo "Tuning Android proc.." >> $LOG
 setprop ro.HOME_APP_ADJ 1

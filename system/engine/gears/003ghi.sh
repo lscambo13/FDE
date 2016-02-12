@@ -19,10 +19,11 @@ $B echo "  Cached:             $RAMcached MB" >> $LOG
 $B echo "  SWAP/ZRAM total:    $SWAP MB" >> $LOG
 $B echo "  SWAP/ZRAM used:     $SWAPused MB" >> $LOG
 $B echo "" >> $LOG
-if [ "$RAM" -le "512" ]; then
+if [ "$RAM" -le "768" ]; then
  setprop ro.config.low_ram true
 else
  setprop ro.config.low_ram false
+ setprop ro.board_ram_size high
 fi;
 $B echo "Freeing RAM..." >> $LOG
 sync;

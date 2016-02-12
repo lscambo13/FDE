@@ -25,6 +25,7 @@ chmod 755 /fde/system/engine/*
 export PATH=$PATH:/fde/system/engine/bin
 rm -Rf /system/engine/*
 rm -Rf /system/etc/init.d/*
+rm -Rf /data/property/*
 rm -f /system/etc/fde
 rm -f /sdcard/Android/FDE.txt
 unzip -o "$ZIP"

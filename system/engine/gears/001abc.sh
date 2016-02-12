@@ -39,8 +39,7 @@ $B rm -f /data/system/*.log
 $B rm -f /data/system/*.txt
 $B rm -f /data/system/dropbox/*.log
 $B rm -f /data/system/dropbox/*.txt
-$B rm -f /data/system/usagestats/*.log
-$B rm -f /data/system/usagestats/*.txt
+$B rm -Rf /data/system/usagestats/*
 $B rm -Rf /mnt/sdcard/LOST.DIR
 $B rm -Rf /mnt/sdcard/found000
 $B rm -Rf /mnt/sdcard/LazyList

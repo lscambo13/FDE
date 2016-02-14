@@ -142,7 +142,6 @@ else
  setprop ro.media.dec.jpeg.memcap 8000000
  setprop ro.media.enc.hprof.vid.bps 8000000
  setprop ro.media.enc.jpeg.quality 100
- setprop media.stagefright.enable-player true
  setprop touch.presure.scale 0.1
  setprop ro.floatingtouch.available 1
  setprop ro.min.fling_velocity 9000

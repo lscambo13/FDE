@@ -152,16 +152,16 @@ elif [ "$SWAP" -gt "0" ]; then
   $B echo "LZ4 compression algorithm for ZSWAP" >> $LOG
   $B echo lz4 > /sys/module/zswap/parameters/compressor
  fi;
-fi;
-if [ "$SWAP" -eq "0" ]; then
- $B echo "No SWAP/ZRAM/RAMZSWAP." >> $LOG
+else
+ SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
+ $B echo "No SWAP/ZRAM/RAMZSWAP was detected" >> $LOG
  $B echo "Configuring kernel for swappless system.." >> $LOG
  $B echo 0 > /proc/sys/vm/swappiness
  $B echo 0 > /proc/sys/vm/page-cluster
- $B echo "vm.swappiness=0" >> /system/etc/sysctl.conf
- $B echo "vm.page-cluster=0" >> /system/etc/sysctl.conf
  $B sysctl -e -w vm.swappiness=0
  $B sysctl -e -w vm.page-cluster=0
+ $B echo "vm.swappiness=0" >> /system/etc/sysctl.conf
+ $B echo "vm.page-cluster=0" >> /system/etc/sysctl.conf
 fi;
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
 if [ "$SWAP" -gt "0" ]; then

@@ -18,7 +18,7 @@ $B echo "net.ipv4.tcp_timestamps=0" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.tcp_no_metrics_save=1" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.tcp_moderate_rcvbuf=1" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.tcp_synack_retries=2" >> /system/etc/sysctl.conf
-$B echo "net.ipv4.tcp_fin_timeout=30" >> /system/etc/sysctl.conf
+$B echo "net.ipv4.tcp_fin_timeout=36" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.conf.all.rp_filter=2" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.conf.default.rp_filter=2" >> /system/etc/sysctl.conf
 $B echo "Executing optimized network parameters via sysctl" >> $LOG
@@ -32,30 +32,9 @@ $B sysctl -e -w net.ipv4.tcp_timestamps=0
 $B sysctl -e -w net.ipv4.tcp_no_metrics_save=1
 $B sysctl -e -w net.ipv4.tcp_moderate_rcvbuf=1
 $B sysctl -e -w net.ipv4.tcp_synack_retries=2
-$B sysctl -e -w net.ipv4.tcp_fin_timeout=30
+$B sysctl -e -w net.ipv4.tcp_fin_timeout=36
 $B sysctl -e -w net.ipv4.conf.all.rp_filter=2
 $B sysctl -e -w net.ipv4.conf.default.rp_filter=2
-$B echo "Tuning Android networking settings.." >> $LOG
-setprop wifi.supplicant_scan_interval 900
-setprop ro.telephony.call_ring.delay 0
-setprop ro.ril.enable.3g.prefix 1
-setprop ro.ril.enable.sdr 1
-setprop ro.ril.enable.gea3 1
-setprop ro.ril.enable.a52 0
-setprop ro.ril.enable.a53 1
-setprop ro.ril.hsxpa 3
-setprop ro.ril.gprsclass 12
-setprop ro.ril.hep 1
-setprop ro.ril.hsdpa.category 8
-setprop ro.ril.hsupa.category 6
-setprop net.dns1 8.8.8.8
-setprop net.dns2 8.8.4.4
-setprop net.rmnet0.dns1 8.8.8.8
-setprop net.rmnet0.dns2 8.8.4.4
-setprop dhcp.wlan0.dns1 8.8.8.8
-setprop dhcp.wlan0.dns2 8.8.4.4
-setprop ro.ril.enable.amr.wideband 1
-setprop ro.wifi.channels 13
 if [ "$RAM" -le "1024" ]; then
 $B echo "Set smaller net-buffer sizes.." >> $LOG
 setprop net.tcp.buffersize.gprs 4092,8760,11680,4096,8760,11680
@@ -97,6 +76,27 @@ if [ "$SDK" -le "14" ]; then
   /system/xbin/sqlite3 /data/data/com.android.providers.settings/databases/settings.db "INSERT INTO secure (name, value) VALUES ('wifi_country_code', 'JP');"
  fi;
 fi;
+$B echo "Tuning Android networking settings.." >> $LOG
+setprop wifi.supplicant_scan_interval 900
+setprop ro.telephony.call_ring.delay 0
+setprop ro.ril.enable.3g.prefix 1
+setprop ro.ril.enable.sdr 1
+setprop ro.ril.enable.gea3 1
+setprop ro.ril.enable.a52 0
+setprop ro.ril.enable.a53 1
+setprop ro.ril.hsxpa 3
+setprop ro.ril.gprsclass 12
+setprop ro.ril.hep 1
+setprop ro.ril.hsdpa.category 8
+setprop ro.ril.hsupa.category 6
+setprop net.dns1 8.8.8.8
+setprop net.dns2 8.8.4.4
+setprop net.rmnet0.dns1 8.8.8.8
+setprop net.rmnet0.dns2 8.8.4.4
+setprop dhcp.wlan0.dns1 8.8.8.8
+setprop dhcp.wlan0.dns2 8.8.4.4
+setprop ro.ril.enable.amr.wideband 1
+setprop ro.wifi.channels 13
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 008 - ***Network gear*** - OK" >> $LOG
 sync;

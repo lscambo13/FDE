@@ -6,7 +6,7 @@ TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 004 - ***Memory gear***" >> $LOG
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
-KB=$((((RAM+(SWAP/2))/40)*128))
+KB=$((((RAM+(SWAP))/27)*128))
 AA="/sys/block/*"
 BB="/sys/devices/virtual/block/*"
 MMC="/sys/block/mmc*"

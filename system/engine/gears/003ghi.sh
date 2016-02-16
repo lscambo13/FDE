@@ -55,14 +55,14 @@ if [ -e /sys/block/zram0/disksize ]; then
   FZRAM=$((RAM/2))
  fi;
  $B echo "ZRAM detected. Size is $ZZRAM MB" >> $LOG
- $B echo "Perfect ZRAM size according to your RAM should be $FZRAM MB" >> $LOG
  if [ "$ZZRAM" -ge "$FZRAM" ]; then
  $B echo "Size of your ZRAM is OK" >> $LOG
   sync;
- elif [ "$RAM" -gt "2400" ]; then
-  $B echo "You have enough RAM to live well without zRAM" >> $LOG
+ elif [ "$RAM" -gt "2100" ]; then
+  $B echo "You don't need zRAM" >> $LOG
   sync;
  else
+ $B echo "Perfect ZRAM size according to your RAM should be $FZRAM MB" >> $LOG
  $B echo "Applying new ZRAM parameters.." >> $LOG
  if [ "$SWAP" -gt "0" ]; then
   $B echo "Stopping swappiness.." >> $LOG

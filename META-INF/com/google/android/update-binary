@@ -14,6 +14,8 @@ ui_print "FeraDroid Engine v0.19"
 ui_print ""
 ui_print "FDE deploy.."
 mount /system
+mount /data
+mount -o rw,remount /data
 mount -o rw,remount /system
 mount -o rw,remount /system /system
 mount -o rw,remount /
@@ -25,9 +27,15 @@ chmod 755 /fde/system/engine/*
 export PATH=$PATH:/fde/system/engine/bin
 rm -Rf /system/engine/*
 rm -Rf /system/etc/init.d/*
-rm -Rf /data/property/*
-rm -f /system/etc/fde
 rm -f /sdcard/Android/FDE.txt
+cp /data/property/persist.sys.languange /fde/persist.sys.languange
+cp /data/property/persist.sys.timezone /fde/persist.sys.timezone
+cp /data/property/persist.sys.country /fde/persist.sys.country
+rm -Rf /data/property/*
+cp /fde/persist.sys.languange /data/property/persist.sys.languange
+cp /fde/persist.sys.timezone /data/property/persist.sys.timezone
+cp /fde/persist.sys.country /data/property/persist.sys.country
+rm -f /system/etc/fde
 unzip -o "$ZIP"
 chmod -R 755 /system/engine
 chmod -R 755 /system/engine/*

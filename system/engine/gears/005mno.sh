@@ -28,7 +28,7 @@ if [ "$MMAX" -le "268435456" ]; then
  MMAX=268435456
 fi;
 if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
- UR=$((RAM*10))
+ UR=$((RAM*12))
  AR=8192
 fi;
 $B echo "Writing optimized kernel parameters to sysfs.." >> $LOG

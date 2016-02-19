@@ -97,8 +97,8 @@ if [ -e /sys/block/zram0/disksize ]; then
   $B echo "vm.swappiness=60" >> /system/etc/sysctl.conf
   $B sysctl -e -w vm.swappiness=60
  fi;
- $B echo 1 > /proc/sys/vm/page-cluster
- $B echo "vm.page-cluster=1" >> /system/etc/sysctl.conf
+ $B echo 2 > /proc/sys/vm/page-cluster
+ $B echo "vm.page-cluster=2" >> /system/etc/sysctl.conf
  $B sysctl -e -w vm.page-cluster=1
  setprop ro.config.zram.support true
  setprop zram.disksize $FZRAM
@@ -131,21 +131,21 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  fi;
  $B echo "Configuring kernel & RAMZSWAP frienship.." >> $LOG
  $B echo 75 > /proc/sys/vm/swappiness
- $B echo 1 > /proc/sys/vm/page-cluster
+ $B echo 2 > /proc/sys/vm/page-cluster
  $B echo "vm.swappiness=75" >> /system/etc/sysctl.conf
- $B echo "vm.page-cluster=1" >> /system/etc/sysctl.conf
+ $B echo "vm.page-cluster=2" >> /system/etc/sysctl.conf
  $B sysctl -e -w vm.swappiness=75
- $B sysctl -e -w vm.page-cluster=1
+ $B sysctl -e -w vm.page-cluster=2
 elif [ "$SWAP" -gt "0" ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  $B echo "SWAP detected. Size is $SWAP MB" >> $LOG
  $B echo "Configuring kernel & SWAP frienship.." >> $LOG
- $B echo 25 > /proc/sys/vm/swappiness
- $B echo 1 > /proc/sys/vm/page-cluster
- $B echo "vm.swappiness=25" >> /system/etc/sysctl.conf
- $B echo "vm.page-cluster=1" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.swappiness=25
- $B sysctl -e -w vm.page-cluster=1
+ $B echo 30 > /proc/sys/vm/swappiness
+ $B echo 2 > /proc/sys/vm/page-cluster
+ $B echo "vm.swappiness=30" >> /system/etc/sysctl.conf
+ $B echo "vm.page-cluster=2" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.swappiness=30
+ $B sysctl -e -w vm.page-cluster=2
  if [ -e /sys/module/zswap/parameters/enabled ]; then
   $B echo "ZSWAP detected. Enabling.." >> $LOG
   $B echo 1 > /sys/module/zswap/parameters/enabled
@@ -170,6 +170,8 @@ if [ "$SWAP" -gt "0" ]; then
   $B echo "KSM + swappiness is a bad. Disabling KSM.." >> $LOG
   $B echo 0 > /sys/kernel/mm/ksm/run
   setprop ro.config.ksm.support false
+ else
+  $B echo "No KSM was detected" >> $LOG
  fi;
  if [ -e /sys/kernel/mm/uksm/run ]; then
   $B echo "uKSM detected" >> $LOG

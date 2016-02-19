@@ -29,7 +29,7 @@ if [ "$MMAX" -le "268435456" ]; then
 fi;
 if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
  UR=$((RAM*10))
- AR=$UR
+ AR=8192
 fi;
 $B echo "Writing optimized kernel parameters to sysfs.." >> $LOG
 $B echo 1536 > /proc/sys/kernel/random/read_wakeup_threshold
@@ -42,6 +42,10 @@ fi;
 if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
  $B echo $UR > /proc/sys/vm/user_reserve_kbytes
  $B echo $AR > /proc/sys/vm/admin_reserve_kbytes
+fi;
+if [ -e /proc/sys/vm/compact_memory ]; then
+ $B echo 1 > /proc/sys/vm/compact_memory
+ $B echo 1 > /proc/sys/vm/compact_unevictable_allowed
 fi;
 $B echo 3 > /proc/sys/vm/drop_caches
 $B echo 1 > /proc/sys/vm/oom_kill_allocating_task
@@ -87,6 +91,10 @@ if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
  $B echo "vm.user_reserve_kbytes=$UR" >> /system/etc/sysctl.conf
  $B echo "vm.admin_reserve_kbytes=$AR" >> /system/etc/sysctl.conf
 fi;
+if [ -e /proc/sys/vm/compact_memory ]; then
+ $B echo "vm.compact_memory=1" >> /system/etc/sysctl.conf
+ $B echo "vm.compact_unevictable_allowed=1" >> /system/etc/sysctl.conf
+fi;
 $B echo "vm.drop_caches=3" >> /system/etc/sysctl.conf
 $B echo "vm.oom_kill_allocating_task=1" >> /system/etc/sysctl.conf
 $B echo "vm.dirty_ratio=40" >> /system/etc/sysctl.conf
@@ -131,6 +139,10 @@ fi;
 if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
  $B sysctl -e -w vm.user_reserve_kbytes=$UR
  $B sysctl -e -w vm.admin_reserve_kbytes=$AR
+fi;
+if [ -e /proc/sys/vm/compact_memory ]; then
+ $B sysctl -e -w vm.compact_memory=1
+ $B sysctl -e -w vm.compact_unevictable_allowed=1
 fi;
 $B sysctl -e -w vm.drop_caches=3
 $B sysctl -e -w vm.oom_kill_allocating_task=1

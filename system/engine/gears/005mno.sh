@@ -28,7 +28,8 @@ if [ "$MMAX" -le "268435456" ]; then
  MMAX=268435456
 fi;
 if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
- UR=$((RAM*12))
+ UR=$((RAM*10))
+ AR=$UR
 fi;
 $B echo "Writing optimized kernel parameters to sysfs.." >> $LOG
 $B echo 1536 > /proc/sys/kernel/random/read_wakeup_threshold
@@ -40,17 +41,18 @@ if [ -e /proc/sys/vm/extra_free_kbytes ]; then
 fi;
 if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
  $B echo $UR > /proc/sys/vm/user_reserve_kbytes
+ $B echo $AR > /proc/sys/vm/admin_reserve_kbytes
 fi;
 $B echo 3 > /proc/sys/vm/drop_caches
 $B echo 1 > /proc/sys/vm/oom_kill_allocating_task
 $B echo 40 > /proc/sys/vm/dirty_ratio
 $B echo 15 > /proc/sys/vm/dirty_background_ratio
-$B echo 6000 > /proc/sys/vm/dirty_writeback_centisecs
-$B echo 9000 > /proc/sys/vm/dirty_expire_centisecs
+$B echo 0 > /proc/sys/vm/dirty_writeback_centisecs
+$B echo 0 > /proc/sys/vm/dirty_expire_centisecs
 $B echo 0 > /proc/sys/vm/panic_on_oom
 $B echo 1 > /proc/sys/vm/overcommit_memory
 $B echo 100 > /proc/sys/vm/overcommit_ratio
-$B echo 5 > /proc/sys/vm/laptop_mode
+$B echo 2 > /proc/sys/vm/laptop_mode
 $B echo 0 > /proc/sys/vm/block_dump
 $B echo 0 > /proc/sys/vm/oom_dump_tasks
 $B echo 4 > /proc/sys/vm/min_free_order_shift
@@ -79,21 +81,22 @@ $B echo "kernel.random.write_wakeup_threshold=256" >> /system/etc/sysctl.conf
 $B echo "vm.vfs_cache_pressure=90" >> /system/etc/sysctl.conf
 $B echo "vm.min_free_kbytes=$FK" >> /system/etc/sysctl.conf
 if [ -e /proc/sys/vm/extra_free_kbytes ]; then
-$B echo "vm.extra_free_kbytes=$EF" >> /system/etc/sysctl.conf
+ $B echo "vm.extra_free_kbytes=$EF" >> /system/etc/sysctl.conf
 fi;
 if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
-$B echo "vm.user_reserve_kbytes=$UR" >> /system/etc/sysctl.conf
+ $B echo "vm.user_reserve_kbytes=$UR" >> /system/etc/sysctl.conf
+ $B echo "vm.admin_reserve_kbytes=$AR" >> /system/etc/sysctl.conf
 fi;
 $B echo "vm.drop_caches=3" >> /system/etc/sysctl.conf
 $B echo "vm.oom_kill_allocating_task=1" >> /system/etc/sysctl.conf
 $B echo "vm.dirty_ratio=40" >> /system/etc/sysctl.conf
 $B echo "vm.dirty_background_ratio=15" >> /system/etc/sysctl.conf
-$B echo "vm.dirty_writeback_centisecs=6000" >> /system/etc/sysctl.conf
-$B echo "vm.dirty_expire_centisecs=9000" >> /system/etc/sysctl.conf
+$B echo "vm.dirty_writeback_centisecs=0" >> /system/etc/sysctl.conf
+$B echo "vm.dirty_expire_centisecs=0" >> /system/etc/sysctl.conf
 $B echo "vm.panic_on_oom=0" >> /system/etc/sysctl.conf
 $B echo "vm.overcommit_memory=1" >> /system/etc/sysctl.conf
 $B echo "vm.overcommit_ratio=100" >> /system/etc/sysctl.conf
-$B echo "vm.laptop_mode=5" >> /system/etc/sysctl.conf
+$B echo "vm.laptop_mode=2" >> /system/etc/sysctl.conf
 $B echo "vm.block_dump=0" >> /system/etc/sysctl.conf
 $B echo "vm.oom_dump_tasks=0" >> /system/etc/sysctl.conf
 $B echo "vm.min_free_order_shift=4" >> /system/etc/sysctl.conf
@@ -127,17 +130,18 @@ if [ -e /proc/sys/vm/extra_free_kbytes ]; then
 fi;
 if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
  $B sysctl -e -w vm.user_reserve_kbytes=$UR
+ $B sysctl -e -w vm.admin_reserve_kbytes=$AR
 fi;
 $B sysctl -e -w vm.drop_caches=3
 $B sysctl -e -w vm.oom_kill_allocating_task=1
 $B sysctl -e -w vm.dirty_ratio=40
 $B sysctl -e -w vm.dirty_background_ratio=15
-$B sysctl -e -w vm.dirty_writeback_centisecs=6000
-$B sysctl -e -w vm.dirty_expire_centisecs=9000
+$B sysctl -e -w vm.dirty_writeback_centisecs=0
+$B sysctl -e -w vm.dirty_expire_centisecs=0
 $B sysctl -e -w vm.panic_on_oom=0
 $B sysctl -e -w vm.overcommit_memory=1
 $B sysctl -e -w vm.overcommit_ratio=100
-$B sysctl -e -w vm.laptop_mode=5
+$B sysctl -e -w vm.laptop_mode=2
 $B sysctl -e -w vm.block_dump=0
 $B sysctl -e -w vm.oom_dump_tasks=0
 $B sysctl -e -w vm.min_free_order_shift=4

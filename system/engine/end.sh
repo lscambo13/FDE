@@ -6,15 +6,15 @@ LOG=/sdcard/Android/FDE.txt
 $B echo "Fix permissions and zipalign.." >> $LOG
 /system/engine/fix.sh
 sync;
-$B sleep 1
-$B echo "Google Play services fix" >> $LOG
 $B killall -9 com.google.android.gms
 $B killall -9 com.google.android.gms.persistent
 $B killall -9 com.google.process.gapps
 $B killall -9 com.google.android.gsf
 $B killall -9 com.google.android.gsf.persistent
-/system/engine/gp.sh
-sync;
+if [ -e /system/engine/prop/firstboot ]; then
+ $B echo "Google Play services fix" >> $LOG
+ /system/engine/gp.sh
+fi;
 $B mount -o remount,rw /system
 if [ -e /etc/fstab ]; then
  $B echo "FStab onboard.." >> $LOG

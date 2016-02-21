@@ -6,7 +6,7 @@ TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 004 - ***Memory gear***" >> $LOG
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
-KB=$((((RAM+(SWAP))/27)*128))
+KB=$((RAM*5))
 AA="/sys/block/*"
 BB="/sys/devices/virtual/block/*"
 MMC="/sys/block/mmc*"
@@ -20,13 +20,6 @@ if [ -e /mnt/sd-ext ]; then
  $B sleep 1
  $B mount -t ext4 -o rw /dev/block/vold/179:2 /mnt/sd-ext
  $B mount -t ext4 -o rw /dev/block/mmcblk0p2 /mnt/sd-ext
- $B sleep 1
-fi;
-if [ -e /storage/extSdCard ]; then
- $B echo "Trying to mount extSdCard partition if it exists.." >> $LOG
- $B mount -t ext3 -o rw /dev/block/mmcblk1p1 /storage/extSdCard
- $B sleep 1
- $B mount -t ext4 -o rw /dev/block/mmcblk1p1 /storage/extSdCard
  $B sleep 1
 fi;
 if [ -e /storage/extSdCard ]; then

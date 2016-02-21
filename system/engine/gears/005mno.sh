@@ -56,7 +56,7 @@ $B echo 0 > /proc/sys/vm/dirty_expire_centisecs
 $B echo 0 > /proc/sys/vm/panic_on_oom
 $B echo 1 > /proc/sys/vm/overcommit_memory
 $B echo 100 > /proc/sys/vm/overcommit_ratio
-$B echo 2 > /proc/sys/vm/laptop_mode
+$B echo 3 > /proc/sys/vm/laptop_mode
 $B echo 0 > /proc/sys/vm/block_dump
 $B echo 0 > /proc/sys/vm/oom_dump_tasks
 $B echo 4 > /proc/sys/vm/min_free_order_shift
@@ -104,7 +104,7 @@ $B echo "vm.dirty_expire_centisecs=0" >> /system/etc/sysctl.conf
 $B echo "vm.panic_on_oom=0" >> /system/etc/sysctl.conf
 $B echo "vm.overcommit_memory=1" >> /system/etc/sysctl.conf
 $B echo "vm.overcommit_ratio=100" >> /system/etc/sysctl.conf
-$B echo "vm.laptop_mode=2" >> /system/etc/sysctl.conf
+$B echo "vm.laptop_mode=3" >> /system/etc/sysctl.conf
 $B echo "vm.block_dump=0" >> /system/etc/sysctl.conf
 $B echo "vm.oom_dump_tasks=0" >> /system/etc/sysctl.conf
 $B echo "vm.min_free_order_shift=4" >> /system/etc/sysctl.conf
@@ -153,7 +153,7 @@ $B sysctl -e -w vm.dirty_expire_centisecs=0
 $B sysctl -e -w vm.panic_on_oom=0
 $B sysctl -e -w vm.overcommit_memory=1
 $B sysctl -e -w vm.overcommit_ratio=100
-$B sysctl -e -w vm.laptop_mode=2
+$B sysctl -e -w vm.laptop_mode=3
 $B sysctl -e -w vm.block_dump=0
 $B sysctl -e -w vm.oom_dump_tasks=0
 $B sysctl -e -w vm.min_free_order_shift=4

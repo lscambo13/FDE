@@ -22,6 +22,20 @@ if [ -e /mnt/sd-ext ]; then
  $B mount -t ext4 -o rw /dev/block/mmcblk0p2 /mnt/sd-ext
  $B sleep 1
 fi;
+if [ -e /storage/extSdCard ]; then
+ $B echo "Trying to mount extSdCard partition if it exists.." >> $LOG
+ $B mount -t ext3 -o rw /dev/block/mmcblk1p1 /storage/extSdCard
+ $B sleep 1
+ $B mount -t ext4 -o rw /dev/block/mmcblk1p1 /storage/extSdCard
+ $B sleep 1
+fi;
+if [ -e /storage/extSdCard ]; then
+ $B echo "Trying to mount extSdCard partition if it exists.." >> $LOG
+ $B mount -t ext3 -o rw /dev/block/mmcblk1p1 /storage/extSdCard
+ $B sleep 1
+ $B mount -t ext4 -o rw /dev/block/mmcblk1p1 /storage/extSdCard
+ $B sleep 1
+fi;
 for x in $($B mount | grep ext2 | cut -d " " -f3);
 do
  $B mount -o remount,noatime,nodiratime,data=writeback,rw "${x}"

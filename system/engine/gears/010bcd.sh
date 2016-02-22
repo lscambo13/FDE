@@ -14,7 +14,7 @@ $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_down_factor
 $B echo "85" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold
 $B echo "20" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/down_differential
 $B echo "10000" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_rate
-$B echo "3" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_down_factor
+$B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias ]; then
   $B echo "Powersave bias - on" >> $LOG
   $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias
@@ -32,7 +32,7 @@ $B echo "85" > /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
 $B echo "20" > /sys/devices/system/cpu/cpufreq/ondemand/down_differential
 $B echo "10000" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
 $B echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
-$B echo "3" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
+$B echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias ]; then
   $B echo "Powersave bias - on" >> $LOG
   $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
@@ -51,7 +51,7 @@ $B echo "20" > /sys/devices/system/cpu/cpufreq/sprdemand/down_differential
 $B echo "10000" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_rate
 $B echo "1" > /sys/devices/system/cpu/cpufreq/sprdemand/io_is_busy
 $B echo "0" > /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias
-$B echo "3" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_down_factor
+$B echo "1" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_down_factor
 fi;
 if [ -e /system/engine/prop/ferakernel ]; then
  $B echo "Boosting X10.." >> $LOG

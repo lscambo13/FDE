@@ -14,8 +14,6 @@ ui_print "FeraDroid Engine v0.19"
 ui_print ""
 ui_print "FDE deploy.."
 mount /system
-mount /data
-mount -o rw,remount /data
 mount -o rw,remount /system
 mount -o rw,remount /system /system
 mount -o rw,remount /
@@ -31,12 +29,12 @@ rm -f /sdcard/Android/FDE.txt
 rm -f /system/etc/fde
 unzip -o "$ZIP"
 chmod -R 755 /system/engine
-chmod -R 755 /system/engine/*
-chmod -R 755 /system/engine/assets/*
-chmod -R 755 /system/engine/bin/*
-chmod -R 755 /system/engine/gears/*
-chmod -R 755 /system/engine/prop/*
-chmod -R 777 /system/etc/init.d/*
+chmod 755 /system/engine/*
+chmod 755 /system/engine/assets/*
+chmod 755 /system/engine/bin/*
+chmod 755 /system/engine/gears/*
+chmod 755 /system/engine/prop/*
+chmod 777 /system/etc/init.d/*
 /system/engine/bin/busybox --install -s /system/xbin
 ln -s /system/engine/bin/busybox /system/engine/bin/sh
 B="/system/engine/bin/busybox"

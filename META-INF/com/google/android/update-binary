@@ -67,29 +67,17 @@ if [ -e /engine.sh ]; then
  touch /system/engine/prop/ferakernel
  echo "1" > /system/engine/prop/ferakernel
  echo "" >> /system/engine/prop/ferakernel
- touch /system/etc/fde
- chmod 755 /system/etc/fde
- echo "19" > /system/etc/fde
-elif [ -e /system/etc/fde ]; then
- chmod 755 /system/etc/fde
- echo "19" > /system/etc/fde
 elif [ -e /system/etc/init.qcom.post_boot.sh ]; then
  chmod 755 /system/etc/init.qcom.post_boot.sh
  echo "" >> /system/etc/init.qcom.post_boot.sh
  echo "/system/engine/feradroid.sh" >> /system/etc/init.qcom.post_boot.sh
  echo "" >> /system/etc/init.qcom.post_boot.sh
- touch /system/etc/fde
- chmod 755 /system/etc/fde
- echo "19" > /system/etc/fde
  exit
 elif [ -e /system/etc/hw_config.sh ]; then
  chmod 755 /system/etc/hw_config.sh
  echo "" >> /system/etc/hw_config.sh
  echo "/system/engine/feradroid.sh" >> /system/etc/hw_config.sh
  echo "" >> /system/etc/hw_config.sh
- touch /system/etc/fde
- chmod 755 /system/etc/fde
- echo "19" > /system/etc/fde
  exit
 elif [ -e /system/xbin/zram.sh ]; then
  rm -f /system/xbin/zram.sh
@@ -100,9 +88,6 @@ elif [ -e /system/xbin/zram.sh ]; then
  echo "" >> /system/xbin/zram.sh
  echo "/system/engine/feradroid.sh" >> /system/xbin/zram.sh
  echo "" >> /system/xbin/zram.sh
- touch /system/etc/fde
- chmod 755 /system/etc/fde
- echo "19" > /system/etc/fde
  exit
 elif [ -e /system/etc/install-recovery.sh ]; then
  rm -f /system/etc/install-recovery-2.sh
@@ -116,11 +101,11 @@ elif [ -e /system/etc/install-recovery.sh ]; then
  echo "" >> /system/etc/install-recovery-2.sh
  echo "/system/engine/feradroid.sh" >> /system/etc/install-recovery-2.sh
  echo "" >> /system/etc/install-recovery-2.sh
- touch /system/etc/fde
- chmod 755 /system/etc/fde
- echo "19" > /system/etc/fde
  exit
 fi;
+touch /system/etc/fde
+chmod 755 /system/etc/fde
+echo "19" > /system/etc/fde
 rm -Rf /fde/*
 umount /system
 ui_print ""

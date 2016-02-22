@@ -3,6 +3,9 @@
 
 B=/system/engine/bin/busybox
 LOG=/sdcard/Android/FDE.txt
+$B echo "Mediaserver kill" >> $LOG
+$B killall -9 android.process.media
+$B killall -9 mediaserver
 $B echo "Fix permissions and zipalign.." >> $LOG
 /system/engine/fix.sh
 sync;

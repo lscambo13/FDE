@@ -187,7 +187,7 @@ if [ -e /sys/class/misc/fsynccontrol/fsync_enabled ]; then
 fi;
 if [ -e /sys/module/sync/parameters/fsync ]; then
  $B echo "0" > /sys/module/sync/parameters/fsync
- $B echo "Fsync - OFF" >> $LOG
+ $B echo "Fsync module - OFF" >> $LOG
 fi;
 if [ "$SDK" -le "17" ]; then
  $B echo "Trying to enable Seeder entropy generator.. " >> $LOG

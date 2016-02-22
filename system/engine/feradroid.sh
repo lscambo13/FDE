@@ -10,7 +10,7 @@ SDK=$(getprop ro.build.version.sdk)
 SF=$($B df -Ph /system | $B grep -v ^Filesystem | $B awk '{print $4}')
 LOG=/sdcard/Android/FDE.txt
 mount -o remount,rw /system
-chmod -R 755 /system/engine/bin/*
+chmod 755 /system/engine/bin/*
 setprop ro.feralab.engine 19
 if [ -e /system/etc/hw_config.sh ]; then
  $B sleep 45
@@ -66,9 +66,9 @@ $B echo "[$TIME] Correcting permissions.." >> $LOG
 $B chmod 644 /system/build.prop
 $B chmod -R 777 /cache/*
 $B chmod -R 755 /system/engine/*
-$B chmod -R 755 /system/engine/assets/*
-$B chmod -R 755 /system/engine/gears/*
-$B chmod -R 755 /system/engine/prop/*
+$B chmod 755 /system/engine/assets/*
+$B chmod 755 /system/engine/gears/*
+$B chmod 755 /system/engine/prop/*
 sync;
 $B mount -o remount,rw /system
 $B rm -f /system/etc/sysctl.conf
@@ -104,9 +104,6 @@ $B echo "[$TIME] Running 009 gear.." >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Running 010 gear.." >> $LOG
 /system/engine/gears/010bcd.sh
-$B echo "[$TIME] Mediaserver kill" >> $LOG
-$B killall -9 android.process.media
-$B killall -9 mediaserver
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] "END" start" >> $LOG
 /system/engine/end.sh

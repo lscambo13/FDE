@@ -35,7 +35,23 @@ if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
  setprop debug.qctwa.statusbar 1
  setprop debug.qctwa.perservebuf 1
 fi;
-$B mount -t debugfs debugfs /sys/kernel/debug
+if [ "$SDK" -eq "10" ]; then
+ if [ -e /system/lib/egl/libGLES_android.so ]; then
+  if [ -e /system/lib/egl/egl.cfg ]; then
+   if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
+    AV=$(du -k "/system/lib/egl/libGLESv2_adreno200.so" | cut -f1)
+    if [ "$AV" -eq "1712" ]; then
+     $B echo "You have legacy adreno libs. No HWA for you." >> $LOG
+     exit
+    fi;
+   fi;
+   $B echo "Forcing GPU to render UI.." >> $LOG
+   $B mount -o remount,rw /system
+   $B sed -i '/0 0 android/d' /system/lib/egl/egl.cfg
+   $B rm /system/lib/egl/libGLES_android.so
+  fi;
+ fi;
+fi;
 if [ -e /sys/module/mali/parameters/mali_debug_level ]; then
  $B echo "Mali GPU detected. Tuning.." >> $LOG
  $B chown 0:0 /sys/module/mali/parameters/mali_debug_level
@@ -66,6 +82,7 @@ if [ -e /sys/module/mali/parameters/mali_debug_level ]; then
   $B echo 1 > /sys/module/mali/parameters/mali_pp_scheduler_balance_jobs
  fi;
 fi;
+$B mount -t debugfs debugfs /sys/kernel/debug
 $B chmod 777 /dev/graphics/fb0
 if [ -e /sys/kernel/debug/msm_fb/0/vsync_enable ]; then
  $B echo "Disabling VSYNC.." >> $LOG
@@ -74,23 +91,6 @@ fi;
 if [ -e /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction ]; then
  $B echo 50 > /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction
  $B echo "KGSL tune-up.." >> $LOG
-fi;
-if [ "$SDK" -eq "10" ]; then
- if [ -e /system/lib/egl/libGLES_android.so ]; then
-  if [ -e /system/lib/egl/egl.cfg ]; then
-   if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
-    AV=$(du -k "/system/lib/egl/libGLESv2_adreno200.so" | cut -f1)
-    if [ "$AV" -eq "1712" ]; then
-     $B echo "You have legacy adreno libs. No HWA for you." >> $LOG
-     exit
-    fi;
-   fi;
-   $B echo "Forcing GPU to render UI.." >> $LOG
-   $B mount -o remount,rw /system
-   $B sed -i '/0 0 android/d' /system/lib/egl/egl.cfg
-   $B rm /system/lib/egl/libGLES_android.so
-  fi;
- fi;
 fi;
 if [ "$SDK" -le "17" ]; then
  if [ -e /system/engine/prop/firstboot ]; then

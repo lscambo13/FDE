@@ -58,7 +58,15 @@ if [ -e /sys/block/zram0/disksize ]; then
   sync;
  elif [ "$RAM" -gt "2100" ]; then
   $B echo "You don't need zRAM" >> $LOG
+ if [ "$SWAP" -gt "0" ]; then
+  $B echo "Stopping swappiness.." >> $LOG
+  $B swapoff /dev/block/zram0 | $B tee -a $LOG
+  if [ -e /sys/block/zram1/disksize ]; then
+   $B swapoff /dev/block/zram1 | $B tee -a $LOG
+  fi;
+  $B sleep 1
   sync;
+ fi;
  else
  $B echo "Perfect ZRAM size according to your RAM should be $FZRAM MB" >> $LOG
  $B echo "Applying new ZRAM parameters.." >> $LOG
@@ -97,7 +105,7 @@ if [ -e /sys/block/zram0/disksize ]; then
  fi;
  $B echo 2 > /proc/sys/vm/page-cluster
  $B echo "vm.page-cluster=2" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.page-cluster=1
+ $B sysctl -e -w vm.page-cluster=2
  setprop ro.config.zram.support true
  setprop zram.disksize $FZRAM
 elif [ -e /sys/block/ramzswap0/size ]; then

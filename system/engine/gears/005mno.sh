@@ -189,6 +189,28 @@ if [ -e /sys/module/sync/parameters/fsync ]; then
  $B echo "0" > /sys/module/sync/parameters/fsync
  $B echo "Fsync module - OFF" >> $LOG
 fi;
+if [ -e /system/etc/sprd_monitor-user.conf ]; then
+ $B echo "sysdump off" > /system/etc/sprd_monitor-user.conf
+ $B echo "coredump off" >> /system/etc/sprd_monitor-user.conf
+ $B echo "hprofs off" >> /system/etc/sprd_monitor-user.conf
+ $B echo "hw-watchdog off" >> /system/etc/sprd_monitor-user.conf
+ $B echo "res-monitor off" >> /system/etc/sprd_monitor-user.conf
+ $B echo "oprofile off" >> /system/etc/sprd_monitor-user.conf
+ $B echo "" >> /system/etc/sprd_monitor-user.conf
+ $B echo "sysdump off" > /system/etc/sprd_monitor-userdebug.conf
+ $B echo "coredump off" >> /system/etc/sprd_monitor-userdebug.conf
+ $B echo "hprofs off" >> /system/etc/sprd_monitor-userdebug.conf
+ $B echo "hw-watchdog off" >> /system/etc/sprd_monitor-userdebug.conf
+ $B echo "res-monitor off" >> /system/etc/sprd_monitor-userdebug.conf
+ $B echo "oprofile off" >> /system/etc/sprd_monitor-userdebug.conf
+ $B echo "" >> /system/etc/sprd_monitor-userdebug.conf
+ $B echo "SPRD monitor tuning.." >> $LOG
+fi;
+if [ -e /system/etc/slog.conf ]; then
+ $B sed -e "s="enable"="disable"=" -i /system/etc/slog.conf
+ $B sed -e "s="enable"="disable"=" -i /system/etc/slog.conf.user
+ $B echo "Slog conf tuning.." >> $LOG
+fi;
 if [ "$SDK" -le "17" ]; then
  $B echo "Trying to enable Seeder entropy generator.. " >> $LOG
  if [ -e /system/xbin/qrngd ]; then

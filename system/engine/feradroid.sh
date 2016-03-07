@@ -21,7 +21,7 @@ $B rm -f $LOG
 $B touch $LOG
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
-$B echo "[$TIME] FeraDroid Engine v0.19-pre-n" >> $LOG
+$B echo "[$TIME] FeraDroid Engine v0.20-b1" >> $LOG
 $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
 $B echo "[$TIME] Architecture: $ARCH" >> $LOG
@@ -74,39 +74,66 @@ $B mount -o remount,rw /system
 $B rm -f /system/etc/sysctl.conf
 $B touch /system/etc/sysctl.conf
 $B chmod 755 /system/etc/sysctl.conf
-TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] Running 001 gear.." >> $LOG
-/system/engine/gears/001abc.sh
-TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] Running 002 gear.." >> $LOG
-/system/engine/gears/002def.sh
-TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] Running 003 gear.." >> $LOG
-/system/engine/gears/003ghi.sh
-TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] Running 004 gear.." >> $LOG
-/system/engine/gears/004jkl.sh
-TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] Running 005 gear.." >> $LOG
-/system/engine/gears/005mno.sh
-TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] Running 006 gear.." >> $LOG
-/system/engine/gears/006pqr.sh
-TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] Running 007 gear.." >> $LOG
-/system/engine/gears/007stu.sh
-TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] Running 008 gear.." >> $LOG
-/system/engine/gears/008vwx.sh
-TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] Running 009 gear.." >> $LOG
-/system/engine/gears/009yza.sh
-TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] Running 010 gear.." >> $LOG
-/system/engine/gears/010bcd.sh
-TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] "END" start" >> $LOG
-/system/engine/end.sh
+if [ -e /system/engine/gears/001abc.sh ]; then
+ TIME=$($B date | $B awk '{ print $4 }')
+ $B echo "[$TIME] Running 001 gear.." >> $LOG
+ /system/engine/gears/001abc.sh
+fi;
+if [ -e /system/engine/gears/002def.sh ]; then
+ TIME=$($B date | $B awk '{ print $4 }')
+ $B echo "[$TIME] Running 002 gear.." >> $LOG
+ /system/engine/gears/002def.sh
+fi;
+if [ -e /system/engine/gears/003ghi.sh ]; then
+ TIME=$($B date | $B awk '{ print $4 }')
+ $B echo "[$TIME] Running 003 gear.." >> $LOG
+ /system/engine/gears/003ghi.sh
+fi;
+if [ -e /system/engine/gears/004jkl.sh ]; then
+ TIME=$($B date | $B awk '{ print $4 }')
+ $B echo "[$TIME] Running 004 gear.." >> $LOG
+ /system/engine/gears/004jkl.sh
+fi;
+if [ -e /system/engine/gears/005mno.sh ]; then
+ TIME=$($B date | $B awk '{ print $4 }')
+ $B echo "[$TIME] Running 005 gear.." >> $LOG
+ /system/engine/gears/005mno.sh
+fi;
+if [ -e /system/engine/gears/006pqr.sh ]; then
+ TIME=$($B date | $B awk '{ print $4 }')
+ $B echo "[$TIME] Running 006 gear.." >> $LOG
+ /system/engine/gears/006pqr.sh
+fi;
+if [ -e /system/engine/gears/007stu.sh ]; then
+ TIME=$($B date | $B awk '{ print $4 }')
+ $B echo "[$TIME] Running 007 gear.." >> $LOG
+ /system/engine/gears/007stu.sh
+fi;
+if [ -e /system/engine/gears/008vwx.sh ]; then
+ TIME=$($B date | $B awk '{ print $4 }')
+ $B echo "[$TIME] Running 008 gear.." >> $LOG
+ /system/engine/gears/008vwx.sh
+fi;
+if [ -e /system/engine/gears/009yza.sh ]; then
+ TIME=$($B date | $B awk '{ print $4 }')
+ $B echo "[$TIME] Running 009 gear.." >> $LOG
+ /system/engine/gears/009yza.sh
+fi;
+if [ -e /system/engine/gears/010bcd.sh ]; then
+ TIME=$($B date | $B awk '{ print $4 }')
+ $B echo "[$TIME] Running 010 gear.." >> $LOG
+ /system/engine/gears/010bcd.sh
+fi;
+if [ -e /system/engine/gears/011efg.sh ]; then
+ TIME=$($B date | $B awk '{ print $4 }')
+ $B echo "[$TIME] Running 011 gear.." >> $LOG
+ /system/engine/gears/011efg.sh
+fi;
+if [ -e /system/engine/end.sh ]; then
+ TIME=$($B date | $B awk '{ print $4 }')
+ $B echo "[$TIME] "END" start" >> $LOG
+ /system/engine/end.sh
+fi;
 if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,rw /system
  $B rm -f /system/engine/prop/firstboot

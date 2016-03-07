@@ -6,8 +6,10 @@ LOG=/sdcard/Android/FDE.txt
 $B echo "Mediaserver kill" >> $LOG
 $B killall -9 android.process.media
 $B killall -9 mediaserver
-$B echo "Fix permissions and zipalign.." >> $LOG
-/system/engine/fix.sh
+if [ -e /system/engine/fix.sh ]; then
+ $B echo "Fix permissions and zipalign.." >> $LOG
+ /system/engine/fix.sh
+fi;
 sync;
 $B killall -9 com.google.android.gms
 $B killall -9 com.google.android.gms.persistent
@@ -15,8 +17,10 @@ $B killall -9 com.google.process.gapps
 $B killall -9 com.google.android.gsf
 $B killall -9 com.google.android.gsf.persistent
 if [ -e /system/engine/prop/firstboot ]; then
- $B echo "Google Play services fix" >> $LOG
- /system/engine/gp.sh
+ if [ -e /system/engine/gp.sh ]; then
+  $B echo "Google Play services fix" >> $LOG
+  /system/engine/gp.sh
+ fi;
 fi;
 $B mount -o remount,rw /system
 if [ -e /etc/fstab ]; then
@@ -52,8 +56,10 @@ fi;
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Applying kernel configuration.." >> $LOG
 sysctl -p | $B tee -a $LOG
-$B echo "Sleep, sync and free RAM" >> $LOG
-/system/engine/bin/boost | $B tee -a $LOG
+if [ -e /system/engine/bin/boost ]; then
+ $B echo "Sleep, sync and free RAM" >> $LOG
+ /system/engine/bin/boost | $B tee -a $LOG
+fi;
 $B echo "Remounting /system - RO" >> $LOG
 $B mount -o remount,ro /system
 TIME=$($B date | $B awk '{ print $4 }')

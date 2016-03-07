@@ -105,7 +105,7 @@ elif [ -e /system/etc/install-recovery.sh ]; then
 fi;
 touch /system/etc/fde
 chmod 755 /system/etc/fde
-echo "19" > /system/etc/fde
+echo "20" > /system/etc/fde
 rm -Rf /fde/*
 umount /system
 ui_print ""

@@ -171,7 +171,12 @@ else
 fi;
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
 if [ "$SWAP" -gt "0" ]; then
- if [ -e /sys/kernel/mm/ksm/run ]; then
+ if [ -e /sys/kernel/mm/uksm/run ]; then
+  $B echo "uKSM detected" >> $LOG
+  $B echo "uKSM + swappiness is a bad. Disabling KSM.." >> $LOG
+  $B echo 0 > /sys/kernel/mm/uksm/run
+  setprop ro.config.ksm.support false
+ elif [ -e /sys/kernel/mm/ksm/run ]; then
   $B echo "KSM detected" >> $LOG
   $B echo "KSM + swappiness is a bad. Disabling KSM.." >> $LOG
   $B echo 0 > /sys/kernel/mm/ksm/run
@@ -179,21 +184,7 @@ if [ "$SWAP" -gt "0" ]; then
  else
   $B echo "No KSM was detected" >> $LOG
  fi;
- if [ -e /sys/kernel/mm/uksm/run ]; then
-  $B echo "uKSM detected" >> $LOG
-  $B echo "uKSM + swappiness is a bad. Disabling KSM.." >> $LOG
-  $B echo 0 > /sys/kernel/mm/uksm/run
-  setprop ro.config.ksm.support false
- fi;
 elif [ "$SWAP" -eq "0" ]; then
- if [ -e /sys/kernel/mm/ksm/run ]; then
-  $B echo "KSM detected" >> $LOG
-  $B echo "Starting and tuning KSM.." >> $LOG
-  $B echo 128 > /sys/kernel/mm/ksm/pages_to_scan
-  $B echo 3000 > /sys/kernel/mm/ksm/sleep_millisecs
-  $B echo 1 > /sys/kernel/mm/ksm/run
-  setprop ro.config.ksm.support true
- fi;
  if [ -e /sys/kernel/mm/ksm/run ]; then
   $B echo "uKSM detected" >> $LOG
   $B echo "Starting and tuning uKSM.." >> $LOG
@@ -201,6 +192,13 @@ elif [ "$SWAP" -eq "0" ]; then
   $B echo 3000 > /sys/kernel/mm/uksm/sleep_millisecs
   $B echo 45 > /sys/kernel/mm/uksm/max_cpu_percentage
   $B echo 1 > /sys/kernel/mm/uksm/run
+  setprop ro.config.ksm.support true
+ elif [ -e /sys/kernel/mm/ksm/run ]; then
+  $B echo "KSM detected" >> $LOG
+  $B echo "Starting and tuning KSM.." >> $LOG
+  $B echo 128 > /sys/kernel/mm/ksm/pages_to_scan
+  $B echo 3000 > /sys/kernel/mm/ksm/sleep_millisecs
+  $B echo 1 > /sys/kernel/mm/ksm/run
   setprop ro.config.ksm.support true
  fi;
 fi;

@@ -20,10 +20,9 @@ if [ -e /sys/module/lowmemorykiller/parameters/debug_level ]; then
  $B echo "LMK debugging disabled" >> $LOG
 fi;
 if [ -e /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk ]; then
- $B echo "1" > /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk
- $B echo "40960" > /sys/module/lowmemorykiller/parameters/vmpressure_file_min 40960
- setprop lmk.autocalc true
- $B echo "Adaptive LMK detected. Tuned." >> $LOG
+ $B echo "0" > /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk
+ setprop lmk.autocalc false
+ $B echo "Disabled adaptive LMK." >> $LOG
 else
  setprop lmk.autocalc false
 fi;

@@ -11,7 +11,7 @@ $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_rate
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/down_differential
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/io_is_busy
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_down_factor
-$B echo "85" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold
+$B echo "72" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold
 $B echo "20" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/down_differential
 $B echo "10000" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_rate
 $B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_down_factor
@@ -28,7 +28,7 @@ $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
 $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/down_differential
 $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
 $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
-$B echo "85" > /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
+$B echo "72" > /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
 $B echo "20" > /sys/devices/system/cpu/cpufreq/ondemand/down_differential
 $B echo "10000" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
 $B echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
@@ -46,7 +46,7 @@ $B chmod 644 /sys/devices/system/cpu/cpufreq/sprdemand/sampling_rate
 $B chmod 644 /sys/devices/system/cpu/cpufreq/sprdemand/down_differential
 $B chmod 644 /sys/devices/system/cpu/cpufreq/sprdemand/io_is_busy
 $B chmod 644 /sys/devices/system/cpu/cpufreq/sprdemand/sampling_down_factor
-$B echo "70" > /sys/devices/system/cpu/cpufreq/sprdemand/up_threshold
+$B echo "60" > /sys/devices/system/cpu/cpufreq/sprdemand/up_threshold
 $B echo "20" > /sys/devices/system/cpu/cpufreq/sprdemand/down_differential
 $B echo "10000" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_rate
 $B echo "1" > /sys/devices/system/cpu/cpufreq/sprdemand/io_is_busy
@@ -158,30 +158,30 @@ $B echo "2" > /sys/devices/system/cpu/cpufreq/smartass/sample_rate_jiffies
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/interactive/min_sample_time ]; then
 $B echo "CPU Interactive tuning.." >> $LOG
-$B echo "85" > /sys/devices/system/cpu/cpufreq/interactive/go_highspeed_load
-$B echo "90" > /sys/devices/system/cpu/cpufreq/interactive/go_maxspeed_load
+$B echo "72" > /sys/devices/system/cpu/cpufreq/interactive/go_highspeed_load
+$B echo "85" > /sys/devices/system/cpu/cpufreq/interactive/go_maxspeed_load
 $B echo "40000" > /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
 $B echo "30000" > /sys/devices/system/cpu/cpufreq/interactive/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time ]; then
 $B echo "CPU0 Interactive tuning.." >> $LOG
-$B echo "85" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_highspeed_load
-$B echo "90" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_maxspeed_load
+$B echo "72" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_highspeed_load
+$B echo "85" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_maxspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy
 $B echo "40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
 $B echo "30000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time ]; then
 $B echo "CPU InteractiveX tuning.." >> $LOG
-$B echo "85" > /sys/devices/system/cpu/cpufreq/interactivex/go_highspeed_load
-$B echo "90" > /sys/devices/system/cpu/cpufreq/interactivex/go_maxspeed_load
+$B echo "72" > /sys/devices/system/cpu/cpufreq/interactivex/go_highspeed_load
+$B echo "85" > /sys/devices/system/cpu/cpufreq/interactivex/go_maxspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
 $B echo "30000" > /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time
 $B echo "30000" > /sys/devices/system/cpu/cpufreq/interactivex/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/pegasusq/up_threshold ]; then
 $B echo "CPU Pegasusq tuning.." >> $LOG
-$B echo "85" > /sys/devices/system/cpu/cpufreq/pegasusq/up_threshold
+$B echo "72" > /sys/devices/system/cpu/cpufreq/pegasusq/up_threshold
 $B echo "20" > /sys/devices/system/cpu/cpufreq/pegasusq/down_differential
 $B echo "3" > /sys/devices/system/cpu/cpufreq/pegasusq/sampling_down_factor
 $B echo "1" > /sys/devices/system/cpu/cpufreq/pegasusq/io_is_busy

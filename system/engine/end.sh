@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.19 | By FeraVolt. 2016 ###
+### FeraDroid Engine v0.20 | By FeraVolt. 2016 ###
 
 B=/system/engine/bin/busybox
 LOG=/sdcard/Android/FDE.txt

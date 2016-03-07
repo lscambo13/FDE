@@ -223,6 +223,12 @@ if [ "$SDK" -le "17" ]; then
   $B echo "Seeder entropy generator activated." >> $LOG
  fi;
 fi;
+if [ -e /system/etc/slog.conf ]; then
+ $B echo 2 > /sys/module/logger/parameters/log_mode
+ $B chmod 777 /dev/log/*
+ $B rm -f /dev/log/*
+ $B echo "Disable loggers.." >> $LOG
+fi;
 for n in /sys/module/*
 do
  if [ -e "$n"/parameters/debug_mask ]; then
@@ -251,6 +257,8 @@ setprop ro.kernel.checkjni 0
 setprop sys.sysctl.extra_free_kbytes $EF
 setprop profiler.force_disable_err_rpt 1
 setprop profiler.force_disable_ulog 1
+setprop logcat.live disable
+setprop ro.config.nocheckin 1
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 005 - ***Kernel gear*** - OK" >> $LOG
 sync;

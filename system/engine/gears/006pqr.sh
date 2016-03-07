@@ -92,12 +92,10 @@ if [ -e /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction ]; then
  $B echo 50 > /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction
  $B echo "KGSL tune-up.." >> $LOG
 fi;
-if [ "$SDK" -le "17" ]; then
- if [ -e /system/engine/prop/firstboot ]; then
-  if [ -e /system/xbin/sqlite3 ]; then
-   $B echo "Tuning Android animations.." >> $LOG
-   $B echo "REPLACE INTO \"system\" VALUES(26,'window_animation_scale','0.25');REPLACE INTO \"system\" VALUES(27,'transition_animation_scale','0.25');" | sqlite3 /data/data/com.android.providers.settings/databases/settings.db
-  fi;
+if [ -e /system/engine/prop/firstboot ]; then
+ if [ -e /system/xbin/sqlite3 ]; then
+  $B echo "Tuning Android animations.." >> $LOG
+  $B echo "REPLACE INTO \"system\" VALUES(26,'window_animation_scale','0.25');REPLACE INTO \"system\" VALUES(27,'transition_animation_scale','0.25');" | sqlite3 /data/data/com.android.providers.settings/databases/settings.db
  fi;
 fi;
 if [ -e /sys/module/tpd_setting/parameters/tpd_mode ]; then

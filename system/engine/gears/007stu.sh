@@ -6,9 +6,13 @@ LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 007 - ***Battery gear***" >> $LOG
 if [ "$A" -eq "100" ] ; then
- $B echo "Re-calibrating battery.." >> $LOG
- $B mount -o remount,rw /data
- $B rm -f /data/system/batterystats.bin
+ if [ -e /system/engine/prop/nobat ]; then
+  $B echo "Re-calibrating battery.." >> $LOG
+  $B mount -o remount,rw /data
+  $B mount -o remount,rw /system
+  $B rm -f /data/system/batterystats.bin
+  $B rm -f /system/engine/prop/nobat
+ fi;
 fi;
 if [ -e /sys/kernel/fast_charge/force_fast_charge ]; then
  $B echo "Fast charge support detected. Activating.." >> $LOG

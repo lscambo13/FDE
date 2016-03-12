@@ -3,9 +3,11 @@
 
 B=/system/engine/bin/busybox
 LOG=/sdcard/Android/FDE.txt
-$B echo "Mediaserver kill" >> $LOG
-$B killall -9 android.process.media
-$B killall -9 mediaserver
+if [ "$SDK" -le "19" ]; then
+ $B echo "Mediaserver kill" >> $LOG
+ $B killall -9 android.process.media
+ $B killall -9 mediaserver
+fi;
 if [ -e /system/engine/fix.sh ]; then
  $B echo "Fix permissions and zipalign.." >> $LOG
  /system/engine/fix.sh

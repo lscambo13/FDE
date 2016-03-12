@@ -35,7 +35,11 @@ chmod 755 /system/engine/bin/*
 chmod 755 /system/engine/gears/*
 chmod 755 /system/engine/prop/*
 chmod 777 /system/etc/init.d/*
-/system/engine/bin/busybox --install -s /system/xbin
+if [ -e /system/xbin/busybox ]; then
+ chmod 755 /system/xbin/busybox
+else
+ /system/engine/bin/busybox --install -s /system/xbin
+fi;
 ln -s /system/engine/bin/busybox /system/engine/bin/sh
 B="/system/engine/bin/busybox"
 m="/system/engine/bin/sh /system/engine/feradroid.sh"

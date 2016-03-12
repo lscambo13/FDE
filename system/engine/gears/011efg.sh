@@ -8,9 +8,11 @@ $B mount -o remount,rw /system
 $B mount -o remount,rw /data
 if [ -e /data/misc/mtkgps.dat ]; then
  $B rm -f /data/misc/mtkgps.dat
+ $B echo "MTK GPS data cleared." >> $LOG
 fi;
 if [ -e /data/misc/epo.dat ]; then
  $B rm -f /data/misc/epo.dat
+ $B echo "EPO data cleared." >> $LOG
 fi;
 if [ -e /system/engine/prop/nogps ]; then
  if [ -e /system/etc/gps ]; then

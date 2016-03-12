@@ -3,6 +3,7 @@
 
 B=/system/engine/bin/busybox
 LOG=/sdcard/Android/FDE.txt
+SDK=$(getprop ro.build.version.sdk)
 if [ "$SDK" -le "19" ]; then
  $B echo "Mediaserver kill" >> $LOG
  $B killall -9 android.process.media

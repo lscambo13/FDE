@@ -41,6 +41,13 @@ setprop GC_TIMEOUT false
 setprop SERVICE_TIMEOUT false
 setprop MIN_CRASH_INTERVAL false
 setprop dalvik.vm.checkjni false
+setprop dalvik.vm.check-dex-sum false
+setprop dalvik.vm.verify-bytecode false
+setprop dalvik.vm.gc.verifycardtable false
+setprop dalvik.vm.gc.postverify false
+setprop dalvik.vm.gc.preverify false
+setprop dalvik.vm.debug.alloc 0
+setprop dalvik.vm.deadlock-predict off
 setprop persist.sys.purgeable_assets 1
 $B echo "[$TIME] 009 - ***VM gear*** - OK" >> $LOG
 sync;

@@ -99,6 +99,7 @@ setprop dhcp.wlan0.dns1 8.8.8.8
 setprop dhcp.wlan0.dns2 8.8.4.4
 setprop ro.ril.enable.amr.wideband 1
 setprop ro.wifi.channels 13
+setprop persist.wpa_supplicant.debug false
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 008 - ***Network gear*** - OK" >> $LOG
 sync;

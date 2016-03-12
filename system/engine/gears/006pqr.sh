@@ -130,6 +130,7 @@ else
  setprop debug.egl.hw 1
  setprop debug.egl.swapinterval 1
  setprop debug.gr.swapinterval 1
+ setprop debug.gr.numframebuffers 3
  setprop persist.sys.ui.hw 1
  setprop video.accelerate.hw 1
  setprop windowsmgr.max_events_per_sec 90
@@ -146,6 +147,7 @@ else
  setprop ro.max.fling_velocity 12000
  setprop persist.sys.strictmode.disable true
  setprop vidc.debug.level 0
+ setprop ro.camera.sound.forced 0
 fi;
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 006 - ***GPU gear*** - OK" >> $LOG

@@ -31,6 +31,13 @@ if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
  UR=$((RAM*12))
  AR=8192
 fi;
+if [ "$RAM" -le "1024" ]; then
+ LM=1
+elif [ "$RAM" -le "2048" ]; then
+ LM=2
+else
+ LM=3
+fi;
 $B echo "Writing optimized kernel parameters to sysfs.." >> $LOG
 $B echo 1536 > /proc/sys/kernel/random/read_wakeup_threshold
 $B echo 256 > /proc/sys/kernel/random/write_wakeup_threshold
@@ -56,7 +63,7 @@ $B echo 0 > /proc/sys/vm/dirty_expire_centisecs
 $B echo 0 > /proc/sys/vm/panic_on_oom
 $B echo 1 > /proc/sys/vm/overcommit_memory
 $B echo 100 > /proc/sys/vm/overcommit_ratio
-$B echo 2 > /proc/sys/vm/laptop_mode
+$B echo $LM > /proc/sys/vm/laptop_mode
 $B echo 0 > /proc/sys/vm/block_dump
 $B echo 0 > /proc/sys/vm/oom_dump_tasks
 $B echo 4 > /proc/sys/vm/min_free_order_shift
@@ -104,7 +111,7 @@ $B echo "vm.dirty_expire_centisecs=0" >> /system/etc/sysctl.conf
 $B echo "vm.panic_on_oom=0" >> /system/etc/sysctl.conf
 $B echo "vm.overcommit_memory=1" >> /system/etc/sysctl.conf
 $B echo "vm.overcommit_ratio=100" >> /system/etc/sysctl.conf
-$B echo "vm.laptop_mode=2" >> /system/etc/sysctl.conf
+$B echo "vm.laptop_mode=$LM" >> /system/etc/sysctl.conf
 $B echo "vm.block_dump=0" >> /system/etc/sysctl.conf
 $B echo "vm.oom_dump_tasks=0" >> /system/etc/sysctl.conf
 $B echo "vm.min_free_order_shift=4" >> /system/etc/sysctl.conf
@@ -153,7 +160,7 @@ $B sysctl -e -w vm.dirty_expire_centisecs=0
 $B sysctl -e -w vm.panic_on_oom=0
 $B sysctl -e -w vm.overcommit_memory=1
 $B sysctl -e -w vm.overcommit_ratio=100
-$B sysctl -e -w vm.laptop_mode=2
+$B sysctl -e -w vm.laptop_mode=$LM
 $B sysctl -e -w vm.block_dump=0
 $B sysctl -e -w vm.oom_dump_tasks=0
 $B sysctl -e -w vm.min_free_order_shift=4
@@ -223,10 +230,8 @@ if [ "$SDK" -le "17" ]; then
   $B echo "Seeder entropy generator activated." >> $LOG
  fi;
 fi;
-if [ -e /system/etc/slog.conf ]; then
+if [ -e /sys/module/logger/parameters/log_mode ]; then
  $B echo 2 > /sys/module/logger/parameters/log_mode
- $B chmod 777 /dev/log/*
- $B rm -f /dev/log/*
  $B echo "Disable loggers.." >> $LOG
 fi;
 for n in /sys/module/*
@@ -258,7 +263,6 @@ setprop sys.sysctl.extra_free_kbytes $EF
 setprop profiler.force_disable_err_rpt 1
 setprop profiler.force_disable_ulog 1
 setprop logcat.live disable
-setprop ro.config.nocheckin 1
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 005 - ***Kernel gear*** - OK" >> $LOG
 sync;

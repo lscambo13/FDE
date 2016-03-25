@@ -11,17 +11,13 @@ SF=$($B df -Ph /system | $B grep -v ^Filesystem | $B awk '{print $4}')
 LOG=/sdcard/Android/FDE.txt
 mount -o remount,rw /system
 chmod 755 /system/engine/bin/*
-setprop ro.feralab.engine 19
-if [ -e /system/etc/hw_config.sh ]; then
- $B sleep 45
-else
- $B sleep 18
-fi;
+setprop ro.feralab.engine 20
+$B sleep 45
 $B rm -f $LOG
 $B touch $LOG
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
-$B echo "[$TIME] FeraDroid Engine v0.20-b2" >> $LOG
+$B echo "[$TIME] FeraDroid Engine v0.20-b3" >> $LOG
 $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
 $B echo "[$TIME] Architecture: $ARCH" >> $LOG

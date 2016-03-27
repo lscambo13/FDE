@@ -29,18 +29,11 @@ if [ -e /storage/extSdCard ]; then
  $B mount -t ext4 -o rw /dev/block/mmcblk1p1 /storage/extSdCard
  $B sleep 1
 fi;
-for x in $($B mount | grep ext2 | cut -d " " -f3);
-do
- $B mount -o remount,noatime,nodiratime,data=writeback,rw "${x}"
- $B echo "Remounting EXT2 partitions.." >> $LOG
+for m in /storage/emulated/*; do
+  $B mount -o remount,nosuid,nodev,noatime,nodiratime -t auto "${m}"
+  $B mount -o remount,nosuid,nodev,noatime,nodiratime -t auto "${m}"/Android/obb
 done;
-for x in $($B mount | grep ext3 | cut -d " " -f3);
-do
- $B mount -o remount,noatime,nodiratime,data=writeback,rw "${x}"
- $B echo "Remounting EXT3 partitions.." >> $LOG
-done;
-for x in $($B mount | grep ext4 | cut -d " " -f3);
-do
+for x in $($B mount | grep ext4 | cut -d " " -f3); do
  $B mount -o remount,noatime,delalloc,nosuid,nodev,nodiratime,barrier=0,nobh,commit=90,discard,data=writeback,rw "${x}"
  $B echo "Remounting EXT4 partitions.." >> $LOG
 done;

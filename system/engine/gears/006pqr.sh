@@ -107,6 +107,13 @@ elif [ -e /sys/module/hid_magicmouse/parameters/scroll_speed ]; then
  $B echo 63 > /sys/module/hid_magicmouse/parameters/scroll_speed
  $B echo "HID-magic tune-up" >> $LOG
 fi;
+if [ -e /sys/class/backlight/sprd_backlight/brightness ]; then
+ K=$(cat /sys/class/backlight/sprd_backlight/actual_brightness)
+ if [ "$K" -eq "0" ]; then
+  $B chmod 644 /sys/class/backlight/sprd_backlight/brightness
+  $B echo 1 > /sys/class/backlight/sprd_backlight/brightness
+ fi;
+fi;
 if [ "$ARCH" == "armv6l" ]; then
  $B echo "No hard tuning for ARMv6 yet.." >> $LOG
 else

@@ -3,21 +3,23 @@
 B=/system/engine/bin/busybox
 LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
-HS=$(du -k "/system/etc/hosts" | cut -f1)
 $B echo "[$TIME] 002 - ***Ad-block gear***" >> $LOG
-if [ "$HS" -ge "128" ]; then
- $B echo "Ad-blocker detected. Skipping.." >> $LOG
- exit
-elif [ -e /system/engine/prop/nohost ]; then
- $B echo "Hosts were not updated. Dealing.." >> $LOG
- $B mount -o remount,rw /system
+$B echo "Updating hosts.." >> $LOG
+$B mount -o remount,rw /system
+if [ -e /system/engine/prop/firstboot ]; then
  $B rm -f /system/etc/hosts
- $B cp /system/engine/assets/hosts /system/etc/hosts
- $B rm -f /system/engine/prop/nohost
- $B chmod 755 /system/etc/hosts
- $B sleep 1
 fi;
-$B echo "Hosts were updated." >> $LOG
+$B rm -f /system/engine/assets/hosts
+$B touch /system/engine/assets/hosts
+$B chmod 777 /system/engine/assets/hosts
+$B wget -O /system/engine/assets/hosts "http://winhelp2002.mvps.org/hosts.txt"
+$B sed -i "s/#.*//" /system/engine/assets/hosts
+$B sed -i "/^$/d" /system/engine/assets/hosts
+$B sed -i -e "s/0.0.0.0/127.0.0.1/g" /system/engine/assets/hosts
+$B cp /system/engine/assets/hosts /system/etc/hosts
+$B chmod 755 /system/etc/hosts
+$B sleep 1
+$B echo "Done." >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 002 - ***Ad-block gear*** - OK" >> $LOG
 sync;

@@ -5,6 +5,7 @@ LOG=/sdcard/Android/FDE.txt
 ARCH=$($B uname -m)
 TIME=$($B date | $B awk '{ print $4 }')
 SDK=$(getprop ro.build.version.sdk)
+COM=$(getprop debug.composition.type)
 $B echo "[$TIME] 006 - ***GPU gear***" >> $LOG
 $B echo "Remounting /system - RW" >> $LOG
 $B mount -o remount,rw /system
@@ -107,31 +108,14 @@ elif [ -e /sys/module/hid_magicmouse/parameters/scroll_speed ]; then
  $B echo 63 > /sys/module/hid_magicmouse/parameters/scroll_speed
  $B echo "HID-magic tune-up" >> $LOG
 fi;
-if [ -e /sys/class/backlight/sprd_backlight/brightness ]; then
- K=$(cat /sys/class/backlight/sprd_backlight/actual_brightness)
- if [ "$K" -eq "0" ]; then
-  $B chmod 644 /sys/class/backlight/sprd_backlight/brightness
-  $B echo 1 > /sys/class/backlight/sprd_backlight/brightness
- fi;
-fi;
 if [ "$ARCH" == "armv6l" ]; then
- $B echo "No hard tuning for ARMv6 yet.." >> $LOG
+ $B echo "No hard tuning for ARMv6.." >> $LOG
 else
  $B echo "Tuning Android graphics.." >> $LOG
- if [ -e /system/lib/libC2D2.so ]; then
-  if [ "$SDK" -gt "10" ]; then
-   setprop debug.composition.type c2d
-   $B echo "C2D composition.." >> $LOG
-  fi;
- elif [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
-  setprop debug.composition.type mdp
+ if [ "$COM" == "mdp" ]; then
   setprop debug.mdpcomp.logs 0
   setprop debug.mdpcomp.maxlayer 3
   setprop debug.mdpcomp.idletime -1
-  $B echo "MDP composition.." >> $LOG
- else
-  setprop debug.composition.type gpu
-  $B echo "GPU composition.." >> $LOG
  fi;
  setprop debug.sf.hw 1
  setprop debug.egl.hw 1
@@ -140,7 +124,7 @@ else
  setprop debug.gr.numframebuffers 3
  setprop persist.sys.ui.hw 1
  setprop video.accelerate.hw 1
- setprop windowsmgr.max_events_per_sec 90
+ setprop windowsmgr.max_events_per_sec 120
  setprop windowsmgr.support_rotation_270 true
  setprop hwui.render_dirty_regions false
  setprop debug.hwui.render_dirty_regions false

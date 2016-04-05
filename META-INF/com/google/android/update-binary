@@ -67,18 +67,27 @@ if [ -e /engine.sh ]; then
  echo "1" > /system/engine/prop/ferakernel
  echo "" >> /system/engine/prop/ferakernel
 elif [ -e /system/etc/init.qcom.post_boot.sh ]; then
+ touch /system/engine/prop/qcompost
+ echo "1" > /system/engine/prop/qcompost
+ echo "" >> /system/engine/prop/qcompost
  chmod 755 /system/etc/init.qcom.post_boot.sh
  echo "" >> /system/etc/init.qcom.post_boot.sh
  echo "/system/engine/feradroid.sh" >> /system/etc/init.qcom.post_boot.sh
  echo "" >> /system/etc/init.qcom.post_boot.sh
  exit
 elif [ -e /system/etc/hw_config.sh ]; then
+ touch /system/engine/prop/hwconf
+ echo "1" > /system/engine/prop/hwconf
+ echo "" >> /system/engine/prop/hwconf
  chmod 755 /system/etc/hw_config.sh
  echo "" >> /system/etc/hw_config.sh
  echo "/system/engine/feradroid.sh" >> /system/etc/hw_config.sh
  echo "" >> /system/etc/hw_config.sh
  exit
 elif [ -e /system/xbin/zram.sh ]; then
+ touch /system/engine/prop/zrami
+ echo "1" > /system/engine/prop/zrami
+ echo "" >> /system/engine/prop/zrami
  rm -f /system/xbin/zram.sh
  touch /system/xbin/zram.sh
  chmod 755 /system/xbin/zram.sh
@@ -89,6 +98,9 @@ elif [ -e /system/xbin/zram.sh ]; then
  echo "" >> /system/xbin/zram.sh
  exit
 elif [ -e /system/etc/install-recovery.sh ]; then
+ touch /system/engine/prop/irec
+ echo "1" > /system/engine/prop/irec
+ echo "" >> /system/engine/prop/irec
  rm -f /system/etc/install-recovery-2.sh
  touch /system/etc/install-recovery-2.sh
  chmod 755 /system/etc/install-recovery.sh

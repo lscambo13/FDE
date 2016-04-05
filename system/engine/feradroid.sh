@@ -13,6 +13,8 @@ mount -o remount,rw /system
 chmod 755 /system/engine/bin/*
 setprop ro.feralab.engine 20
 $B sleep 45
+$B sleep 36
+$B mount -o remount,rw /system
 $B rm -f $LOG
 $B touch $LOG
 $B echo "### FeraLab ###" > $LOG

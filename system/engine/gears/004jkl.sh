@@ -44,8 +44,7 @@ if [ -e "${i}"/queue/read_ahead_kb ]; then
  $B echo $KB > "${i}"/bdi/read_ahead_kb
  $B echo 0 > "${i}"/queue/iostats
  $B echo 0 > "${i}"/queue/rotational
- $B echo 1 > "${i}"/queue/rq_affinity
- $B echo 1 > "${i}"/queue/nomerges
+ $B echo 2 > "${i}"/queue/rq_affinity
 fi;
 done;
 for b in $MMC $MTD; do

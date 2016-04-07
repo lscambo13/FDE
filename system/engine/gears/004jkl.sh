@@ -6,7 +6,13 @@ TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 004 - ***Memory gear***" >> $LOG
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
-KB=$((RAM*5))
+if [ "$RAM" -le "1024" ]; then
+ KB=$((RAM*10))
+elif [ "$RAM" -le "2048" ]; then
+ KB=$((RAM*5))
+else
+ KB=$((RAM*4))
+fi;
 AA="/sys/block/*"
 BB="/sys/devices/virtual/block/*"
 MMC="/sys/block/mmc*"
@@ -44,7 +50,7 @@ if [ -e "${i}"/queue/read_ahead_kb ]; then
  $B echo $KB > "${i}"/bdi/read_ahead_kb
  $B echo 0 > "${i}"/queue/iostats
  $B echo 0 > "${i}"/queue/rotational
- $B echo 2 > "${i}"/queue/rq_affinity
+ $B echo 1 > "${i}"/queue/rq_affinity
 fi;
 done;
 for b in $MMC $MTD; do

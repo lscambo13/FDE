@@ -13,13 +13,13 @@ mount -o remount,rw /system
 chmod 755 /system/engine/bin/*
 setprop ro.feralab.engine 20
 $B sleep 45
-$B sleep 36
+$B sleep 45
 $B mount -o remount,rw /system
 $B rm -f $LOG
 $B touch $LOG
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
-$B echo "[$TIME] FeraDroid Engine v0.20-b4" >> $LOG
+$B echo "[$TIME] FeraDroid Engine v0.20" >> $LOG
 $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
 $B echo "[$TIME] Architecture: $ARCH" >> $LOG

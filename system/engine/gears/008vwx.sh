@@ -37,6 +37,7 @@ $B sysctl -e -w net.ipv4.tcp_fin_timeout=36
 $B sysctl -e -w net.ipv4.conf.all.rp_filter=2
 $B sysctl -e -w net.ipv4.conf.default.rp_filter=2
 $B sysctl -e -w net.ipv4.conf.all.accept_redirects=0
+$B echo "westwood" > /proc/sys/net/ipv4/tcp_congestion_control
 if [ "$RAM" -le "1024" ]; then
 $B echo "Set smaller net-buffer sizes.." >> $LOG
 setprop net.tcp.buffersize.gprs 4092,8760,11680,4096,8760,11680

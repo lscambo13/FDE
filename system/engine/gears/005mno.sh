@@ -8,8 +8,13 @@ $B echo "[$TIME] 005 - ***Kernel gear***" >> $LOG
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 FM=$((RAM*(64+1)))
 ME=$((RAM*27))
-DW=$((RAM*5))
-DE=$((RAM*10))
+if [ "$RAM" -le "512" ]; then
+ DR=20
+else
+ DR=36
+fi;
+DW=$((RAM*7))
+DE=$((RAM*12))
 if [ -e /proc/sys/vm/extra_free_kbytes ]; then
  if [ "$RAM" -gt "2048" ]; then
   EF=$((RAM*4))
@@ -30,7 +35,7 @@ if [ "$MMAX" -le "268435456" ]; then
  MMAX=268435456
 fi;
 if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
- UR=$((RAM*12))
+ UR=$((RAM*10))
  AR=8192
 fi;
 if [ "$RAM" -le "1024" ]; then
@@ -58,7 +63,7 @@ if [ -e /proc/sys/vm/compact_memory ]; then
 fi;
 $B echo 3 > /proc/sys/vm/drop_caches
 $B echo 1 > /proc/sys/vm/oom_kill_allocating_task
-$B echo 36 > /proc/sys/vm/dirty_ratio
+$B echo $DR > /proc/sys/vm/dirty_ratio
 $B echo 5 > /proc/sys/vm/dirty_background_ratio
 $B echo $DW > /proc/sys/vm/dirty_writeback_centisecs
 $B echo $DE > /proc/sys/vm/dirty_expire_centisecs
@@ -106,7 +111,7 @@ if [ -e /proc/sys/vm/compact_memory ]; then
 fi;
 $B echo "vm.drop_caches=3" >> /system/etc/sysctl.conf
 $B echo "vm.oom_kill_allocating_task=1" >> /system/etc/sysctl.conf
-$B echo "vm.dirty_ratio=36" >> /system/etc/sysctl.conf
+$B echo "vm.dirty_ratio=$DR" >> /system/etc/sysctl.conf
 $B echo "vm.dirty_background_ratio=5" >> /system/etc/sysctl.conf
 $B echo "vm.dirty_writeback_centisecs=$DW" >> /system/etc/sysctl.conf
 $B echo "vm.dirty_expire_centisecs=$DE" >> /system/etc/sysctl.conf
@@ -155,7 +160,7 @@ if [ -e /proc/sys/vm/compact_memory ]; then
 fi;
 $B sysctl -e -w vm.drop_caches=3
 $B sysctl -e -w vm.oom_kill_allocating_task=1
-$B sysctl -e -w vm.dirty_ratio=36
+$B sysctl -e -w vm.dirty_ratio=$DR
 $B sysctl -e -w vm.dirty_background_ratio=5
 $B sysctl -e -w vm.dirty_writeback_centisecs=$DW
 $B sysctl -e -w vm.dirty_expire_centisecs=$DE

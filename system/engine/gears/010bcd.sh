@@ -5,6 +5,10 @@ LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 010 - ***CPU gear***" >> $LOG
 MAX=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq)
+if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
+ $B echo "Disable MSM thermal core for now.." >> $LOG
+ $B echo 0 > /sys/module/msm_thermal/core_control/enabled
+fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold ]; then
 $B echo "CPU0 ondemand tuning.." >> $LOG
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold
@@ -236,6 +240,13 @@ if [ -e /dev/cpuctl/cpu.shares ]; then
  $B echo "800000" > /dev/cpuctl/cpu.rt_runtime_us
  $B echo "1000000" > /dev/cpuctl/cpu.rt_period_us
  $B echo "CGroup cpuctl tuned.." >> $LOG
+ CR=/dev/cpuctl
+ $B mkdir $CR/native
+ $B echo 150000 > $CR/native/cpu.rt_runtime_us
+ for i in $(cat $CR/tasks); do
+  $B echo "${i}" > $CR/native/tasks
+  $B echo "Optimizing cgroup.." >> $LOG
+ done;
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels ]; then
  $B chown root system /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
@@ -256,6 +267,10 @@ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels ]; then
   $B echo '1267200 1425' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
   $B echo '1305600 1425' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
  fi;
+fi;
+if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
+ $B echo "Enable MSM thermal core now.." >> $LOG
+ $B echo 1 > /sys/module/msm_thermal/core_control/enabled
 fi;
 $B echo "[$TIME] 010 - ***CPU gear*** - OK" >> $LOG
 sync;

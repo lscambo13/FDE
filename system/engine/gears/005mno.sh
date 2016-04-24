@@ -13,8 +13,13 @@ if [ "$RAM" -le "512" ]; then
 else
  DR=36
 fi;
-DW=$((RAM*7))
-DE=$((RAM*12))
+if [ "$RAM" -le "1024" ]; then
+ DW=0
+ DE=0
+else
+ DW=$((RAM*5))
+ DE=$((RAM*10))
+fi;
 if [ -e /proc/sys/vm/extra_free_kbytes ]; then
  if [ "$RAM" -gt "2048" ]; then
   EF=$((RAM*4))
@@ -34,10 +39,6 @@ MMAX=$((MALL*4096))
 if [ "$MMAX" -le "268435456" ]; then
  MMAX=268435456
 fi;
-if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
- UR=$((RAM*10))
- AR=8192
-fi;
 if [ "$RAM" -le "1024" ]; then
  LM=1
 elif [ "$RAM" -le "2048" ]; then
@@ -52,10 +53,6 @@ $B echo 100 > /proc/sys/vm/vfs_cache_pressure
 $B echo $FK > /proc/sys/vm/min_free_kbytes
 if [ -e /proc/sys/vm/extra_free_kbytes ]; then
  $B echo $EF > /proc/sys/vm/extra_free_kbytes
-fi;
-if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
- $B echo $UR > /proc/sys/vm/user_reserve_kbytes
- $B echo $AR > /proc/sys/vm/admin_reserve_kbytes
 fi;
 if [ -e /proc/sys/vm/compact_memory ]; then
  $B echo 1 > /proc/sys/vm/compact_memory
@@ -101,10 +98,6 @@ $B echo "vm.min_free_kbytes=$FK" >> /system/etc/sysctl.conf
 if [ -e /proc/sys/vm/extra_free_kbytes ]; then
  $B echo "vm.extra_free_kbytes=$EF" >> /system/etc/sysctl.conf
 fi;
-if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
- $B echo "vm.user_reserve_kbytes=$UR" >> /system/etc/sysctl.conf
- $B echo "vm.admin_reserve_kbytes=$AR" >> /system/etc/sysctl.conf
-fi;
 if [ -e /proc/sys/vm/compact_memory ]; then
  $B echo "vm.compact_memory=1" >> /system/etc/sysctl.conf
  $B echo "vm.compact_unevictable_allowed=1" >> /system/etc/sysctl.conf
@@ -149,10 +142,6 @@ $B sysctl -e -w vm.vfs_cache_pressure=100
 $B sysctl -e -w vm.min_free_kbytes=$FK
 if [ -e /proc/sys/vm/extra_free_kbytes ]; then
  $B sysctl -e -w vm.extra_free_kbytes=$EF
-fi;
-if [ -e /proc/sys/vm/user_reserve_kbytes ]; then
- $B sysctl -e -w vm.user_reserve_kbytes=$UR
- $B sysctl -e -w vm.admin_reserve_kbytes=$AR
 fi;
 if [ -e /proc/sys/vm/compact_memory ]; then
  $B sysctl -e -w vm.compact_memory=1
@@ -225,7 +214,7 @@ if [ -e /system/etc/slog.conf ]; then
  $B sed -e "s="enable"="disable"=" -i /system/etc/slog.conf.user
  $B echo "Slog conf tuning.." >> $LOG
 fi;
-if [ "$SDK" -le "17" ]; then
+if [ "$SDK" -le "19" ]; then
  $B echo "Trying to enable Seeder entropy generator.. " >> $LOG
  if [ -e /system/xbin/qrngd ]; then
   $B echo "qrngd detected. Seeder will not be started." >> $LOG

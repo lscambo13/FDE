@@ -239,14 +239,13 @@ if [ -e /dev/cpuctl/cpu.shares ]; then
  $B echo "1024" > /dev/cpuctl/cpu.shares
  $B echo "800000" > /dev/cpuctl/cpu.rt_runtime_us
  $B echo "1000000" > /dev/cpuctl/cpu.rt_period_us
- $B echo "CGroup cpuctl tuned.." >> $LOG
  CR=/dev/cpuctl
  $B mkdir $CR/native
  $B echo 150000 > $CR/native/cpu.rt_runtime_us
  for i in $(cat $CR/tasks); do
   $B echo "${i}" > $CR/native/tasks
-  $B echo "Optimizing cgroup.." >> $LOG
  done;
+ $B echo "CGroups tuned.." >> $LOG
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels ]; then
  $B chown root system /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels

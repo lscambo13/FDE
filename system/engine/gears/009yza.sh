@@ -3,6 +3,7 @@
 B=/system/engine/bin/busybox
 LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
+RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 $B echo "[$TIME] 009 - ***VM gear***" >> $LOG
 $B echo "Tuning LMK.." >> $LOG
 if [ -e /sys/module/lowmemorykiller/parameters/cost ]; then
@@ -26,7 +27,31 @@ if [ -e /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk ]; then
 else
  setprop lmk.autocalc false
 fi;
+if [ "$RAM" -le "512" ]; then
+ $B chmod 0664 /sys/module/lowmemorykiller/parameters/minfree
+ $B echo "2048,3072,4096,6144,14336,18432" > /sys/module/lowmemorykiller/parameters/minfree
+ setprop ro.FOREGROUND_APP_MEM 2048
+ setprop ro.VISIBLE_APP_MEM 3072
+ setprop ro.PERCEPTIBLE_APP_MEM 4096
+ setprop ro.HEAVY_WEIGHT_APP_MEM 4096
+ setprop ro.SECONDARY_SERVER_MEM 6144
+ setprop ro.BACKUP_APP_MEM 6144
+ setprop ro.HOME_APP_MEM 2048
+ setprop ro.HIDDEN_APP_MEM 14336
+ setprop ro.EMPTY_APP_MEM 18432
+ $B echo "LOW RAM tweak activated" >> $LOG
+fi;
 $B echo "Tuning Android proc.." >> $LOG
+$B chmod 0664 /sys/module/lowmemorykiller/parameters/adj
+$B echo "0,1,2,4,7,15" /sys/module/lowmemorykiller/parameters/adj
+setprop ro.FOREGROUND_APP_ADJ 0
+setprop ro.VISIBLE_APP_ADJ 1
+setprop ro.PERCEPTIBLE_APP_ADJ 2
+setprop ro.HEAVY_WEIGHT_APP_ADJ 3
+setprop ro.SECONDARY_SERVER_ADJ 4
+setprop ro.BACKUP_APP_ADJ 5
+setprop ro.HIDDEN_APP_MIN_ADJ 7
+setprop ro.EMPTY_APP_ADJ 15
 setprop ro.HOME_APP_ADJ 1
 setprop MAX_SERVICE_INACTIVITY false
 setprop MIN_HIDDEN_APPS false

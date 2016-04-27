@@ -95,13 +95,17 @@ if [ -e /sys/block/zram0/disksize ]; then
  fi;
  $B echo "Configuring kernel & ZRAM frienship.." >> $LOG
  if [ "$RAM" -gt "1700" ]; then
-  $B echo 30 > /proc/sys/vm/swappiness
-  $B echo "vm.swappiness=30" >> /system/etc/sysctl.conf
-  $B sysctl -e -w vm.swappiness=30
- else
-  $B echo 60 > /proc/sys/vm/swappiness
-  $B echo "vm.swappiness=60" >> /system/etc/sysctl.conf
-  $B sysctl -e -w vm.swappiness=60
+  $B echo 50 > /proc/sys/vm/swappiness
+  $B echo "vm.swappiness=50" >> /system/etc/sysctl.conf
+  $B sysctl -e -w vm.swappiness=50
+ elif [ "$RAM" -gt "1000" ]; then
+  $B echo 75 > /proc/sys/vm/swappiness
+  $B echo "vm.swappiness=75" >> /system/etc/sysctl.conf
+  $B sysctl -e -w vm.swappiness=75
+ elif [ "$RAM" -le "512" ]; then
+  $B echo 96 > /proc/sys/vm/swappiness
+  $B echo "vm.swappiness=96" >> /system/etc/sysctl.conf
+  $B sysctl -e -w vm.swappiness=96
  fi;
  $B echo 2 > /proc/sys/vm/page-cluster
  $B echo "vm.page-cluster=2" >> /system/etc/sysctl.conf
@@ -136,21 +140,21 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  $B swapon /dev/block/ramzswap0 | $B tee -a $LOG
  fi;
  $B echo "Configuring kernel & RAMZSWAP frienship.." >> $LOG
- $B echo 75 > /proc/sys/vm/swappiness
+ $B echo 96 > /proc/sys/vm/swappiness
  $B echo 2 > /proc/sys/vm/page-cluster
- $B echo "vm.swappiness=75" >> /system/etc/sysctl.conf
+ $B echo "vm.swappiness=96" >> /system/etc/sysctl.conf
  $B echo "vm.page-cluster=2" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.swappiness=75
+ $B sysctl -e -w vm.swappiness=96
  $B sysctl -e -w vm.page-cluster=2
 elif [ "$SWAP" -gt "0" ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  $B echo "SWAP detected. Size is $SWAP MB" >> $LOG
  $B echo "Configuring kernel & SWAP frienship.." >> $LOG
- $B echo 30 > /proc/sys/vm/swappiness
+ $B echo 50 > /proc/sys/vm/swappiness
  $B echo 2 > /proc/sys/vm/page-cluster
- $B echo "vm.swappiness=30" >> /system/etc/sysctl.conf
+ $B echo "vm.swappiness=50" >> /system/etc/sysctl.conf
  $B echo "vm.page-cluster=2" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.swappiness=30
+ $B sysctl -e -w vm.swappiness=50
  $B sysctl -e -w vm.page-cluster=2
  if [ -e /sys/module/zswap/parameters/enabled ]; then
   $B echo "ZSWAP detected. Enabling.." >> $LOG

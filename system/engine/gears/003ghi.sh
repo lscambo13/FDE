@@ -48,7 +48,7 @@ if [ -e /sys/block/zram0/disksize ]; then
  ZRAM0=$($B cat /sys/block/zram0/disksize)
  ZZRAM=$((ZRAM0/1024/1024))
  if [ "$RAM" -gt "1700" ]; then
-  FZRAM=$((RAM/4))
+  FZRAM=$((RAM/5))
  else
   FZRAM=$((RAM/2))
  fi;

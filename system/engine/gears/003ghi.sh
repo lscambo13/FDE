@@ -65,8 +65,10 @@ if [ -e /sys/block/zram0/disksize ]; then
  if [ "$SWAP" -gt "0" ]; then
   $B echo "Stopping swappiness.."
   $B swapoff /dev/block/zram0 | $B tee -a $LOG
+  $B umount /dev/block/zram0 | $B tee -a $LOG
   if [ -e /sys/block/zram1/disksize ]; then
    $B swapoff /dev/block/zram1 | $B tee -a $LOG
+   $B umount /dev/block/zram1 | $B tee -a $LOG
   fi;
   $B sleep 1
   sync;
@@ -77,8 +79,10 @@ if [ -e /sys/block/zram0/disksize ]; then
  if [ "$SWAP" -gt "0" ]; then
   $B echo "Stopping swappiness.."
   $B swapoff /dev/block/zram0 | $B tee -a $LOG
+  $B umount /dev/block/zram0 | $B tee -a $LOG
   if [ -e /sys/block/zram1/disksize ]; then
    $B swapoff /dev/block/zram1 | $B tee -a $LOG
+   $B umount /dev/block/zram1 | $B tee -a $LOG
    $B sleep 1
    $B echo 1 > /sys/block/zram1/reset | $B tee -a $LOG
   fi;
@@ -92,6 +96,10 @@ if [ -e /sys/block/zram0/disksize ]; then
  if [ -e /sys/block/zram0/comp_algorithm ]; then
   $B echo "Setting compression algorithm to LZ4.."
   $B echo "lz4" > /sys/block/zram0/comp_algorithm
+ fi;
+ if [ -e /sys/block/zram0/max_comp_streams ]; then
+  $B echo "Set max compression streams.."
+  $B echo "3" > /sys/block/zram0/max_comp_streams
  fi;
  $B echo "Starting swappiness.."
  $B mkswap /dev/block/zram0 | $B tee -a $LOG
@@ -119,6 +127,10 @@ if [ -e /sys/block/zram0/disksize ]; then
  if [ -e /sys/module/zram/parameters/total_mem_usage_percent ]; then
   $B echo "Tuning ZRAM parameter.."
   $B echo "$PZ" > /sys/module/zram/parameters/total_mem_usage_percent
+ fi;
+ if [ -e /sys/block/zram0/compact ]; then
+  $B echo "Activate ZRAM compaction.."
+  $B echo "1" > /sys/block/zram0/compact
  fi;
 elif [ -e /sys/block/ramzswap0/size ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)

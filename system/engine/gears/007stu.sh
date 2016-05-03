@@ -30,6 +30,10 @@ if [ -e /sys/class/lcd/panel/power_reduce ]; then
  $B echo "LCD power reduce detected. Activating.."
  $B echo "1" > /sys/class/lcd/panel/power_reduce
 fi;
+if [ -e /sys/devices/platform/i2c-gpio.9/i2c-9/9-0036/power_supply/fuelgauge/fg_reset_soc ]; then
+ $B echo "Reset Fuelgauge report.."
+ $B echo "1" > /sys/devices/platform/i2c-gpio.9/i2c-9/9-0036/power_supply/fuelgauge/fg_reset_soc
+fi;
 if [ -e /sys/module/pm2/modes/cpu0/power_collapse/suspend_enabled ]; then
  $B echo "LowPower mode 2 support detected. Activating.."
  $B echo 1 > /sys/module/pm2/modes/cpu0/standalone_power_collapse/idle_enabled

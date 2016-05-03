@@ -290,7 +290,7 @@ if [ -e /system/etc/slog.conf ]; then
  $B echo "Slog conf tuning.."
 fi;
 if [ "$SDK" -le "19" ]; then
- $B echo "Trying to enable Seeder entropy generator.. "
+ $B echo "Trying to enable Seeder entropy generator.."
  if [ -e /system/xbin/qrngd ]; then
   $B echo "qrngd detected. Seeder will not be started."
  else

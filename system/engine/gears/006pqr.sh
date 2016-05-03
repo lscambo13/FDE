@@ -121,11 +121,15 @@ if [ -e /sys/module/tpd_setting/parameters/tpd_mode ]; then
  $B chmod 644 /sys/module/tpd_setting/parameters/tpd_mode
  $B echo 1 > /sys/module/tpd_setting/parameters/tpd_mode
  $B echo "TPD tune-up.."
-elif [ -e /sys/module/hid_magicmouse/parameters/scroll_speed ]; then
+fi;
+if [ -e /sys/module/hid_magicmouse/parameters/scroll_speed ]; then
  $B chmod 644 /sys/module/hid_magicmouse/parameters/scroll_speed
  $B echo 63 > /sys/module/hid_magicmouse/parameters/scroll_speed
  $B echo "HID-magic tune-up"
 fi;
+if [ -e /sys/devices/virtual/sec/sec_touchscreen/tsp_threshold ]; then
+ $B echo "50" > /sys/devices/virtual/sec/sec_touchscreen/tsp_threshold
+ $B echo "Touchscreen sensivity tune-up"
 if [ "$ARCH" == "armv6l" ]; then
  $B echo "No hard tuning for ARMv6.."
 else

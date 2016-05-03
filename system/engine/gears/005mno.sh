@@ -26,9 +26,12 @@ if [ -e /proc/sys/vm/extra_free_kbytes ]; then
  elif [ "$RAM" -gt "1024" ]; then
   EF=$((RAM*6))
   FK=$((RAM*4))
- else
+ elif [ "$RAM" -gt "512" ]; then
   EF=$((RAM*8))
   FK=$((RAM*7))
+ else
+  EF=$((RAM*10))
+  FK=$((RAM*9))
  fi;
 else
  FK=$((RAM*8))

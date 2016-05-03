@@ -72,6 +72,7 @@ setprop dalvik.vm.gc.postverify false
 setprop dalvik.vm.gc.preverify false
 setprop dalvik.vm.debug.alloc 0
 setprop dalvik.vm.deadlock-predict off
+setprop dalvik.vm.jit.codecachesize 0
 setprop persist.sys.purgeable_assets 1
 $B echo "[$TIME] 009 - ***VM gear*** - OK"
 sync;

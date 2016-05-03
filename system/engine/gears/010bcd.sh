@@ -21,7 +21,7 @@ if [ -e /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand
  $B echo "1" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_enable
  $B echo "60" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_upthreshold
  TF=$($B cat /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/max_freq)
- $B echo $TF > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/target_freq
+ $B echo "$TF" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/target_freq
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold ]; then
 $B echo "CPU0 ondemand tuning.."

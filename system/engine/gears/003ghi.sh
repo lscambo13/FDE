@@ -197,7 +197,7 @@ SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
 if [ "$SWAP" -gt "0" ]; then
  if [ "$RAM" -le "1024" ]; then
   $B echo "Small RAM - KSM wanted.."
-  if [ -e /sys/kernel/mm/ksm/run ]; then
+  if [ -e /sys/kernel/mm/uksm/run ]; then
    $B echo "uKSM detected"
    $B echo "Starting and tuning uKSM.."
    $B echo 128 > /sys/kernel/mm/uksm/pages_to_scan
@@ -231,7 +231,7 @@ if [ "$SWAP" -gt "0" ]; then
   fi;
  fi;
 elif [ "$SWAP" -eq "0" ]; then
- if [ -e /sys/kernel/mm/ksm/run ]; then
+ if [ -e /sys/kernel/mm/uksm/run ]; then
   $B echo "uKSM detected"
   $B echo "Starting and tuning uKSM.."
   $B echo 128 > /sys/kernel/mm/uksm/pages_to_scan

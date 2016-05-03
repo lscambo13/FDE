@@ -8,6 +8,23 @@ if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
  $B echo "Disable MSM thermal core for now.."
  $B echo 0 > /sys/module/msm_thermal/core_control/enabled
 fi;
+if [ -e /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_freq ]; then
+ $B echo "Boosting ARK Benefit M2C.."
+ $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+ $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+ $B chmod 644 /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_downdifferential
+ $B chmod 644 /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_enable
+ $B chmod 644 /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_freq
+ $B chmod 644 /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_upthreshold
+ $B echo "600000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+ $B echo "ondemand" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+ $B echo "533000" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_freq
+ $B echo "20" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_downdifferential
+ $B echo "1" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_enable
+ $B echo "72" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_upthreshold
+ TF=$($B cat /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/max_freq)
+ $B echo $TF > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/target_freq
+fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold ]; then
 $B echo "CPU0 ondemand tuning.."
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold
@@ -66,7 +83,7 @@ if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/up_threshold ]; then
  $B echo "1" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_down_factor
 fi;
 if [ -e /system/engine/prop/ferakernel ]; then
- $B echo "Boosting X10.."
+ $B echo "Boosting Xperia X10.."
  $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
  $B echo "576000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 fi;

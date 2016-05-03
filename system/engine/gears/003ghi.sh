@@ -212,6 +212,8 @@ if [ "$SWAP" -gt "0" ]; then
    $B echo 3000 > /sys/kernel/mm/ksm/sleep_millisecs
    $B echo 1 > /sys/kernel/mm/ksm/run
    setprop ro.config.ksm.support true
+  else
+   $B echo "No KSM was detected"
   fi;
  else
   if [ -e /sys/kernel/mm/uksm/run ]; then
@@ -224,10 +226,10 @@ if [ "$SWAP" -gt "0" ]; then
    $B echo "Disabling KSM.."
    $B echo 0 > /sys/kernel/mm/ksm/run
    setprop ro.config.ksm.support false
+  else
+   $B echo "No KSM was detected"
+  fi;
  fi;
-else
- $B echo "No KSM was detected"
-fi;
 elif [ "$SWAP" -eq "0" ]; then
  if [ -e /sys/kernel/mm/ksm/run ]; then
   $B echo "uKSM detected"
@@ -244,6 +246,8 @@ elif [ "$SWAP" -eq "0" ]; then
   $B echo 3000 > /sys/kernel/mm/ksm/sleep_millisecs
   $B echo 1 > /sys/kernel/mm/ksm/run
   setprop ro.config.ksm.support true
+ else
+  $B echo "No KSM was detected"
  fi;
 fi;
 $B echo "Paging check completed"

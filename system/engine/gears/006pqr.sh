@@ -81,6 +81,25 @@ if [ -e /sys/module/mali/parameters/mali_debug_level ]; then
   $B chmod 644 /sys/module/mali/parameters/mali_pp_scheduler_balance_jobs
   $B echo 1 > /sys/module/mali/parameters/mali_pp_scheduler_balance_jobs
  fi;
+ if [ -e /sys/module/mali/parameters/mali_max_pp_cores_group_1 ]; then
+  $B echo "Mali PP group 1 tuned."
+  $B chown 0:0 /sys/module/mali/parameters/mali_max_pp_cores_group_1
+  $B chmod 644 /sys/module/mali/parameters/mali_max_pp_cores_group_1
+  $B echo 1 > /sys/module/mali/parameters/mali_max_pp_cores_group_1
+ fi;
+ if [ -e /sys/module/mali/parameters/mali_max_pp_cores_group_2 ]; then
+  $B echo "Mali PP group 2 tuned."
+  $B chown 0:0 /sys/module/mali/parameters/mali_max_pp_cores_group_2
+  $B chmod 644 /sys/module/mali/parameters/mali_max_pp_cores_group_2
+  $B echo 1 > /sys/module/mali/parameters/mali_max_pp_cores_group_2
+ fi;
+ if [ -e /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_freq ]; then
+  $B echo "Boosting ARK Benefit M2C Mali GPU - locking to 312Mhz.."
+  $B chown 0:0 /sys/module/mali/parameters/gpu_cur_freq
+  $B chmod 644 /sys/module/mali/parameters/gpu_cur_freq
+  $B echo 312000 > /sys/module/mali/parameters/gpu_cur_freq
+  $B chmod 444 /sys/module/mali/parameters/gpu_cur_freq
+ fi;
 fi;
 $B mount -t debugfs debugfs /sys/kernel/debug
 $B chmod 777 /dev/graphics/fb0

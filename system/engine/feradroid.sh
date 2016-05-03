@@ -82,62 +82,62 @@ fi;
 if [ -e /system/engine/gears/001abc.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] Running 001 gear.." >> $LOG
- /system/engine/gears/001abc.sh
+ /system/engine/gears/001abc.sh | $B tee -a $LOG
 fi;
 if [ -e /system/engine/gears/002def.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] Running 002 gear.." >> $LOG
- /system/engine/gears/002def.sh
+ /system/engine/gears/002def.sh | $B tee -a $LOG
 fi;
 if [ -e /system/engine/gears/003ghi.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] Running 003 gear.." >> $LOG
- /system/engine/gears/003ghi.sh
+ /system/engine/gears/003ghi.sh | $B tee -a $LOG
 fi;
 if [ -e /system/engine/gears/004jkl.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] Running 004 gear.." >> $LOG
- /system/engine/gears/004jkl.sh
+ /system/engine/gears/004jkl.sh | $B tee -a $LOG
 fi;
 if [ -e /system/engine/gears/005mno.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] Running 005 gear.." >> $LOG
- /system/engine/gears/005mno.sh
+ /system/engine/gears/005mno.sh | $B tee -a $LOG
 fi;
 if [ -e /system/engine/gears/006pqr.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] Running 006 gear.." >> $LOG
- /system/engine/gears/006pqr.sh
+ /system/engine/gears/006pqr.sh | $B tee -a $LOG
 fi;
 if [ -e /system/engine/gears/007stu.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] Running 007 gear.." >> $LOG
- /system/engine/gears/007stu.sh
+ /system/engine/gears/007stu.sh | $B tee -a $LOG
 fi;
 if [ -e /system/engine/gears/008vwx.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] Running 008 gear.." >> $LOG
- /system/engine/gears/008vwx.sh
+ /system/engine/gears/008vwx.sh | $B tee -a $LOG
 fi;
 if [ -e /system/engine/gears/009yza.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] Running 009 gear.." >> $LOG
- /system/engine/gears/009yza.sh
+ /system/engine/gears/009yza.sh | $B tee -a $LOG
 fi;
 if [ -e /system/engine/gears/010bcd.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] Running 010 gear.." >> $LOG
- /system/engine/gears/010bcd.sh
+ /system/engine/gears/010bcd.sh | $B tee -a $LOG
 fi;
 if [ -e /system/engine/gears/011efg.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] Running 011 gear.." >> $LOG
- /system/engine/gears/011efg.sh
+ /system/engine/gears/011efg.sh | $B tee -a $LOG
 fi;
 if [ -e /system/engine/end.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] "END" start" >> $LOG
- /system/engine/end.sh
+ /system/engine/end.sh | $B tee -a $LOG
 fi;
 if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,rw /system

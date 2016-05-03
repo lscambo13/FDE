@@ -1,24 +1,23 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.20 | By FeraVolt. 2016 ###
 B=/system/engine/bin/busybox
-LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] 011 - ***GPS gear***" >> $LOG
+$B echo "[$TIME] 011 - ***GPS gear***"
 $B mount -o remount,rw /system
 $B mount -o remount,rw /data
 if [ -e /data/misc/mtkgps.dat ]; then
  $B rm -f /data/misc/mtkgps.dat
- $B echo "MTK GPS data cleared." >> $LOG
+ $B echo "MTK GPS data cleared."
 fi;
 if [ -e /data/misc/epo.dat ]; then
  $B rm -f /data/misc/epo.dat
- $B echo "EPO data cleared." >> $LOG
+ $B echo "EPO data cleared."
 fi;
 if [ -e /system/engine/prop/nogps ]; then
  if [ -e /system/etc/gps ]; then
-  $B echo "Patched GPS." >> $LOG
+  $B echo "Patched GPS."
  else
-  $B echo "Patching GPS config..." >> $LOG
+  $B echo "Patching GPS config..."
   if [ -e /system/etc/gps.conf ]; then
    $B chmod 777 /system/etc/gps.conf
   else
@@ -70,5 +69,5 @@ if [ -e /system/engine/prop/nogps ]; then
   fi;
  fi;
 fi;
-$B echo "[$TIME] 011 - ***GPS gear*** - OK" >> $LOG
+$B echo "[$TIME] 011 - ***GPS gear*** - OK"
 sync;

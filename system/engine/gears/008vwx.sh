@@ -1,13 +1,12 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.20 | By FeraVolt. 2016 ###
 B=/system/engine/bin/busybox
-LOG=/sdcard/Android/FDE.txt
 SDK=$(getprop ro.build.version.sdk)
 TIME=$($B date | $B awk '{ print $4 }')
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
-$B echo "[$TIME] 008 - ***Network gear***" >> $LOG
+$B echo "[$TIME] 008 - ***Network gear***"
 $B mount -o remount,rw /system
-$B echo "Writing optimized network parameters to sysctl" >> $LOG
+$B echo "Writing optimized network parameters to sysctl"
 $B echo "net.ipv4.tcp_congestion_control=cubic" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.tcp_rfc1337=1" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.tcp_window_scaling=1" >> /system/etc/sysctl.conf
@@ -22,7 +21,7 @@ $B echo "net.ipv4.tcp_fin_timeout=36" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.conf.all.rp_filter=2" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.conf.default.rp_filter=2" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.conf.all.accept_redirects=0" >> /system/etc/sysctl.conf
-$B echo "Executing optimized network parameters via sysctl" >> $LOG
+$B echo "Executing optimized network parameters via sysctl"
 $B sysctl -e -w net.ipv4.tcp_congestion_control=cubic
 $B sysctl -e -w net.ipv4.tcp_rfc1337=1
 $B sysctl -e -w net.ipv4.tcp_window_scaling=1
@@ -38,7 +37,7 @@ $B sysctl -e -w net.ipv4.conf.all.rp_filter=2
 $B sysctl -e -w net.ipv4.conf.default.rp_filter=2
 $B sysctl -e -w net.ipv4.conf.all.accept_redirects=0
 if [ "$RAM" -le "1024" ]; then
-$B echo "Set smaller net-buffer sizes.." >> $LOG
+$B echo "Set smaller net-buffer sizes.."
 setprop net.tcp.buffersize.gprs 4092,8760,11680,4096,8760,11680
 setprop net.tcp.buffersize.edge 4093,26280,35040,4096,16384,35040
 setprop net.tcp.buffersize.evdo_b 4096,32768,65536,4096,32768,65536
@@ -49,7 +48,7 @@ setprop net.tcp.buffersize.wifi 4096,32768,110208,4096,32768,110208
 setprop net.tcp.buffersize.lte 4096,32768,110208,4096,32768,110208
 setprop net.tcp.buffersize.default 4096,32768,110208,4096,32768,110208
 else
-$B echo "Set larger net-buffer sizes.." >> $LOG
+$B echo "Set larger net-buffer sizes.."
 setprop net.tcp.buffersize.gprs 6144,8760,11680,6144,8760,11680
 setprop net.tcp.buffersize.edge 6144,26280,35040,6144,16384,35040
 setprop net.tcp.buffersize.evdo_b 6144,262144,1048576,6144,262144,1048576
@@ -60,7 +59,7 @@ setprop net.tcp.buffersize.wifi 262144,524288,1048576,262144,524288,1048576
 setprop net.tcp.buffersize.lte 262144,524288,3145728,262144,524288,3145728
 setprop net.tcp.buffersize.default 262144,524288,1048576,262144,524288,1048576
 fi;
-$B echo "Tuning DNS.." >> $LOG
+$B echo "Tuning DNS.."
 $B echo "nameserver 8.8.8.8" > /system/etc/resolv.conf
 $B echo "nameserver 8.8.4.4" >> /system/etc/resolv.conf
 $B echo "" >> /system/etc/resolv.conf
@@ -70,15 +69,15 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B rm /system/etc/ppp/options
  $B cp /system/engine/assets/options /system/etc/ppp/options
  $B chmod 555 /system/etc/ppp/options
- $B echo "Data compression enabled." >> $LOG
+ $B echo "Data compression enabled."
 fi;
 if [ "$SDK" -le "14" ]; then
  if [ -e /system/xbin/sqlite3 ]; then
-  $B echo "Tuning WiFi.." >> $LOG
+  $B echo "Tuning WiFi.."
   /system/xbin/sqlite3 /data/data/com.android.providers.settings/databases/settings.db "INSERT INTO secure (name, value) VALUES ('wifi_country_code', 'JP');"
  fi;
 fi;
-$B echo "Tuning Android networking settings.." >> $LOG
+$B echo "Tuning Android networking settings.."
 setprop wifi.supplicant_scan_interval 900
 setprop ro.telephony.call_ring.delay 0
 setprop ro.ril.enable.3g.prefix 1
@@ -101,5 +100,5 @@ setprop ro.ril.enable.amr.wideband 1
 setprop ro.wifi.channels 13
 setprop persist.wpa_supplicant.debug false
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] 008 - ***Network gear*** - OK" >> $LOG
+$B echo "[$TIME] 008 - ***Network gear*** - OK"
 sync;

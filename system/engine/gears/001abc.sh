@@ -1,13 +1,12 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.20 | By FeraVolt. 2016 ###
 B=/system/engine/bin/busybox
-LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] 001 - ***Cleaning gear***" >> $LOG
-$B echo "Remounting /data and /system - RW" >> $LOG
+$B echo "[$TIME] 001 - ***Cleaning gear***"
+$B echo "Remounting /data and /system - RW"
 $B mount -o remount,rw /system
 $B mount -o remount,rw /data
-$B echo "Cleaning trash.." >> $LOG
+$B echo "Cleaning trash.."
 $B rm -f /cache/*.apk
 $B rm -f /cache/*.tmp
 $B rm -f /cache/*.log
@@ -53,9 +52,9 @@ $B rm -f /mnt/sdcard/fix_permissions.log
 $B chmod -R 777 /data/tombstones
 $B rm -f /data/tombstones/*
 $B chmod -R 000 /data/tombstones
-$B echo "Cleaning cache.." >> $LOG
+$B echo "Cleaning cache.."
 $B find /data/data -type d -iname "cache*" -exec $B rm -Rf {}/ ';'
 $B sleep 1
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] 001 - ***Cleaning gear*** - OK" >> $LOG
+$B echo "[$TIME] 001 - ***Cleaning gear*** - OK"
 sync;

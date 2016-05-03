@@ -1,36 +1,35 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.20 | By FeraVolt. 2016 ###
 B=/system/engine/bin/busybox
-LOG=/sdcard/Android/FDE.txt
 ARCH=$($B uname -m)
 TIME=$($B date | $B awk '{ print $4 }')
 SDK=$(getprop ro.build.version.sdk)
 COM=$(getprop debug.composition.type)
-$B echo "[$TIME] 006 - ***GPU gear***" >> $LOG
-$B echo "Remounting /system - RW" >> $LOG
+$B echo "[$TIME] 006 - ***GPU gear***"
+$B echo "Remounting /system - RW"
 $B mount -o remount,rw /system
 $B mount -t debugfs debugfs /sys/kernel/debug
 if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
- $B echo "Adreno GPU detected" >> $LOG
+ $B echo "Adreno GPU detected"
  if [ "$SDK" -eq "10" ]; then
   if [ -e /init.es209ra.rc ]; then
    if [ -e /system/etc/adreno_config.txt ]; then
     $B rm -f /system/etc/adreno_config.txt
     $B rm -f /data/local/tmp/adreno_config.txt
    fi;
-   $B echo "X10 adreno 'config'.." >> $LOG
+   $B echo "X10 adreno 'config'.."
   elif [ ! -h /data/local/tmp/adreno_config.txt ]; then
-   $B echo "Applying Adreno configurations.." >> $LOG
+   $B echo "Applying Adreno configurations.."
    $B chmod 755 /system/engine/assets/adreno_config.txt
    $B ln -s /system/engine/assets/adreno_config.txt /data/local/tmp/adreno_config.txt
   fi;
  fi;
- $B echo "Setting correct device permissions.." >> $LOG
+ $B echo "Setting correct device permissions.."
  $B chmod 666 /dev/kgsl-3d0
  $B chmod 666 /dev/msm_aac_in
  $B chmod 666 /dev/msm_amr_in
  $B chmod 666 /dev/genlock
- $B echo "Tuning Android and Adreno frienship.." >> $LOG
+ $B echo "Tuning Android and Adreno frienship.."
  setprop com.qc.hardware true
  setprop debug.qc.hardware true
  setprop debug.qctwa.statusbar 1
@@ -42,11 +41,11 @@ if [ "$SDK" -eq "10" ]; then
    if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
     AV=$(du -k "/system/lib/egl/libGLESv2_adreno200.so" | cut -f1)
     if [ "$AV" -eq "1712" ]; then
-     $B echo "You have legacy adreno libs. No HWA for you." >> $LOG
+     $B echo "You have legacy adreno libs. No HWA for you."
      exit
     fi;
    fi;
-   $B echo "Forcing GPU to render UI.." >> $LOG
+   $B echo "Forcing GPU to render UI.."
    $B mount -o remount,rw /system
    $B sed -i '/0 0 android/d' /system/lib/egl/egl.cfg
    $B rm /system/lib/egl/libGLES_android.so
@@ -54,30 +53,30 @@ if [ "$SDK" -eq "10" ]; then
  fi;
 fi;
 if [ -e /sys/module/mali/parameters/mali_debug_level ]; then
- $B echo "Mali GPU detected. Tuning.." >> $LOG
+ $B echo "Mali GPU detected. Tuning.."
  $B chown 0:0 /sys/module/mali/parameters/mali_debug_level
  $B chmod 644 /sys/module/mali/parameters/mali_debug_level
  $B echo 0 > /sys/module/mali/parameters/mali_debug_level
  if [ -e /sys/module/mali/parameters/mali_gpu_utilization_timeout ]; then
-  $B echo "Mali util-timiout tuned." >> $LOG
+  $B echo "Mali util-timiout tuned."
   $B chown 0:0 /sys/module/mali/parameters/mali_gpu_utilization_timeout
   $B chmod 644 /sys/module/mali/parameters/mali_gpu_utilization_timeout
   $B echo 100 > /sys/module/mali/parameters/mali_gpu_utilization_timeout
  fi;
  if [ -e /sys/module/mali/parameters/mali_touch_boost_level ]; then
-  $B echo "Mali touch-boost tuned." >> $LOG
+  $B echo "Mali touch-boost tuned."
   $B chown 0:0 /sys/module/mali/parameters/mali_touch_boost_level
   $B chmod 644 /sys/module/mali/parameters/mali_touch_boost_level
   $B echo 1 > /sys/module/mali/parameters/mali_touch_boost_level
  fi;
  if [ -e /sys/module/mali/parameters/mali_l2_max_reads ]; then
-  $B echo "Mali L2 cache tuned." >> $LOG
+  $B echo "Mali L2 cache tuned."
   $B chown 0:0 /sys/module/mali/parameters/mali_l2_max_reads
   $B chmod 644 /sys/module/mali/parameters/mali_l2_max_reads
   $B echo 48 > /sys/module/mali/parameters/mali_l2_max_reads
  fi;
  if [ -e /sys/module/mali/parameters/mali_pp_scheduler_balance_jobs ]; then
-  $B echo "Mali PP tuned." >> $LOG
+  $B echo "Mali PP tuned."
   $B chown 0:0 /sys/module/mali/parameters/mali_pp_scheduler_balance_jobs
   $B chmod 644 /sys/module/mali/parameters/mali_pp_scheduler_balance_jobs
   $B echo 1 > /sys/module/mali/parameters/mali_pp_scheduler_balance_jobs
@@ -86,32 +85,32 @@ fi;
 $B mount -t debugfs debugfs /sys/kernel/debug
 $B chmod 777 /dev/graphics/fb0
 if [ -e /sys/kernel/debug/msm_fb/0/vsync_enable ]; then
- $B echo "Disabling VSYNC.." >> $LOG
+ $B echo "Disabling VSYNC.."
  $B echo 0 > /sys/kernel/debug/msm_fb/0/vsync_enable
 fi;
 if [ -e /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction ]; then
  $B echo 50 > /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction
- $B echo "KGSL tune-up.." >> $LOG
+ $B echo "KGSL tune-up.."
 fi;
 if [ -e /system/engine/prop/firstboot ]; then
  if [ -e /system/xbin/sqlite3 ]; then
-  $B echo "Tuning Android animations.." >> $LOG
+  $B echo "Tuning Android animations.."
   $B echo "REPLACE INTO \"system\" VALUES(26,'window_animation_scale','0.25');REPLACE INTO \"system\" VALUES(27,'transition_animation_scale','0.25');" | sqlite3 /data/data/com.android.providers.settings/databases/settings.db
  fi;
 fi;
 if [ -e /sys/module/tpd_setting/parameters/tpd_mode ]; then
  $B chmod 644 /sys/module/tpd_setting/parameters/tpd_mode
  $B echo 1 > /sys/module/tpd_setting/parameters/tpd_mode
- $B echo "TPD tune-up.." >> $LOG
+ $B echo "TPD tune-up.."
 elif [ -e /sys/module/hid_magicmouse/parameters/scroll_speed ]; then
  $B chmod 644 /sys/module/hid_magicmouse/parameters/scroll_speed
  $B echo 63 > /sys/module/hid_magicmouse/parameters/scroll_speed
- $B echo "HID-magic tune-up" >> $LOG
+ $B echo "HID-magic tune-up"
 fi;
 if [ "$ARCH" == "armv6l" ]; then
- $B echo "No hard tuning for ARMv6.." >> $LOG
+ $B echo "No hard tuning for ARMv6.."
 else
- $B echo "Tuning Android graphics.." >> $LOG
+ $B echo "Tuning Android graphics.."
  if [ "$COM" == "mdp" ]; then
   setprop debug.mdpcomp.logs 0
   setprop debug.mdpcomp.maxlayer 3
@@ -141,5 +140,5 @@ else
  setprop ro.camera.sound.forced 0
 fi;
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] 006 - ***GPU gear*** - OK" >> $LOG
+$B echo "[$TIME] 006 - ***GPU gear*** - OK"
 sync;

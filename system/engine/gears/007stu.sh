@@ -2,12 +2,11 @@
 ### FeraDroid Engine v0.20 | By FeraVolt. 2016 ###
 B=/system/engine/bin/busybox
 A=$(cat /sys/class/power_supply/battery/capacity)
-LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] 007 - ***Battery gear***" >> $LOG
+$B echo "[$TIME] 007 - ***Battery gear***"
 if [ "$A" -eq "100" ] ; then
  if [ -e /system/engine/prop/nobat ]; then
-  $B echo "Re-calibrating battery.." >> $LOG
+  $B echo "Re-calibrating battery.."
   $B mount -o remount,rw /data
   $B mount -o remount,rw /system
   $B rm -f /data/system/batterystats.bin
@@ -15,24 +14,24 @@ if [ "$A" -eq "100" ] ; then
  fi;
 fi;
 if [ -e /sys/kernel/fast_charge/force_fast_charge ]; then
- $B echo "Fast charge support detected. Activating.." >> $LOG
+ $B echo "Fast charge support detected. Activating.."
  $B echo "1" > /sys/kernel/fast_charge/force_fast_charge
 fi;
 if [ -e /sys/devices/platform/sec-battery/power_supply/battery/charge_current_override ]; then
- $B echo "(2)Fast charge support detected. Activating.." >> $LOG
+ $B echo "(2)Fast charge support detected. Activating.."
  $B echo "1200" > /sys/devices/platform/sec-battery/power_supply/battery/charge_current_override
  $B echo "1200" > /sys/devices/platform/i2c-gpio.15/i2c-15/15-0034/power_supply/sec-charger/charge_current_override
 fi;
 if [ -e /sys/module/lpm_levels/parameters/sleep_disabled ]; then
- $B echo "LowPower mode 1 support detected. Activating.." >> $LOG
+ $B echo "LowPower mode 1 support detected. Activating.."
  $B echo "0" > /sys/module/lpm_levels/parameters/sleep_disabled
 fi;
 if [ -e /sys/class/lcd/panel/power_reduce ]; then
- $B echo "LCD power reduce detected. Activating.." >> $LOG
+ $B echo "LCD power reduce detected. Activating.."
  $B echo "1" > /sys/class/lcd/panel/power_reduce
 fi;
 if [ -e /sys/module/pm2/modes/cpu0/power_collapse/suspend_enabled ]; then
- $B echo "LowPower mode 2 support detected. Activating.." >> $LOG
+ $B echo "LowPower mode 2 support detected. Activating.."
  $B echo 1 > /sys/module/pm2/modes/cpu0/standalone_power_collapse/idle_enabled
  $B echo 1 > /sys/module/pm2/modes/cpu1/standalone_power_collapse/idle_enabled
  $B echo 1 > /sys/module/pm2/modes/cpu0/standalone_power_collapse/suspend_enabled
@@ -40,7 +39,7 @@ if [ -e /sys/module/pm2/modes/cpu0/power_collapse/suspend_enabled ]; then
  $B echo 1 > /sys/module/pm2/modes/cpu0/power_collapse/suspend_enabled
  $B echo 1 > /sys/module/pm2/modes/cpu0/power_collapse/idle_enabled
 fi;
-$B echo "Tuning Android power-saving.." >> $LOG
+$B echo "Tuning Android power-saving.."
 setprop power.saving.mode 1
 setprop persist.radio.ramdump 0
 setprop ro.vold.umsdirtyratio 20
@@ -49,5 +48,5 @@ setprop ro.ril.disable.power.collapse 0
 setprop ro.config.hw_power_saving 1
 setprop dev.pm.dyn_samplingrate 1
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] 007 - ***Battery gear*** - OK" >> $LOG
+$B echo "[$TIME] 007 - ***Battery gear*** - OK"
 sync;

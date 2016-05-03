@@ -1,10 +1,9 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.20 | By FeraVolt. 2016 ###
 B=/system/engine/bin/busybox
-LOG=/sdcard/Android/FDE.txt
 TIME=$($B date | $B awk '{ print $4 }')
 SDK=$(getprop ro.build.version.sdk)
-$B echo "[$TIME] 005 - ***Kernel gear***" >> $LOG
+$B echo "[$TIME] 005 - ***Kernel gear***"
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 FM=$((RAM*(64+1)))
 ME=$((RAM*27))
@@ -47,7 +46,7 @@ else
  LM=3
 fi;
 $B mount -o remount,rw /system
-$B echo "Applying optimized kernel parameters.." >> $LOG
+$B echo "Applying optimized kernel parameters.."
 if [ -e /proc/sys/kernel/random/read_wakeup_threshold ]; then
  $B echo 1536 > /proc/sys/kernel/random/read_wakeup_threshold
  $B echo "kernel.random.read_wakeup_threshold=1536" >> /system/etc/sysctl.conf
@@ -238,7 +237,7 @@ if [ -e /proc/sys/kernel/sem ]; then
  $B echo "kernel.sem='250 32000 96 128'" >> /system/etc/sysctl.conf
  $B sysctl -e -w kernel.sem='250 32000 96 128'
 fi;
-$B echo "Tuning kernel scheduling.." >> $LOG
+$B echo "Tuning kernel scheduling.."
 $B mount -t debugfs none /sys/kernel/debug | $B tee -a $LOG
 if [ -e /sys/kernel/debug/sched_features ]; then
  $B echo "NO_HRTICK" > /sys/kernel/debug/sched_features
@@ -257,16 +256,16 @@ if [ -e /sys/kernel/sched/gentle_fair_sleepers ]; then
  $B echo 0 > /sys/kernel/sched/gentle_fair_sleepers
 fi;
 if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
- $B echo "Dynamic fsync detected. Activating.." >> $LOG
+ $B echo "Dynamic fsync detected. Activating.."
  $B echo "1" > /sys/kernel/dyn_fsync/Dyn_fsync_active
 fi;
 if [ -e /sys/class/misc/fsynccontrol/fsync_enabled ]; then
- $B echo "Fsync control detected. Tuning.." >> $LOG
+ $B echo "Fsync control detected. Tuning.."
  $B echo "0" > /sys/class/misc/fsynccontrol/fsync_enabled
 fi;
 if [ -e /sys/module/sync/parameters/fsync ]; then
  $B echo "0" > /sys/module/sync/parameters/fsync
- $B echo "Fsync module - OFF" >> $LOG
+ $B echo "Fsync module - OFF"
 fi;
 if [ -e /system/etc/sprd_monitor-user.conf ]; then
  $B echo "sysdump off" > /system/etc/sprd_monitor-user.conf
@@ -283,37 +282,37 @@ if [ -e /system/etc/sprd_monitor-user.conf ]; then
  $B echo "res-monitor off" >> /system/etc/sprd_monitor-userdebug.conf
  $B echo "oprofile off" >> /system/etc/sprd_monitor-userdebug.conf
  $B echo "" >> /system/etc/sprd_monitor-userdebug.conf
- $B echo "SPRD monitor tuning.." >> $LOG
+ $B echo "SPRD monitor tuning.."
 fi;
 if [ -e /system/etc/slog.conf ]; then
  $B sed -e "s="enable"="disable"=" -i /system/etc/slog.conf
  $B sed -e "s="enable"="disable"=" -i /system/etc/slog.conf.user
- $B echo "Slog conf tuning.." >> $LOG
+ $B echo "Slog conf tuning.."
 fi;
 if [ "$SDK" -le "19" ]; then
- $B echo "Trying to enable Seeder entropy generator.. " >> $LOG
+ $B echo "Trying to enable Seeder entropy generator.. "
  if [ -e /system/xbin/qrngd ]; then
-  $B echo "qrngd detected. Seeder will not be started." >> $LOG
+  $B echo "qrngd detected. Seeder will not be started."
  else
   /system/engine/bin/rngd -t 2 -T 1 -s 256 --fill-watermark=80% | $B tee -a $LOG
   $B sleep 3
   $B echo -8 > /proc/"$(pgrep rngd)"/oom_adj | $B tee -a $LOG
   renice 5 "$(pidof rngd)" | $B tee -a $LOG
-  $B echo "Seeder entropy generator activated." >> $LOG
+  $B echo "Seeder entropy generator activated."
  fi;
 fi;
 if [ -e /sys/module/logger/parameters/log_mode ]; then
  $B echo 2 > /sys/module/logger/parameters/log_mode
- $B echo "Disable Android logger.." >> $LOG
+ $B echo "Disable Android logger.."
 fi;
 for n in /sys/module/*
 do
  if [ -e "$n"/parameters/debug_mask ]; then
-  $B echo "Turning debugging OFF.." >> $LOG
+  $B echo "Turning debugging OFF.."
   $B echo "0" > "$n"/parameters/debug_mask
  fi;
 done;
-$B echo "Tuning Android.." >> $LOG
+$B echo "Tuning Android.."
 setprop ro.config.nocheckin 1
 setprop ro.kernel.android.checkjni 0
 setprop ro.kernel.checkjni 0
@@ -322,5 +321,5 @@ setprop profiler.force_disable_err_rpt 1
 setprop profiler.force_disable_ulog 1
 setprop logcat.live disable
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] 005 - ***Kernel gear*** - OK" >> $LOG
+$B echo "[$TIME] 005 - ***Kernel gear*** - OK"
 sync;

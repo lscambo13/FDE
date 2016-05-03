@@ -140,6 +140,12 @@ if [ -e /system/engine/end.sh ]; then
  /system/engine/end.sh | $B tee -a $LOG
 fi;
 if [ -e /system/engine/prop/firstboot ]; then
+ if [ -e /system/engine/gp.sh ]; then
+  $B echo "Google Play services fix"
+  /system/engine/gp.sh
+ fi;
+fi;
+if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,rw /system
  $B rm -f /system/engine/prop/firstboot
  $B mount -o remount,ro /system

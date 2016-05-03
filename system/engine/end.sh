@@ -18,12 +18,6 @@ $B killall -9 com.google.android.gms.persistent
 $B killall -9 com.google.process.gapps
 $B killall -9 com.google.android.gsf
 $B killall -9 com.google.android.gsf.persistent
-if [ -e /system/engine/prop/firstboot ]; then
- if [ -e /system/engine/gp.sh ]; then
-  $B echo "Google Play services fix"
-  /system/engine/gp.sh
- fi;
-fi;
 $B mount -o remount,rw /system
 if [ -e /etc/fstab ]; then
  $B echo "FStab onboard.."

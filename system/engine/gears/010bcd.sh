@@ -11,17 +11,15 @@ fi;
 if [ -e /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_freq ]; then
  $B echo "Boosting ARK Benefit M2C.."
  $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
- $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
  $B chmod 644 /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_downdifferential
  $B chmod 644 /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_enable
  $B chmod 644 /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_freq
  $B chmod 644 /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_upthreshold
  $B echo "600000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
- $B echo "ondemand" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
  $B echo "533000" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_freq
  $B echo "20" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_downdifferential
  $B echo "1" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_enable
- $B echo "72" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_upthreshold
+ $B echo "60" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_upthreshold
  TF=$($B cat /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/max_freq)
  $B echo $TF > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/target_freq
 fi;
@@ -36,6 +34,10 @@ $B echo "72" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold
 $B echo "20" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/down_differential
 $B echo "10000" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_rate
 $B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_down_factor
+ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/freq_step ]; then
+  $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/freq_step
+  $B echo "45" /sys/devices/system/cpu/cpu0/cpufreq/ondemand/freq_step
+ fi;
  if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias ]; then
   $B echo "Powersave bias - on"
   $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias
@@ -58,6 +60,10 @@ $B echo "20" > /sys/devices/system/cpu/cpufreq/ondemand/down_differential
 $B echo "10000" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
 $B echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
 $B echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
+ if [ -e /sys/devices/system/cpu/cpufreq/ondemand/freq_step ]; then
+  $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/freq_step
+  $B echo "45" /sys/devices/system/cpu/cpufreq/ondemand/freq_step
+ fi;
  if [ -e /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias ]; then
   $B echo "Powersave bias - on"
   $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
@@ -205,8 +211,16 @@ $B echo "CPU InteractiveX tuning.."
 $B echo "72" > /sys/devices/system/cpu/cpufreq/interactivex/go_highspeed_load
 $B echo "85" > /sys/devices/system/cpu/cpufreq/interactivex/go_maxspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
-$B echo "30000" > /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time
+$B echo "40000" > /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time
 $B echo "30000" > /sys/devices/system/cpu/cpufreq/interactivex/timer_rate
+fi;
+if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactivex/min_sample_time ]; then
+$B echo "CPU0 InteractiveX tuning.."
+$B echo "72" > /sys/devices/system/cpu/cpu0/cpufreq/interactivex/go_highspeed_load
+$B echo "85" > /sys/devices/system/cpu/cpu0/cpufreq/interactivex/go_maxspeed_load
+$B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy
+$B echo "40000" > /sys/devices/system/cpu0/cpu/cpufreq/interactivex/min_sample_time
+$B echo "30000" > /sys/devices/system/cpu0/cpu/cpufreq/interactivex/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/pegasusq/up_threshold ]; then
 $B echo "CPU Pegasusq tuning.."
@@ -217,6 +231,49 @@ $B echo "1" > /sys/devices/system/cpu/cpufreq/pegasusq/io_is_busy
 $B echo "10000" > /sys/devices/system/cpu/cpufreq/pegasusq/sampling_rate
 $B echo "192" > /sys/devices/system/cpu/cpufreq/pegasusq/freq_step
 fi;
+if [ -e /sys/devices/system/cpu/cpu0/cpufreq/pegasusq/up_threshold ]; then
+$B echo "CPU0 Pegasusq tuning.."
+$B echo "72" > /sys/devices/system/cpu/cpu0/cpufreq/pegasusq/up_threshold
+$B echo "20" > /sys/devices/system/cpu/cpu0/cpufreq/pegasusq/down_differential
+$B echo "3" > /sys/devices/system/cpu/cpu0/cpufreq/pegasusq/sampling_down_factor
+$B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/pegasusq/io_is_busy
+$B echo "10000" > /sys/devices/system/cpu/cpu0/cpufreq/pegasusq/sampling_rate
+$B echo "192" > /sys/devices/system/cpu/cpu0/cpufreq/pegasusq/freq_step
+fi;
+if [ -e /sys/devices/system/cpu/cpufreq/lulzactive/up_sample_time ]; then
+$B echo "CPU Lulzactive tuning.."
+$B echo "60" > /sys/devices/system/cpu/cpufreq/lulzactive/inc_cpu_load
+$B echo "4" > /sys/devices/system/cpu/cpufreq/lulzactive/pump_up_step
+$B echo "1" > /sys/devices/system/cpu/cpufreq/lulzactive/pump_down_step
+$B echo "10000" > /sys/devices/system/cpu/cpufreq/lulzactive/up_sample_time
+$B echo "70000" > /sys/devices/system/cpu/cpufreq/lulzactive/down_sample_time
+$B echo "5" > /sys/devices/system/cpu/cpufreq/lulzactive/screen_off_min_step
+fi;
+if [ -e /sys/devices/system/cpu/cpu0/cpufreq/lulzactive/up_sample_time ]; then
+$B echo "CPU0 Lulzactive tuning.."
+$B echo "72" > /sys/devices/system/cpu/cpu0/cpufreq/lulzactive/inc_cpu_load
+$B echo "2" > /sys/devices/system/cpu/cpu0/cpufreq/lulzactive/pump_up_step
+$B echo "2" > /sys/devices/system/cpu/cpu0/cpufreq/lulzactive/pump_down_step
+$B echo "10000" > /sys/devices/system/cpu0/cpu/cpufreq/lulzactive/up_sample_time
+$B echo "40000" > /sys/devices/system/cpu0/cpu/cpufreq/lulzactive/down_sample_time
+$B echo "5" > /sys/devices/system/cpu/cpu0/cpufreq/lulzactive/screen_off_min_step
+fi;
+if [ -e /sys/devices/system/cpu/cpufreq/conservative/up_threshold ]; then
+$B echo "CPU Conservative tuning.."
+$B echo "72" > /sys/devices/system/cpu/cpufreq/conservative/up_threshold
+$B echo "10000" > /sys/devices/system/cpu/cpufreq/conservative/sampling_rate
+$B echo "1" > /sys/devices/system/cpu/cpufreq/conservative/sampling_down_factor
+$B echo "20" > /sys/devices/system/cpu/cpufreq/conservative/down_threshold
+$B echo "25" > /sys/devices/system/cpu/cpufreq/conservative/freq_step
+fi;
+if [ -e /sys/devices/system/cpu/cpu0/cpufreq/conservative/up_threshold ]; then
+$B echo "CPU0 Conservative tuning.."
+$B echo "72" > /sys/devices/system/cpu0/cpu/cpufreq/conservative/up_threshold
+$B echo "10000" > /sys/devices/system/cpu/cpu0/cpufreq/conservative/sampling_rate
+$B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/conservative/sampling_down_factor
+$B echo "20" > /sys/devices/system/cpu/cpu0/cpufreq/conservative/down_threshold
+$B echo "25" > /sys/devices/system/cpu/cpu0/cpufreq/conservative/freq_step
+fi;
 if [ -e /sys/module/workqueue/parameters/power_efficient ]; then
  $B echo "Enabling power-save workqueues.."
  $B chmod 644 /sys/module/workqueue/parameters/power_efficient
@@ -226,6 +283,16 @@ if [ -e /sys/module/subsystem_restart/parameters/enable_ramdumps ]; then
  $B echo "Disabling RAM-dumps.."
  $B chmod 644 /sys/module/subsystem_restart/parameters/enable_ramdumps
  $B echo "0" > /sys/module/subsystem_restart/parameters/enable_ramdumps
+fi;
+if [ -e /sys/module/cpuidle/parameters/enable_mask ]; then
+ $B echo "Enabling AFTR + LPA.."
+ $B chmod 644 /sys/module/cpuidle/parameters/enable_mask
+ $B echo "3" > /sys/module/cpuidle/parameters/enable_mask
+fi;
+if [ -e /sys/devices/system/cpu/cpu0/cpufreq/busfreq_static ]; then
+ $B echo "Disabling static bus-freq.."
+ $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/busfreq_static
+ $B echo "disabled" > /sys/devices/system/cpu/cpu0/cpufreq/busfreq_static
 fi;
 if [ -e /sys/devices/system/cpu/sched_mc_power_savings ]; then 
  $B echo "Enabling Multi-core power-saving.."

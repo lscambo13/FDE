@@ -18,9 +18,12 @@ $B echo "  Cached:             $RAMcached MB"
 $B echo "  SWAP/ZRAM total:    $SWAP MB"
 $B echo "  SWAP/ZRAM used:     $SWAPused MB"
 $B echo ""
-if [ "$RAM" -ge "768" ]; then
+if [ "$RAM" -ge "512" ]; then
  setprop ro.config.low_ram false
  setprop ro.board_ram_size high
+else
+ setprop ro.config.low_ram true
+ setprop ro.board_ram_size low
 fi;
 $B echo "Freeing RAM..."
 sync;
@@ -48,8 +51,10 @@ if [ -e /sys/block/zram0/disksize ]; then
  ZZRAM=$((ZRAM0/1024/1024))
  if [ "$RAM" -gt "1700" ]; then
   FZRAM=$((RAM/5))
+  PZ=35
  else
   FZRAM=$((RAM/2))
+  PZ=50
  fi;
  $B echo "ZRAM detected. Size is $ZZRAM MB"
  if [ "$ZZRAM" -ge "$FZRAM" ]; then
@@ -111,6 +116,10 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B sysctl -e -w vm.page-cluster=2
  setprop ro.config.zram.support true
  setprop zram.disksize $FZRAM
+ if [ -e /sys/module/zram/parameters/total_mem_usage_percent ]; then
+  $B echo "Tuning ZRAM parameter.."
+  $B echo "$PZ" > /sys/module/zram/parameters/total_mem_usage_percent
+ fi;
 elif [ -e /sys/block/ramzswap0/size ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  RZ=$($B cat /sys/block/ramzswap0/size)

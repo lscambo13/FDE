@@ -241,7 +241,7 @@ if [ -e /proc/sys/kernel/sem ]; then
  $B sysctl -e -w kernel.sem='250 32000 96 128'
 fi;
 $B echo "Tuning kernel scheduling.."
-$B mount -t debugfs none /sys/kernel/debug | $B tee -a $LOG
+$B mount -t debugfs none /sys/kernel/debug
 if [ -e /sys/kernel/debug/sched_features ]; then
  $B echo "NO_HRTICK" > /sys/kernel/debug/sched_features
  $B echo "NO_CACHE_HOT_BUDDY" > /sys/kernel/debug/sched_features
@@ -297,10 +297,10 @@ if [ "$SDK" -le "19" ]; then
  if [ -e /system/xbin/qrngd ]; then
   $B echo "qrngd detected. Seeder will not be started."
  else
-  /system/engine/bin/rngd -t 2 -T 1 -s 256 --fill-watermark=80% | $B tee -a $LOG
+  /system/engine/bin/rngd -t 2 -T 1 -s 256 --fill-watermark=80%
   $B sleep 3
-  $B echo -8 > /proc/"$(pgrep rngd)"/oom_adj | $B tee -a $LOG
-  renice 5 "$(pidof rngd)" | $B tee -a $LOG
+  $B echo -8 > /proc/"$(pgrep rngd)"/oom_adj
+  renice 5 "$(pidof rngd)"
   $B echo "Seeder entropy generator activated."
  fi;
 fi;

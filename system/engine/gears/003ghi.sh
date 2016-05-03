@@ -64,11 +64,11 @@ if [ -e /sys/block/zram0/disksize ]; then
   $B echo "You don't need zRAM"
  if [ "$SWAP" -gt "0" ]; then
   $B echo "Stopping swappiness.."
-  $B swapoff /dev/block/zram0 | $B tee -a $LOG
-  $B umount /dev/block/zram0 | $B tee -a $LOG
+  $B swapoff /dev/block/zram0
+  $B umount /dev/block/zram0
   if [ -e /sys/block/zram1/disksize ]; then
-   $B swapoff /dev/block/zram1 | $B tee -a $LOG
-   $B umount /dev/block/zram1 | $B tee -a $LOG
+   $B swapoff /dev/block/zram1
+   $B umount /dev/block/zram1
   fi;
   $B sleep 1
   sync;
@@ -78,21 +78,21 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B echo "Applying new ZRAM parameters.."
  if [ "$SWAP" -gt "0" ]; then
   $B echo "Stopping swappiness.."
-  $B swapoff /dev/block/zram0 | $B tee -a $LOG
-  $B umount /dev/block/zram0 | $B tee -a $LOG
+  $B swapoff /dev/block/zram0
+  $B umount /dev/block/zram0
   if [ -e /sys/block/zram1/disksize ]; then
-   $B swapoff /dev/block/zram1 | $B tee -a $LOG
-   $B umount /dev/block/zram1 | $B tee -a $LOG
+   $B swapoff /dev/block/zram1
+   $B umount /dev/block/zram1
    $B sleep 1
-   $B echo 1 > /sys/block/zram1/reset | $B tee -a $LOG
+   $B echo 1 > /sys/block/zram1/reset
   fi;
   $B sleep 1
   sync;
  fi;
  $B echo "Resetting ZRAM blockdev.."
- $B echo 1 > /sys/block/zram0/reset | $B tee -a $LOG
+ $B echo 1 > /sys/block/zram0/reset
  $B echo "Creating ZRAM blockdev - $FZRAM MB"
- $B echo $((FZRAM*1024*1024)) > /sys/block/zram0/disksize | $B tee -a $LOG
+ $B echo $((FZRAM*1024*1024)) > /sys/block/zram0/disksize
  if [ -e /sys/block/zram0/comp_algorithm ]; then
   $B echo "Setting compression algorithm to LZ4.."
   $B echo "lz4" > /sys/block/zram0/comp_algorithm
@@ -102,8 +102,8 @@ if [ -e /sys/block/zram0/disksize ]; then
   $B echo "3" > /sys/block/zram0/max_comp_streams
  fi;
  $B echo "Starting swappiness.."
- $B mkswap /dev/block/zram0 | $B tee -a $LOG
- $B swapon /dev/block/zram0 | $B tee -a $LOG
+ $B mkswap /dev/block/zram0
+ $B swapon /dev/block/zram0
  fi;
  $B echo "Configuring kernel & ZRAM frienship.."
  if [ "$RAM" -gt "1700" ]; then
@@ -147,17 +147,17 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  $B echo "Applying new RAMZSWAP parameters.."
  if [ "$SWAP" -gt "0" ]; then
   $B echo "Stopping swappiness.."
-  $B swapoff /dev/block/ramzswap0 | $B tee -a $LOG
+  $B swapoff /dev/block/ramzswap0
   $B sleep 1
   sync;
  fi;
  $B echo "Resetting RAMZSWAP blockdev.."
- $RZS /dev/block/ramzswap0 --reset | $B tee -a $LOG
+ $RZS /dev/block/ramzswap0 --reset
  $B echo "Creating RAMZSWAP blockdev - $FRZ MB"
- $RZS /dev/block/ramzswap0 -i -d $ZRF | $B tee -a $LOG
+ $RZS /dev/block/ramzswap0 -i -d $ZRF
  $B sleep 1
  $B echo "Starting swappiness.."
- $B swapon /dev/block/ramzswap0 | $B tee -a $LOG
+ $B swapon /dev/block/ramzswap0
  fi;
  $B echo "Configuring kernel & RAMZSWAP frienship.."
  $B echo 96 > /proc/sys/vm/swappiness
@@ -195,19 +195,39 @@ else
 fi;
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
 if [ "$SWAP" -gt "0" ]; then
- if [ -e /sys/kernel/mm/uksm/run ]; then
-  $B echo "uKSM detected"
-  $B echo "uKSM + swappiness is a bad. Disabling KSM.."
-  $B echo 0 > /sys/kernel/mm/uksm/run
-  setprop ro.config.ksm.support false
- elif [ -e /sys/kernel/mm/ksm/run ]; then
-  $B echo "KSM detected"
-  $B echo "KSM + swappiness is a bad. Disabling KSM.."
-  $B echo 0 > /sys/kernel/mm/ksm/run
-  setprop ro.config.ksm.support false
+ if [ "$RAM" -le "1024" ]; then
+  $B echo "Small RAM - KSM wanted.."
+  if [ -e /sys/kernel/mm/ksm/run ]; then
+   $B echo "uKSM detected"
+   $B echo "Starting and tuning uKSM.."
+   $B echo 128 > /sys/kernel/mm/uksm/pages_to_scan
+   $B echo 3000 > /sys/kernel/mm/uksm/sleep_millisecs
+   $B echo 45 > /sys/kernel/mm/uksm/max_cpu_percentage
+   $B echo 1 > /sys/kernel/mm/uksm/run
+   setprop ro.config.ksm.support true
+  elif [ -e /sys/kernel/mm/ksm/run ]; then
+   $B echo "KSM detected"
+   $B echo "Starting and tuning KSM.."
+   $B echo 128 > /sys/kernel/mm/ksm/pages_to_scan
+   $B echo 3000 > /sys/kernel/mm/ksm/sleep_millisecs
+   $B echo 1 > /sys/kernel/mm/ksm/run
+   setprop ro.config.ksm.support true
+  fi;
  else
-  $B echo "No KSM was detected"
+  if [ -e /sys/kernel/mm/uksm/run ]; then
+   $B echo "uKSM detected"
+   $B echo "Disabling KSM.."
+   $B echo 0 > /sys/kernel/mm/uksm/run
+   setprop ro.config.ksm.support false
+  elif [ -e /sys/kernel/mm/ksm/run ]; then
+   $B echo "KSM detected"
+   $B echo "Disabling KSM.."
+   $B echo 0 > /sys/kernel/mm/ksm/run
+   setprop ro.config.ksm.support false
  fi;
+else
+ $B echo "No KSM was detected"
+fi;
 elif [ "$SWAP" -eq "0" ]; then
  if [ -e /sys/kernel/mm/ksm/run ]; then
   $B echo "uKSM detected"

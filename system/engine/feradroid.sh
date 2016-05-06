@@ -137,13 +137,7 @@ fi;
 if [ -e /system/engine/end.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] "END" start" >> $LOG
- /system/engine/end.sh | $B tee -a $LOG
-fi;
-if [ -e /system/engine/prop/firstboot ]; then
- if [ -e /system/engine/gp.sh ]; then
-  $B echo "Google Play services fix"
-  /system/engine/gp.sh
- fi;
+ /system/engine/end.sh
 fi;
 if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,rw /system

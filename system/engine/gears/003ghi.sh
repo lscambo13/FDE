@@ -119,9 +119,6 @@ if [ -e /sys/block/zram0/disksize ]; then
   $B echo "vm.swappiness=96" >> /system/etc/sysctl.conf
   $B sysctl -e -w vm.swappiness=96
  fi;
- $B echo 2 > /proc/sys/vm/page-cluster
- $B echo "vm.page-cluster=2" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.page-cluster=2
  setprop ro.config.zram.support true
  setprop zram.disksize $FZRAM
  if [ -e /sys/module/zram/parameters/total_mem_usage_percent ]; then
@@ -163,19 +160,14 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  $B echo 96 > /proc/sys/vm/swappiness
  $B echo 2 > /proc/sys/vm/page-cluster
  $B echo "vm.swappiness=96" >> /system/etc/sysctl.conf
- $B echo "vm.page-cluster=2" >> /system/etc/sysctl.conf
  $B sysctl -e -w vm.swappiness=96
- $B sysctl -e -w vm.page-cluster=2
 elif [ "$SWAP" -gt "0" ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  $B echo "SWAP detected. Size is $SWAP MB"
  $B echo "Configuring kernel & SWAP frienship.."
  $B echo 50 > /proc/sys/vm/swappiness
- $B echo 2 > /proc/sys/vm/page-cluster
  $B echo "vm.swappiness=50" >> /system/etc/sysctl.conf
- $B echo "vm.page-cluster=2" >> /system/etc/sysctl.conf
  $B sysctl -e -w vm.swappiness=50
- $B sysctl -e -w vm.page-cluster=2
  if [ -e /sys/module/zswap/parameters/enabled ]; then
   $B echo "ZSWAP detected. Enabling.."
   $B echo 1 > /sys/module/zswap/parameters/enabled
@@ -187,11 +179,8 @@ else
  $B echo "No SWAP/ZRAM/RAMZSWAP was detected"
  $B echo "Configuring kernel for swappless system.."
  $B echo 0 > /proc/sys/vm/swappiness
- $B echo 0 > /proc/sys/vm/page-cluster
  $B sysctl -e -w vm.swappiness=0
- $B sysctl -e -w vm.page-cluster=0
  $B echo "vm.swappiness=0" >> /system/etc/sysctl.conf
- $B echo "vm.page-cluster=0" >> /system/etc/sysctl.conf
 fi;
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
 if [ "$SWAP" -gt "0" ]; then
@@ -251,7 +240,6 @@ elif [ "$SWAP" -eq "0" ]; then
  fi;
 fi;
 $B echo "Paging check completed"
-$B echo ""
 RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p)
 RAMcached=$($B free -m | $B awk '{ print $7 }' | $B sed -n 2p)
 RAMreported=$((RAMfree + RAMcached))

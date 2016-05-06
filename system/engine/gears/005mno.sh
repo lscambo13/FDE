@@ -21,11 +21,11 @@ else
 fi;
 if [ -e /proc/sys/vm/extra_free_kbytes ]; then
  if [ "$RAM" -gt "2048" ]; then
-  EF=$((RAM*4))
-  FK=$((RAM*3))
+  EF=$((RAM*3))
+  FK=$((RAM*2))
  elif [ "$RAM" -gt "1024" ]; then
-  EF=$((RAM*6))
-  FK=$((RAM*4))
+  EF=$((RAM*5))
+  FK=$((RAM*3))
  elif [ "$RAM" -gt "512" ]; then
   EF=$((RAM*8))
   FK=$((RAM*7))
@@ -149,6 +149,11 @@ if [ -e /proc/sys/vm/min_free_order_shift ]; then
  $B echo 4 > /proc/sys/vm/min_free_order_shift
  $B echo "vm.min_free_order_shift=4" >> /system/etc/sysctl.conf
  $B sysctl -e -w vm.min_free_order_shift=4
+fi;
+if [ -e /proc/sys/vm/page-cluster ]; then
+ $B echo 0 > /proc/sys/vm/page-cluster
+ $B echo "vm.page-cluster=0" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.page-cluster=0
 fi;
 if [ -e /proc/sys/fs/file-max ]; then
  $B echo $FM > /proc/sys/fs/file-max

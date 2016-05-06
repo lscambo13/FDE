@@ -73,7 +73,7 @@ if [ -e /sys/module/mali/parameters/mali_debug_level ]; then
   $B echo "Mali L2 cache tuned."
   $B chown 0:0 /sys/module/mali/parameters/mali_l2_max_reads
   $B chmod 644 /sys/module/mali/parameters/mali_l2_max_reads
-  $B echo 48 > /sys/module/mali/parameters/mali_l2_max_reads
+  $B echo 0x00000030 > /sys/module/mali/parameters/mali_l2_max_reads
  fi;
  if [ -e /sys/module/mali/parameters/mali_pp_scheduler_balance_jobs ]; then
   $B echo "Mali PP tuned."
@@ -85,15 +85,15 @@ if [ -e /sys/module/mali/parameters/mali_debug_level ]; then
   $B echo "Mali PP group 1 tuned."
   $B chown 0:0 /sys/module/mali/parameters/mali_max_pp_cores_group_1
   $B chmod 644 /sys/module/mali/parameters/mali_max_pp_cores_group_1
-  $B echo 1 > /sys/module/mali/parameters/mali_max_pp_cores_group_1
+  $B echo 2 > /sys/module/mali/parameters/mali_max_pp_cores_group_1
  fi;
  if [ -e /sys/module/mali/parameters/mali_max_pp_cores_group_2 ]; then
   $B echo "Mali PP group 2 tuned."
   $B chown 0:0 /sys/module/mali/parameters/mali_max_pp_cores_group_2
   $B chmod 644 /sys/module/mali/parameters/mali_max_pp_cores_group_2
-  $B echo 1 > /sys/module/mali/parameters/mali_max_pp_cores_group_2
+  $B echo 2 > /sys/module/mali/parameters/mali_max_pp_cores_group_2
  fi;
- if [ -e /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_freq ]; then
+ if [ -e /init.scx15.rc ]; then
   $B echo "Boosting ARK Benefit M2C Mali GPU - locking to 312Mhz.."
   $B chown 0:0 /sys/module/mali/parameters/gpu_cur_freq
   $B chmod 644 /sys/module/mali/parameters/gpu_cur_freq

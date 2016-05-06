@@ -297,18 +297,6 @@ if [ -e /system/etc/slog.conf ]; then
  $B sed -e "s="enable"="disable"=" -i /system/etc/slog.conf.user
  $B echo "Slog conf tuning.."
 fi;
-if [ "$SDK" -le "19" ]; then
- $B echo "Trying to enable Seeder entropy generator.."
- if [ -e /system/xbin/qrngd ]; then
-  $B echo "qrngd detected. Seeder will not be started."
- else
-  /system/engine/bin/rngd -t 2 -T 1 -s 256 --fill-watermark=80%
-  $B sleep 3
-  $B echo -8 > /proc/"$(pgrep rngd)"/oom_adj
-  renice 5 "$(pidof rngd)"
-  $B echo "Seeder entropy generator activated."
- fi;
-fi;
 if [ -e /sys/module/logger/parameters/log_mode ]; then
  $B echo 2 > /sys/module/logger/parameters/log_mode
  $B echo "Disable Android logger.."

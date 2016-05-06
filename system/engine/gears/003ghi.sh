@@ -17,7 +17,6 @@ $B echo "  Real free:          $RAMfree MB"
 $B echo "  Cached:             $RAMcached MB"
 $B echo "  SWAP/ZRAM total:    $SWAP MB"
 $B echo "  SWAP/ZRAM used:     $SWAPused MB"
-$B echo ""
 if [ "$RAM" -ge "512" ]; then
  setprop ro.config.low_ram false
  setprop ro.board_ram_size high

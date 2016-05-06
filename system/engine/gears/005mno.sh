@@ -12,13 +12,6 @@ if [ "$RAM" -le "512" ]; then
 else
  DR=36
 fi;
-if [ "$RAM" -le "1024" ]; then
- DW=0
- DE=0
-else
- DW=$((RAM*5))
- DE=$((RAM*10))
-fi;
 if [ -e /proc/sys/vm/extra_free_kbytes ]; then
  if [ "$RAM" -gt "2048" ]; then
   EF=$((RAM*3))
@@ -106,14 +99,14 @@ if [ -e /proc/sys/vm/dirty_background_ratio ]; then
  $B sysctl -e -w vm.dirty_background_ratio=5
 fi;
 if [ -e /proc/sys/vm/dirty_writeback_centisecs ]; then
- $B echo $DW > /proc/sys/vm/dirty_writeback_centisecs
- $B echo "vm.dirty_writeback_centisecs=$DW" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.dirty_writeback_centisecs=$DW
+ $B echo 0 > /proc/sys/vm/dirty_writeback_centisecs
+ $B echo "vm.dirty_writeback_centisecs=0" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.dirty_writeback_centisecs=0
 fi;
 if [ -e /proc/sys/vm/dirty_expire_centisecs ]; then
- $B echo $DE > /proc/sys/vm/dirty_expire_centisecs
- $B echo "vm.dirty_expire_centisecs=$DE" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.dirty_expire_centisecs=$DE
+ $B echo 0 > /proc/sys/vm/dirty_expire_centisecs
+ $B echo "vm.dirty_expire_centisecs=0" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.dirty_expire_centisecs=0
 fi;
 if [ -e /proc/sys/vm/panic_on_oom ]; then
  $B echo 0 > /proc/sys/vm/panic_on_oom

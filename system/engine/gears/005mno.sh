@@ -144,9 +144,9 @@ if [ -e /proc/sys/vm/min_free_order_shift ]; then
  $B sysctl -e -w vm.min_free_order_shift=4
 fi;
 if [ -e /proc/sys/vm/page-cluster ]; then
- $B echo 0 > /proc/sys/vm/page-cluster
- $B echo "vm.page-cluster=0" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.page-cluster=0
+ $B echo 8 > /proc/sys/vm/page-cluster
+ $B echo "vm.page-cluster=8" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.page-cluster=8
 fi;
 if [ -e /proc/sys/fs/file-max ]; then
  $B echo $FM > /proc/sys/fs/file-max
@@ -241,24 +241,50 @@ fi;
 $B echo "Tuning kernel scheduling.."
 $B mount -t debugfs none /sys/kernel/debug
 if [ -e /sys/kernel/debug/sched_features ]; then
- $B echo "NO_HRTICK" > /sys/kernel/debug/sched_features
- $B echo "NO_CACHE_HOT_BUDDY" > /sys/kernel/debug/sched_features
- $B echo "NO_LB_BIAS" > /sys/kernel/debug/sched_features
- $B echo "NO_OWNER_SPIN" > /sys/kernel/debug/sched_features
- $B echo "NO_START_DEBIT" > /sys/kernel/debug/sched_features
- $B echo "NO_GENTLE_FAIR_SLEEPERS" > /sys/kernel/debug/sched_features
- $B echo "NO_NORMALIZED_SLEEPERS" > /sys/kernel/debug/sched_features
- $B echo "NO_DOUBLE_TICK" > /sys/kernel/debug/sched_features
- $B echo "NO_AFFINE_WAKEUPS" > /sys/kernel/debug/sched_features
+ $B echo "GENTLE_FAIR_SLEEPERS" > /sys/kernel/debug/sched_features
+ $B echo "START_DEBIT" > /sys/kernel/debug/sched_features
  $B echo "NO_NEXT_BUDDY" > /sys/kernel/debug/sched_features
+ $B echo "LAST_BUDDY " >> /sys/kernel/debug/sched_features
+ $B echo "CACHE_HOT_BUDDY" > /sys/kernel/debug/sched_features
+ $B echo "WAKEUP_PREEMPTION" >> /sys/kernel/debug/sched_features
+ $B echo "ARCH_POWER" >> /sys/kernel/debug/sched_features
+ $B echo "NO_HRTICK" > /sys/kernel/debug/sched_features
+ $B echo "NO_DOUBLE_TICK" > /sys/kernel/debug/sched_features
+ $B echo "LB_BIAS" > /sys/kernel/debug/sched_features
+ $B echo "NONTASK_POWER " >> /sys/kernel/debug/sched_features
+ $B echo "TTWU_QUEUE" >> /sys/kernel/debug/sched_features
+ $B echo "NO_FORCE_SD_OVERLAP" >> /sys/kernel/debug/sched_features
+ $B echo "SD_SHARE_CPUPOWER" >> /sys/kernel/debug/sched_features
+ $B echo "RT_RUNTIME_SHARE" >> /sys/kernel/debug/sched_features
+ $B echo "NO_LB_MIN" >> /sys/kernel/debug/sched_features
+ $B echo "OWNER_SPIN" > /sys/kernel/debug/sched_features
+ $B echo "WAKEUP_PREEMPT" >> /sys/kernel/debug/sched_features
+ $B echo "NO_NORMALIZED_SLEEPERS" > /sys/kernel/debug/sched_features
+ $B echo "NO_AFFINE_WAKEUPS" > /sys/kernel/debug/sched_features
  $B echo "NO_WAKEUP_OVERLAP" > /sys/kernel/debug/sched_features
+ $B echo "NO_NEW_FAIR_SLEEPERS" >> /sys/kernel/debug/sched_features
+ $B echo "FAIR_SLEEPERS" >> /sys/kernel/debug/sched_features
+ $B echo "START_DEBIT" >> /sys/kernel/debug/sched_features
+ $B echo "ADAPTIVE_GRAN" >> /sys/kernel/debug/sched_features
+ $B echo "NO_WAKEUP_SYNC" >> /sys/kernel/debug/sched_features
+ $B echo "NO_WAKEUP_OVERLAP" >> /sys/kernel/debug/sched_features
+ $B echo "NO_SYNC_WAKEUPS" >> /sys/kernel/debug/sched_features
+ $B echo "NO_SYNC_LESS" >> /sys/kernel/debug/sched_features
+ $B echo "NO_SYNC_MORE" >> /sys/kernel/debug/sched_features
+ $B echo "LB_SHARES_UPDATE" >> /sys/kernel/debug/sched_features
+ $B echo "ASYM_EFF_LOAD" >> /sys/kernel/debug/sched_features
+ $B echo "NONTASK_POWER" >> /sys/kernel/debug/sched_features
 fi;
 if [ -e /sys/kernel/sched/gentle_fair_sleepers ]; then
- $B echo 0 > /sys/kernel/sched/gentle_fair_sleepers
+ $B echo 1 > /sys/kernel/sched/gentle_fair_sleepers
 fi;
 if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
  $B echo "Dynamic fsync detected. Activating.."
  $B echo "1" > /sys/kernel/dyn_fsync/Dyn_fsync_active
+fi;
+if [ -e /sys/devices/virtual/misc/fsynccontrol/fsync_enabled]; then
+ $B echo "Fsync control detected. Tuning.."
+ $B echo "0" > /sys/devices/virtual/misc/fsynccontrol/fsync_enabled
 fi;
 if [ -e /sys/class/misc/fsynccontrol/fsync_enabled ]; then
  $B echo "Fsync control detected. Tuning.."
@@ -266,6 +292,10 @@ if [ -e /sys/class/misc/fsynccontrol/fsync_enabled ]; then
 fi;
 if [ -e /sys/module/sync/parameters/fsync ]; then
  $B echo "0" > /sys/module/sync/parameters/fsync
+ $B echo "Fsync module - OFF"
+fi;
+if [ -e /sys/module/sync/parameters/fsync_enabled ]; then
+ $B echo "N" > /sys/module/sync/parameters/fsync_enabled
  $B echo "Fsync module - OFF"
 fi;
 if [ -e /system/etc/sprd_monitor-user.conf ]; then

@@ -78,8 +78,9 @@ if [ "$SDK" -le "14" ]; then
  fi;
 fi;
 $B echo "Tuning Android networking settings.."
-setprop wifi.supplicant_scan_interval 900
+setprop wifi.supplicant_scan_interval 180
 setprop ro.telephony.call_ring.delay 0
+setprop ring.delay 0
 setprop ro.ril.enable.3g.prefix 1
 setprop ro.ril.enable.sdr 1
 setprop ro.ril.enable.gea3 1

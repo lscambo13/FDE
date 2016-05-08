@@ -443,7 +443,6 @@ $B echo "$UP" > /sys/devices/system/cpu/cpu0/cpufreq/hyper/up_threshold
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/hotplug/up_threshold ]; then
 $B echo "CPU Hotplug tuning.."
-$B echo "CPU Hotplug tuning.."
 $B chmod 644 /sys/devices/system/cpu/cpufreq/hotplug/up_threshold
 $B chmod 644 /sys/devices/system/cpu/cpufreq/hotplug/down_threshold
 $B chmod 644 /sys/devices/system/cpu/cpufreq/hotplug/hotplug_in_sampling_periods

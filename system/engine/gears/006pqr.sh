@@ -155,13 +155,16 @@ else
  setprop ro.media.dec.jpeg.memcap 8000000
  setprop ro.media.enc.hprof.vid.bps 8000000
  setprop ro.media.enc.jpeg.quality 100
- setprop touch.presure.scale 0.1
+ setprop touch.presure.scale 1.0
  setprop ro.floatingtouch.available 1
  setprop ro.min.fling_velocity 9000
  setprop ro.max.fling_velocity 12000
  setprop persist.sys.strictmode.disable true
  setprop vidc.debug.level 0
  setprop ro.camera.sound.forced 0
+ setprop persist.sys.use_dithering 0
+ setprop ro.lge.proximity.delay 25
+ setprop mot.proximity.delay 25
 fi;
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 006 - ***GPU gear*** - OK"

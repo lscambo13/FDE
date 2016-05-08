@@ -51,6 +51,8 @@ setprop pm.sleep_mode 1
 setprop ro.ril.disable.power.collapse 0
 setprop ro.config.hw_power_saving 1
 setprop dev.pm.dyn_samplingrate 1
+setprop persist.radio.add_power_save 1
+setprop ro.com.google.networklocation 0
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 007 - ***Battery gear*** - OK"
 sync;

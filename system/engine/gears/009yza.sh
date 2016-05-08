@@ -8,7 +8,7 @@ $B echo "Tuning LMK.."
 if [ -e /sys/module/lowmemorykiller/parameters/cost ]; then
  $B echo "LMK cost fine-tuning.."
  $B chmod 644 /sys/module/lowmemorykiller/parameters/cost
- $B echo "16" > /sys/module/lowmemorykiller/parameters/cost
+ $B echo "32" > /sys/module/lowmemorykiller/parameters/cost
 fi;
 if [ -e /sys/module/lowmemorykiller/parameters/fudgeswap ]; then
  $B echo "FudgeSwap supported. Tuning.."
@@ -26,20 +26,25 @@ if [ -e /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk ]; then
 else
  setprop lmk.autocalc false
 fi;
-if [ "$RAM" -le "512" ]; then
- $B chmod 0664 /sys/module/lowmemorykiller/parameters/minfree
- $B echo "2048,3072,4096,6144,14336,18432" > /sys/module/lowmemorykiller/parameters/minfree
- setprop ro.FOREGROUND_APP_MEM 2048
- setprop ro.VISIBLE_APP_MEM 3072
- setprop ro.PERCEPTIBLE_APP_MEM 4096
- setprop ro.HEAVY_WEIGHT_APP_MEM 4096
- setprop ro.SECONDARY_SERVER_MEM 6144
- setprop ro.BACKUP_APP_MEM 6144
- setprop ro.HOME_APP_MEM 2048
- setprop ro.HIDDEN_APP_MEM 14336
- setprop ro.EMPTY_APP_MEM 18432
- $B echo "LOW RAM tweak activated"
-fi;
+m1=$((RAM*2*1024/100/4))
+m2=$((RAM*3*1024/100/4))
+m3=$((RAM*6*1024/100/4))
+m4=$((RAM*9*1024/100/4))
+m5=$((RAM*12*1024/100/4))
+m6=$((RAM*18*1024/100/4))
+$B chmod 0664 /sys/module/lowmemorykiller/parameters/minfree
+$B echo "$m1,$m2,$m3,$m4,$m5,$m6" > /sys/module/lowmemorykiller/parameters/minfree
+$B echo "2048,3072,4096,6144,14336,18432" > /sys/module/lowmemorykiller/parameters/minfree
+setprop ro.FOREGROUND_APP_MEM $m1
+setprop ro.VISIBLE_APP_MEM $m2
+setprop ro.PERCEPTIBLE_APP_MEM $m3
+setprop ro.HEAVY_WEIGHT_APP_MEM $m3
+setprop ro.SECONDARY_SERVER_MEM $m4
+setprop ro.BACKUP_APP_MEM $m4
+setprop ro.HOME_APP_MEM 2048
+setprop ro.HIDDEN_APP_MEM $m5
+setprop ro.EMPTY_APP_MEM $m6
+$B echo "RAM tweak activated"
 $B echo "Tuning Android proc.."
 $B chmod 0664 /sys/module/lowmemorykiller/parameters/adj
 $B echo "0,1,2,4,7,15" /sys/module/lowmemorykiller/parameters/adj

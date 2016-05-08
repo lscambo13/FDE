@@ -23,8 +23,8 @@ if [ -e /proc/sys/vm/extra_free_kbytes ]; then
   EF=$((RAM*8))
   FK=$((RAM*7))
  else
-  EF=$((RAM*15))
-  FK=$((RAM*12))
+  EF=$((RAM*12))
+  FK=$((RAM*9))
  fi;
 else
  FK=$((RAM*8))

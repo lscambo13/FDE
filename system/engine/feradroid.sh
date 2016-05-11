@@ -145,7 +145,8 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,ro /system
  $B echo "[$TIME] First boot completed." >> $LOG
 fi;
-$B echo "" >> $LOG
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] FDE status - OK" >> $LOG
+$B echo "[$TIME] Init sleeper daemon" >> $LOG
+/system/engine/sleeper.sh &
 $B echo "" >> $LOG

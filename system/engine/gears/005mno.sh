@@ -22,9 +22,9 @@ if [ -e /proc/sys/vm/extra_free_kbytes ]; then
  elif [ "$RAM" -gt "512" ]; then
   EF=$((RAM*8))
   FK=$((RAM*7))
- else
-  EF=$((RAM*12))
-  FK=$((RAM*9))
+ elif [ "$RAM" -le "512" ]; then
+  EF=2048
+  FK=2048
  fi;
 else
  FK=$((RAM*8))
@@ -144,9 +144,9 @@ if [ -e /proc/sys/vm/min_free_order_shift ]; then
  $B sysctl -e -w vm.min_free_order_shift=4
 fi;
 if [ -e /proc/sys/vm/page-cluster ]; then
- $B echo 8 > /proc/sys/vm/page-cluster
- $B echo "vm.page-cluster=8" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.page-cluster=8
+ $B echo 2 > /proc/sys/vm/page-cluster
+ $B echo "vm.page-cluster=2" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.page-cluster=2
 fi;
 if [ -e /proc/sys/fs/file-max ]; then
  $B echo $FM > /proc/sys/fs/file-max
@@ -241,7 +241,7 @@ fi;
 $B echo "Tuning kernel scheduling.."
 $B mount -t debugfs none /sys/kernel/debug
 if [ -e /sys/kernel/debug/sched_features ]; then
- $B echo "GENTLE_FAIR_SLEEPERS" > /sys/kernel/debug/sched_features
+ $B echo "NO_GENTLE_FAIR_SLEEPERS" > /sys/kernel/debug/sched_features
  $B echo "START_DEBIT" > /sys/kernel/debug/sched_features
  $B echo "NO_NEXT_BUDDY" > /sys/kernel/debug/sched_features
  $B echo "LAST_BUDDY " >> /sys/kernel/debug/sched_features
@@ -258,13 +258,13 @@ if [ -e /sys/kernel/debug/sched_features ]; then
  $B echo "RT_RUNTIME_SHARE" >> /sys/kernel/debug/sched_features
  $B echo "NO_LB_MIN" >> /sys/kernel/debug/sched_features
  $B echo "OWNER_SPIN" > /sys/kernel/debug/sched_features
- $B echo "WAKEUP_PREEMPT" >> /sys/kernel/debug/sched_features
+ $B echo "NO_WAKEUP_PREEMPT" >> /sys/kernel/debug/sched_features
  $B echo "NO_NORMALIZED_SLEEPERS" > /sys/kernel/debug/sched_features
  $B echo "NO_AFFINE_WAKEUPS" > /sys/kernel/debug/sched_features
  $B echo "NO_WAKEUP_OVERLAP" > /sys/kernel/debug/sched_features
  $B echo "NO_NEW_FAIR_SLEEPERS" >> /sys/kernel/debug/sched_features
  $B echo "FAIR_SLEEPERS" >> /sys/kernel/debug/sched_features
- $B echo "START_DEBIT" >> /sys/kernel/debug/sched_features
+ $B echo "NO_START_DEBIT" >> /sys/kernel/debug/sched_features
  $B echo "ADAPTIVE_GRAN" >> /sys/kernel/debug/sched_features
  $B echo "NO_WAKEUP_SYNC" >> /sys/kernel/debug/sched_features
  $B echo "NO_WAKEUP_OVERLAP" >> /sys/kernel/debug/sched_features

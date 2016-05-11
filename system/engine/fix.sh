@@ -1,7 +1,8 @@
 #!/system/bin/sh
 ### FeraDroid Engine v20 | By FeraVolt. 2016 ###
 B=/system/engine/bin/$B
-
+TIME=$($B date | $B awk '{ print $4 }')
+$B echo "[$TIME] Fix.."
 ZIPALIGNDB=/data/zipalign.db
 if [ ! -f $ZIPALIGNDB ]; then
 	touch $ZIPALIGNDB;

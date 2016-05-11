@@ -17,7 +17,7 @@ $B echo "  Real free:          $RAMfree MB"
 $B echo "  Cached:             $RAMcached MB"
 $B echo "  SWAP/ZRAM total:    $SWAP MB"
 $B echo "  SWAP/ZRAM used:     $SWAPused MB"
-if [ "$RAM" -ge "512" ]; then
+if [ "$RAM" -gt "512" ]; then
  setprop ro.config.low_ram false
  setprop ro.board_ram_size high
 else
@@ -51,6 +51,15 @@ if [ -e /sys/block/zram0/disksize ]; then
  if [ "$RAM" -gt "1700" ]; then
   FZRAM=$((RAM/5))
   PZ=35
+ elif [ "$RAM" -gt "1024" ]; then
+  FZRAM=$((RAM/4))
+  PZ=45
+ elif [ "$RAM" -gt "512" ]; then
+  FZRAM=$((RAM/3))
+  PZ=45
+ elif [ "$RAM" -le "386" ]; then
+  FZRAM=$((RAM-64))
+  PZ=50
  else
   FZRAM=$((RAM/2))
   PZ=50
@@ -106,17 +115,17 @@ if [ -e /sys/block/zram0/disksize ]; then
  fi;
  $B echo "Configuring kernel & ZRAM frienship.."
  if [ "$RAM" -gt "1700" ]; then
-  $B echo 50 > /proc/sys/vm/swappiness
-  $B echo "vm.swappiness=50" >> /system/etc/sysctl.conf
-  $B sysctl -e -w vm.swappiness=50
- elif [ "$RAM" -gt "1000" ]; then
-  $B echo 75 > /proc/sys/vm/swappiness
-  $B echo "vm.swappiness=75" >> /system/etc/sysctl.conf
-  $B sysctl -e -w vm.swappiness=75
+  $B echo 60 > /proc/sys/vm/swappiness
+  $B echo "vm.swappiness=60" >> /system/etc/sysctl.conf
+  $B sysctl -e -w vm.swappiness=60
+ elif [ "$RAM" -gt "1024" ]; then
+  $B echo 90 > /proc/sys/vm/swappiness
+  $B echo "vm.swappiness=90" >> /system/etc/sysctl.conf
+  $B sysctl -e -w vm.swappiness=90
  elif [ "$RAM" -le "512" ]; then
-  $B echo 96 > /proc/sys/vm/swappiness
-  $B echo "vm.swappiness=96" >> /system/etc/sysctl.conf
-  $B sysctl -e -w vm.swappiness=96
+  $B echo 100 > /proc/sys/vm/swappiness
+  $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf
+  $B sysctl -e -w vm.swappiness=100
  fi;
  setprop ro.config.zram.support true
  setprop zram.disksize $FZRAM
@@ -183,21 +192,21 @@ else
 fi;
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
 if [ "$SWAP" -gt "0" ]; then
- if [ "$RAM" -le "1024" ]; then
+ if [ "$RAM" -le "512" ]; then
   $B echo "Small RAM - KSM wanted.."
   if [ -e /sys/kernel/mm/uksm/run ]; then
    $B echo "uKSM detected"
    $B echo "Starting and tuning uKSM.."
-   $B echo 128 > /sys/kernel/mm/uksm/pages_to_scan
-   $B echo 3000 > /sys/kernel/mm/uksm/sleep_millisecs
+   $B echo 192 > /sys/kernel/mm/uksm/pages_to_scan
+   $B echo 3600 > /sys/kernel/mm/uksm/sleep_millisecs
    $B echo 45 > /sys/kernel/mm/uksm/max_cpu_percentage
    $B echo 1 > /sys/kernel/mm/uksm/run
    setprop ro.config.ksm.support true
   elif [ -e /sys/kernel/mm/ksm/run ]; then
    $B echo "KSM detected"
    $B echo "Starting and tuning KSM.."
-   $B echo 128 > /sys/kernel/mm/ksm/pages_to_scan
-   $B echo 3000 > /sys/kernel/mm/ksm/sleep_millisecs
+   $B echo 192 > /sys/kernel/mm/ksm/pages_to_scan
+   $B echo 3600 > /sys/kernel/mm/ksm/sleep_millisecs
    $B echo 1 > /sys/kernel/mm/ksm/run
    setprop ro.config.ksm.support true
   else
@@ -222,16 +231,16 @@ elif [ "$SWAP" -eq "0" ]; then
  if [ -e /sys/kernel/mm/uksm/run ]; then
   $B echo "uKSM detected"
   $B echo "Starting and tuning uKSM.."
-  $B echo 128 > /sys/kernel/mm/uksm/pages_to_scan
-  $B echo 3000 > /sys/kernel/mm/uksm/sleep_millisecs
+  $B echo 192 > /sys/kernel/mm/uksm/pages_to_scan
+  $B echo 3600 > /sys/kernel/mm/uksm/sleep_millisecs
   $B echo 45 > /sys/kernel/mm/uksm/max_cpu_percentage
   $B echo 1 > /sys/kernel/mm/uksm/run
   setprop ro.config.ksm.support true
  elif [ -e /sys/kernel/mm/ksm/run ]; then
   $B echo "KSM detected"
   $B echo "Starting and tuning KSM.."
-  $B echo 128 > /sys/kernel/mm/ksm/pages_to_scan
-  $B echo 3000 > /sys/kernel/mm/ksm/sleep_millisecs
+  $B echo 192 > /sys/kernel/mm/ksm/pages_to_scan
+  $B echo 3600 > /sys/kernel/mm/ksm/sleep_millisecs
   $B echo 1 > /sys/kernel/mm/ksm/run
   setprop ro.config.ksm.support true
  else

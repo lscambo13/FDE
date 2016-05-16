@@ -12,23 +12,8 @@ if [ "$RAM" -le "512" ]; then
 else
  DR=36
 fi;
-if [ -e /proc/sys/vm/extra_free_kbytes ]; then
- if [ "$RAM" -gt "2048" ]; then
-  EF=$((RAM*3))
-  FK=$((RAM*2))
- elif [ "$RAM" -gt "1024" ]; then
-  EF=$((RAM*5))
-  FK=$((RAM*3))
- elif [ "$RAM" -gt "512" ]; then
-  EF=$((RAM*8))
-  FK=$((RAM*7))
- elif [ "$RAM" -le "512" ]; then
-  EF=2048
-  FK=2048
- fi;
-else
- FK=$((RAM*8))
-fi;
+FK=$((RAM*3/100*1024))
+EF=$((RAM*2/100*1024))
 MALL=$((RAM*192))
 MMAX=$((MALL*4096))
 if [ "$MMAX" -le "268435456" ]; then

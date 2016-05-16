@@ -15,11 +15,13 @@ fi;
 if [ -e /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_freq ]; then
  $B echo "Boosting ARK Benefit M2C.."
  $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+ $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
  $B chmod 644 /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_downdifferential
  $B chmod 644 /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_enable
  $B chmod 644 /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_freq
  $B chmod 644 /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_upthreshold
- $B echo "600000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+ $B echo "768000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+ $B echo "interactive" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
  $B echo "533000" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_freq
  $B echo "$DN" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_downdifferential
  $B echo "1" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_enable

@@ -135,16 +135,16 @@ if [ "$ARCH" == "armv6l" ]; then
  $B echo "No hard tuning for ARMv6.."
 else
  $B echo "Tuning Android graphics.."
- if [ "$COM" == "mdp" ]; then
-  setprop debug.mdpcomp.logs 0
-  setprop debug.mdpcomp.maxlayer 3
-  setprop debug.mdpcomp.idletime -1
- fi;
  setprop debug.sf.hw 1
  setprop debug.egl.hw 1
  setprop debug.egl.swapinterval 1
  setprop debug.gr.swapinterval 1
+ setprop persist.hwc.mdpcomp.enable true
+ setprop debug.mdpcomp.logs 0
+ setprop debug.mdpcomp.maxlayer 3
+ setprop debug.mdpcomp.idletime -1
  setprop debug.gr.numframebuffers 3
+ setprop dev.pm.dyn_samplingrate 1
  setprop persist.sys.ui.hw 1
  setprop video.accelerate.hw 1
  setprop windowsmgr.max_events_per_sec 120

@@ -13,10 +13,9 @@ else
 fi;
 AA="/sys/block/*"
 BB="/sys/devices/virtual/block/*"
-BDI="/sys/devices/virtual/bdi/*"
 MMC="/sys/block/mmc*"
 MTD="/sys/block/mtd*"
-SD="/sys/devices/virtual/bdi"
+BDI="/sys/devices/virtual/bdi"
 $B echo "Calculated readahead parameter is $SKB KB"
 if [ -e /mnt/sd-ext ]; then
  $B echo "Trying to mount SD-EXT partition if it exists.."
@@ -59,7 +58,7 @@ if [ -e "${b}"/queue/add_random ]; then
  $B echo 0 > "${b}"/queue/add_random
 fi;
 done;
-for u in $SD; do
+for u in $BDI; do
 if [ -e "${u}"/*/read_ahead_kb ]; then
  $B echo "Applying new SKB parameters.."
  $B echo $KB > "${u}"/*/read_ahead_kb

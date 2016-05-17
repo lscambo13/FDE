@@ -243,13 +243,13 @@ if [ -e /sys/kernel/debug/sched_features ]; then
  $B echo "RT_RUNTIME_SHARE" >> /sys/kernel/debug/sched_features
  $B echo "NO_LB_MIN" >> /sys/kernel/debug/sched_features
  $B echo "OWNER_SPIN" > /sys/kernel/debug/sched_features
- $B echo "NO_WAKEUP_PREEMPT" >> /sys/kernel/debug/sched_features
+ $B echo "WAKEUP_PREEMPT" >> /sys/kernel/debug/sched_features
  $B echo "NO_NORMALIZED_SLEEPERS" > /sys/kernel/debug/sched_features
  $B echo "NO_AFFINE_WAKEUPS" > /sys/kernel/debug/sched_features
  $B echo "NO_WAKEUP_OVERLAP" > /sys/kernel/debug/sched_features
  $B echo "NO_NEW_FAIR_SLEEPERS" >> /sys/kernel/debug/sched_features
  $B echo "FAIR_SLEEPERS" >> /sys/kernel/debug/sched_features
- $B echo "NO_START_DEBIT" >> /sys/kernel/debug/sched_features
+ $B echo "START_DEBIT" >> /sys/kernel/debug/sched_features
  $B echo "ADAPTIVE_GRAN" >> /sys/kernel/debug/sched_features
  $B echo "NO_WAKEUP_SYNC" >> /sys/kernel/debug/sched_features
  $B echo "NO_WAKEUP_OVERLAP" >> /sys/kernel/debug/sched_features

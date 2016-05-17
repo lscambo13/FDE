@@ -48,27 +48,21 @@ if [ -e /sys/block/zram0/disksize ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  ZRAM0=$($B cat /sys/block/zram0/disksize)
  ZZRAM=$((ZRAM0/1024/1024))
- if [ "$RAM" -gt "1700" ]; then
-  FZRAM=$((RAM/5))
-  PZ=35
- elif [ "$RAM" -gt "1024" ]; then
+ if [ "$RAM" -gt "1024" ]; then
   FZRAM=$((RAM/4))
   PZ=45
  elif [ "$RAM" -gt "512" ]; then
   FZRAM=$((RAM/3))
   PZ=45
- elif [ "$RAM" -le "386" ]; then
-  FZRAM=$((RAM-64))
-  PZ=50
- else
-  FZRAM=$((RAM/2))
+ elif [ "$RAM" -le "512" ]; then
+  FZRAM=$(((RAM/2)+64))
   PZ=50
  fi;
  $B echo "ZRAM detected. Size is $ZZRAM MB"
  if [ "$ZZRAM" -ge "$FZRAM" ]; then
  $B echo "Size of your ZRAM is OK"
   sync;
- elif [ "$RAM" -gt "2100" ]; then
+ elif [ "$RAM" -gt "1512" ]; then
   $B echo "You don't need zRAM"
  if [ "$SWAP" -gt "0" ]; then
   $B echo "Stopping swappiness.."
@@ -114,13 +108,13 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B swapon /dev/block/zram0
  fi;
  $B echo "Configuring kernel & ZRAM frienship.."
- if [ "$RAM" -gt "1700" ]; then
-  $B echo 60 > /proc/sys/vm/swappiness
-  $B echo "vm.swappiness=60" >> /system/etc/sysctl.conf
-  $B sysctl -e -w vm.swappiness=60
- elif [ "$RAM" -gt "1024" ]; then
+ if [ "$RAM" -gt "1024" ]; then
+  $B echo 70 > /proc/sys/vm/swappiness
+  $B echo "vm.swappiness=70" >> /system/etc/sysctl.conf
+  $B sysctl -e -w vm.swappiness=70
+ elif [ "$RAM" -gt "512" ]; then
   $B echo 90 > /proc/sys/vm/swappiness
-  $B echo "vm.swappiness=90" >> /system/etc/sysctl.conf
+  $B echo "vm.swappiness=09" >> /system/etc/sysctl.conf
   $B sysctl -e -w vm.swappiness=90
  elif [ "$RAM" -le "512" ]; then
   $B echo 100 > /proc/sys/vm/swappiness
@@ -165,10 +159,9 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  $B swapon /dev/block/ramzswap0
  fi;
  $B echo "Configuring kernel & RAMZSWAP frienship.."
- $B echo 96 > /proc/sys/vm/swappiness
- $B echo 2 > /proc/sys/vm/page-cluster
- $B echo "vm.swappiness=96" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.swappiness=96
+ $B echo 100 > /proc/sys/vm/swappiness
+ $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.swappiness=100
 elif [ "$SWAP" -gt "0" ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  $B echo "SWAP detected. Size is $SWAP MB"
@@ -197,7 +190,7 @@ if [ "$SWAP" -gt "0" ]; then
   if [ -e /sys/kernel/mm/uksm/run ]; then
    $B echo "uKSM detected"
    $B echo "Starting and tuning uKSM.."
-   $B echo 192 > /sys/kernel/mm/uksm/pages_to_scan
+   $B echo 128 > /sys/kernel/mm/uksm/pages_to_scan
    $B echo 3600 > /sys/kernel/mm/uksm/sleep_millisecs
    $B echo 45 > /sys/kernel/mm/uksm/max_cpu_percentage
    $B echo 1 > /sys/kernel/mm/uksm/run
@@ -205,8 +198,8 @@ if [ "$SWAP" -gt "0" ]; then
   elif [ -e /sys/kernel/mm/ksm/run ]; then
    $B echo "KSM detected"
    $B echo "Starting and tuning KSM.."
-   $B echo 192 > /sys/kernel/mm/ksm/pages_to_scan
-   $B echo 3600 > /sys/kernel/mm/ksm/sleep_millisecs
+   $B echo 128 > /sys/kernel/mm/ksm/pages_to_scan
+   $B echo 4500 > /sys/kernel/mm/ksm/sleep_millisecs
    $B echo 1 > /sys/kernel/mm/ksm/run
    setprop ro.config.ksm.support true
   else
@@ -231,7 +224,7 @@ elif [ "$SWAP" -eq "0" ]; then
  if [ -e /sys/kernel/mm/uksm/run ]; then
   $B echo "uKSM detected"
   $B echo "Starting and tuning uKSM.."
-  $B echo 192 > /sys/kernel/mm/uksm/pages_to_scan
+  $B echo 128 > /sys/kernel/mm/uksm/pages_to_scan
   $B echo 3600 > /sys/kernel/mm/uksm/sleep_millisecs
   $B echo 45 > /sys/kernel/mm/uksm/max_cpu_percentage
   $B echo 1 > /sys/kernel/mm/uksm/run
@@ -239,8 +232,8 @@ elif [ "$SWAP" -eq "0" ]; then
  elif [ -e /sys/kernel/mm/ksm/run ]; then
   $B echo "KSM detected"
   $B echo "Starting and tuning KSM.."
-  $B echo 192 > /sys/kernel/mm/ksm/pages_to_scan
-  $B echo 3600 > /sys/kernel/mm/ksm/sleep_millisecs
+  $B echo 128 > /sys/kernel/mm/ksm/pages_to_scan
+  $B echo 4500 > /sys/kernel/mm/ksm/sleep_millisecs
   $B echo 1 > /sys/kernel/mm/ksm/run
   setprop ro.config.ksm.support true
  else

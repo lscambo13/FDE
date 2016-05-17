@@ -63,7 +63,5 @@ if [ -e /system/engine/bin/boost ]; then
  $B echo "Sleep, sync and free RAM" >> $LOG
  /system/engine/bin/boost | $B tee -a $LOG
 fi;
-$B echo "Remounting /system - RO" >> $LOG
-$B mount -o remount,ro /system
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] END end" >> $LOG

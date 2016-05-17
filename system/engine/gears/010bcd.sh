@@ -21,7 +21,6 @@ if [ -e /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand
  $B chmod 644 /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_freq
  $B chmod 644 /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_upthreshold
  $B echo "768000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
- $B echo "interactive" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
  $B echo "533000" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_freq
  $B echo "$DN" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_downdifferential
  $B echo "1" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_enable

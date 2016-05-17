@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.20 | By FeraVolt. 2016 ###
+### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###
 B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 SDK=$(getprop ro.build.version.sdk)

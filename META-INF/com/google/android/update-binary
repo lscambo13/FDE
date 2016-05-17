@@ -10,7 +10,7 @@ ui_print() {
 ui_print ""
 ui_print ""
 ui_print "***FeraLab***"
-ui_print "FeraDroid Engine v0.19"
+ui_print "FeraDroid Engine v0.21"
 ui_print ""
 ui_print "FDE deploy.."
 mount /system
@@ -92,7 +92,7 @@ elif [ -e /system/xbin/zram.sh ]; then
  touch /system/xbin/zram.sh
  chmod 755 /system/xbin/zram.sh
  echo "#!/system/bin/sh" > /system/xbin/zram.sh
- echo "### FeraDroid Engine v0.20 | By FeraVolt. 2016 ###" >> /system/xbin/zram.sh
+ echo "### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###" >> /system/xbin/zram.sh
  echo "" >> /system/xbin/zram.sh
  echo "/system/engine/feradroid.sh" >> /system/xbin/zram.sh
  echo "" >> /system/xbin/zram.sh
@@ -108,7 +108,7 @@ elif [ -e /system/etc/install-recovery.sh ]; then
  echo "" >> /system/etc/install-recovery.sh
  echo "/system/etc/install-recovery-2.sh" >> /system/etc/install-recovery.sh
  echo "#!/system/bin/sh" > /system/etc/install-recovery-2.sh
- echo "### FeraDroid Engine v0.20 | By FeraVolt. 2016 ###" >> /system/etc/install-recovery-2.sh
+ echo "### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###" >> /system/etc/install-recovery-2.sh
  echo "" >> /system/etc/install-recovery-2.sh
  echo "/system/engine/feradroid.sh" >> /system/etc/install-recovery-2.sh
  echo "" >> /system/etc/install-recovery-2.sh

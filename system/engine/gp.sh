@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.20 | By FeraVolt. 2016 ###
+### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###
 pm disable com.google.android.gms/.ads.settings.AdsSettingsActivity
 pm disable com.google.android.gms/com.google.android.location.places.ui.aliaseditor.AliasEditorActivity
 pm disable com.google.android.gms/com.google.android.location.places.ui.aliaseditor.AliasEditorMapActivity

@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.20 | By FeraVolt. 2016 ###
+### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###
 B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 KERNEL=$($B uname -r)
@@ -19,7 +19,7 @@ $B rm -f $LOG
 $B touch $LOG
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
-$B echo "[$TIME] FeraDroid Engine v0.20+++" >> $LOG
+$B echo "[$TIME] FeraDroid Engine v0.21b1" >> $LOG
 $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
 $B echo "[$TIME] Architecture: $ARCH" >> $LOG
@@ -148,5 +148,5 @@ fi;
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] FDE status - OK" >> $LOG
 $B echo "[$TIME] Init sleeper daemon" >> $LOG
-/system/engine/sleeper.sh &
+#/system/engine/sleeper.sh &
 $B echo "" >> $LOG

@@ -9,9 +9,10 @@ ROM=$(getprop ro.build.display.id)
 SDK=$(getprop ro.build.version.sdk)
 SF=$($B df -Ph /system | $B grep -v ^Filesystem | $B awk '{print $4}')
 LOG=/sdcard/Android/FDE.txt
+rm -f $LOG
 mount -o remount,rw /system
 chmod 755 /system/engine/bin/*
-setprop ro.feralab.engine 20
+setprop ro.feralab.engine 21
 $B sleep 45
 $B sleep 45
 $B mount -o remount,rw /system
@@ -134,10 +135,10 @@ if [ -e /system/engine/gears/011efg.sh ]; then
  $B echo "[$TIME] Running 011 gear.." >> $LOG
  /system/engine/gears/011efg.sh | $B tee -a $LOG
 fi;
-if [ -e /system/engine/end.sh ]; then
+if [ -e /system/engine/gears/end.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] "END" start" >> $LOG
- /system/engine/end.sh
+ /system/engine/gears/end.sh
 fi;
 if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,rw /system
@@ -149,5 +150,5 @@ TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] FDE status - OK" >> $LOG
 $B mount -o remount,ro /system
 $B echo "[$TIME] Init sleeper daemon" >> $LOG
-#/system/engine/sleeper.sh &
+/system/engine/gears/sleeper.sh &
 $B echo "" >> $LOG

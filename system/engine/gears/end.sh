@@ -9,9 +9,10 @@ if [ "$SDK" -le "19" ]; then
  $B killall -9 android.process.media
  $B killall -9 mediaserver
 fi;
-if [ -e /system/engine/fix.sh ]; then
+if [ -e /system/engine/gears/fix.sh ]; then
  $B echo "Fix permissions and zipalign.." >> $LOG
- /system/engine/fix.sh
+ $B mount -o remount,rw /system
+ /system/engine/gears/fix.sh
 fi;
 sync;
 $B killall -9 com.google.android.gms
@@ -20,9 +21,9 @@ $B killall -9 com.google.process.gapps
 $B killall -9 com.google.android.gsf
 $B killall -9 com.google.android.gsf.persistent
 if [ -e /system/engine/prop/firstboot ]; then
- if [ -e /system/engine/gp.sh ]; then
+ if [ -e /system/engine/gears/gp.sh ]; then
   $B echo "Google Play services fix" >> $LOG
-  /system/engine/gp.sh
+  /system/engine/gears/gp.sh
  fi;
 fi;
 $B mount -o remount,rw /system

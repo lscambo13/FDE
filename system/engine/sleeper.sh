@@ -4,10 +4,10 @@ B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Sleeper daemon"
 U=$($B top -n1)
-LOAD=$(($B top -bn1 | $B grep "Cpu(s)" | $B sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | $B awk '{print $1}'))
 while true; do
  for i in $($B pgrep -l '' | $B grep '\<org\.\|\<app\.\|\<com\.\|\<android\.' | $B awk '{print $1}'); do
-  if [ $LOAD -gt "0" ]; then
+  a=$($B echo $U | $B grep $i | $B awk '{print $25}' | $B cut -d',' -f1)
+  if [ "$a" -gt "0" ]; then
    kill -9 "$i"
   fi;
  done;

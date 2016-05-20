@@ -14,6 +14,12 @@ else
 fi;
 FK=$((RAM*3/100*1024))
 EF=$((RAM*2/100*1024))
+if [ "$FK" -gt "24576" ]; then
+ FK=24576
+fi;
+if [ "$EF" -gt "18432" ]; then
+ EF=18432
+fi;
 MALL=$((RAM*192))
 MMAX=$((MALL*4096))
 if [ "$MMAX" -le "268435456" ]; then

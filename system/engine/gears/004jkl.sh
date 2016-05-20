@@ -5,12 +5,13 @@ TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 004 - ***Memory gear***"
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 if [ "$RAM" -le "1024" ]; then
- KB=$((RAM*10))
+ SKB=$((RAM*10))
 elif [ "$RAM" -le "2048" ]; then
- KB=$((RAM*5))
+ SKB=$((RAM*5))
 else
- KB=$((RAM*4))
+ SKB=$((RAM*4))
 fi;
+KB=512
 AA="/sys/block/*"
 BB="/sys/devices/virtual/block/*"
 MMC="/sys/block/mmc*"

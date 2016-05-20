@@ -4,9 +4,6 @@ B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 010 - ***CPU gear***"
 MAX=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq)
-MIN=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq)
-$B echo "MAX CPU freq:$((MAX/1000))"
-$B echo "MIN CPU freq:$((MIN/1000))"
 UP=60
 DN=20
 SF=2
@@ -580,5 +577,10 @@ if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
  $B echo "Enable MSM thermal core now.."
  $B echo 1 > /sys/module/msm_thermal/core_control/enabled
 fi;
+MIN=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq)
+CUR=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq)
+$B echo "MAX CPU freq:$((MAX/1000))Mhz"
+$B echo "MIN CPU freq:$((MIN/1000))Mhz"
+$B echo "Current CPU freq:$((CUR/1000))Mhz"
 $B echo "[$TIME] 010 - ***CPU gear*** - OK"
 sync;

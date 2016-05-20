@@ -132,10 +132,6 @@ if [ -e /sys/block/zram0/disksize ]; then
    $B echo "Activate ZRAM compaction.."
    $B echo "1" > /sys/block/zram0/compact
   fi;
- else
-   $B echo 0 > /proc/sys/vm/swappiness
-   $B echo "vm.swappiness=0" >> /system/etc/sysctl.conf
-   $B sysctl -e -w vm.swappiness=0
  fi;
 elif [ -e /sys/block/ramzswap0/size ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
@@ -181,56 +177,20 @@ elif [ "$SWAP" -gt "0" ]; then
   $B echo "LZ4 compression algorithm for ZSWAP"
   $B echo lz4 > /sys/module/zswap/parameters/compressor
  fi;
-else
- SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
- $B echo "No SWAP/ZRAM/RAMZSWAP was detected"
- $B echo "Configuring kernel for swappless system.."
- $B echo 0 > /proc/sys/vm/swappiness
- $B sysctl -e -w vm.swappiness=0
- $B echo "vm.swappiness=0" >> /system/etc/sysctl.conf
 fi;
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
-if [ "$SWAP" -gt "0" ]; then
- if [ "$RAM" -le "512" ]; then
-  $B echo "Small RAM - KSM wanted.."
-  if [ -e /sys/kernel/mm/uksm/run ]; then
-   $B echo "uKSM detected"
-   $B echo "Starting and tuning uKSM.."
-   $B echo 128 > /sys/kernel/mm/uksm/pages_to_scan
-   $B echo 3600 > /sys/kernel/mm/uksm/sleep_millisecs
-   $B echo 45 > /sys/kernel/mm/uksm/max_cpu_percentage
-   $B echo 1 > /sys/kernel/mm/uksm/run
-   setprop ro.config.ksm.support true
-  elif [ -e /sys/kernel/mm/ksm/run ]; then
-   $B echo "KSM detected"
-   $B echo "Starting and tuning KSM.."
-   $B echo 128 > /sys/kernel/mm/ksm/pages_to_scan
-   $B echo 4500 > /sys/kernel/mm/ksm/sleep_millisecs
-   $B echo 1 > /sys/kernel/mm/ksm/run
-   setprop ro.config.ksm.support true
-  else
-   $B echo "No KSM was detected"
-  fi;
- else
-  if [ -e /sys/kernel/mm/uksm/run ]; then
-   $B echo "uKSM detected"
-   $B echo "Disabling KSM.."
-   $B echo 0 > /sys/kernel/mm/uksm/run
-   setprop ro.config.ksm.support false
-  elif [ -e /sys/kernel/mm/ksm/run ]; then
-   $B echo "KSM detected"
-   $B echo "Disabling KSM.."
-   $B echo 0 > /sys/kernel/mm/ksm/run
-   setprop ro.config.ksm.support false
-  else
-   $B echo "No KSM was detected"
-  fi;
- fi;
-elif [ "$SWAP" -eq "0" ]; then
+if [ "$SWAP" -eq "0" ]; then
+ $B echo "Configuring kernel for swappless system.."
+ $B echo 0 > /proc/sys/vm/swappiness
+ $B echo "vm.swappiness=0" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.swappiness=0
+fi;
+if [ "$RAM" -le "512" ]; then
+ $B echo "Small RAM - KSM wanted.."
  if [ -e /sys/kernel/mm/uksm/run ]; then
   $B echo "uKSM detected"
   $B echo "Starting and tuning uKSM.."
-  $B echo 128 > /sys/kernel/mm/uksm/pages_to_scan
+  $B echo 96 > /sys/kernel/mm/uksm/pages_to_scan
   $B echo 3600 > /sys/kernel/mm/uksm/sleep_millisecs
   $B echo 45 > /sys/kernel/mm/uksm/max_cpu_percentage
   $B echo 1 > /sys/kernel/mm/uksm/run
@@ -238,10 +198,24 @@ elif [ "$SWAP" -eq "0" ]; then
  elif [ -e /sys/kernel/mm/ksm/run ]; then
   $B echo "KSM detected"
   $B echo "Starting and tuning KSM.."
-  $B echo 128 > /sys/kernel/mm/ksm/pages_to_scan
+  $B echo 96 > /sys/kernel/mm/ksm/pages_to_scan
   $B echo 4500 > /sys/kernel/mm/ksm/sleep_millisecs
   $B echo 1 > /sys/kernel/mm/ksm/run
   setprop ro.config.ksm.support true
+ else
+  $B echo "No KSM was detected"
+ fi;
+else
+ if [ -e /sys/kernel/mm/uksm/run ]; then
+  $B echo "uKSM detected"
+  $B echo "Disabling KSM.."
+  $B echo 0 > /sys/kernel/mm/uksm/run
+  setprop ro.config.ksm.support false
+ elif [ -e /sys/kernel/mm/ksm/run ]; then
+  $B echo "KSM detected"
+  $B echo "Disabling KSM.."
+  $B echo 0 > /sys/kernel/mm/ksm/run
+  setprop ro.config.ksm.support false
  else
   $B echo "No KSM was detected"
  fi;

@@ -59,8 +59,6 @@ elif [ -e /system/etc/hw_config.sh ]; then
  rm -f /system/etc/init.d/999fde
 elif [ -e /system/xbin/zram.sh ]; then
  rm -f /system/etc/init.d/999fde
-elif [ -e /system/etc/install-recovery-2.sh ]; then
- rm -f /system/etc/init.d/999fde
 fi;
 if [ -e /engine.sh ]; then
  touch /system/engine/prop/ferakernel
@@ -97,21 +95,8 @@ elif [ -e /system/xbin/zram.sh ]; then
  echo "/system/engine/feradroid.sh" >> /system/xbin/zram.sh
  echo "" >> /system/xbin/zram.sh
  exit
-elif [ -e /system/etc/install-recovery.sh ]; then
- touch /system/engine/prop/irec
- echo "1" > /system/engine/prop/irec
- echo "" >> /system/engine/prop/irec
+elif [ -e /system/etc/install-recovery-2.sh ]; then
  rm -f /system/etc/install-recovery-2.sh
- touch /system/etc/install-recovery-2.sh
- chmod 755 /system/etc/install-recovery.sh
- chmod 755 /system/etc/install-recovery-2.sh
- echo "" >> /system/etc/install-recovery.sh
- echo "/system/etc/install-recovery-2.sh" >> /system/etc/install-recovery.sh
- echo "#!/system/bin/sh" > /system/etc/install-recovery-2.sh
- echo "### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###" >> /system/etc/install-recovery-2.sh
- echo "" >> /system/etc/install-recovery-2.sh
- echo "/system/engine/feradroid.sh" >> /system/etc/install-recovery-2.sh
- echo "" >> /system/etc/install-recovery-2.sh
  exit
 fi;
 touch /system/etc/fde

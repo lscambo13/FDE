@@ -107,8 +107,8 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B mkswap /dev/block/zram0
  $B swapon /dev/block/zram0
  fi;
- $B echo "Configuring kernel & ZRAM frienship.."
  if [ "$SWAP" -gt "0" ]; then
+  $B echo "Configuring kernel & ZRAM frienship.."
   if [ "$RAM" -gt "1024" ]; then
    $B echo 70 > /proc/sys/vm/swappiness
    $B echo "vm.swappiness=70" >> /system/etc/sysctl.conf
@@ -132,6 +132,10 @@ if [ -e /sys/block/zram0/disksize ]; then
    $B echo "Activate ZRAM compaction.."
    $B echo "1" > /sys/block/zram0/compact
   fi;
+ else
+   $B echo 0 > /proc/sys/vm/swappiness
+   $B echo "vm.swappiness=0" >> /system/etc/sysctl.conf
+   $B sysctl -e -w vm.swappiness=0
  fi;
 elif [ -e /sys/block/ramzswap0/size ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)

@@ -34,6 +34,10 @@ if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
  setprop debug.qc.hardware true
  setprop debug.qctwa.statusbar 1
  setprop debug.qctwa.perservebuf 1
+ setprop persist.hwc.mdpcomp.enable true
+ setprop debug.mdpcomp.logs 0
+ setprop debug.mdpcomp.maxlayer 3
+ setprop debug.mdpcomp.idletime -1
 fi;
 if [ "$SDK" -eq "10" ]; then
  if [ -e /system/lib/egl/libGLES_android.so ]; then
@@ -139,10 +143,6 @@ else
  setprop debug.egl.hw 1
  setprop debug.egl.swapinterval 1
  setprop debug.gr.swapinterval 1
- setprop persist.hwc.mdpcomp.enable true
- setprop debug.mdpcomp.logs 0
- setprop debug.mdpcomp.maxlayer 3
- setprop debug.mdpcomp.idletime -1
  setprop debug.gr.numframebuffers 3
  setprop dev.pm.dyn_samplingrate 1
  setprop persist.sys.ui.hw 1
@@ -151,6 +151,7 @@ else
  setprop windowsmgr.support_rotation_270 true
  setprop hwui.render_dirty_regions false
  setprop debug.hwui.render_dirty_regions false
+ setprop ro.config.disable.hw_accel false
  setprop persist.sys.scrollingcache 3
  setprop ro.media.dec.jpeg.memcap 8000000
  setprop ro.media.enc.hprof.vid.bps 8000000

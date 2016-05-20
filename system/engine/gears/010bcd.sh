@@ -4,6 +4,9 @@ B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 010 - ***CPU gear***"
 MAX=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq)
+MIN=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq)
+$B echo "MAX CPU freq:$((MAX/1000))"
+$B echo "MIN CPU freq:$((MIN/1000))"
 UP=60
 DN=20
 SF=2

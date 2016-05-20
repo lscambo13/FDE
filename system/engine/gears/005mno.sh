@@ -12,13 +12,13 @@ if [ "$RAM" -le "512" ]; then
 else
  DR=36
 fi;
-FK=$((RAM*3/100*1024))
-EF=$((RAM*2/100*1024))
-if [ "$FK" -gt "24576" ]; then
- FK=24576
+FK=$((RAM*2/100*1024))
+EF=$((RAM*3/100*1024))
+if [ "$EF" -gt "24576" ]; then
+ EF=24576
 fi;
-if [ "$EF" -gt "18432" ]; then
- EF=18432
+if [ "$FK" -gt "18432" ]; then
+ FK=18432
 fi;
 MALL=$((RAM*192))
 MMAX=$((MALL*4096))
@@ -150,9 +150,9 @@ if [ -e /proc/sys/fs/leases-enable ]; then
  $B sysctl -e -w fs.leases-enable=1
 fi;
 if [ -e /proc/sys/fs/lease-break-time ]; then
- $B echo 5 > /proc/sys/fs/lease-break-time
- $B echo "fs.lease-break-time=5" >> /system/etc/sysctl.conf
- $B sysctl -e -w fs.lease-break-time=5
+ $B echo 6 > /proc/sys/fs/lease-break-time
+ $B echo "fs.lease-break-time=6" >> /system/etc/sysctl.conf
+ $B sysctl -e -w fs.lease-break-time=6
 fi;
 if [ -e /proc/sys/fs/inotify/max_queued_events ]; then
  $B echo $ME > /proc/sys/fs/inotify/max_queued_events
@@ -315,14 +315,15 @@ if [ -e /sys/module/logger/parameters/log_mode ]; then
  $B echo 2 > /sys/module/logger/parameters/log_mode
  $B echo "Disable Android logger.."
 fi;
+$B echo "Turning debugging OFF.."
 for n in /sys/module/*
 do
  if [ -e "$n"/parameters/debug_mask ]; then
-  $B echo "Turning debugging OFF.."
   $B echo "0" > "$n"/parameters/debug_mask
  fi;
 done;
 $B echo "Tuning Android.."
+setprop ro.kernel.qemu 0
 setprop ro.config.nocheckin 1
 setprop ro.kernel.android.checkjni 0
 setprop ro.kernel.checkjni 0

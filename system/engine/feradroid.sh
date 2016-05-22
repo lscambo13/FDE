@@ -140,6 +140,8 @@ if [ -e /system/engine/gears/end.sh ]; then
  $B echo "[$TIME] "END" start" >> $LOG
  /system/engine/gears/end.sh
 fi;
+$B echo "[$TIME] Init sleeper daemon" >> $LOG
+/system/engine/gears/sleeper.sh &
 if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,rw /system
  $B rm -f /system/engine/prop/firstboot
@@ -149,6 +151,4 @@ fi;
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] FDE status - OK" >> $LOG
 $B mount -o remount,ro /system
-$B echo "[$TIME] Init sleeper daemon" >> $LOG
-/system/engine/gears/sleeper.sh &
 $B echo "" >> $LOG

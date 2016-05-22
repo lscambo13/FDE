@@ -14,7 +14,7 @@ elif [ -e /sys/class/graphics/fb0/show_blank_event ]; then
 fi;
 $B mount -o remount,rw /system
 $B chmod 777 /system/engine/assets/whitelist.txt
-if [ -e /system/engine/prop/firstboot ]; then 
+if [ -e /system/engine/prop/firstboot ]; then
  $B cp /system/engine/assets/whitelist.txt /sdcard/whitelist.txt
 fi;
 $B cp /sdcard/whitelist.txt /system/engine/assets/whitelist.txt
@@ -22,14 +22,14 @@ W=$($B cat /system/engine/assets/whitelist.txt | grep -v -e '#' | tail -n1)
 while true; do
  if [[ "$A" = "$B" ]]; then
   sync;
-  $B sleep 1
-  $B echo 3 > /proc/sys/vm/drop_caches
-  $B sleep 1
-  sync;
-  U=$($B top -n1)
-  for i in $($B pgrep -l '' | $B grep '\<org\.\|\<app\.\|\<com\.\|\<android\.' | grep -v -i -e $W  | $B awk '{print $1}'); do
-   a=$($B echo $U | $B grep $i | $B awk '{print $25}' | $B cut -d',' -f1)
-   if [ "$a" -gt "0" ]; then
+  sleep 9
+  if [ -e /proc/sys/vm/drop_caches ]; then
+   $B sleep 1
+   $B echo 3 > /proc/sys/vm/drop_caches
+   $B sleep 1
+   sync;
+  fi;
+  for i in $($B pgrep -l '' | $B grep -E 'org.|app.|com.|android.' | grep -v -i -e $W  | $B awk '{print $1}'); do
     kill -9 "$i"
    fi;
   done;

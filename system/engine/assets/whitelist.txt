@@ -2,9 +2,9 @@
 #Sleeper WhiteList file
 
 #To add desired app to this list just time it's name.
-#No need for \|com.android.phone
-#write only \|phone
+#No need for |com.android.phone
+#write only |phone
 #No capital letters. No newlines. Single-line only.
-#Don't forget \| before every app name.
+#Don't forget | before every app name.
 
-:remote\|android\|launcher\|system\|phone
+remote|launcher|system|phone

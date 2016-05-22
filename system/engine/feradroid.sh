@@ -142,6 +142,8 @@ if [ -e /system/engine/gears/end.sh ]; then
 fi;
 $B echo "[$TIME] Init sleeper daemon" >> $LOG
 /system/engine/gears/sleeper.sh &
+sync;
+$B sleep 3
 if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,rw /system
  $B rm -f /system/engine/prop/firstboot

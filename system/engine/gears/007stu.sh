@@ -53,6 +53,7 @@ setprop ro.config.hw_power_saving 1
 setprop dev.pm.dyn_samplingrate 1
 setprop persist.radio.add_power_save 1
 setprop ro.com.google.networklocation 0
+svc power stayon false
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 007 - ***Battery gear*** - OK"
 sync;

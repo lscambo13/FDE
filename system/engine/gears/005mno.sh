@@ -8,7 +8,7 @@ RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 FM=$((RAM*(64+1)))
 ME=$((RAM*27))
 if [ "$RAM" -le "512" ]; then
- DR=20
+ DR=27
 else
  DR=36
 fi;

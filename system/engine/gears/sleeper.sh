@@ -18,23 +18,29 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B cp /system/engine/assets/whitelist.txt /sdcard/whitelist.txt
 fi;
 $B cp /sdcard/whitelist.txt /system/engine/assets/whitelist.txt
+sync;
 W=$($B cat /system/engine/assets/whitelist.txt | grep -v -e '#' | tail -n1)
-while true; do
- if [[ "$A" = "$B" ]]; then
-  sync;
-  sleep 9
-  if [ -e /proc/sys/vm/drop_caches ]; then
-   $B sleep 1
-   $B echo 3 > /proc/sys/vm/drop_caches
-   $B sleep 1
+ON=$($B cat /system/engine/assets/whitelist.txt | grep -e 'sleeper=1')
+if [[ "sleeper=1" = "$ON" ]]; then
+ while true; do
+  if [[ "$A" = "$B" ]]; then
    sync;
-  fi;
-  for i in $($B pgrep -l '' | $B grep -E 'org.|app.|com.|android.' | grep -v -i -e $W  | $B awk '{print $1}'); do
-    kill -9 "$i"
+   sleep 9
+   if [ -e /proc/sys/vm/drop_caches ]; then
+    $B sleep 1
+    $B echo 3 > /proc/sys/vm/drop_caches
+    $B sleep 1
+    sync;
    fi;
-  done;
-  until [[ "$A" = "$C" ]]; do
-   $B sleep 9
-  done;
- fi;
-done;
+   for i in $($B pgrep -l '' | $B grep -E 'org.|app.|com.|android.' | grep -v -i -e $W  | $B awk '{print $1}'); do
+     kill -9 "$i"
+   done;
+   $B sleep 27
+   until [[ "$A" = "$C" ]]; do
+    $B sleep 9
+   done;
+  fi;
+ done;
+else
+ $B echo "Sleeper daemon is not active."
+fi;

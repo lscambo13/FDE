@@ -13,12 +13,13 @@ elif [ -e /sys/class/graphics/fb0/show_blank_event ]; then
  C=panel_power_on = 1
 fi;
 $B mount -o remount,rw /system
-$B chmod 777 /system/engine/assets/whitelist.txt
+$B chmod 777 /system/engine/assets/sleeper_whitelist.txt
 if [ -e /system/engine/prop/firstboot ]; then
- $B cp /system/engine/assets/whitelist.txt /sdcard/whitelist.txt
+ $B cp /system/engine/assets/sleeper_whitelist.txt /sdcard/Android/sleeper_whitelist.txt
 fi;
-$B cp /sdcard/whitelist.txt /system/engine/assets/whitelist.txt
+$B cp /sdcard/Android/sleeper_whitelist.txt /system/engine/assets/sleeper_whitelist.txt
 sync;
+$B mount -o remount,ro /system
 W=$($B cat /system/engine/assets/whitelist.txt | grep -v -e '#' | tail -n1)
 ON=$($B cat /system/engine/assets/whitelist.txt | grep -e 'sleeper=1')
 if [[ "sleeper=1" = "$ON" ]]; then

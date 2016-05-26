@@ -135,9 +135,19 @@ if [ -e /proc/sys/vm/min_free_order_shift ]; then
  $B sysctl -e -w vm.min_free_order_shift=4
 fi;
 if [ -e /proc/sys/vm/page-cluster ]; then
- $B echo 2 > /proc/sys/vm/page-cluster
- $B echo "vm.page-cluster=2" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.page-cluster=2
+ $B echo 3 > /proc/sys/vm/page-cluster
+ $B echo "vm.page-cluster=3" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.page-cluster=3
+fi;
+if [ -e /proc/sys/vm/scan_unevictable_pages ]; then
+ $B echo 0 > /proc/sys/vm/scan_unevictable_pages
+ $B echo "vm.scan_unevictable_pages=0" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.scan_unevictable_pages=0
+fi;
+if [ -e /proc/sys/vm/highmem_is_dirtyable ]; then
+ $B echo 1 > /proc/sys/vm/highmem_is_dirtyable
+ $B echo "vm.highmem_is_dirtyable=1" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.highmem_is_dirtyable=1
 fi;
 if [ -e /proc/sys/fs/file-max ]; then
  $B echo $FM > /proc/sys/fs/file-max

@@ -44,9 +44,6 @@ elif [ -e /system/etc/hw_config.sh ]; then
  $B sed -e "s=$m=""=" -i /system/etc/hw_config.sh
 elif [ -e /system/xbin/zram.sh ]; then
  $B sed -e "s=$m=""=" -i /system/xbin/zram.sh
-elif [ -e /system/etc/install-recovery-2.sh ]; then
- $B sed -e "s=$m=""=" -i /system/etc/install-recovery.sh
- $B sed -e "s=$m=""=" -i /system/etc/install-recovery-2.sh
 fi;
 ARCH=$($B uname -m)
 if [ "$ARCH" == "armv6l" ]; then

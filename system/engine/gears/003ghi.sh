@@ -10,6 +10,7 @@ RAMcached=$($B free -m | $B awk '{ print $7 }' | $B sed -n 2p)
 RAMreported=$((RAMfree + RAMcached))
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
 SWAPused=$($B free -m | $B awk '{ print $3 }' | $B sed -n 4p)
+CORES=$($B grep -c 'processor' /proc/cpuinfo)
 $B echo "Current RAM values:"
 $B echo "  Total:              $RAM MB"
 $B echo "  Free:               $RAMreported MB"
@@ -186,24 +187,26 @@ if [ "$SWAP" -eq "0" ]; then
  $B sysctl -e -w vm.swappiness=0
 fi;
 if [ "$RAM" -le "512" ]; then
- $B echo "Small RAM - KSM wanted.."
- if [ -e /sys/kernel/mm/uksm/run ]; then
-  $B echo "uKSM detected"
-  $B echo "Starting and tuning uKSM.."
-  $B echo 96 > /sys/kernel/mm/uksm/pages_to_scan
-  $B echo 3600 > /sys/kernel/mm/uksm/sleep_millisecs
-  $B echo 45 > /sys/kernel/mm/uksm/max_cpu_percentage
-  $B echo 1 > /sys/kernel/mm/uksm/run
-  setprop ro.config.ksm.support true
- elif [ -e /sys/kernel/mm/ksm/run ]; then
-  $B echo "KSM detected"
-  $B echo "Starting and tuning KSM.."
-  $B echo 96 > /sys/kernel/mm/ksm/pages_to_scan
-  $B echo 4500 > /sys/kernel/mm/ksm/sleep_millisecs
-  $B echo 1 > /sys/kernel/mm/ksm/run
-  setprop ro.config.ksm.support true
- else
-  $B echo "No KSM was detected"
+ if [ "$CORES" -ge "2" ]; then
+  $B echo "Small RAM - KSM wanted.."
+  if [ -e /sys/kernel/mm/uksm/run ]; then
+   $B echo "uKSM detected"
+   $B echo "Starting and tuning uKSM.."
+   $B echo 96 > /sys/kernel/mm/uksm/pages_to_scan
+   $B echo 9600 > /sys/kernel/mm/uksm/sleep_millisecs
+   $B echo 45 > /sys/kernel/mm/uksm/max_cpu_percentage
+   $B echo 1 > /sys/kernel/mm/uksm/run
+   setprop ro.config.ksm.support true
+  elif [ -e /sys/kernel/mm/ksm/run ]; then
+   $B echo "KSM detected"
+   $B echo "Starting and tuning KSM.."
+   $B echo 96 > /sys/kernel/mm/ksm/pages_to_scan
+   $B echo 9600 > /sys/kernel/mm/ksm/sleep_millisecs
+   $B echo 1 > /sys/kernel/mm/ksm/run
+   setprop ro.config.ksm.support true
+  else
+   $B echo "No KSM was detected"
+  fi;
  fi;
 else
  if [ -e /sys/kernel/mm/uksm/run ]; then

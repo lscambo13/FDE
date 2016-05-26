@@ -1,8 +1,7 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###
 B=/system/engine/bin/busybox
-TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] Sleeper daemon"
+LOG=/sdcard/Android/FDE.txt
 if [ -e /sys/power/wait_for_fb_sleep ]; then
  A=$(cat /sys/power/wait_for_fb_sleep)
  B=sleeping
@@ -12,17 +11,13 @@ elif [ -e /sys/class/graphics/fb0/show_blank_event ]; then
  B=panel_power_on = 0
  C=panel_power_on = 1
 fi;
-$B mount -o remount,rw /system
-$B chmod 777 /system/engine/assets/sleeper_whitelist.txt
-if [ -e /system/engine/prop/firstboot ]; then
- $B cp /system/engine/assets/sleeper_whitelist.txt /sdcard/Android/sleeper_whitelist.txt
-fi;
 $B cp /sdcard/Android/sleeper_whitelist.txt /system/engine/assets/sleeper_whitelist.txt
 sync;
 $B mount -o remount,ro /system
-W=$($B cat /system/engine/assets/whitelist.txt | grep -v -e '#' | tail -n1)
-ON=$($B cat /system/engine/assets/whitelist.txt | grep -e 'sleeper=1')
+W=$($B cat /system/engine/assets/sleeper_whitelist.txt | grep -v -e '#' | tail -n1)
+ON=$($B cat /system/engine/assets/sleeper_whitelist.txt | grep -e 'sleeper=1')
 if [[ "sleeper=1" = "$ON" ]]; then
+ $B echo "Sleeper daemon is active." > $LOG
  while true; do
   if [[ "$A" = "$B" ]]; then
    sync;
@@ -33,7 +28,7 @@ if [[ "sleeper=1" = "$ON" ]]; then
     $B sleep 1
     sync;
    fi;
-   for i in $($B pgrep -l '' | $B grep -E 'org.|app.|com.|android.' | grep -v -i -e $W  | $B awk '{print $1}'); do
+   for i in $($B pgrep -l '' | $B grep -E 'org.|app.|com.|android.|net.|eu.' | grep -v -i -e $W  | $B awk '{print $1}'); do
      kill -9 "$i"
    done;
    $B sleep 27
@@ -43,5 +38,5 @@ if [[ "sleeper=1" = "$ON" ]]; then
   fi;
  done;
 else
- $B echo "Sleeper daemon is not active."
+ $B echo "Sleeper daemon is not active." > $LOG
 fi;

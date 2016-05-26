@@ -265,7 +265,7 @@ $B echo "$UP" > /sys/devices/system/cpu/cpufreq/interactive/go_highspeed_load
 $B echo "85" > /sys/devices/system/cpu/cpufreq/interactive/go_maxspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy
 $B echo "40000" > /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
-$B echo "$RT" > /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+$B echo "40000" > /sys/devices/system/cpu/cpufreq/interactive/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time ]; then
 $B echo "CPU0 Interactive tuning.."
@@ -278,7 +278,7 @@ $B echo "$UP" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_highspeed_lo
 $B echo "85" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_maxspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy
 $B echo "40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
-$B echo "$RT" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
+$B echo "40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time ]; then
 $B echo "CPU InteractiveX tuning.."
@@ -291,7 +291,7 @@ $B echo "$UP" > /sys/devices/system/cpu/cpufreq/interactivex/go_highspeed_load
 $B echo "85" > /sys/devices/system/cpu/cpufreq/interactivex/go_maxspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpufreq/interactivex/io_is_busy
 $B echo "40000" > /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time
-$B echo "$RT" > /sys/devices/system/cpu/cpufreq/interactivex/timer_rate
+$B echo "40000" > /sys/devices/system/cpu/cpufreq/interactivex/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactivex/min_sample_time ]; then
 $B echo "CPU0 InteractiveX tuning.."
@@ -304,7 +304,7 @@ $B echo "$UP" > /sys/devices/system/cpu/cpu0/cpufreq/interactivex/go_highspeed_l
 $B echo "85" > /sys/devices/system/cpu/cpu0/cpufreq/interactivex/go_maxspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/interactivex/io_is_busy
 $B echo "40000" > /sys/devices/system/cpu0/cpu/cpufreq/interactivex/min_sample_time
-$B echo "$RT" > /sys/devices/system/cpu0/cpu/cpufreq/interactivex/timer_rate
+$B echo "40000" > /sys/devices/system/cpu0/cpu/cpufreq/interactivex/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/pegasusq/up_threshold ]; then
 $B echo "CPU Pegasusq tuning.."
@@ -577,10 +577,7 @@ if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
  $B echo "Enable MSM thermal core now.."
  $B echo 1 > /sys/module/msm_thermal/core_control/enabled
 fi;
-MIN=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq)
-CUR=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq)
-$B echo "MAX CPU freq:$((MAX/1000))Mhz"
-$B echo "MIN CPU freq:$((MIN/1000))Mhz"
-$B echo "Current CPU freq:$((CUR/1000))Mhz"
+
+
 $B echo "[$TIME] 010 - ***CPU gear*** - OK"
 sync;

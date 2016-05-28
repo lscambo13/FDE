@@ -3,14 +3,14 @@
 B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 002 - ***Ad-block gear***"
-$B echo "Updating hosts.."
-$B mount -o remount,rw /system
-$B rm -f /system/engine/assets/hosts
-$B touch /system/engine/assets/hosts
-$B chmod 777 /system/engine/assets/hosts
-$B wget -q --tries=10 --timeout=20 --spider  "http://winhelp2002.mvps.org/hosts.txt"
+$B wget -q --tries=3 --timeout=10 --spider  "http://winhelp2002.mvps.org/hosts.txt"
 if [[ $? -eq 0 ]]; then
  $B echo "We are Online"
+ $B echo "Updating hosts.."
+ $B mount -o remount,rw /system
+ $B rm -f /system/engine/assets/hosts
+ $B touch /system/engine/assets/hosts
+ $B chmod 777 /system/engine/assets/hosts
  $B wget -O /system/engine/assets/hosts "http://winhelp2002.mvps.org/hosts.txt"
  $B sed -i "s/#.*//" /system/engine/assets/hosts
  $B sed -i "/^$/d" /system/engine/assets/hosts

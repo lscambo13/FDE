@@ -3,6 +3,7 @@
 B=/system/engine/bin/busybox
 A=$(cat /sys/class/power_supply/battery/capacity)
 TIME=$($B date | $B awk '{ print $4 }')
+CORES=$($B grep -c 'processor' /proc/cpuinfo)
 $B echo "[$TIME] 007 - ***Battery gear***"
 if [ "$A" -eq "100" ] ; then
  if [ -e /system/engine/prop/nobat ]; then
@@ -34,14 +35,16 @@ if [ -e /sys/devices/platform/i2c-gpio.9/i2c-9/9-0036/power_supply/fuelgauge/fg_
  $B echo "Reset Fuelgauge report.."
  $B echo "1" > /sys/devices/platform/i2c-gpio.9/i2c-9/9-0036/power_supply/fuelgauge/fg_reset_soc
 fi;
-if [ -e /sys/module/pm2/modes/cpu0/power_collapse/suspend_enabled ]; then
- $B echo "LowPower mode 2 support detected. Activating.."
- $B echo 1 > /sys/module/pm2/modes/cpu0/standalone_power_collapse/idle_enabled
- $B echo 1 > /sys/module/pm2/modes/cpu1/standalone_power_collapse/idle_enabled
- $B echo 1 > /sys/module/pm2/modes/cpu0/standalone_power_collapse/suspend_enabled
- $B echo 1 > /sys/module/pm2/modes/cpu1/standalone_power_collapse/suspend_enabled
- $B echo 1 > /sys/module/pm2/modes/cpu0/power_collapse/suspend_enabled
- $B echo 1 > /sys/module/pm2/modes/cpu0/power_collapse/idle_enabled
+if [ "$CORES" -eq "2" ]; then
+ if [ -e /sys/module/pm2/modes/cpu0/power_collapse/suspend_enabled ]; then
+  $B echo "LowPower mode 2 support detected. Activating.."
+  $B echo 1 > /sys/module/pm2/modes/cpu0/standalone_power_collapse/idle_enabled
+  $B echo 1 > /sys/module/pm2/modes/cpu1/standalone_power_collapse/idle_enabled
+  $B echo 1 > /sys/module/pm2/modes/cpu0/standalone_power_collapse/suspend_enabled
+  $B echo 1 > /sys/module/pm2/modes/cpu1/standalone_power_collapse/suspend_enabled
+  $B echo 1 > /sys/module/pm2/modes/cpu0/power_collapse/suspend_enabled
+  $B echo 1 > /sys/module/pm2/modes/cpu0/power_collapse/idle_enabled
+ fi;
 fi;
 $B echo "Tuning Android power-saving.."
 setprop power.saving.mode 1

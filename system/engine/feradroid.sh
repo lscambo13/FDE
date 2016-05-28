@@ -17,8 +17,8 @@ rm -f $LOG
 mount -o remount,rw /system
 chmod 755 /system/engine/bin/*
 setprop ro.feralab.engine 21
-$B sleep 45
-$B sleep 36
+$B sleep 54
+$B sleep 18
 $B mount -o remount,rw /system
 $B rm -f $LOG
 $B touch $LOG
@@ -29,10 +29,10 @@ $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
 $B echo "[$TIME] Architecture: $ARCH" >> $LOG
 $B echo "[$TIME] RAM: $RAM MB" >> $LOG
-$B echo "[$TIME] MAX CPU freq:$((MAX/1000))Mhz"
-$B echo "[$TIME] MIN CPU freq:$((MIN/1000))Mhz"
-$B echo "[$TIME] Current CPU freq:$((CUR/1000))Mhz"
-$B echo "[$TIME] CPU Cores : $CORES"
+$B echo "[$TIME] MAX CPU freq:$((MAX/1000))Mhz" >> $LOG
+$B echo "[$TIME] MIN CPU freq:$((MIN/1000))Mhz" >> $LOG
+$B echo "[$TIME] Current CPU freq:$((CUR/1000))Mhz" >> $LOG
+$B echo "[$TIME] CPU Cores: $CORES" >> $LOG
 $B echo "[$TIME] Kernel version: $KERNEL" >> $LOG
 $B echo "[$TIME] ROM version: $ROM" >> $LOG
 $B echo "[$TIME] Android version: $(getprop ro.build.version.release)" >> $LOG
@@ -146,6 +146,11 @@ if [ -e /system/engine/gears/011efg.sh ]; then
  $B echo "[$TIME] Running 011 gear.." >> $LOG
  /system/engine/gears/011efg.sh | $B tee -a $LOG
 fi;
+if [ -e /system/engine/gears/012hij.sh ]; then
+ TIME=$($B date | $B awk '{ print $4 }')
+ $B echo "[$TIME] Running 012 gear.." >> $LOG
+ /system/engine/gears/012hij.sh | $B tee -a $LOG
+fi;
 if [ -e /system/engine/gears/end.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] "END" start" >> $LOG
@@ -167,3 +172,8 @@ TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] FDE status - OK" >> $LOG
 $B mount -o remount,ro /system
 $B echo "" >> $LOG
+$B echo 45 > /sys/devices/virtual/timed_output/vibrator/enable
+$B sleep 0.5
+$B echo 45 > /sys/devices/virtual/timed_output/vibrator/enable
+$B sleep 0.5
+$B echo 45 > /sys/devices/virtual/timed_output/vibrator/enable

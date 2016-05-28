@@ -8,9 +8,9 @@ RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 if [ "$RAM" -le "1024" ]; then
  SKB=$((RAM*9))
 elif [ "$RAM" -le "2048" ]; then
- SKB=$((RAM*4))
+ SKB=$((RAM*5))
 else
- SKB=$((RAM*3))
+ SKB=$((RAM*4))
 fi;
 AA="/sys/block/*"
 BB="/sys/devices/virtual/block/*"
@@ -35,13 +35,13 @@ if [ -e /storage/extSdCard ]; then
  $B mount -t ext4 -o rw /dev/block/mmcblk1p1 /storage/extSdCard
  $B sleep 1
 fi;
+$B echo "Remounting storage partitions.."
 for m in $ST $SST; do
-  $B echo "Remounting storage partitions.."
   $B mount -o remount,nosuid,nodev,noatime,nodiratime -t auto "${m}"
   $B mount -o remount,nosuid,nodev,noatime,nodiratime -t auto "${m}"/Android/obb
 done;
+$B echo "Remounting EXT4 partitions.."
 for x in $($B mount | grep ext4 | cut -d " " -f3); do
- $B echo "Remounting EXT4 partitions.."
  $B mount -o remount,noatime,delalloc,nosuid,nodev,nodiratime,barrier=0,nobh,commit=90,discard,data=writeback,rw "${x}"
 done;
 $B echo "Calculated readahead parameter is $SKB KB"

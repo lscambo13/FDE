@@ -13,7 +13,7 @@ else
  DR=36
 fi;
 FK=$((RAM*2/100*1024))
-EF=$((RAM*3/100*1024))
+EF=$(((RAM*3/100*1024)-1024))
 if [ "$EF" -gt "24576" ]; then
  EF=24576
 fi;
@@ -25,12 +25,10 @@ MMAX=$((MALL*4096))
 if [ "$MMAX" -le "268435456" ]; then
  MMAX=268435456
 fi;
-if [ "$RAM" -le "1024" ]; then
+if [ "$RAM" -le "2048" ]; then
  LM=1
-elif [ "$RAM" -le "2048" ]; then
- LM=2
 else
- LM=3
+ LM=2
 fi;
 $B mount -o remount,rw /system
 $B echo "Applying optimized kernel parameters.."

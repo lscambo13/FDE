@@ -4,6 +4,7 @@ B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 010 - ***CPU gear***"
 MAX=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq)
+CORES=$($B grep -c 'processor' /proc/cpuinfo)
 UP=60
 DN=20
 SF=2
@@ -505,22 +506,24 @@ if [ -e /sys/devices/system/cpu/sched_mc_power_savings ]; then
  $B chmod 644 /sys/devices/system/cpu/sched_mc_power_savings
  $B echo "2" > /sys/devices/system/cpu/sched_mc_power_savings
 fi;
-if [ -e /sys/module/pm_hotplug/parameters/loadh ]; then
- $B echo "Tuning Multi-Core behavior.."
- $B echo "$UP" > /sys/module/pm_hotplug/parameters/loadh
- $B echo "$DN" > /sys/module/pm_hotplug/parameters/loadl
- $B echo "90" > /sys/module/pm_hotplug/parameters/loadh_scroff
- $B echo "35" > /sys/module/pm_hotplug/parameters/loadl_scroff
-fi;
-if [ -e /sys/devices/virtual/misc/second_core/hotplug_on ]; then 
- $B echo "Activating dynamic hot-plug.."
- $B echo "on" > /sys/devices/virtual/misc/second_core/hotplug_on
-fi;
-if [ -e /sys/devices/system/cpu/cpu0/cpufreq/smooth_target ]; then
- $B echo "Activating CPU smooth-target.." 
- $B echo "2" > /sys/devices/system/cpu/cpu0/cpufreq/smooth_target
- $B echo "2" > /sys/devices/system/cpu/cpu0/cpufreq/smooth_offset
- $B echo "2" > /sys/devices/system/cpu/cpu0/cpufreq/smooth_step
+if [ "$CORES" -eq "2" ]; then
+ if [ -e /sys/module/pm_hotplug/parameters/loadh ]; then
+  $B echo "Tuning Dual-Core behavior.."
+  $B echo "$UP" > /sys/module/pm_hotplug/parameters/loadh
+  $B echo "$DN" > /sys/module/pm_hotplug/parameters/loadl
+  $B echo "90" > /sys/module/pm_hotplug/parameters/loadh_scroff
+  $B echo "35" > /sys/module/pm_hotplug/parameters/loadl_scroff
+ fi;
+ if [ -e /sys/devices/virtual/misc/second_core/hotplug_on ]; then 
+  $B echo "Activating dynamic hot-plug.."
+  $B echo "on" > /sys/devices/virtual/misc/second_core/hotplug_on
+ fi;
+ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/smooth_target ]; then
+  $B echo "Activating CPU smooth-target.." 
+  $B echo "2" > /sys/devices/system/cpu/cpu0/cpufreq/smooth_target
+  $B echo "2" > /sys/devices/system/cpu/cpu0/cpufreq/smooth_offset
+  $B echo "2" > /sys/devices/system/cpu/cpu0/cpufreq/smooth_step
+ fi;
 fi;
 if [ -e /system/etc/thermald.conf ]; then 
  $B mount -o remount,rw /system
@@ -577,7 +580,5 @@ if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
  $B echo "Enable MSM thermal core now.."
  $B echo 1 > /sys/module/msm_thermal/core_control/enabled
 fi;
-
-
 $B echo "[$TIME] 010 - ***CPU gear*** - OK"
 sync;

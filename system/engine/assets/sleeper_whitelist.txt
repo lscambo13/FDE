@@ -9,6 +9,6 @@
 #To disable Sleeper daemon change trigger line below
 #from 1 to 0. Reboot to apply changes.
 
-sleeper=0
+sleeper=1
 
-remote|launcher|system|phone|alarm
+41|74|WorkQueue|app_process|krfcommd|GIRQ|remote|launcher|system|phone|alarm|android

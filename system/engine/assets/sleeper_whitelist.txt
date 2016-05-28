@@ -6,9 +6,12 @@
 #write only |phone
 #No capital letters. No newlines. Single-line only.
 #Don't forget | before every app name.
-#To disable Sleeper daemon change trigger line below
+#To disable Sleeper daemon change sleeper trigger
 #from 1 to 0. Reboot to apply changes.
+#To change low battery treshold percentage change
+#battery  trigger to desired level.
 
 sleeper=1
+battery=30
 
-41|74|WorkQueue|app_process|krfcommd|GIRQ|remote|launcher|system|phone|alarm|android
+41|74|WorkQueue|app_process|krfcommd|GIRQ|remote|launcher|system|phone|alarm|android|home|miui

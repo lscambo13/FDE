@@ -9,8 +9,9 @@ if [ -e /sdcard/Android/sleeper_whitelist.txt ]; then
  $B cp /sdcard/Android/sleeper_whitelist.txt /system/engine/assets/sleeper_whitelist.txt
  $B mount -o remount,ro /system
 fi;
-W=$($B cat /system/engine/assets/sleeper_whitelist.txt | grep -v -e '#' | tail -n1)
-ON=$($B cat /system/engine/assets/sleeper_whitelist.txt | grep -e 'sleeper=1')
+W=$($B cat /system/engine/assets/sleeper_whitelist.txt | $B grep -v -E '#' | $B tail -n1)
+ON=$($B cat /system/engine/assets/sleeper_whitelist.txt | $B grep -E 'sleeper=1')
+B=$($B cat /system/engine/assets/sleeper_whitelist.txt | $B grep -E 'battery=' | $B sed -e "s|battery=|""|")
 if [[ "sleeper=1" = "$ON" ]]; then
  $B echo "Sleeper daemon is active." >> $LOG
  while true; do
@@ -26,7 +27,7 @@ if [[ "sleeper=1" = "$ON" ]]; then
     $B sleep 1
     sync;
    fi;
-   if [ "$($B cat /sys/class/power_supply/battery/capacity)" -lt 30 ]; then
+   if [ "$($B cat /sys/class/power_supply/battery/capacity)" -le "$B" ]; then
     svc wifi disable
     svc nfc disable
     svc data disable
@@ -35,7 +36,7 @@ if [[ "sleeper=1" = "$ON" ]]; then
     am broadcast -a android.intent.action.BATTERY_LOW
    fi;
    until [[ "true" = "$(dumpsys power | $B grep "mScreenOn" | $B grep -o "true")" ]]; do
-    $B sleep 600
+    $B sleep 300
    done;
   else
    $B sleep 18

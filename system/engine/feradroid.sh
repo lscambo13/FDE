@@ -24,7 +24,7 @@ $B rm -f $LOG
 $B touch $LOG
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
-$B echo "[$TIME] FeraDroid Engine v0.21b2" >> $LOG
+$B echo "[$TIME] FeraDroid Engine v0.21b2+" >> $LOG
 $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
 $B echo "[$TIME] Architecture: $ARCH" >> $LOG
@@ -47,6 +47,7 @@ if [ -e /system/engine/prop/firstboot ]; then
  fi;
  $B cp /system/engine/bin/zipalign /system/xbin/zipalign
  $B cp /system/engine/bin/boost /system/xbin/boost
+ $B rm -f /sdcard/Android/sleeper_whitelist.txt
  $B cp /system/engine/assets/sleeper_whitelist.txt /sdcard/Android/sleeper_whitelist.txt
 fi;
 if [ -e /sys/fs/selinux/enforce ]; then
@@ -153,7 +154,7 @@ if [ -e /system/engine/gears/012hij.sh ]; then
 fi;
 if [ -e /system/engine/gears/end.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
- $B echo "[$TIME] "END" start" >> $LOG
+ $B echo "[$TIME] *END* start" >> $LOG
  /system/engine/gears/end.sh
 fi;
 if [ -e /system/engine/gears/sleeper.sh ]; then

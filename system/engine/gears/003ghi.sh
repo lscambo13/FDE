@@ -56,7 +56,7 @@ if [ -e /sys/block/zram0/disksize ]; then
   FZRAM=$((RAM/3))
   PZ=45
  elif [ "$RAM" -le "512" ]; then
-  FZRAM=$(((RAM/2)+64))
+  FZRAM=$(((RAM/2)+96))
   PZ=50
  fi;
  $B echo "ZRAM detected. Size is $ZZRAM MB"

@@ -135,6 +135,14 @@ if [ -e /sys/devices/virtual/sec/sec_touchscreen/tsp_threshold ]; then
  $B echo "50" > /sys/devices/virtual/sec/sec_touchscreen/tsp_threshold
  $B echo "Touchscreen sensivity tune-up"
 fi;
+if [ -e /sys/class/touch/switch/set_touchscreen ]; then
+ $B echo 7035 > /sys/class/touch/switch/set_touchscreen
+ $B echo 8002 > /sys/class/touch/switch/set_touchscreen
+ $B echo 11000 > /sys/class/touch/switch/set_touchscreen
+ $B echo 13060 > /sys/class/touch/switch/set_touchscreen
+ $B echo 14005 > /sys/class/touch/switch/set_touchscreen
+ $B echo "Touchscreen sensivity tune-up [2]"
+fi;
 if [ "$ARCH" == "armv6l" ]; then
  $B echo "No hard tuning for ARMv6.."
 else

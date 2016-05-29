@@ -14,4 +14,4 @@
 sleeper=1
 battery=30
 
-41|74|WorkQueue|app_process|krfcommd|GIRQ|remote|launcher|system|phone|alarm|android|home|miui
+miui|sony|player|music|samsung|htc|dialer|trebuchet

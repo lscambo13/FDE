@@ -17,11 +17,11 @@ if [[ $? -eq 0 ]]; then
  $B sed -i -e "s/0.0.0.0/127.0.0.1/g" /system/engine/assets/hosts
  $B cat /system/engine/assets/hosts > /system/etc/hosts
  $B chmod 755 /system/etc/hosts
+ $B echo "Done."
 else
  $B echo "We are Offline"
 fi;
 $B sleep 1
-$B echo "Done."
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 002 - ***Ad-block gear*** - OK"
 sync;

@@ -46,6 +46,7 @@ if [ "sleeper=1" = "$ON" ]; then
    S=$($B pgrep -l '' | $B grep -E "swap" | $B awk '{print $1}')
    E=$($B pgrep -l '' | $B grep -E "server" | $B awk '{print $1}')
    T=$($B pgrep -l '' | $B grep -E "trebuchet" | $B awk '{print $1}')
+   M=$($B pgrep -l '' | $B grep -E "service" | $B awk '{print $1}')
    $B echo "Change priority for $H $S $U $L $P"
    renice [-10] "$H"
    renice [-9] "$S"
@@ -56,6 +57,7 @@ if [ "sleeper=1" = "$ON" ]; then
    renice [-1] "$E"
    renice [-10] "$T"
    renice [-10] "$D"
+   renice 6 "$D"
    until [ "false" = "$(dumpsys power | $B grep "mScreenOn" | $B grep -o "false")" ]; do
     $B sleep 18
    done;

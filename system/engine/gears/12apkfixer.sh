@@ -1,6 +1,6 @@
 #!/system/bin/sh
 ### FeraDroid Engine v21 | By FeraVolt. 2016 ###
-B=/system/engine/bin/$B
+B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***APK-fixer gear***"
 ZIPALIGNDB=/data/zipalign.db

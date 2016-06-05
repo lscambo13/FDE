@@ -48,7 +48,7 @@ done;
 fi;
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Applying kernel configuration.." >> $LOG
-sysctl -p | $B tee -a $LOG
+sysctl -p
 if [ -e /system/engine/bin/boost ]; then
  $B echo "Sleep, sync and free RAM" >> $LOG
  /system/engine/bin/boost | $B tee -a $LOG

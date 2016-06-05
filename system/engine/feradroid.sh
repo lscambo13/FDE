@@ -157,9 +157,9 @@ if [ -e /system/engine/gears/end.sh ]; then
  $B echo "[$TIME] *END* start" >> $LOG
  /system/engine/gears/end.sh
 fi;
-if [ -e /system/engine/gears/sleeper.sh ]; then
-$B echo "[$TIME] Init sleeper daemon" >> $LOG
- /system/engine/gears/sleeper.sh &
+if [ -e /system/engine/gears/fire.sh ]; then
+$B echo "[$TIME] Init Fire daemon" >> $LOG
+ /system/engine/gears/fire.sh &
 fi;
 sync;
 $B sleep 3

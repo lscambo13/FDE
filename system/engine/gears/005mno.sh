@@ -240,7 +240,7 @@ fi;
 $B echo "Tuning kernel scheduling.."
 $B mount -t debugfs none /sys/kernel/debug
 if [ -e /sys/kernel/debug/sched_features ]; then
- $B echo "NO_GENTLE_FAIR_SLEEPERS" > /sys/kernel/debug/sched_features
+ $B echo "NO_GENTLE_FAIR_FireS" > /sys/kernel/debug/sched_features
  $B echo "START_DEBIT" > /sys/kernel/debug/sched_features
  $B echo "NO_NEXT_BUDDY" > /sys/kernel/debug/sched_features
  $B echo "LAST_BUDDY " >> /sys/kernel/debug/sched_features
@@ -258,11 +258,11 @@ if [ -e /sys/kernel/debug/sched_features ]; then
  $B echo "NO_LB_MIN" >> /sys/kernel/debug/sched_features
  $B echo "OWNER_SPIN" > /sys/kernel/debug/sched_features
  $B echo "WAKEUP_PREEMPT" >> /sys/kernel/debug/sched_features
- $B echo "NO_NORMALIZED_SLEEPERS" > /sys/kernel/debug/sched_features
+ $B echo "NO_NORMALIZED_FireS" > /sys/kernel/debug/sched_features
  $B echo "NO_AFFINE_WAKEUPS" > /sys/kernel/debug/sched_features
  $B echo "NO_WAKEUP_OVERLAP" > /sys/kernel/debug/sched_features
- $B echo "NO_NEW_FAIR_SLEEPERS" >> /sys/kernel/debug/sched_features
- $B echo "FAIR_SLEEPERS" >> /sys/kernel/debug/sched_features
+ $B echo "NO_NEW_FAIR_FireS" >> /sys/kernel/debug/sched_features
+ $B echo "FAIR_FireS" >> /sys/kernel/debug/sched_features
  $B echo "START_DEBIT" >> /sys/kernel/debug/sched_features
  $B echo "ADAPTIVE_GRAN" >> /sys/kernel/debug/sched_features
  $B echo "NO_WAKEUP_SYNC" >> /sys/kernel/debug/sched_features
@@ -274,8 +274,8 @@ if [ -e /sys/kernel/debug/sched_features ]; then
  $B echo "ASYM_EFF_LOAD" >> /sys/kernel/debug/sched_features
  $B echo "NONTASK_POWER" >> /sys/kernel/debug/sched_features
 fi;
-if [ -e /sys/kernel/sched/gentle_fair_sleepers ]; then
- $B echo 1 > /sys/kernel/sched/gentle_fair_sleepers
+if [ -e /sys/kernel/sched/gentle_fair_Fires ]; then
+ $B echo 1 > /sys/kernel/sched/gentle_fair_Fires
 fi;
 if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
  $B echo "Dynamic fsync detected. Activating.."

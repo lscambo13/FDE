@@ -10,10 +10,10 @@ if [ -e /sdcard/Android/FDE_config.txt ]; then
  $B mount -o remount,ro /system
 fi;
 W=$($B cat /system/engine/assets/FDE_config.txt | $B grep -v -e '#' | $B tail -n1)
-ON=$($B cat /system/engine/assets/FDE_config.txt | $B grep -e 'sleeper=1')
+ON=$($B cat /system/engine/assets/FDE_config.txt | $B grep -e 'Fire=1')
 
-if [[ "sleeper=1" = "$ON" ]]; then
- $B echo "Sleeper daemon is active." >> $LOG
+if [[ "fire=1" = "$ON" ]]; then
+ $B echo "Fire daemon is active." >> $LOG
  while true; do
   if [[ "false" = "$(dumpsys power | $B grep -E "mScreenOn" | $B grep -o "false")" ]]; then
    sync;
@@ -44,5 +44,5 @@ if [[ "sleeper=1" = "$ON" ]]; then
   fi;
  done;
 else
- $B echo "Sleeper daemon is not active." >> $LOG
+ $B echo "Fire daemon is not active." >> $LOG
 fi;

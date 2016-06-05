@@ -165,7 +165,7 @@ fi;
 if [ -e /system/engine/gears/end.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] END init.." >> $LOG
- /system/engine/gears/end.sh | $B tee -a $LOG
+ /system/engine/gears/end.sh
 fi;
 sync;
 $B sleep 3

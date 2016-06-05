@@ -2,11 +2,13 @@
 ### FeraDroid Engine v21 | By FeraVolt. 2016 ###
 B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] ***APK-fixer gear***"
+LOG=/sdcard/Android/FDE_log.txt
+$B echo "[$TIME] ***APK-fixer gear***" >> $LOG
 ZIPALIGNDB=/data/zipalign.db
 if [ ! -f $ZIPALIGNDB ]; then
  $B touch $ZIPALIGNDB
 fi;
+$B echo "Processing.." >> $LOG
 for DIR in /system/app /system/priv-app /data/app; do
  cd $DIR
  for APK in *.apk; do
@@ -32,4 +34,4 @@ $B chmod 644 /system/app/*
 $B chmod 644 /system/priv-app/*
 $B chmod 644 /data/app/*
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] ***APK-fixer gear*** - OK"
+$B echo "[$TIME] ***APK-fixer gear*** - OK" >> $LOG

@@ -2,7 +2,7 @@
 ### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###
 B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] 001 - ***Cleaning gear***"
+$B echo "[$TIME] ***Cleaner gear***"
 $B echo "Remounting /data and /system - RW"
 $B mount -o remount,rw /system
 $B mount -o remount,rw /data
@@ -48,13 +48,14 @@ $B rm -Rf /mnt/sdcard/kunlun
 $B rm -Rf /mnt/sdcard/.antutu
 $B rm -Rf /mnt/sdcard/.estrongs
 $B rm -Rf /mnt/sdcard/baidu
+$B rm -Rf /mnt/sdcard/Backucup
+$B rm -Rf /mnt/sdcard/UnityAdsVideoCache
 $B rm -f /mnt/sdcard/fix_permissions.log
 $B chmod -R 777 /data/tombstones
 $B rm -f /data/tombstones/*
 $B chmod -R 000 /data/tombstones
 $B echo "Cleaning cache.."
 $B find /data/data -type d -iname "cache*" -exec $B rm -Rf {}/ ';'
-$B sleep 1
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] 001 - ***Cleaning gear*** - OK"
+$B echo "[$TIME] ***Cleaner gear*** - OK"
 sync;

@@ -2,11 +2,11 @@
 ### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###
 B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] 002 - ***Ad-block gear***"
-$B wget -q --tries=3 --timeout=10 --spider  "http://winhelp2002.mvps.org/hosts.txt"
-if [[ $? -eq 0 ]]; then
+$B echo "[$TIME] ***Ad-blocker gear***"
+$B wget -q --tries=9 --timeout=10 --spider  "http://winhelp2002.mvps.org/hosts.txt"
+if [ $? -eq 0 ]; then
  $B echo "We are Online"
- $B echo "Updating hosts.."
+ $B echo "Updating hosts.." 
  $B mount -o remount,rw /system
  $B rm -f /system/engine/assets/hosts
  $B touch /system/engine/assets/hosts
@@ -21,7 +21,6 @@ if [[ $? -eq 0 ]]; then
 else
  $B echo "We are Offline"
 fi;
-$B sleep 1
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] 002 - ***Ad-block gear*** - OK"
+$B echo "[$TIME] ***Ad-blocker gear*** - OK"
 sync;

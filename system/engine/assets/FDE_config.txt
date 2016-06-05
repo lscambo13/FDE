@@ -2,22 +2,22 @@
 
 #FDE configuration file.
 
-
-#Fire daemon is ultimate script-daemon that 
-#To disable Fire daemon change below trigger
+#Sleeper daemon is ultimate script-daemon that helps to
+#save battery and improve performance of your device.
+#To disable Sleeper daemon change below trigger
 #from 1 to 0. Reboot to apply changes.
 
-fire=1
+sleeper=1
 
 #To change low battery treshold percentage change
 #battery trigger to desired level.
 
 battery=33
 
-#To whitelist desired app for Fire daemon just type it's name.
+#To whitelist desired app for sleeper daemon just type it's name.
 #No need for |com.android.phone
 #write only |phone
 #No capital letters. No newlines. Single-line only.
 #Don't forget | before every app name.
 
-miui|sony|player|playback|viper|music|samsung|htc|dialer|browser
+miui|player|playback|viper|music|dialer

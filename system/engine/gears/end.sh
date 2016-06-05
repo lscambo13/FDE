@@ -4,28 +4,17 @@
 B=/system/engine/bin/busybox
 LOG=/sdcard/Android/FDE_log.txt
 SDK=$(getprop ro.build.version.sdk)
+sync;
 if [ "$SDK" -le "18" ]; then
  $B echo "Mediaserver kill" >> $LOG
  $B killall -9 android.process.media
  $B killall -9 mediaserver
 fi;
-if [ -e /system/engine/gears/fix.sh ]; then
- $B echo "Fix permissions and zipalign.." >> $LOG
- $B mount -o remount,rw /system
- /system/engine/gears/fix.sh
-fi;
-sync;
 $B killall -9 com.google.android.gms
 $B killall -9 com.google.android.gms.persistent
 $B killall -9 com.google.process.gapps
 $B killall -9 com.google.android.gsf
 $B killall -9 com.google.android.gsf.persistent
-if [ -e /system/engine/prop/firstboot ]; then
- if [ -e /system/engine/gears/gp.sh ]; then
-  $B echo "Google Play services fix" >> $LOG
-  /system/engine/gears/gp.sh
- fi;
-fi;
 $B mount -o remount,rw /system
 if [ -e /etc/fstab ]; then
  $B echo "FStab onboard.." >> $LOG

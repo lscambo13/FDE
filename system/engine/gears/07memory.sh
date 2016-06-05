@@ -2,8 +2,7 @@
 ### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###
 B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] 004 - ***Memory gear***"
-SDK=$(getprop ro.build.version.sdk)
+$B echo "[$TIME] ***Memory gear***"
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 if [ "$RAM" -le "1024" ]; then
  SKB=$((RAM*9))
@@ -16,7 +15,6 @@ AA="/sys/block/*"
 BB="/sys/devices/virtual/block/*"
 MMC="/sys/block/mmc*"
 MTD="/sys/block/mtd*"
-BDI="/sys/devices/virtual/bdi"
 ST="/storage/emulated/*"
 SST="/storage/*"
 if [ -e /mnt/sd-ext ]; then
@@ -63,5 +61,5 @@ if [ -e "${b}"/queue/add_random ]; then
 fi;
 done;
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] 004 - ***Memory gear*** - OK"
+$B echo "[$TIME] ***Memory gear*** - OK"
 sync;

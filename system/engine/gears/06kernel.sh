@@ -2,8 +2,7 @@
 ### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###
 B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
-SDK=$(getprop ro.build.version.sdk)
-$B echo "[$TIME] 005 - ***Kernel gear***"
+$B echo "[$TIME] ***Kernel gear***"
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 FM=$((RAM*(64+1)))
 ME=$((RAM*27))
@@ -12,8 +11,8 @@ if [ "$RAM" -le "512" ]; then
 else
  DR=36
 fi;
-FK=$((RAM*2/100*1024))
-EF=$(((RAM*3/100*1024)-4096))
+FK=$((RAM*2*1024/100))
+EF=$(((RAM*3*1024/100)-2048))
 if [ "$EF" -gt "24576" ]; then
  EF=24576
 fi;
@@ -133,9 +132,9 @@ if [ -e /proc/sys/vm/min_free_order_shift ]; then
  $B sysctl -e -w vm.min_free_order_shift=4
 fi;
 if [ -e /proc/sys/vm/page-cluster ]; then
- $B echo 3 > /proc/sys/vm/page-cluster
- $B echo "vm.page-cluster=3" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.page-cluster=3
+ $B echo 1 > /proc/sys/vm/page-cluster
+ $B echo "vm.page-cluster=1" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.page-cluster=1
 fi;
 if [ -e /proc/sys/vm/scan_unevictable_pages ]; then
  $B echo 0 > /proc/sys/vm/scan_unevictable_pages
@@ -158,9 +157,9 @@ if [ -e /proc/sys/fs/leases-enable ]; then
  $B sysctl -e -w fs.leases-enable=1
 fi;
 if [ -e /proc/sys/fs/lease-break-time ]; then
- $B echo 6 > /proc/sys/fs/lease-break-time
- $B echo "fs.lease-break-time=6" >> /system/etc/sysctl.conf
- $B sysctl -e -w fs.lease-break-time=6
+ $B echo 9 > /proc/sys/fs/lease-break-time
+ $B echo "fs.lease-break-time=9" >> /system/etc/sysctl.conf
+ $B sysctl -e -w fs.lease-break-time=9
 fi;
 if [ -e /proc/sys/fs/inotify/max_queued_events ]; then
  $B echo $ME > /proc/sys/fs/inotify/max_queued_events
@@ -240,48 +239,22 @@ fi;
 $B echo "Tuning kernel scheduling.."
 $B mount -t debugfs none /sys/kernel/debug
 if [ -e /sys/kernel/debug/sched_features ]; then
- $B echo "NO_GENTLE_FAIR_FireS" > /sys/kernel/debug/sched_features
- $B echo "START_DEBIT" > /sys/kernel/debug/sched_features
- $B echo "NO_NEXT_BUDDY" > /sys/kernel/debug/sched_features
- $B echo "LAST_BUDDY " >> /sys/kernel/debug/sched_features
- $B echo "CACHE_HOT_BUDDY" > /sys/kernel/debug/sched_features
- $B echo "WAKEUP_PREEMPTION" >> /sys/kernel/debug/sched_features
- $B echo "ARCH_POWER" >> /sys/kernel/debug/sched_features
- $B echo "NO_HRTICK" > /sys/kernel/debug/sched_features
- $B echo "NO_DOUBLE_TICK" > /sys/kernel/debug/sched_features
- $B echo "LB_BIAS" > /sys/kernel/debug/sched_features
- $B echo "NONTASK_POWER " >> /sys/kernel/debug/sched_features
- $B echo "TTWU_QUEUE" >> /sys/kernel/debug/sched_features
- $B echo "NO_FORCE_SD_OVERLAP" >> /sys/kernel/debug/sched_features
- $B echo "SD_SHARE_CPUPOWER" >> /sys/kernel/debug/sched_features
- $B echo "RT_RUNTIME_SHARE" >> /sys/kernel/debug/sched_features
- $B echo "NO_LB_MIN" >> /sys/kernel/debug/sched_features
- $B echo "OWNER_SPIN" > /sys/kernel/debug/sched_features
- $B echo "WAKEUP_PREEMPT" >> /sys/kernel/debug/sched_features
- $B echo "NO_NORMALIZED_FireS" > /sys/kernel/debug/sched_features
+ $B echo "NO_GENTLE_FAIR_SLEEPERS" > /sys/kernel/debug/sched_features
+ $B echo "NO_NEW_FAIR_SLEEPERS" > /sys/kernel/debug/sched_features
+ $B echo "NO_NORMALIZED_SLEEPERS" > /sys/kernel/debug/sched_features
  $B echo "NO_AFFINE_WAKEUPS" > /sys/kernel/debug/sched_features
+ $B echo "NO_WAKEUP_SYNC" > /sys/kernel/debug/sched_features
  $B echo "NO_WAKEUP_OVERLAP" > /sys/kernel/debug/sched_features
- $B echo "NO_NEW_FAIR_FireS" >> /sys/kernel/debug/sched_features
- $B echo "FAIR_FireS" >> /sys/kernel/debug/sched_features
- $B echo "START_DEBIT" >> /sys/kernel/debug/sched_features
- $B echo "ADAPTIVE_GRAN" >> /sys/kernel/debug/sched_features
- $B echo "NO_WAKEUP_SYNC" >> /sys/kernel/debug/sched_features
- $B echo "NO_WAKEUP_OVERLAP" >> /sys/kernel/debug/sched_features
- $B echo "NO_SYNC_WAKEUPS" >> /sys/kernel/debug/sched_features
- $B echo "NO_SYNC_LESS" >> /sys/kernel/debug/sched_features
- $B echo "NO_SYNC_MORE" >> /sys/kernel/debug/sched_features
- $B echo "LB_SHARES_UPDATE" >> /sys/kernel/debug/sched_features
- $B echo "ASYM_EFF_LOAD" >> /sys/kernel/debug/sched_features
- $B echo "NONTASK_POWER" >> /sys/kernel/debug/sched_features
+ $B echo "NO_SYNC_WAKEUPS" > /sys/kernel/debug/sched_features
 fi;
-if [ -e /sys/kernel/sched/gentle_fair_Fires ]; then
- $B echo 1 > /sys/kernel/sched/gentle_fair_Fires
+if [ -e /sys/kernel/sched/gentle_fair_sleepers ]; then
+ $B echo 0 > /sys/kernel/sched/gentle_fair_sleepers
 fi;
 if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
  $B echo "Dynamic fsync detected. Activating.."
  $B echo "1" > /sys/kernel/dyn_fsync/Dyn_fsync_active
 fi;
-if [ -e /sys/devices/virtual/misc/fsynccontrol/fsync_enabled]; then
+if [ -e /sys/devices/virtual/misc/fsynccontrol/fsync_enabled ]; then
  $B echo "Fsync control detected. Tuning.."
  $B echo "0" > /sys/devices/virtual/misc/fsynccontrol/fsync_enabled
 fi;
@@ -315,8 +288,8 @@ if [ -e /system/etc/sprd_monitor-user.conf ]; then
  $B echo "SPRD monitor tuning.."
 fi;
 if [ -e /system/etc/slog.conf ]; then
- $B sed -e "s="enable"="disable"=" -i /system/etc/slog.conf
- $B sed -e "s="enable"="disable"=" -i /system/etc/slog.conf.user
+ $B sed -e "s=enable=disable=" -i /system/etc/slog.conf
+ $B sed -e "s=enable=disable=" -i /system/etc/slog.conf.user
  $B echo "Slog conf tuning.."
 fi;
 if [ -e /sys/module/logger/parameters/log_mode ]; then
@@ -340,5 +313,5 @@ setprop profiler.force_disable_err_rpt 1
 setprop profiler.force_disable_ulog 1
 setprop logcat.live disable
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] 005 - ***Kernel gear*** - OK"
+$B echo "[$TIME] ***Kernel gear*** - OK"
 sync;

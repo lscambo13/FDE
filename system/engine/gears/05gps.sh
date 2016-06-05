@@ -2,7 +2,7 @@
 ### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###
 B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] 011 - ***GPS gear***"
+$B echo "[$TIME] ***GPS gear***"
 $B mount -o remount,rw /system
 $B mount -o remount,rw /data
 if [ -e /data/misc/mtkgps.dat ]; then
@@ -23,22 +23,22 @@ if [ -e /system/engine/prop/nogps ]; then
   else
    $B touch /system/etc/gps.conf
   fi;
-  $B sed -e "s="DEBUG_LEVEL"="#"=" -i /system/etc/gps.conf
-  $B sed -e "s="ERR_ESTIMATE"="#"=" -i /system/etc/gps.conf
-  $B sed -e "s="NTP_SERVER"="#"=" -i /system/etc/gps.conf
-  $B sed -e "s="XTRA_"="#"=" -i /system/etc/gps.conf
-  $B sed -e "s="DEFAULT"="#"=" -i /system/etc/gps.conf
-  $B sed -e "s="INTERMEDIATE"="#"=" -i /system/etc/gps.conf
-  $B sed -e "s="ACCURACY"="#"=" -i /system/etc/gps.conf
-  $B sed -e "s="SUPL_HOST"="#"=" -i /system/etc/gps.conf
-  $B sed -e "s="SUPL_PORT"="#"=" -i /system/etc/gps.conf
-  $B sed -e "s="NMEA"="#"=" -i /system/etc/gps.conf
-  $B sed -e "s="CAPABILITIES"="#"=" -i /system/etc/gps.conf
-  $B sed -e "s="SUPL_ES"="#"=" -i /system/etc/gps.conf
-  $B sed -e "s="USE_EMERGENCY"="#"=" -i /system/etc/gps.conf
-  $B sed -e "s="SUPL_MODE"="#"=" -i /system/etc/gps.conf
-  $B sed -e "s="SUPL_VER"="#"=" -i /system/etc/gps.conf
-  $B sed -e "s="REPORT"="#"=" -i /system/etc/gps.conf
+  $B sed -e "s=DEBUG_LEVEL=#=" -i /system/etc/gps.conf
+  $B sed -e "s=ERR_ESTIMATE=#=" -i /system/etc/gps.conf
+  $B sed -e "s=NTP_SERVER=#=" -i /system/etc/gps.conf
+  $B sed -e "s=XTRA_=#=" -i /system/etc/gps.conf
+  $B sed -e "s=DEFAULT=#=" -i /system/etc/gps.conf
+  $B sed -e "s=INTERMEDIATE=#=" -i /system/etc/gps.conf
+  $B sed -e "s=ACCURACY=#=" -i /system/etc/gps.conf
+  $B sed -e "s=SUPL_HOST=#=" -i /system/etc/gps.conf
+  $B sed -e "s=SUPL_PORT=#=" -i /system/etc/gps.conf
+  $B sed -e "s=NMEA=#=" -i /system/etc/gps.conf
+  $B sed -e "s=CAPABILITIES=#=" -i /system/etc/gps.conf
+  $B sed -e "s=SUPL_ES=#=" -i /system/etc/gps.conf
+  $B sed -e "s=USE_EMERGENCY=#=" -i /system/etc/gps.conf
+  $B sed -e "s=SUPL_MODE=#=" -i /system/etc/gps.conf
+  $B sed -e "s=SUPL_VER=#=" -i /system/etc/gps.conf
+  $B sed -e "s=REPORT=#=" -i /system/etc/gps.conf
   $B echo "" >> /system/etc/gps.conf
   $B echo "### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###" >> /system/etc/gps.conf
   $B echo "DEBUG_LEVEL=0" >> /system/etc/gps.conf
@@ -66,8 +66,8 @@ if [ -e /system/engine/prop/nogps ]; then
   $B chmod 644 /system/etc/gps.conf
   $B rm -f /system/engine/prop/nogps
   $B touch /system/etc/gps
-  fi;
+  $B echo "1" > /system/etc/gps
  fi;
 fi;
-$B echo "[$TIME] 011 - ***GPS gear*** - OK"
+$B echo "[$TIME] ***GPS gear*** - OK"
 sync;

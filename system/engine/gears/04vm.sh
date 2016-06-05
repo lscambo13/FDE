@@ -3,7 +3,7 @@
 B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
-$B echo "[$TIME] 009 - ***VM gear***"
+$B echo "[$TIME] ***VM gear***"
 $B echo "Tuning LMK.."
 if [ -e /sys/module/lowmemorykiller/parameters/cost ]; then
  $B echo "LMK cost fine-tuning.."
@@ -12,7 +12,7 @@ if [ -e /sys/module/lowmemorykiller/parameters/cost ]; then
  $B echo "16" > /sys/module/lowmemorykiller/parameters/cost
 fi;
 if [ -e /sys/module/lowmemorykiller/parameters/fudgeswap ]; then
- $B echo "FudgeSwap supported. Tuning.."
+ $B echo "FudgeSwap support detected. Tuning.."
  $B chown 0:0 /sys/module/lowmemorykiller/parameters/fudgeswap
  $B chmod 644 /sys/module/lowmemorykiller/parameters/fudgeswap
  $B echo "1024" > /sys/module/lowmemorykiller/parameters/fudgeswap
@@ -59,5 +59,5 @@ setprop dalvik.vm.deadlock-predict off
 setprop dalvik.vm.jit.codecachesize 0
 setprop libc.debug.malloc 0
 setprop persist.sys.purgeable_assets 1
-$B echo "[$TIME] 009 - ***VM gear*** - OK"
+$B echo "[$TIME] ***VM gear*** - OK"
 sync;

@@ -3,7 +3,7 @@
 B=/system/engine/bin/busybox
 RZS=/system/engine/bin/rzscontrol
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] 003 - ***RAM gear***"
+$B echo "[$TIME] ***RAM gear***"
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p)
 RAMcached=$($B free -m | $B awk '{ print $7 }' | $B sed -n 2p)
@@ -111,17 +111,17 @@ if [ -e /sys/block/zram0/disksize ]; then
  if [ "$SWAP" -gt "0" ]; then
   $B echo "Configuring kernel & ZRAM frienship.."
   if [ "$RAM" -gt "1024" ]; then
+   $B echo 50 > /proc/sys/vm/swappiness
+   $B echo "vm.swappiness=50" >> /system/etc/sysctl.conf
+   $B sysctl -e -w vm.swappiness=50
+  elif [ "$RAM" -gt "512" ]; then
    $B echo 70 > /proc/sys/vm/swappiness
    $B echo "vm.swappiness=70" >> /system/etc/sysctl.conf
    $B sysctl -e -w vm.swappiness=70
-  elif [ "$RAM" -gt "512" ]; then
-   $B echo 90 > /proc/sys/vm/swappiness
-   $B echo "vm.swappiness=09" >> /system/etc/sysctl.conf
-   $B sysctl -e -w vm.swappiness=90
   elif [ "$RAM" -le "512" ]; then
-   $B echo 100 > /proc/sys/vm/swappiness
-   $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf
-   $B sysctl -e -w vm.swappiness=100
+   $B echo 80 > /proc/sys/vm/swappiness
+   $B echo "vm.swappiness=80" >> /system/etc/sysctl.conf
+   $B sysctl -e -w vm.swappiness=80
   fi;
   setprop ro.config.zram.support true
   setprop zram.disksize $FZRAM
@@ -162,9 +162,9 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  $B swapon /dev/block/ramzswap0
  fi;
  $B echo "Configuring kernel & RAMZSWAP frienship.."
- $B echo 100 > /proc/sys/vm/swappiness
- $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.swappiness=100
+ $B echo 80 > /proc/sys/vm/swappiness
+ $B echo "vm.swappiness=80" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.swappiness=80
 elif [ "$SWAP" -gt "0" ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  $B echo "SWAP detected. Size is $SWAP MB"
@@ -237,5 +237,5 @@ $B echo "  Cached:             $RAMcached MB"
 $B echo "  SWAP/ZRAM total:    $SWAP MB"
 $B echo "  SWAP/ZRAM used:     $SWAPused MB"
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] 003 - ***RAM gear*** - OK"
+$B echo "[$TIME] ***RAM gear*** - OK"
 sync;

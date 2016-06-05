@@ -4,10 +4,9 @@ B=/system/engine/bin/busybox
 SDK=$(getprop ro.build.version.sdk)
 TIME=$($B date | $B awk '{ print $4 }')
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
-$B echo "[$TIME] 008 - ***Network gear***"
+$B echo "[$TIME] ***Network gear***"
 $B mount -o remount,rw /system
 $B echo "Writing optimized network parameters to sysctl"
-$B echo "net.ipv4.tcp_congestion_control=cubic" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.tcp_rfc1337=1" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.tcp_window_scaling=1" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.tcp_sack=1" >> /system/etc/sysctl.conf
@@ -21,8 +20,8 @@ $B echo "net.ipv4.tcp_fin_timeout=36" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.conf.all.rp_filter=2" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.conf.default.rp_filter=2" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.conf.all.accept_redirects=0" >> /system/etc/sysctl.conf
+$B echo "net.ipv4.tcp_congestion_control=cubic" >> /system/etc/sysctl.conf
 $B echo "Executing optimized network parameters via sysctl"
-$B sysctl -e -w net.ipv4.tcp_congestion_control=cubic
 $B sysctl -e -w net.ipv4.tcp_rfc1337=1
 $B sysctl -e -w net.ipv4.tcp_window_scaling=1
 $B sysctl -e -w net.ipv4.tcp_sack=1
@@ -36,35 +35,35 @@ $B sysctl -e -w net.ipv4.tcp_fin_timeout=36
 $B sysctl -e -w net.ipv4.conf.all.rp_filter=2
 $B sysctl -e -w net.ipv4.conf.default.rp_filter=2
 $B sysctl -e -w net.ipv4.conf.all.accept_redirects=0
+$B sysctl -e -w net.ipv4.tcp_congestion_control=cubic
 if [ "$RAM" -le "1024" ]; then
-$B echo "Set smaller net-buffer sizes.."
-setprop net.tcp.buffersize.gprs 4092,8760,11680,4096,8760,11680
-setprop net.tcp.buffersize.edge 4093,26280,35040,4096,16384,35040
-setprop net.tcp.buffersize.evdo_b 4096,32768,65536,4096,32768,65536
-setprop net.tcp.buffersize.umts 4096,32768,65536,4096,32768,65536
-setprop net.tcp.buffersize.hspa 4096,32768,65536,4096,32768,65536
-setprop net.tcp.buffersize.hsdpa 4096,32768,65536,4096,32768,65536
-setprop net.tcp.buffersize.wifi 4096,32768,110208,4096,32768,110208
-setprop net.tcp.buffersize.lte 4096,32768,110208,4096,32768,110208
-setprop net.tcp.buffersize.default 4096,32768,110208,4096,32768,110208
+ $B echo "Set smaller net-buffer sizes.."
+ setprop net.tcp.buffersize.gprs 4092,8760,11680,4096,8760,11680
+ setprop net.tcp.buffersize.edge 4093,26280,35040,4096,16384,35040
+ setprop net.tcp.buffersize.evdo_b 4096,32768,65536,4096,32768,65536
+ setprop net.tcp.buffersize.umts 4096,32768,65536,4096,32768,65536
+ setprop net.tcp.buffersize.hspa 4096,32768,65536,4096,32768,65536
+ setprop net.tcp.buffersize.hsdpa 4096,32768,65536,4096,32768,65536
+ setprop net.tcp.buffersize.wifi 4096,32768,110208,4096,32768,110208
+ setprop net.tcp.buffersize.lte 4096,32768,110208,4096,32768,110208
+ setprop net.tcp.buffersize.default 4096,32768,110208,4096,32768,110208
 else
-$B echo "Set larger net-buffer sizes.."
-setprop net.tcp.buffersize.gprs 6144,8760,11680,6144,8760,11680
-setprop net.tcp.buffersize.edge 6144,26280,35040,6144,16384,35040
-setprop net.tcp.buffersize.evdo_b 6144,262144,1048576,6144,262144,1048576
-setprop net.tcp.buffersize.umts 6144,87380,110208,6144,16384,110208
-setprop net.tcp.buffersize.hspa 6144,87380,262144,6144,16384,262144
-setprop net.tcp.buffersize.hsdpa 6144,262144,1048576,6144,262144,1048576
-setprop net.tcp.buffersize.wifi 262144,524288,1048576,262144,524288,1048576
-setprop net.tcp.buffersize.lte 262144,524288,3145728,262144,524288,3145728
-setprop net.tcp.buffersize.default 262144,524288,1048576,262144,524288,1048576
+ $B echo "Set larger net-buffer sizes.."
+ setprop net.tcp.buffersize.gprs 6144,8760,11680,6144,8760,11680
+ setprop net.tcp.buffersize.edge 6144,26280,35040,6144,16384,35040
+ setprop net.tcp.buffersize.evdo_b 6144,262144,1048576,6144,262144,1048576
+ setprop net.tcp.buffersize.umts 6144,87380,110208,6144,16384,110208
+ setprop net.tcp.buffersize.hspa 6144,87380,262144,6144,16384,262144
+ setprop net.tcp.buffersize.hsdpa 6144,262144,1048576,6144,262144,1048576
+ setprop net.tcp.buffersize.wifi 262144,524288,1048576,262144,524288,1048576
+ setprop net.tcp.buffersize.lte 262144,524288,3145728,262144,524288,3145728
+ setprop net.tcp.buffersize.default 262144,524288,1048576,262144,524288,1048576
 fi;
+$B mount -o remount,rw /system
 $B echo "Tuning DNS.."
 $B echo "nameserver 8.8.8.8" > /system/etc/resolv.conf
 $B echo "nameserver 8.8.4.4" >> /system/etc/resolv.conf
 $B echo "" >> /system/etc/resolv.conf
-sync;
-$B mount -o remount,rw /system
 if [ -e /system/engine/prop/firstboot ]; then
  $B rm /system/etc/ppp/options
  $B cp /system/engine/assets/options /system/etc/ppp/options
@@ -105,5 +104,5 @@ setprop ro.ril.enable.amr.wideband 1
 setprop ro.wifi.channels 13
 setprop persist.wpa_supplicant.debug false
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] 008 - ***Network gear*** - OK"
+$B echo "[$TIME] ***Network gear*** - OK"
 sync;

@@ -4,8 +4,7 @@ B=/system/engine/bin/busybox
 ARCH=$($B uname -m)
 TIME=$($B date | $B awk '{ print $4 }')
 SDK=$(getprop ro.build.version.sdk)
-COM=$(getprop debug.composition.type)
-$B echo "[$TIME] 006 - ***GPU gear***"
+$B echo "[$TIME] ***GPU gear***"
 $B echo "Remounting /system - RW"
 $B mount -o remount,rw /system
 $B mount -t debugfs debugfs /sys/kernel/debug
@@ -143,7 +142,7 @@ if [ -e /sys/class/touch/switch/set_touchscreen ]; then
  $B echo 14005 > /sys/class/touch/switch/set_touchscreen
  $B echo "Touchscreen sensivity tune-up [2]"
 fi;
-if [ "$ARCH" == "armv6l" ]; then
+if [ "$ARCH" = "armv6l" ]; then
  $B echo "No hard tuning for ARMv6.."
 else
  $B echo "Tuning Android graphics.."
@@ -166,8 +165,8 @@ else
  setprop ro.media.enc.jpeg.quality 100
  setprop touch.presure.scale 1.0
  setprop ro.floatingtouch.available 1
- setprop ro.min.fling_velocity 9000
- setprop ro.max.fling_velocity 12000
+ setprop ro.min.fling_velocity 12000
+ setprop ro.max.fling_velocity 15000
  setprop persist.sys.strictmode.disable true
  setprop vidc.debug.level 0
  setprop ro.camera.sound.forced 0
@@ -176,5 +175,5 @@ else
  setprop mot.proximity.delay 25
 fi;
 TIME=$($B date | $B awk '{ print $4 }')
-$B echo "[$TIME] 006 - ***GPU gear*** - OK"
+$B echo "[$TIME] ***GPU gear*** - OK"
 sync;

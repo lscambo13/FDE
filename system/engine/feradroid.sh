@@ -13,7 +13,6 @@ CUR=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq)
 CORES=$($B grep -c 'processor' /proc/cpuinfo)
 LOG=/sdcard/Android/FDE_log.txt
 TIME=$($B date | $B awk '{ print $4 }')
-rm -f $LOG
 mount -o remount,rw /system
 chmod 755 /system/engine/bin/*
 setprop ro.feralab.engine 21
@@ -21,10 +20,11 @@ $B sleep 54
 $B sleep 18
 $B mount -o remount,rw /system
 $B rm -f $LOG
+$B rm -f /sdcard/Android/sleeper_whitelist.txt
 $B touch $LOG
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
-$B echo "[$TIME] FeraDroid Engine v0.21b2+" >> $LOG
+$B echo "[$TIME] FeraDroid Engine v0.21-beta3" >> $LOG
 $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
 $B echo "[$TIME] Architecture: $ARCH" >> $LOG
@@ -50,13 +50,19 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B rm -f /sdcard/Android/FDE_config.txt
  $B cp /system/engine/assets/FDE_config.txt /sdcard/Android/FDE_config.txt
 fi;
+TIME=$($B date | $B awk '{ print $4 }')
+if [ -e /sdcard/Android/FDE_config.txt ]; then
+ $B echo "[$TIME] Loading FDE_config.." >> $LOG
+ $B mount -o remount,rw /system
+ $B rm -f /system/engine/assets/FDE_config.txt
+ $B cp /sdcard/Android/FDE_config.txt /system/engine/assets/FDE_config.txt
+fi;
 if [ -e /sys/fs/selinux/enforce ]; then
  $B chmod 666 /sys/fs/selinux/enforce
  setenforce 0
  $B echo 0 > /sys/fs/selinux/enforce
  $B chmod 444 /sys/fs/selinux/enforce
 fi;
-TIME=$($B date | $B awk '{ print $4 }')
 if [ -e /sbin/sysrw ]; then
  $B echo "[$TIME] Remapped partition mount detected" >> $LOG
  /sbin/sysrw
@@ -86,95 +92,99 @@ elif [ -e /system/engine/prop/qcompost ]; then
 elif [ -e /system/engine/prop/hwconf ]; then
  $B echo "[$TIME] HW-conf init.." >> $LOG
 elif [ -e /system/engine/prop/zrami ]; then
- $B echo "[$TIME] Zram-i init.." >> $LOG
-elif [ -e /system/engine/prop/irec ]; then
- $B echo "[$TIME] Install-recovery init.." >> $LOG
+ $B echo "[$TIME] Zram init.." >> $LOG
 elif [ -e /system/etc/init.d/999fde ]; then
  $B echo "[$TIME] Init.d init.." >> $LOG
 fi;
-if [ -e /system/engine/gears/001abc.sh ]; then
+if [ -e /system/engine/gears/01network.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
- $B echo "[$TIME] Running 001 gear.." >> $LOG
- /system/engine/gears/001abc.sh | $B tee -a $LOG
+ $B echo "[$TIME] Running Network gear.." >> $LOG
+ /system/engine/gears/01network.sh | $B tee -a $LOG
 fi;
-if [ -e /system/engine/gears/002def.sh ]; then
+if [ -e /system/engine/gears/02cleaner.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
- $B echo "[$TIME] Running 002 gear.." >> $LOG
- /system/engine/gears/002def.sh | $B tee -a $LOG
+ $B echo "[$TIME] Running Cleaner gear.." >> $LOG
+ /system/engine/gears/02cleaner.sh | $B tee -a $LOG
 fi;
-if [ -e /system/engine/gears/003ghi.sh ]; then
+if [ -e /system/engine/gears/03battery.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
- $B echo "[$TIME] Running 003 gear.." >> $LOG
- /system/engine/gears/003ghi.sh | $B tee -a $LOG
+ $B echo "[$TIME] Running Battery gear.." >> $LOG
+ /system/engine/gears/04battery.sh | $B tee -a $LOG
 fi;
-if [ -e /system/engine/gears/004jkl.sh ]; then
+if [ -e /system/engine/gears/04vm.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
- $B echo "[$TIME] Running 004 gear.." >> $LOG
- /system/engine/gears/004jkl.sh | $B tee -a $LOG
+ $B echo "[$TIME] Running VM gear.." >> $LOG
+ /system/engine/gears/04vm.sh | $B tee -a $LOG
 fi;
-if [ -e /system/engine/gears/005mno.sh ]; then
+if [ -e /system/engine/gears/05gps.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
- $B echo "[$TIME] Running 005 gear.." >> $LOG
- /system/engine/gears/005mno.sh | $B tee -a $LOG
+ $B echo "[$TIME] Running GPS gear.." >> $LOG
+ /system/engine/gears/05gps.sh | $B tee -a $LOG
 fi;
-if [ -e /system/engine/gears/006pqr.sh ]; then
+if [ -e /system/engine/gears/06kernel.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
- $B echo "[$TIME] Running 006 gear.." >> $LOG
- /system/engine/gears/006pqr.sh | $B tee -a $LOG
+ $B echo "[$TIME] Running Kernel gear.." >> $LOG
+ /system/engine/gears/06kernel.sh | $B tee -a $LOG
 fi;
-if [ -e /system/engine/gears/007stu.sh ]; then
+if [ -e /system/engine/gears/07memory.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
- $B echo "[$TIME] Running 007 gear.." >> $LOG
- /system/engine/gears/007stu.sh | $B tee -a $LOG
+ $B echo "[$TIME] Running Memory gear.." >> $LOG
+ /system/engine/gears/07memory.sh | $B tee -a $LOG
 fi;
-if [ -e /system/engine/gears/008vwx.sh ]; then
+if [ -e /system/engine/gears/08ram.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
- $B echo "[$TIME] Running 008 gear.." >> $LOG
- /system/engine/gears/008vwx.sh | $B tee -a $LOG
+ $B echo "[$TIME] Running RAM gear.." >> $LOG
+ /system/engine/gears/08ram.sh | $B tee -a $LOG
 fi;
-if [ -e /system/engine/gears/009yza.sh ]; then
+if [ -e /system/engine/gears/09cpu.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
- $B echo "[$TIME] Running 009 gear.." >> $LOG
- /system/engine/gears/009yza.sh | $B tee -a $LOG
+ $B echo "[$TIME] Running CPU gear.." >> $LOG
+ /system/engine/gears/09cpu.sh | $B tee -a $LOG
 fi;
-if [ -e /system/engine/gears/010bcd.sh ]; then
+if [ -e /system/engine/gears/10gpu.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
- $B echo "[$TIME] Running 010 gear.." >> $LOG
- /system/engine/gears/010bcd.sh | $B tee -a $LOG
+ $B echo "[$TIME] Running GPU gear.." >> $LOG
+ /system/engine/gears/10gpu.sh | $B tee -a $LOG
 fi;
-if [ -e /system/engine/gears/011efg.sh ]; then
+if [ -e /system/engine/gears/11adblocker.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
- $B echo "[$TIME] Running 011 gear.." >> $LOG
- /system/engine/gears/011efg.sh | $B tee -a $LOG
+ $B echo "[$TIME] Running Ad-Blocker gear.." >> $LOG
+ /system/engine/gears/11adblocker.sh | $B tee -a $LOG
 fi;
-if [ -e /system/engine/gears/012hij.sh ]; then
+if [ -e /system/engine/gears/12apkfixer.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
- $B echo "[$TIME] Running 012 gear.." >> $LOG
- /system/engine/gears/012hij.sh | $B tee -a $LOG
+ $B echo "[$TIME] Running APK-fixer gear.." >> $LOG
+ /system/engine/gears/12apkfixer.sh | $B tee -a $LOG
+fi;
+if [ -e /system/engine/prop/firstboot ]; then
+ if [ -e /system/engine/assets/gp ]; then
+  $B echo "Google Play services fix" >> $LOG
+  /system/engine/assets/gp
+ fi;
 fi;
 if [ -e /system/engine/gears/end.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
- $B echo "[$TIME] *END* start" >> $LOG
- /system/engine/gears/end.sh
-fi;
-if [ -e /system/engine/gears/fire.sh ]; then
-$B echo "[$TIME] Init Fire daemon" >> $LOG
- /system/engine/gears/fire.sh &
+ $B echo "[$TIME] END init.." >> $LOG
+ /system/engine/gears/end.sh | $B tee -a $LOG
 fi;
 sync;
 $B sleep 3
+if [ -e /system/engine/gears/sleeper.sh ]; then
+$B echo "[$TIME] Init Sleeper daemon" >> $LOG
+ /system/engine/gears/sleeper.sh &
+fi;
 if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,rw /system
  $B rm -f /system/engine/prop/firstboot
  $B mount -o remount,ro /system
  $B echo "[$TIME] First boot completed." >> $LOG
 fi;
+$B echo 45 > /sys/devices/virtual/timed_output/vibrator/enable
+$B sleep 0.5
+$B echo 45 > /sys/devices/virtual/timed_output/vibrator/enable
+$B sleep 0.5
+$B echo 45 > /sys/devices/virtual/timed_output/vibrator/enable
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] FDE status - OK" >> $LOG
 $B mount -o remount,ro /system
 $B echo "" >> $LOG
-$B echo 45 > /sys/devices/virtual/timed_output/vibrator/enable
-$B sleep 0.5
-$B echo 45 > /sys/devices/virtual/timed_output/vibrator/enable
-$B sleep 0.5
-$B echo 45 > /sys/devices/virtual/timed_output/vibrator/enable

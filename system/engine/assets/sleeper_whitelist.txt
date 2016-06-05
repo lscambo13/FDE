@@ -14,4 +14,4 @@
 sleeper=1
 battery=30
 
-miui|sony|player|music|samsung|htc|dialer|trebuchet
+miui|sony|player|playback|viper|music|samsung|htc|dialer|browser

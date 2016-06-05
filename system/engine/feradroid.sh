@@ -11,7 +11,7 @@ MAX=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq)
 MIN=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq)
 CUR=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq)
 CORES=$($B grep -c 'processor' /proc/cpuinfo)
-LOG=/sdcard/Android/FDE.txt
+LOG=/sdcard/Android/FDE_log.txt
 TIME=$($B date | $B awk '{ print $4 }')
 rm -f $LOG
 mount -o remount,rw /system
@@ -47,8 +47,8 @@ if [ -e /system/engine/prop/firstboot ]; then
  fi;
  $B cp /system/engine/bin/zipalign /system/xbin/zipalign
  $B cp /system/engine/bin/boost /system/xbin/boost
- $B rm -f /sdcard/Android/sleeper_whitelist.txt
- $B cp /system/engine/assets/sleeper_whitelist.txt /sdcard/Android/sleeper_whitelist.txt
+ $B rm -f /sdcard/Android/FDE_config.txt
+ $B cp /system/engine/assets/FDE_config.txt /sdcard/Android/FDE_config.txt
 fi;
 if [ -e /sys/fs/selinux/enforce ]; then
  $B chmod 666 /sys/fs/selinux/enforce

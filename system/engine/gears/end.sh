@@ -2,7 +2,7 @@
 ### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###
 
 B=/system/engine/bin/busybox
-LOG=/sdcard/Android/FDE.txt
+LOG=/sdcard/Android/FDE_log.txt
 SDK=$(getprop ro.build.version.sdk)
 if [ "$SDK" -le "18" ]; then
  $B echo "Mediaserver kill" >> $LOG

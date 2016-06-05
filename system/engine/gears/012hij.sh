@@ -1,7 +1,7 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###
 B=/system/engine/bin/busybox
-LOG=/sdcard/Android/FDE.txt
+LOG=/sdcard/Android/FDE_log.txt
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] 012 - ***Thread gear***"
 sync;

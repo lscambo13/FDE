@@ -12,7 +12,7 @@ if [ "sleeper=1" = "$ON" ]; then
   if [ "false" = "$(dumpsys power | $B grep -E "mScreenOn" | $B grep -o "false")" ]; then
    sync;
    for i in $PID; do
-     kill -STOP "$i"
+     kill -9 "$i"
    done;
    if [ -e /proc/sys/vm/drop_caches ]; then
     sync;
@@ -31,12 +31,9 @@ if [ "sleeper=1" = "$ON" ]; then
     am broadcast -a android.intent.action.BATTERY_LOW
    fi;
    until [ "true" = "$(dumpsys power | $B grep "mScreenOn" | $B grep -o "true")" ]; do
-    $B sleep 3
+    $B sleep 90
    done;
   elif [ "true" = "$(dumpsys power | $B grep -E "mScreenOn" | $B grep -o "true")" ]; then
-   for i in $PID; do
-     kill -CONT "$i"
-   done;
    H=$($B pgrep -l '' | $B grep -E "launcher" | $B awk '{print $1}')
    S=$($B pgrep -l '' | $B grep -E "systemui" | $B awk '{print $1}')
    U=$($B pgrep -l '' | $B grep -E "surfaceflinger" | $B awk '{print $1}')
@@ -47,7 +44,6 @@ if [ "sleeper=1" = "$ON" ]; then
    E=$($B pgrep -l '' | $B grep -E "server" | $B awk '{print $1}')
    T=$($B pgrep -l '' | $B grep -E "trebuchet" | $B awk '{print $1}')
    M=$($B pgrep -l '' | $B grep -E "service" | $B awk '{print $1}')
-   $B echo "Change priority for $H $S $U $L $P"
    renice [-10] "$H"
    renice [-9] "$S"
    renice [-8] "$U"
@@ -58,9 +54,6 @@ if [ "sleeper=1" = "$ON" ]; then
    renice [-10] "$T"
    renice [-10] "$D"
    renice 6 "$D"
-   until [ "false" = "$(dumpsys power | $B grep "mScreenOn" | $B grep -o "false")" ]; do
-    $B sleep 18
-   done;
   fi;
  done;
 else

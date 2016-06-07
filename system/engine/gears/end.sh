@@ -30,22 +30,6 @@ $B fstrim -v /data | $B tee -a $LOG
 $B echo "Trim /cache" >> $LOG
 $B fstrim -v /cache | $B tee -a $LOG
 sync;
-$B sleep 1
-if [ -e /system/xbin/sqlite3 ]; then
-$B echo "Optimizing DataBases.." >> $LOG
-for i in \
-$($B find /data -iname "*.db") 
-do \
- /system/xbin/sqlite3 "$i" 'VACUUM;'
- /system/xbin/sqlite3 "$i" 'REINDEX;'
-done;
-for i in \
-$($B find /sdcard -iname "*.db")
-do \
- /system/xbin/sqlite3 "$i" 'VACUUM;'
- /system/xbin/sqlite3 "$i" 'REINDEX;'
-done;
-fi;
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] Applying kernel configuration.." >> $LOG
 sysctl -p

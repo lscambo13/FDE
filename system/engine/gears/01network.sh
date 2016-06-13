@@ -20,6 +20,8 @@ $B echo "net.ipv4.tcp_fin_timeout=36" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.conf.all.rp_filter=2" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.conf.default.rp_filter=2" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.conf.all.accept_redirects=0" >> /system/etc/sysctl.conf
+$B echo "net.ipv4.fwmark_reflect=1" >> /system/etc/sysctl.conf
+$B echo "net.ipv4.tcp_tw_reuse=1" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.tcp_congestion_control=cubic" >> /system/etc/sysctl.conf
 $B echo "Executing optimized network parameters via sysctl"
 $B sysctl -e -w net.ipv4.tcp_rfc1337=1
@@ -35,6 +37,8 @@ $B sysctl -e -w net.ipv4.tcp_fin_timeout=36
 $B sysctl -e -w net.ipv4.conf.all.rp_filter=2
 $B sysctl -e -w net.ipv4.conf.default.rp_filter=2
 $B sysctl -e -w net.ipv4.conf.all.accept_redirects=0
+$B sysctl -e -w net.ipv4.fwmark_reflect=1
+$B sysctl -e -w net.ipv4.tcp_tw_reuse=1
 $B sysctl -e -w net.ipv4.tcp_congestion_control=cubic
 if [ "$RAM" -le "1024" ]; then
  $B echo "Set smaller net-buffer sizes.."
@@ -103,6 +107,7 @@ setprop dhcp.wlan0.dns2 8.8.4.4
 setprop ro.ril.enable.amr.wideband 1
 setprop ro.wifi.channels 13
 setprop persist.wpa_supplicant.debug false
+setprop net.tcp.default_init_rwnd 60
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Network gear*** - OK"
 sync;

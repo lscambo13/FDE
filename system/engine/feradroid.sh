@@ -20,11 +20,10 @@ $B sleep 54
 $B sleep 18
 $B mount -o remount,rw /system
 $B rm -f $LOG
-$B rm -f /sdcard/Android/sleeper_whitelist.txt
 $B touch $LOG
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
-$B echo "[$TIME] FeraDroid Engine v0.21-beta3" >> $LOG
+$B echo "[$TIME] FeraDroid Engine v0.21-beta3+" >> $LOG
 $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
 $B echo "[$TIME] Architecture: $ARCH" >> $LOG

@@ -111,17 +111,17 @@ if [ -e /sys/block/zram0/disksize ]; then
  if [ "$SWAP" -gt "0" ]; then
   $B echo "Configuring kernel & ZRAM frienship.."
   if [ "$RAM" -gt "1024" ]; then
-   $B echo 50 > /proc/sys/vm/swappiness
-   $B echo "vm.swappiness=50" >> /system/etc/sysctl.conf
-   $B sysctl -e -w vm.swappiness=50
-  elif [ "$RAM" -gt "512" ]; then
    $B echo 70 > /proc/sys/vm/swappiness
    $B echo "vm.swappiness=70" >> /system/etc/sysctl.conf
    $B sysctl -e -w vm.swappiness=70
+  elif [ "$RAM" -gt "512" ]; then
+   $B echo 90 > /proc/sys/vm/swappiness
+   $B echo "vm.swappiness=90" >> /system/etc/sysctl.conf
+   $B sysctl -e -w vm.swappiness=90
   elif [ "$RAM" -le "512" ]; then
-   $B echo 80 > /proc/sys/vm/swappiness
-   $B echo "vm.swappiness=80" >> /system/etc/sysctl.conf
-   $B sysctl -e -w vm.swappiness=80
+   $B echo 100 > /proc/sys/vm/swappiness
+   $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf
+   $B sysctl -e -w vm.swappiness=100
   fi;
   setprop ro.config.zram.support true
   setprop zram.disksize $FZRAM

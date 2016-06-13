@@ -7,7 +7,7 @@ RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 FM=$((RAM*(64+1)))
 ME=$((RAM*27))
 if [ "$RAM" -le "512" ]; then
- DR=27
+ DR=24
 else
  DR=36
 fi;
@@ -142,9 +142,9 @@ if [ -e /proc/sys/vm/scan_unevictable_pages ]; then
  $B sysctl -e -w vm.scan_unevictable_pages=0
 fi;
 if [ -e /proc/sys/vm/highmem_is_dirtyable ]; then
- $B echo 1 > /proc/sys/vm/highmem_is_dirtyable
- $B echo "vm.highmem_is_dirtyable=1" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.highmem_is_dirtyable=1
+ $B echo 0 > /proc/sys/vm/highmem_is_dirtyable
+ $B echo "vm.highmem_is_dirtyable=0" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.highmem_is_dirtyable=0
 fi;
 if [ -e /proc/sys/fs/file-max ]; then
  $B echo $FM > /proc/sys/fs/file-max
@@ -231,11 +231,6 @@ if [ -e /proc/sys/kernel/msgmnb ]; then
  $B echo "kernel.msgmnb=8192" >> /system/etc/sysctl.conf
  $B sysctl -e -w kernel.msgmnb=8192
 fi;
-if [ -e /proc/sys/kernel/sem ]; then
- $B echo '250 32000 96 128' > /proc/sys/kernel/sem
- $B echo "kernel.sem='250 32000 96 128'" >> /system/etc/sysctl.conf
- $B sysctl -e -w kernel.sem='250 32000 96 128'
-fi;
 $B echo "Tuning kernel scheduling.."
 $B mount -t debugfs none /sys/kernel/debug
 if [ -e /sys/kernel/debug/sched_features ]; then
@@ -243,9 +238,8 @@ if [ -e /sys/kernel/debug/sched_features ]; then
  $B echo "NO_NEW_FAIR_SLEEPERS" > /sys/kernel/debug/sched_features
  $B echo "NO_NORMALIZED_SLEEPERS" > /sys/kernel/debug/sched_features
  $B echo "NO_AFFINE_WAKEUPS" > /sys/kernel/debug/sched_features
- $B echo "NO_WAKEUP_SYNC" > /sys/kernel/debug/sched_features
  $B echo "NO_WAKEUP_OVERLAP" > /sys/kernel/debug/sched_features
- $B echo "NO_SYNC_WAKEUPS" > /sys/kernel/debug/sched_features
+ $B echo "NO_DOUBLE_TICK" > /sys/kernel/debug/sched_features
 fi;
 if [ -e /sys/kernel/sched/gentle_fair_sleepers ]; then
  $B echo 0 > /sys/kernel/sched/gentle_fair_sleepers
@@ -309,9 +303,13 @@ setprop ro.config.nocheckin 1
 setprop ro.kernel.android.checkjni 0
 setprop ro.kernel.checkjni 0
 setprop sys.sysctl.extra_free_kbytes $EF
+setprop profiler.launch false
 setprop profiler.force_disable_err_rpt 1
 setprop profiler.force_disable_ulog 1
+setprop profiler.debugmonitor false
+setprop profiler.hung.dumpdobugreport false
 setprop logcat.live disable
+setprop debugtool.anrhistory 0
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Kernel gear*** - OK"
 sync;

@@ -11,8 +11,10 @@ elif [ "$RAM" -le "2048" ]; then
 else
  SKB=$((RAM*4))
 fi;
+KB=512
 AA="/sys/block/*"
 BB="/sys/devices/virtual/block/*"
+BD="/sys/devices/virtual/bdi/*"
 MMC="/sys/block/mmc*"
 MTD="/sys/block/mtd*"
 ST="/storage/emulated/*"
@@ -46,12 +48,17 @@ $B echo "Calculated readahead parameter is $SKB KB"
 $B echo "Applying new I/O parameters.."
 for i in $AA $BB; do
 if [ -e "${i}"/queue/read_ahead_kb ]; then
- $B echo $SKB > "${i}"/queue/read_ahead_kb
- $B echo $SKB > "${i}"/bdi/read_ahead_kb
+ $B echo $KB > "${i}"/queue/read_ahead_kb
+ $B echo $KB > "${i}"/bdi/read_ahead_kb
  $B echo 0 > "${i}"/queue/iostats
  $B echo 0 > "${i}"/queue/rotational
  $B echo 2 > "${i}"/queue/nomerges
- $B echo 0 > "${i}"/queue/rq_affinity
+ $B echo 1 > "${i}"/queue/rq_affinity
+fi;
+done;
+for i in $BD; do
+if [ -e "${i}"/read_ahead_kb ]; then
+ $B echo $KB > "${i}"/read_ahead_kb
 fi;
 done;
 $B echo "Applying new rnd parameters.."
@@ -60,6 +67,16 @@ if [ -e "${b}"/queue/add_random ]; then
  $B echo 0 > "${b}"/queue/add_random
 fi;
 done;
+$B echo "$SKB" > /sys/devices/virtual/bdi/default/read_ahead_kb
+if [ -e /sys/devices/virtual/bdi/179:0/read_ahead_kb ]; then
+ $B echo "$SKB" > /sys/devices/virtual/bdi/179:0/read_ahead_kb
+fi;
+if [ -e /sys/devices/virtual/bdi/179:1/read_ahead_kb ]; then
+ $B echo "$SKB" > /sys/devices/virtual/bdi/179:1/read_ahead_kb
+fi;
+if [ -e /sys/devices/virtual/bdi/179:2/read_ahead_kb ]; then
+ $B echo "$SKB" > /sys/devices/virtual/bdi/179:2/read_ahead_kb
+fi;
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Memory gear*** - OK"
 sync;

@@ -9,7 +9,7 @@ if [ -e /sys/module/lowmemorykiller/parameters/cost ]; then
  $B echo "LMK cost fine-tuning.."
  $B chown 0:0 /sys/module/lowmemorykiller/parameters/cost
  $B chmod 644 /sys/module/lowmemorykiller/parameters/cost
- $B echo "16" > /sys/module/lowmemorykiller/parameters/cost
+ $B echo "32" > /sys/module/lowmemorykiller/parameters/cost
 fi;
 if [ -e /sys/module/lowmemorykiller/parameters/fudgeswap ]; then
  $B echo "FudgeSwap support detected. Tuning.."

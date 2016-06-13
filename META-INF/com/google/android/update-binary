@@ -26,17 +26,19 @@ export PATH=$PATH:/fde/system/engine/bin
 rm -Rf /system/engine/*
 rm -Rf /system/etc/init.d/*
 rm -f /sdcard/Android/FDE_log.txt
+rm -f /sdcard/Android/FDE.txt
+rm -f /sdcard/Android/sleeper_whitelist.txt
 rm -f /system/etc/fde
 unzip -o "$ZIP"
 chmod -R 755 /system/engine
 chmod 755 /system/engine/*
 chmod 755 /system/engine/assets/*
-chmod 755 /system/engine/bin/*
 chmod 755 /system/engine/gears/*
 chmod 755 /system/engine/prop/*
 chmod 777 /system/etc/init.d/*
-ln -s /system/engine/bin/busybox /system/engine/bin/sh
+chmod 755 /system/engine/bin/*
 B="/system/engine/bin/busybox"
+ln -s /system/engine/bin/busybox /system/engine/bin/sh
 m="/system/engine/bin/sh /system/engine/feradroid.sh"
 if [ -e /system/etc/init.qcom.post_boot.sh ]; then
  $B sed -e "s=$m=""=" -i /system/etc/init.qcom.post_boot.sh
@@ -98,7 +100,7 @@ elif [ -e /system/etc/install-recovery-2.sh ]; then
 fi;
 touch /system/etc/fde
 chmod 755 /system/etc/fde
-echo "20" > /system/etc/fde
+echo "21" > /system/etc/fde
 rm -Rf /fde/*
 umount /system
 ui_print ""

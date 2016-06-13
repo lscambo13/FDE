@@ -30,12 +30,7 @@ if [ "sleeper=1" = "$ON" ]; then
     setprop ro.com.google.networklocation 0
     am broadcast -a android.intent.action.BATTERY_LOW
    fi;
-   until [ "true" = "$(dumpsys power | $B grep "mScreenOn" | $B grep -o "true")" ]; do
-    $B sleep 90
-   done;
-  elif [ "true" = "$(dumpsys power | $B grep -E "mScreenOn" | $B grep -o "true")" ]; then
    H=$($B pgrep -l '' | $B grep -E "launcher" | $B awk '{print $1}')
-   S=$($B pgrep -l '' | $B grep -E "systemui" | $B awk '{print $1}')
    U=$($B pgrep -l '' | $B grep -E "surfaceflinger" | $B awk '{print $1}')
    L=$($B pgrep -l '' | $B grep -E "home" | $B awk '{print $1}')
    P=$($B pgrep -l '' | $B grep -E "phone" | $B awk '{print $1}')
@@ -49,11 +44,14 @@ if [ "sleeper=1" = "$ON" ]; then
    renice [-8] "$U"
    renice [-10] "$L"
    renice [-10] "$P"
-   renice 0 "$S"
+   renice 1 "$S"
    renice [-1] "$E"
    renice [-10] "$T"
    renice [-10] "$D"
-   renice 6 "$D"
+   renice 6 "$M"
+   until [ "true" = "$(dumpsys power | $B grep "mScreenOn" | $B grep -o "true")" ]; do
+    $B sleep 270
+   done;
   fi;
  done;
 else

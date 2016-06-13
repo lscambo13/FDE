@@ -7,7 +7,7 @@
 #To disable Sleeper daemon change below trigger
 #from 1 to 0. Reboot to apply changes.
 
-sleeper=1
+sleeper=0
 
 #To change low battery treshold percentage change
 #battery trigger to desired level.

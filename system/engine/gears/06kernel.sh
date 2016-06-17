@@ -6,18 +6,15 @@ $B echo "[$TIME] ***Kernel gear***"
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 FM=$((RAM*(64+1)))
 ME=$((RAM*27))
-if [ "$RAM" -le "512" ]; then
- DR=24
-else
- DR=36
-fi;
 FK=$((RAM*2*1024/100))
-EF=$(((RAM*3*1024/100)-2048))
+EF=$(((RAM*3*1024/100)-1024))
 if [ "$EF" -gt "24576" ]; then
  EF=24576
 fi;
 if [ "$FK" -gt "18432" ]; then
  FK=18432
+elif [ "$FK" -le "4096" ]; then
+ FK=5120
 fi;
 MALL=$((RAM*192))
 MMAX=$((MALL*4096))
@@ -56,16 +53,6 @@ if [ -e /proc/sys/vm/extra_free_kbytes ]; then
  $B echo "vm.extra_free_kbytes=$EF" >> /system/etc/sysctl.conf
  $B sysctl -e -w vm.extra_free_kbytes=$EF
 fi;
-if [ -e /proc/sys/vm/compact_memory ]; then
- $B echo 1 > /proc/sys/vm/compact_memory
- $B echo "vm.compact_memory=1" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.compact_memory=1
-fi;
-if [ -e /proc/sys/vm/compact_unevictable_allowed ]; then
- $B echo 1 > /proc/sys/vm/compact_unevictable_allowed
- $B echo "vm.compact_unevictable_allowed=1" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.compact_unevictable_allowed=1
-fi;
 if [ -e /proc/sys/vm/drop_caches ]; then
  $B echo 3 > /proc/sys/vm/drop_caches
  $B echo "vm.drop_caches=3" >> /system/etc/sysctl.conf
@@ -77,9 +64,9 @@ if [ -e /proc/sys/vm/oom_kill_allocating_task ]; then
  $B sysctl -e -w vm.oom_kill_allocating_task=1
 fi;
 if [ -e /proc/sys/vm/dirty_ratio ]; then
- $B echo $DR > /proc/sys/vm/dirty_ratio
- $B echo "vm.dirty_ratio=$DR" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.dirty_ratio=$DR
+ $B echo 20 > /proc/sys/vm/dirty_ratio
+ $B echo "vm.dirty_ratio=20" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.dirty_ratio=20
 fi;
 if [ -e /proc/sys/vm/dirty_background_ratio ]; then
  $B echo 5 > /proc/sys/vm/dirty_background_ratio
@@ -132,9 +119,9 @@ if [ -e /proc/sys/vm/min_free_order_shift ]; then
  $B sysctl -e -w vm.min_free_order_shift=4
 fi;
 if [ -e /proc/sys/vm/page-cluster ]; then
- $B echo 1 > /proc/sys/vm/page-cluster
- $B echo "vm.page-cluster=1" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.page-cluster=1
+ $B echo 0 > /proc/sys/vm/page-cluster
+ $B echo "vm.page-cluster=0" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.page-cluster=0
 fi;
 if [ -e /proc/sys/vm/scan_unevictable_pages ]; then
  $B echo 0 > /proc/sys/vm/scan_unevictable_pages
@@ -290,6 +277,11 @@ if [ -e /sys/module/logger/parameters/log_mode ]; then
  $B echo 2 > /sys/module/logger/parameters/log_mode
  $B echo "Disable Android logger.."
 fi;
+$B echo "Mix device-specific information into the entropy pool"
+$B cp -f /proc/cmdline /dev/urandom
+$B cp -f /default.prop /dev/urandom
+$B echo "Avoid predictable entropy pool. Carry over entropy from previous boot"
+$B cp -f /data/system/entropy.dat /dev/urandom
 $B echo "Turning debugging OFF.."
 for n in /sys/module/*
 do

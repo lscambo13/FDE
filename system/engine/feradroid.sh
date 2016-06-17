@@ -23,7 +23,7 @@ $B rm -f $LOG
 $B touch $LOG
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
-$B echo "[$TIME] FeraDroid Engine v0.21-beta3+" >> $LOG
+$B echo "[$TIME] FeraDroid Engine v0.21-beta4-" >> $LOG
 $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
 $B echo "[$TIME] Architecture: $ARCH" >> $LOG
@@ -150,11 +150,6 @@ if [ -e /system/engine/gears/11adblocker.sh ]; then
  $B echo "[$TIME] Running Ad-Blocker gear.." >> $LOG
  /system/engine/gears/11adblocker.sh | $B tee -a $LOG
 fi;
-if [ -e /system/engine/gears/12apkfixer.sh ]; then
- TIME=$($B date | $B awk '{ print $4 }')
- $B echo "[$TIME] Running APK-fixer gear.." >> $LOG
- /system/engine/gears/12apkfixer.sh | $B tee -a $LOG
-fi;
 if [ -e /system/engine/prop/firstboot ]; then
  if [ -e /system/engine/assets/gp ]; then
   $B echo "Google Play services fix" >> $LOG
@@ -167,7 +162,7 @@ if [ -e /system/engine/gears/end.sh ]; then
  /system/engine/gears/end.sh
 fi;
 sync;
-$B sleep 3
+$B sleep 1
 if [ -e /system/engine/gears/sleeper.sh ]; then
 $B echo "[$TIME] Init Sleeper daemon" >> $LOG
  /system/engine/gears/sleeper.sh &
@@ -178,11 +173,11 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,ro /system
  $B echo "[$TIME] First boot completed." >> $LOG
 fi;
-$B echo 45 > /sys/devices/virtual/timed_output/vibrator/enable
+$B echo 69 > /sys/devices/virtual/timed_output/vibrator/enable
 $B sleep 0.5
-$B echo 45 > /sys/devices/virtual/timed_output/vibrator/enable
+$B echo 69 > /sys/devices/virtual/timed_output/vibrator/enable
 $B sleep 0.5
-$B echo 45 > /sys/devices/virtual/timed_output/vibrator/enable
+$B echo 69 > /sys/devices/virtual/timed_output/vibrator/enable
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] FDE status - OK" >> $LOG
 $B mount -o remount,ro /system

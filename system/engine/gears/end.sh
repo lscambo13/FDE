@@ -6,9 +6,11 @@ LOG=/sdcard/Android/FDE_log.txt
 SDK=$(getprop ro.build.version.sdk)
 sync;
 if [ "$SDK" -le "18" ]; then
+ if [ "$SDK" -gt "10" ]; then
  $B echo "Mediaserver kill" >> $LOG
  $B killall -9 android.process.media
  $B killall -9 mediaserver
+ fi;
 fi;
 $B killall -9 com.google.android.gms
 $B killall -9 com.google.android.gms.persistent

@@ -5,29 +5,13 @@ TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***CPU gear***"
 MAX=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq)
 CORES=$($B grep -c 'processor' /proc/cpuinfo)
-UP=63
-DN=21
+UP=80
+DN=20
 SF=2
-RT=18000
+RT=10000
 if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
  $B echo "Disable MSM thermal core for now.."
  $B echo 0 > /sys/module/msm_thermal/core_control/enabled
-fi;
-if [ -e /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_freq ]; then
- $B echo "Boosting ARK Benefit M2C.."
- $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
- $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
- $B chmod 644 /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_downdifferential
- $B chmod 644 /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_enable
- $B chmod 644 /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_freq
- $B chmod 644 /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_upthreshold
- $B echo "768000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
- $B echo "533000" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_freq
- $B echo "$DN" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_downdifferential
- $B echo "1" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_enable
- $B echo "$UP" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/ondemand/set_upthreshold
- TF=$($B cat /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/max_freq)
- $B echo "$TF" > /sys/devices/platform/scxx30-dmcfreq.0/devfreq/scxx30-dmcfreq.0/target_freq
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/ondemand/up_threshold ]; then
 $B echo "CPU ondemand tuning.."
@@ -712,7 +696,7 @@ if [ -e /sys/devices/virtual/sec/sec_slow/io_is_busy ]; then
  $B echo "I/O is bz.."
  $B echo "1" > /sys/devices/virtual/sec/sec_slow/io_is_busy
 fi;
-if [ "$CORES" -eq "1" ]; then
+if [ "$CORES" -le "2" ]; then
  if [ -e /sys/module/pm_hotplug/parameters/loadh ]; then
   $B echo "Tuning Dual-Core behavior.."
   $B echo "$UP" > /sys/module/pm_hotplug/parameters/loadh

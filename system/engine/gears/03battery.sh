@@ -49,7 +49,7 @@ fi;
 $B echo "Tuning Android power-saving.."
 setprop power.saving.mode 1
 setprop persist.radio.ramdump 0
-setprop ro.vold.umsdirtyratio 27
+setprop ro.vold.umsdirtyratio 20
 setprop pm.sleep_mode 1
 setprop ro.ril.disable.power.collapse 0
 setprop ro.config.hw_power_saving 1

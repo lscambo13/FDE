@@ -77,6 +77,12 @@ fi;
 if [ -e /sys/devices/virtual/bdi/179:2/read_ahead_kb ]; then
  $B echo "$SKB" > /sys/devices/virtual/bdi/179:2/read_ahead_kb
 fi;
+if [ -e /sys/block/mmcblk0/max_write_speed ]; then
+ $B echo "off" > /sys/block/mmcblk0/max_read_speed
+ $B echo "off" > /sys/block/mmcblk0/max_write_speed
+ $B echo "off" > /sys/block/mmcblk0/cache_size
+ $B echo "I/O speed cap disabled."
+fi;
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Memory gear*** - OK"
 sync;

@@ -138,11 +138,11 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  RZ=$($B cat /sys/block/ramzswap0/size)
  ZRZ=$((RZ/1024))
- FRZ=$((RAM/2))
+ FZRAM=$((RAM/2))
  $B echo "RAMZSWAP detected. Size is $ZRZ MB"
- $B echo "Perfect RAMZSWAP size according to your RAM should be $FRZ MB"
- ZRF=$((FRZ*1024))
- if [ "$ZRZ" -ge "$FRZ" ]; then
+ $B echo "Perfect RAMZSWAP size according to your RAM should be $FZRAM MB"
+ ZRF=$((FZRAM*1024))
+ if [ "$ZRZ" -ge "$FZRAM" ]; then
  $B echo "Size of your RAMZSWAP is OK"
   sync;
  else
@@ -155,16 +155,16 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  fi;
  $B echo "Resetting RAMZSWAP blockdev.."
  $RZS /dev/block/ramzswap0 --reset
- $B echo "Creating RAMZSWAP blockdev - $FRZ MB"
+ $B echo "Creating RAMZSWAP blockdev - $FZRAM MB"
  $RZS /dev/block/ramzswap0 -i -d $ZRF
  $B sleep 1
  $B echo "Starting swappiness.."
  $B swapon /dev/block/ramzswap0
  fi;
  $B echo "Configuring kernel & RAMZSWAP frienship.."
- $B echo 80 > /proc/sys/vm/swappiness
- $B echo "vm.swappiness=80" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.swappiness=80
+ $B echo 100 > /proc/sys/vm/swappiness
+ $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.swappiness=100
 elif [ "$SWAP" -gt "0" ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  $B echo "SWAP detected. Size is $SWAP MB"

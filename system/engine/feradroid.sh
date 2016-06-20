@@ -17,7 +17,7 @@ mount -o remount,rw /system
 chmod 755 /system/engine/bin/*
 setprop ro.feralab.engine 21
 $B sleep 54
-$B sleep 18
+$B sleep 36
 $B mount -o remount,rw /system
 $B rm -f $LOG
 $B touch $LOG

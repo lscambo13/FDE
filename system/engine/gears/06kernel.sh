@@ -277,11 +277,6 @@ if [ -e /sys/module/logger/parameters/log_mode ]; then
  $B echo 2 > /sys/module/logger/parameters/log_mode
  $B echo "Disable Android logger.."
 fi;
-$B echo "Mix device-specific information into the entropy pool"
-$B cp -f /proc/cmdline /dev/urandom
-$B cp -f /default.prop /dev/urandom
-$B echo "Avoid predictable entropy pool. Carry over entropy from previous boot"
-$B cp -f /data/system/entropy.dat /dev/urandom
 $B echo "Turning debugging OFF.."
 for n in /sys/module/*
 do
@@ -290,7 +285,6 @@ do
  fi;
 done;
 $B echo "Tuning Android.."
-setprop ro.kernel.qemu 0
 setprop ro.config.nocheckin 1
 setprop ro.kernel.android.checkjni 0
 setprop ro.kernel.checkjni 0

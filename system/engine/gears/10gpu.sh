@@ -151,7 +151,6 @@ else
  setprop debug.egl.swapinterval 1
  setprop debug.gr.swapinterval 1
  setprop debug.gr.numframebuffers 3
- setprop dev.pm.dyn_samplingrate 1
  setprop persist.sys.ui.hw 1
  setprop video.accelerate.hw 1
  setprop windowsmgr.max_events_per_sec 120

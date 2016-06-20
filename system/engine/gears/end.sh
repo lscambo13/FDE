@@ -12,11 +12,6 @@ if [ "$SDK" -le "18" ]; then
  $B killall -9 mediaserver
  fi;
 fi;
-$B killall -9 com.google.android.gms
-$B killall -9 com.google.android.gms.persistent
-$B killall -9 com.google.process.gapps
-$B killall -9 com.google.android.gsf
-$B killall -9 com.google.android.gsf.persistent
 $B mount -o remount,rw /system
 if [ -e /etc/fstab ]; then
  $B echo "FStab onboard.." >> $LOG

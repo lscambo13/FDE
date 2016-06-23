@@ -12,7 +12,7 @@ sleeper=0
 #To change low battery treshold percentage change
 #battery trigger to desired level.
 
-battery=33
+battery=27
 
 #To whitelist desired app for sleeper daemon just type it's name.
 #No need for |com.android.phone

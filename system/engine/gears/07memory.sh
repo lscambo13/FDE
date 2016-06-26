@@ -67,6 +67,7 @@ if [ -e "${b}"/queue/add_random ]; then
  $B echo 0 > "${b}"/queue/add_random
 fi;
 done;
+for node in `$FIND /sys -name nr_requests | grep mmcblk`; do echo 1024 > $node; done
 $B echo "$SKB" > /sys/devices/virtual/bdi/default/read_ahead_kb
 if [ -e /sys/devices/virtual/bdi/179:0/read_ahead_kb ]; then
  $B echo "$SKB" > /sys/devices/virtual/bdi/179:0/read_ahead_kb

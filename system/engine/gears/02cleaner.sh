@@ -47,6 +47,7 @@ $B rm -Rf /mnt/sdcard/albumthumbs
 $B rm -Rf /mnt/sdcard/kunlun
 $B rm -Rf /mnt/sdcard/.antutu
 $B rm -Rf /mnt/sdcard/.estrongs
+$B rm -Rf /mnt/sdcard/.taobao
 $B rm -Rf /mnt/sdcard/baidu
 $B rm -Rf /mnt/sdcard/Backucup
 $B rm -Rf /mnt/sdcard/UnityAdsVideoCache

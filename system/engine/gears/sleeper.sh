@@ -5,7 +5,6 @@ LOG=/sdcard/Android/FDE_log.txt
 sync;
 W=$($B cat /system/engine/assets/FDE_config.txt | $B grep -v -e '#' | $B tail -n1)
 ON=$($B cat /system/engine/assets/FDE_config.txt | $B grep -e 'sleeper=1')
-RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p)
 if [ "sleeper=1" = "$ON" ]; then
  $B echo "Sleeper daemon is active." >> $LOG
  while true; do
@@ -16,6 +15,7 @@ if [ "sleeper=1" = "$ON" ]; then
    for i in $PID; do
      kill -9 "$i"
    done;
+   RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p)
    if [ "$RAMfree" -le "16" ]; then
     if [ -e /proc/sys/vm/drop_caches ]; then
      sync;

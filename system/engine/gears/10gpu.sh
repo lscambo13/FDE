@@ -162,7 +162,6 @@ else
  setprop ro.media.dec.jpeg.memcap 8000000
  setprop ro.media.enc.hprof.vid.bps 8000000
  setprop ro.media.enc.jpeg.quality 100
- setprop touch.presure.scale 1.0
  setprop ro.floatingtouch.available 1
  setprop ro.min.fling_velocity 12000
  setprop ro.max.fling_velocity 15000

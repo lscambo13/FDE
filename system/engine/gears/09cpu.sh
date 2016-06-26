@@ -122,7 +122,9 @@ fi;
 if [ -e /system/engine/prop/ferakernel ]; then
  $B echo "Boosting Xperia X10.."
  $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+ $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
  $B echo "576000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+ $B echo "1190400" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/smartassH3/sample_rate_jiffies ]; then
 $B echo "CPU SmartassH3 tuning.."

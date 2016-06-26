@@ -11,6 +11,16 @@ RAMreported=$((RAMfree + RAMcached))
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
 SWAPused=$($B free -m | $B awk '{ print $3 }' | $B sed -n 4p)
 CORES=$($B grep -c 'processor' /proc/cpuinfo)
+if [ "$RAM" -gt "1024" ]; then
+ FZRAM=$((RAM/4))
+ PZ=45
+elif [ "$RAM" -gt "512" ]; then
+ FZRAM=$((RAM/3))
+ PZ=45
+elif [ "$RAM" -le "512" ]; then
+ FZRAM=$(((RAM/2)+96))
+ PZ=50
+fi;
 $B echo "Current RAM values:"
 $B echo "  Total:              $RAM MB"
 $B echo "  Free:               $RAMreported MB"
@@ -49,16 +59,6 @@ if [ -e /sys/block/zram0/disksize ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  ZRAM0=$($B cat /sys/block/zram0/disksize)
  ZZRAM=$((ZRAM0/1024/1024))
- if [ "$RAM" -gt "1024" ]; then
-  FZRAM=$((RAM/4))
-  PZ=45
- elif [ "$RAM" -gt "512" ]; then
-  FZRAM=$((RAM/3))
-  PZ=45
- elif [ "$RAM" -le "512" ]; then
-  FZRAM=$(((RAM/2)+96))
-  PZ=50
- fi;
  $B echo "ZRAM detected. Size is $ZZRAM MB"
  if [ "$ZZRAM" -ge "$FZRAM" ]; then
  $B echo "Size of your ZRAM is OK"
@@ -138,7 +138,6 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  RZ=$($B cat /sys/block/ramzswap0/size)
  ZRZ=$((RZ/1024))
- FZRAM=$((RAM/2))
  $B echo "RAMZSWAP detected. Size is $ZRZ MB"
  $B echo "Perfect RAMZSWAP size according to your RAM should be $FZRAM MB"
  ZRF=$((FZRAM*1024))

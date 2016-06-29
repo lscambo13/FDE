@@ -65,7 +65,6 @@ if [ -e /sys/block/zram0/disksize ]; then
   sync;
  elif [ "$RAM" -gt "1512" ]; then
   $B echo "You don't need zRAM"
- if [ "$SWAP" -gt "0" ]; then
   $B echo "Stopping swappiness.."
   $B swapoff /dev/block/zram0
   $B umount /dev/block/zram0
@@ -75,7 +74,6 @@ if [ -e /sys/block/zram0/disksize ]; then
   fi;
   $B sleep 1
   sync;
- fi;
  else
  $B echo "Perfect ZRAM size according to your RAM should be $FZRAM MB"
  $B echo "Applying new ZRAM parameters.."

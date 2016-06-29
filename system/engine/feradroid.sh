@@ -17,8 +17,19 @@ mount -o remount,rw /system
 chmod 755 /system/engine/bin/*
 setprop ro.feralab.engine 21
 $B sleep 54
-$B sleep 36
+if [ "$CORES" -lt "2" ] ; then
+ $B sleep 36
+fi;
 $B mount -o remount,rw /system
+$B rm -f $LOG
+$B touch $LOG
+if [ -e $LOG ]; then
+ $B echo "LOG - OK"
+ CONFIG=/sdcard/Android/FDE_config.txt
+else
+ LOG=/storage/emulated/0/Android/FDE_log.txt
+ CONFIG=/storage/emulated/0/Android/FDE_config.txt
+fi;
 $B rm -f $LOG
 $B touch $LOG
 $B echo "### FeraLab ###" > $LOG
@@ -46,15 +57,15 @@ if [ -e /system/engine/prop/firstboot ]; then
  fi;
  $B cp /system/engine/bin/zipalign /system/xbin/zipalign
  $B cp /system/engine/bin/boost /system/xbin/boost
- $B rm -f /sdcard/Android/FDE_config.txt
- $B cp /system/engine/assets/FDE_config.txt /sdcard/Android/FDE_config.txt
+ $B rm -f $CONFIG
+ $B cp /system/engine/assets/FDE_config.txt $CONFIG
 fi;
 TIME=$($B date | $B awk '{ print $4 }')
-if [ -e /sdcard/Android/FDE_config.txt ]; then
+if [ -e $CONFIG ]; then
  $B echo "[$TIME] Loading FDE_config.." >> $LOG
  $B mount -o remount,rw /system
  $B rm -f /system/engine/assets/FDE_config.txt
- $B cp /sdcard/Android/FDE_config.txt /system/engine/assets/FDE_config.txt
+ $B cp $CONFIG /system/engine/assets/FDE_config.txt
 fi;
 if [ -e /sys/fs/selinux/enforce ]; then
  $B chmod 666 /sys/fs/selinux/enforce

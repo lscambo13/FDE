@@ -1,8 +1,12 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###
-
 B=/system/engine/bin/busybox
 LOG=/sdcard/Android/FDE_log.txt
+if [ -e $LOG ]; then
+ $B echo "LOG - OK"
+else
+ LOG=/storage/emulated/0/Android/FDE_log.txt
+fi;
 SDK=$(getprop ro.build.version.sdk)
 sync;
 if [ "$SDK" -le "18" ]; then

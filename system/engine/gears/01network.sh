@@ -40,29 +40,6 @@ $B sysctl -e -w net.ipv4.conf.all.accept_redirects=0
 $B sysctl -e -w net.ipv4.fwmark_reflect=1
 $B sysctl -e -w net.ipv4.tcp_tw_reuse=1
 $B sysctl -e -w net.ipv4.tcp_congestion_control=cubic
-if [ "$RAM" -le "1024" ]; then
- $B echo "Set smaller net-buffer sizes.."
- setprop net.tcp.buffersize.gprs 4092,8760,11680,4096,8760,11680
- setprop net.tcp.buffersize.edge 4093,26280,35040,4096,16384,35040
- setprop net.tcp.buffersize.evdo_b 4096,32768,65536,4096,32768,65536
- setprop net.tcp.buffersize.umts 4096,32768,65536,4096,32768,65536
- setprop net.tcp.buffersize.hspa 4096,32768,65536,4096,32768,65536
- setprop net.tcp.buffersize.hsdpa 4096,32768,65536,4096,32768,65536
- setprop net.tcp.buffersize.wifi 4096,32768,110208,4096,32768,110208
- setprop net.tcp.buffersize.lte 4096,32768,110208,4096,32768,110208
- setprop net.tcp.buffersize.default 4096,32768,110208,4096,32768,110208
-else
- $B echo "Set larger net-buffer sizes.."
- setprop net.tcp.buffersize.gprs 6144,8760,11680,6144,8760,11680
- setprop net.tcp.buffersize.edge 6144,26280,35040,6144,16384,35040
- setprop net.tcp.buffersize.evdo_b 6144,262144,1048576,6144,262144,1048576
- setprop net.tcp.buffersize.umts 6144,87380,110208,6144,16384,110208
- setprop net.tcp.buffersize.hspa 6144,87380,262144,6144,16384,262144
- setprop net.tcp.buffersize.hsdpa 6144,262144,1048576,6144,262144,1048576
- setprop net.tcp.buffersize.wifi 262144,524288,1048576,262144,524288,1048576
- setprop net.tcp.buffersize.lte 262144,524288,3145728,262144,524288,3145728
- setprop net.tcp.buffersize.default 262144,524288,1048576,262144,524288,1048576
-fi;
 $B mount -o remount,rw /system
 $B echo "Tuning DNS.."
 $B echo "nameserver 8.8.8.8" > /system/etc/resolv.conf
@@ -93,13 +70,11 @@ setprop ro.ril.enable.sdr 1
 setprop ro.ril.enable.gea3 1
 setprop ro.ril.enable.a52 0
 setprop ro.ril.enable.a53 1
-setprop ro.ril.gprsclass 12
 setprop ro.ril.hep 1
 setprop net.dns1 8.8.8.8
 setprop net.dns2 8.8.4.4
 setprop ro.ril.enable.amr.wideband 1
 setprop persist.wpa_supplicant.debug false
-setprop net.tcp.default_init_rwnd 60
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Network gear*** - OK"
 sync;

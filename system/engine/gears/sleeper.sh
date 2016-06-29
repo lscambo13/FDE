@@ -2,6 +2,11 @@
 ### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###
 B=/system/engine/bin/busybox
 LOG=/sdcard/Android/FDE_log.txt
+if [ -e $LOG ]; then
+ $B echo "LOG - OK"
+else
+ LOG=/storage/emulated/0/Android/FDE_log.txt
+fi;
 sync;
 W=$($B cat /system/engine/assets/FDE_config.txt | $B grep -v -e '#' | $B tail -n1)
 ON=$($B cat /system/engine/assets/FDE_config.txt | $B grep -e 'sleeper=1')

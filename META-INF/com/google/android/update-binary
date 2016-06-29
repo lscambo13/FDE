@@ -28,6 +28,8 @@ rm -Rf /system/etc/init.d/*
 rm -f /sdcard/Android/FDE_log.txt
 rm -f /sdcard/Android/FDE.txt
 rm -f /sdcard/Android/sleeper_whitelist.txt
+rm -f /storage/emulated/0/Android/FDE_config.txt
+rm -f /storage/emulated/0/Android/FDE_log.txt
 rm -f /system/etc/fde
 unzip -o "$ZIP"
 chmod -R 755 /system/engine
@@ -38,7 +40,6 @@ chmod 755 /system/engine/prop/*
 chmod 777 /system/etc/init.d/*
 chmod 755 /system/engine/bin/*
 B="/system/engine/bin/busybox"
-ln -s /system/engine/bin/busybox /system/engine/bin/sh
 m="/system/engine/bin/sh /system/engine/feradroid.sh"
 if [ -e /system/etc/init.qcom.post_boot.sh ]; then
  $B sed -e "s=$m=""=" -i /system/etc/init.qcom.post_boot.sh

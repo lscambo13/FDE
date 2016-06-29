@@ -1,11 +1,21 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###
 B=/system/engine/bin/busybox
+SDK=$(getprop ro.build.version.sdk)
 LOG=/sdcard/Android/FDE_log.txt
 if [ -e $LOG ]; then
  $B echo "LOG - OK"
 else
  LOG=/storage/emulated/0/Android/FDE_log.txt
+fi;
+if [ "$SDK" -le "19" ] ; then
+ FS=false
+ TR=true
+ GR="mScreenOn"
+else
+ FS=FF
+ TR=N
+ GR="state=O"
 fi;
 sync;
 W=$($B cat /system/engine/assets/FDE_config.txt | $B grep -v -e '#' | $B tail -n1)
@@ -13,15 +23,18 @@ ON=$($B cat /system/engine/assets/FDE_config.txt | $B grep -e 'sleeper=1')
 if [ "sleeper=1" = "$ON" ]; then
  $B echo "Sleeper daemon is active." >> $LOG
  while true; do
-  PID=$($B pgrep -l '' | $B grep -E "org.|app.|com.|net.|eu." | $B grep -v -i -E "41|74|WorkQueue|app_process|krfcommd|GIRQ|remote|system|phone|alarm|android|broadcom|mms|sms|launcher|home|trebuchet|$W" | $B awk '{print $1}')
-  if [ "false" = "$(dumpsys power | $B grep -E "mScreenOn" | $B grep -o "false")" ]; then
+   until [ "$FS" = "$(dumpsys power | $B grep $GR | $B grep -o "$FS")" ]; do
+    $B sleep 9
+   done;
+  PID=$($B pgrep -l '' | $B grep -E "org.|app.|com.|net.|eu.|gsf." | $B grep -v -i -E "41|74|WorkQueue|app_process|krfcommd|GIRQ|remote|system|phone|alarm|android|broadcom|mms|sms|launcher|home|trebuchet|$W" | $B awk '{print $1}')
+  if [ "$FS" = "$(dumpsys power | $B grep -E $GR | $B grep -o "$FS")" ]; then
    sync;
    sleep 9
    for i in $PID; do
      kill -9 "$i"
    done;
    RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p)
-   if [ "$RAMfree" -le "16" ]; then
+   if [ "$RAMfree" -le "32" ]; then
     if [ -e /proc/sys/vm/drop_caches ]; then
      sync;
      $B sleep 1
@@ -35,7 +48,6 @@ if [ "sleeper=1" = "$ON" ]; then
     svc wifi disable
     svc nfc disable
     svc data disable
-    service call bluetooth_manager 8
     setprop ro.com.google.networklocation 0
     am broadcast -a android.intent.action.BATTERY_LOW
    fi;
@@ -53,7 +65,7 @@ if [ "sleeper=1" = "$ON" ]; then
    renice [-10] "$T"
    renice [-10] "$D"
    renice 6 "$M"
-   until [ "true" = "$(dumpsys power | $B grep "mScreenOn" | $B grep -o "true")" ]; do
+   until [ "$TR" = "$(dumpsys power | $B grep $GR | $B grep -o "$TR")" ]; do
     $B sleep 270
    done;
   fi;

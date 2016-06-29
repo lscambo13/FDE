@@ -17,7 +17,7 @@ mount -o remount,rw /system
 chmod 755 /system/engine/bin/*
 setprop ro.feralab.engine 21
 $B sleep 54
-if [ "$CORES" -lt "2" ] ; then
+if [ "$CORES" -lt "3" ] ; then
  $B sleep 36
 fi;
 $B mount -o remount,rw /system

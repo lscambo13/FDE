@@ -221,6 +221,11 @@ else
  fi;
 fi;
 $B echo "Paging check completed"
+sync;
+$B sleep 1
+$B echo 3 > /proc/sys/vm/drop_caches
+$B sleep 1
+sync;
 RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p)
 RAMcached=$($B free -m | $B awk '{ print $7 }' | $B sed -n 2p)
 RAMreported=$((RAMfree + RAMcached))

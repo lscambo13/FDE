@@ -34,7 +34,7 @@ $B rm -f $LOG
 $B touch $LOG
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
-$B echo "[$TIME] FeraDroid Engine v0.21-beta4" >> $LOG
+$B echo "[$TIME] FeraDroid Engine v0.21+" >> $LOG
 $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
 $B echo "[$TIME] Architecture: $ARCH" >> $LOG
@@ -141,25 +141,25 @@ if [ -e /system/engine/gears/07memory.sh ]; then
  $B echo "[$TIME] Running Memory gear.." >> $LOG
  /system/engine/gears/07memory.sh | $B tee -a $LOG
 fi;
-if [ -e /system/engine/gears/08ram.sh ]; then
- TIME=$($B date | $B awk '{ print $4 }')
- $B echo "[$TIME] Running RAM gear.." >> $LOG
- /system/engine/gears/08ram.sh | $B tee -a $LOG
-fi;
-if [ -e /system/engine/gears/09cpu.sh ]; then
+if [ -e /system/engine/gears/08cpu.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] Running CPU gear.." >> $LOG
- /system/engine/gears/09cpu.sh | $B tee -a $LOG
+ /system/engine/gears/08cpu.sh | $B tee -a $LOG
 fi;
-if [ -e /system/engine/gears/10gpu.sh ]; then
+if [ -e /system/engine/gears/09gpu.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] Running GPU gear.." >> $LOG
- /system/engine/gears/10gpu.sh | $B tee -a $LOG
+ /system/engine/gears/09gpu.sh | $B tee -a $LOG
 fi;
-if [ -e /system/engine/gears/11adblocker.sh ]; then
+if [ -e /system/engine/gears/10adblocker.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] Running Ad-Blocker gear.." >> $LOG
- /system/engine/gears/11adblocker.sh | $B tee -a $LOG
+ /system/engine/gears/10adblocker.sh | $B tee -a $LOG
+fi;
+if [ -e /system/engine/gears/11ram.sh ]; then
+ TIME=$($B date | $B awk '{ print $4 }')
+ $B echo "[$TIME] Running RAM gear.." >> $LOG
+ /system/engine/gears/11ram.sh | $B tee -a $LOG
 fi;
 if [ -e /system/engine/prop/firstboot ]; then
  if [ -e /system/engine/assets/gp ]; then

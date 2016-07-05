@@ -6,7 +6,7 @@ LOG=/sdcard/Android/FDE_log.txt
 if [ -e $LOG ]; then
  $B echo "LOG - OK"
 else
- LOG=/storage/emulated/0/Android/FDE_log.txt
+ LOG=/data/media/0/Android/FDE_log.txt
 fi;
 if [ "$SDK" -le "19" ] ; then
  FS=false
@@ -26,7 +26,7 @@ if [ "sleeper=1" = "$ON" ]; then
    until [ "$FS" = "$(dumpsys power | $B grep $GR | $B grep -o "$FS")" ]; do
     $B sleep 9
    done;
-  PID=$($B pgrep -l '' | $B grep -E "org.|app.|com.|net.|eu.|gsf." | $B grep -v -i -E "41|74|WorkQueue|app_process|krfcommd|GIRQ|remote|system|phone|alarm|android|broadcom|mms|sms|launcher|home|trebuchet|$W" | $B awk '{print $1}')
+  PID=$($B pgrep -l '' | $B grep -i -E "$W" | $B awk '{print $1}')
   if [ "$FS" = "$(dumpsys power | $B grep -E $GR | $B grep -o "$FS")" ]; then
    sync;
    sleep 9
@@ -58,12 +58,12 @@ if [ "sleeper=1" = "$ON" ]; then
    S=$($B pgrep -l '' | $B grep -E "swap" | $B awk '{print $1}')
    T=$($B pgrep -l '' | $B grep -E "trebuchet" | $B awk '{print $1}')
    M=$($B pgrep -l '' | $B grep -E "service" | $B awk '{print $1}')
-   renice [-10] "$H"
-   renice [-10] "$L"
-   renice [-10] "$P"
+   renice [-18] "$H"
+   renice [-18] "$L"
+   renice [-18] "$P"
    renice 1 "$S"
-   renice [-10] "$T"
-   renice [-10] "$D"
+   renice [-18] "$T"
+   renice [-18] "$D"
    renice 6 "$M"
    until [ "$TR" = "$(dumpsys power | $B grep $GR | $B grep -o "$TR")" ]; do
     $B sleep 270

@@ -5,7 +5,7 @@ TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***CPU gear***"
 MAX=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq)
 CORES=$($B grep -c 'processor' /proc/cpuinfo)
-UP=75
+UP=72
 DN=21
 SF=2
 RT=20000

@@ -27,8 +27,8 @@ if [ -e $LOG ]; then
  $B echo "LOG - OK"
  CONFIG=/sdcard/Android/FDE_config.txt
 else
- LOG=/storage/emulated/0/Android/FDE_log.txt
- CONFIG=/storage/emulated/0/Android/FDE_config.txt
+ LOG=/data/media/0/Android/FDE_log.txt
+ CONFIG=/data/media/0/Android/FDE_config.txt
 fi;
 $B rm -f $LOG
 $B touch $LOG

@@ -22,7 +22,7 @@ $B echo "net.ipv4.conf.default.rp_filter=2" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.conf.all.accept_redirects=0" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.fwmark_reflect=1" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.tcp_tw_reuse=1" >> /system/etc/sysctl.conf
-$B echo "net.ipv4.tcp_congestion_control=cubic" >> /system/etc/sysctl.conf
+$B echo "net.ipv4.tcp_congestion_control=westwood" >> /system/etc/sysctl.conf
 $B echo "Executing optimized network parameters via sysctl"
 $B sysctl -e -w net.ipv4.tcp_rfc1337=1
 $B sysctl -e -w net.ipv4.tcp_window_scaling=1
@@ -39,7 +39,7 @@ $B sysctl -e -w net.ipv4.conf.default.rp_filter=2
 $B sysctl -e -w net.ipv4.conf.all.accept_redirects=0
 $B sysctl -e -w net.ipv4.fwmark_reflect=1
 $B sysctl -e -w net.ipv4.tcp_tw_reuse=1
-$B sysctl -e -w net.ipv4.tcp_congestion_control=cubic
+$B sysctl -e -w net.ipv4.tcp_congestion_control=westwood
 $B mount -o remount,rw /system
 $B echo "Tuning DNS.."
 $B echo "nameserver 8.8.8.8" > /system/etc/resolv.conf

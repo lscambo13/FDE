@@ -31,7 +31,7 @@ if [ -e /sys/module/lpm_levels/parameters/sleep_disabled ]; then
  $B echo "LowPower mode 1 support detected. Activating."
  $B echo "0" > /sys/module/lpm_levels/parameters/sleep_disabled
 fi;
-if [ "$CORES" -eq "2" ]; then
+if [ "$CORES" -le "2" ]; then
  if [ -e /sys/module/pm2/modes/cpu0/power_collapse/suspend_enabled ]; then
   $B echo "LowPower mode 2 support detected. Activating.."
   $B echo 1 > /sys/module/pm2/modes/cpu0/standalone_power_collapse/idle_enabled

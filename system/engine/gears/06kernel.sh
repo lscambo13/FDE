@@ -222,7 +222,6 @@ $B echo "Tuning kernel scheduling.."
 $B mount -t debugfs none /sys/kernel/debug
 if [ -e /sys/kernel/debug/sched_features ]; then
  $B echo "NO_GENTLE_FAIR_SLEEPERS" > /sys/kernel/debug/sched_features
- $B echo "NO_NEW_FAIR_SLEEPERS" > /sys/kernel/debug/sched_features
  $B echo "NO_NORMALIZED_SLEEPERS" > /sys/kernel/debug/sched_features
  $B echo "NO_AFFINE_WAKEUPS" > /sys/kernel/debug/sched_features
  $B echo "NO_WAKEUP_OVERLAP" > /sys/kernel/debug/sched_features

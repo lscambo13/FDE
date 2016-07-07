@@ -8,10 +8,37 @@ CORES=$($B grep -c 'processor' /proc/cpuinfo)
 UP=72
 DN=21
 SF=2
-RT=20000
+RT=10000
 if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
  $B echo "Disable MSM thermal core for now.."
  $B echo 0 > /sys/module/msm_thermal/core_control/enabled
+fi;
+if [ -e /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels ]; then
+ $B chown root system /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+ $B chmod 664 /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+ if [ -e /init.es209ra.rc ]; then
+  $B echo "X10 CPU vdd.."
+  $B echo '245760 950' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '384000 950' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '576000 1000' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '768000 1100' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '998400 1250' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '1036800 1275' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '1075200 1300' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '1113600 1325' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '1152000 1325' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '1190400 1350' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '1228800 1375' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '1267200 1425' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+  $B echo '1305600 1425' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
+ fi;
+fi;
+if [ -e /system/engine/prop/ferakernel ]; then
+ $B echo "Boosting Xperia X10.."
+ $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+ $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+ $B echo "576000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+ $B echo "1190400" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/ondemand/up_threshold ]; then
 $B echo "CPU ondemand tuning.."
@@ -118,13 +145,6 @@ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/up_threshold ]; then
    $B echo "100" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias
   fi;
  fi;
-fi;
-if [ -e /system/engine/prop/ferakernel ]; then
- $B echo "Boosting Xperia X10.."
- $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
- $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
- $B echo "576000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
- $B echo "1190400" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/smartassH3/sample_rate_jiffies ]; then
 $B echo "CPU SmartassH3 tuning.."
@@ -337,7 +357,7 @@ $B echo "$UP" > /sys/devices/system/cpu/cpufreq/interactive/go_highspeed_load
 $B echo "95" > /sys/devices/system/cpu/cpufreq/interactive/go_maxspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy
 $B echo "40000" > /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
-$B echo "40000" > /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+$B echo "30000" > /sys/devices/system/cpu/cpufreq/interactive/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time ]; then
 $B echo "CPU0 Interactive tuning.."
@@ -350,7 +370,7 @@ $B echo "$UP" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_highspeed_lo
 $B echo "85" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_maxspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy
 $B echo "40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
-$B echo "40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
+$B echo "30000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time ]; then
 $B echo "CPU4 Interactive tuning.."
@@ -363,7 +383,7 @@ $B echo "$UP" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_highspeed_lo
 $B echo "85" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_maxspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy
 $B echo "40000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time
-$B echo "40000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
+$B echo "30000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time ]; then
 $B echo "CPU InteractiveX tuning.."
@@ -376,7 +396,7 @@ $B echo "$UP" > /sys/devices/system/cpu/cpufreq/interactivex/go_highspeed_load
 $B echo "85" > /sys/devices/system/cpu/cpufreq/interactivex/go_maxspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpufreq/interactivex/io_is_busy
 $B echo "40000" > /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time
-$B echo "40000" > /sys/devices/system/cpu/cpufreq/interactivex/timer_rate
+$B echo "30000" > /sys/devices/system/cpu/cpufreq/interactivex/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactivex/min_sample_time ]; then
 $B echo "CPU0 InteractiveX tuning.."
@@ -389,7 +409,7 @@ $B echo "$UP" > /sys/devices/system/cpu/cpu0/cpufreq/interactivex/go_highspeed_l
 $B echo "85" > /sys/devices/system/cpu/cpu0/cpufreq/interactivex/go_maxspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/interactivex/io_is_busy
 $B echo "40000" > /sys/devices/system/cpu0/cpu/cpufreq/interactivex/min_sample_time
-$B echo "40000" > /sys/devices/system/cpu0/cpu/cpufreq/interactivex/timer_rate
+$B echo "30000" > /sys/devices/system/cpu0/cpu/cpufreq/interactivex/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpu4/cpufreq/interactivex/min_sample_time ]; then
 $B echo "CPU4 InteractiveX tuning.."
@@ -402,7 +422,7 @@ $B echo "$UP" > /sys/devices/system/cpu/cpu4/cpufreq/interactivex/go_highspeed_l
 $B echo "85" > /sys/devices/system/cpu/cpu4/cpufreq/interactivex/go_maxspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpu4/cpufreq/interactivex/io_is_busy
 $B echo "40000" > /sys/devices/system/cpu4/cpu/cpufreq/interactivex/min_sample_time
-$B echo "40000" > /sys/devices/system/cpu4/cpu/cpufreq/interactivex/timer_rate
+$B echo "30000" > /sys/devices/system/cpu4/cpu/cpufreq/interactivex/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/pegasusq/up_threshold ]; then
 $B echo "CPU Pegasusq tuning.."
@@ -742,26 +762,6 @@ if [ -e /dev/cpuctl/cpu.shares ]; then
   $B echo "${i}" > $CR/native/tasks
  done;
  $B echo "CGroups tuned.."
-fi;
-if [ -e /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels ]; then
- $B chown root system /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
- $B chmod 664 /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
- if [ -e /init.es209ra.rc ]; then
-  $B echo "X10 CPU vdd.."
-  $B echo '245760 950' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
-  $B echo '384000 950' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
-  $B echo '576000 1000' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
-  $B echo '768000 1100' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
-  $B echo '998400 1250' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
-  $B echo '1036800 1275' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
-  $B echo '1075200 1300' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
-  $B echo '1113600 1325' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
-  $B echo '1152000 1325' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
-  $B echo '1190400 1350' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
-  $B echo '1228800 1375' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
-  $B echo '1267200 1425' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
-  $B echo '1305600 1425' > /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
- fi;
 fi;
 if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
  $B echo "Enable MSM thermal core now.."

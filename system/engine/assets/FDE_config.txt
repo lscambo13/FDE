@@ -17,9 +17,9 @@ battery=27
 
 #Sleeper will kill theese apps when device is idle.
 #To add desired app for sleeper daemon just type it's package name.
-#No need for |com.android.phone
-#write only |phone
+#No need for |com.example.application
+#write only |example
 #No capital letters. No newlines. Single-line only.
 #Don't forget | before every app name.
 
-google|whatsapp|facebook|persistent|sync
+persistent|service|gsf

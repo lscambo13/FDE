@@ -18,21 +18,18 @@ else
  GR="state=O"
 fi;
 sync;
-W=$($B cat /system/engine/assets/FDE_config.txt | $B grep -v -e '#' | $B tail -n1)
 ON=$($B cat /system/engine/assets/FDE_config.txt | $B grep -e 'sleeper=1')
 if [ "sleeper=1" = "$ON" ]; then
  $B echo "Sleeper daemon is active." >> $LOG
  while true; do
    until [ "$FS" = "$(dumpsys power | $B grep $GR | $B grep -o "$FS")" ]; do
-    $B sleep 9
+    $B sleep 21
    done;
-  PID=$($B pgrep -l '' | $B grep -i -E "$W" | $B awk '{print $1}')
   if [ "$FS" = "$(dumpsys power | $B grep -E $GR | $B grep -o "$FS")" ]; then
    sync;
    sleep 9
-   for i in $PID; do
-     kill -9 "$i"
-   done;
+   service call activity 51 i32 0
+   sleep 1
    RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p)
    if [ "$RAMfree" -le "32" ]; then
     if [ -e /proc/sys/vm/drop_caches ]; then
@@ -64,10 +61,13 @@ if [ "sleeper=1" = "$ON" ]; then
    renice 1 "$S"
    renice [-18] "$T"
    renice [-18] "$D"
-   renice 6 "$M"
+   renice 1 "$M"
    until [ "$TR" = "$(dumpsys power | $B grep $GR | $B grep -o "$TR")" ]; do
-    $B sleep 270
+    $B sleep 210
    done;
+   if [ "$TR" = "$(dumpsys power | $B grep $GR | $B grep -o "$TR")" ]; then
+    service call activity 51 i32 -1
+   fi;
   fi;
  done;
 else

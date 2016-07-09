@@ -18,13 +18,4 @@ sleeper=1
 #battery trigger to desired level.
 #Set 0 to disable this feature.
 
-battery=27
-
-#Sleeper will kill theese apps when device is idle.
-#To add desired app for sleeper daemon just type it's package name.
-#No need for |com.example.application
-#write only |example
-#No capital letters. No newlines. Single-line only.
-#Don't forget | before every app name.
-
-persistent|service|gsf
+battery=21

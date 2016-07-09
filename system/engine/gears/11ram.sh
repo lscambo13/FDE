@@ -106,32 +106,6 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B mkswap /dev/block/zram0
  $B swapon /dev/block/zram0
  fi;
- if [ "$SWAP" -gt "0" ]; then
-  $B echo "Configuring kernel & ZRAM frienship.."
-  if [ "$RAM" -gt "1024" ]; then
-   $B echo 70 > /proc/sys/vm/swappiness
-   $B echo "vm.swappiness=70" >> /system/etc/sysctl.conf
-   $B sysctl -e -w vm.swappiness=70
-  elif [ "$RAM" -gt "512" ]; then
-   $B echo 90 > /proc/sys/vm/swappiness
-   $B echo "vm.swappiness=90" >> /system/etc/sysctl.conf
-   $B sysctl -e -w vm.swappiness=90
-  elif [ "$RAM" -le "512" ]; then
-   $B echo 100 > /proc/sys/vm/swappiness
-   $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf
-   $B sysctl -e -w vm.swappiness=100
-  fi;
-  setprop ro.config.zram.support true
-  setprop zram.disksize $FZRAM
-  if [ -e /sys/module/zram/parameters/total_mem_usage_percent ]; then
-   $B echo "Tuning ZRAM parameter.."
-   $B echo "$PZ" > /sys/module/zram/parameters/total_mem_usage_percent
-  fi;
-  if [ -e /sys/block/zram0/compact ]; then
-   $B echo "Activate ZRAM compaction.."
-   $B echo "1" > /sys/block/zram0/compact
-  fi;
- fi;
 elif [ -e /sys/block/ramzswap0/size ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  RZ=$($B cat /sys/block/ramzswap0/size)
@@ -177,6 +151,34 @@ elif [ "$SWAP" -gt "0" ]; then
  fi;
 fi;
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
+if [ -e /sys/block/zram0/disksize ]; then
+ if [ "$SWAP" -gt "0" ]; then
+  $B echo "Configuring kernel & ZRAM frienship.."
+  if [ "$RAM" -gt "1024" ]; then
+   $B echo 70 > /proc/sys/vm/swappiness
+   $B echo "vm.swappiness=70" >> /system/etc/sysctl.conf
+   $B sysctl -e -w vm.swappiness=70
+  elif [ "$RAM" -gt "512" ]; then
+   $B echo 90 > /proc/sys/vm/swappiness
+   $B echo "vm.swappiness=90" >> /system/etc/sysctl.conf
+   $B sysctl -e -w vm.swappiness=90
+  elif [ "$RAM" -le "512" ]; then
+   $B echo 100 > /proc/sys/vm/swappiness
+   $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf
+   $B sysctl -e -w vm.swappiness=100
+  fi;
+  setprop ro.config.zram.support true
+  setprop zram.disksize $FZRAM
+  if [ -e /sys/module/zram/parameters/total_mem_usage_percent ]; then
+   $B echo "Tuning ZRAM parameter.."
+   $B echo "$PZ" > /sys/module/zram/parameters/total_mem_usage_percent
+  fi;
+  if [ -e /sys/block/zram0/compact ]; then
+   $B echo "Activate ZRAM compaction.."
+   $B echo "1" > /sys/block/zram0/compact
+  fi;
+ fi;
+fi;
 if [ "$SWAP" -eq "0" ]; then
  $B echo "Configuring kernel for swappless system.."
  $B echo 0 > /proc/sys/vm/swappiness

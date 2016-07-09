@@ -57,6 +57,7 @@ setprop dalvik.vm.check-dex-sum false
 setprop dalvik.vm.debug.alloc 0
 setprop dalvik.vm.deadlock-predict off
 setprop libc.debug.malloc 0
+setprop ro.sys.fw.bg_apps_limit 27
 setprop persist.sys.purgeable_assets 1
 $B echo "[$TIME] ***VM gear*** - OK"
 sync;

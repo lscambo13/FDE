@@ -2,6 +2,11 @@
 
 #FDE configuration file.
 
+#Trigger to enable or disable FDE ad-blocking mechanism
+#To disable set below line to 0.
+
+adblocker=1
+
 #Sleeper daemon is ultimate script-daemon that helps to
 #save battery and improve performance of your device.
 #To disable Sleeper daemon change below trigger

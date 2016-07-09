@@ -32,6 +32,7 @@ else
 fi;
 $B rm -f $LOG
 $B touch $LOG
+$B chmod 777 $LOG
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
 $B echo "[$TIME] FeraDroid Engine v0.21+" >> $LOG

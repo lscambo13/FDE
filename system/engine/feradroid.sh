@@ -36,7 +36,7 @@ $B chmod 777 $LOG
 $B chmod 777 $CONFIG
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
-$B echo "[$TIME] FeraDroid Engine v0.21-beta5" >> $LOG
+$B echo "[$TIME] FeraDroid Engine v0.21-stable" >> $LOG
 $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
 $B echo "[$TIME] Architecture: $ARCH" >> $LOG

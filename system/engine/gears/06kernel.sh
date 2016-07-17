@@ -4,6 +4,7 @@ B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Kernel gear***"
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
+CORES=$($B grep -c 'processor' /proc/cpuinfo)
 FM=$((RAM*(64+1)))
 ME=$((RAM*27))
 FK=$((RAM*2*1024/100))
@@ -23,6 +24,9 @@ if [ "$MMAX" -le "268435456" ]; then
 fi;
 if [ "$RAM" -le "2048" ]; then
  LM=1
+ if [ "$CORES" -gt "5" ]; then
+  LM=2
+ fi;
 else
  LM=2
 fi;

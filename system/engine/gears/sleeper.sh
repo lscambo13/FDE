@@ -23,13 +23,14 @@ if [ "sleeper=1" = "$ON" ]; then
  $B echo "Sleeper daemon is active." >> $LOG
  while true; do
    until [ "$FS" = "$(dumpsys power | $B grep $GR | $B grep -o "$FS")" ]; do
-    $B sleep 21
+    $B sleep 180
    done;
   if [ "$FS" = "$(dumpsys power | $B grep -E $GR | $B grep -o "$FS")" ]; then
    sync;
-   sleep 9
+   sleep 2
+   sync;
    service call activity 51 i32 0
-   sleep 1
+   sleep 9
    RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p)
    if [ "$RAMfree" -le "32" ]; then
     if [ -e /proc/sys/vm/drop_caches ]; then
@@ -42,12 +43,12 @@ if [ "sleeper=1" = "$ON" ]; then
    fi;
    BA=$($B cat /system/engine/assets/FDE_config.txt | $B grep -e 'battery=' | $B sed -e "s|battery=|""|")
    if [ "$($B cat /sys/class/power_supply/battery/capacity)" -le "$BA" ]; then
-    svc wifi disable
     svc nfc disable
     svc data disable
     setprop ro.com.google.networklocation 0
     am broadcast -a android.intent.action.BATTERY_LOW
    fi;
+   service call activity 51 i32 -1
    H=$($B pgrep -l '' | $B grep -E "launcher" | $B awk '{print $1}')
    L=$($B pgrep -l '' | $B grep -E "home" | $B awk '{print $1}')
    P=$($B pgrep -l '' | $B grep -E "phone" | $B awk '{print $1}')
@@ -63,11 +64,8 @@ if [ "sleeper=1" = "$ON" ]; then
    renice [-18] "$D"
    renice 1 "$M"
    until [ "$TR" = "$(dumpsys power | $B grep $GR | $B grep -o "$TR")" ]; do
-    $B sleep 210
+    $B sleep 360
    done;
-   if [ "$TR" = "$(dumpsys power | $B grep $GR | $B grep -o "$TR")" ]; then
-    service call activity 51 i32 -1
-   fi;
   fi;
  done;
 else

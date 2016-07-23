@@ -39,7 +39,11 @@ chmod 755 /system/engine/gears/*
 chmod 755 /system/engine/prop/*
 chmod 777 /system/etc/init.d/*
 chmod 755 /system/engine/bin/*
+if [ -e /system/xbin/sqlite3 ]; then
+ chmod 755 /system/xbin/sqlite3
+fi;
 B="/system/engine/bin/busybox"
+$B --install -s /system/xbin
 m="/system/engine/bin/sh /system/engine/feradroid.sh"
 if [ -e /system/etc/init.qcom.post_boot.sh ]; then
  $B sed -e "s=$m=""=" -i /system/etc/init.qcom.post_boot.sh

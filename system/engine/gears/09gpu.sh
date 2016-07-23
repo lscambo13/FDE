@@ -3,6 +3,7 @@
 B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 SDK=$(getprop ro.build.version.sdk)
+CORES=$($B grep -c 'processor' /proc/cpuinfo)
 $B echo "[$TIME] ***GPU gear***"
 $B echo "Remounting /system - RW"
 $B mount -o remount,rw /system
@@ -39,7 +40,6 @@ if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
 fi;
 if [ "$SDK" -eq "10" ]; then
  if [ -e /system/lib/egl/libGLES_android.so ]; then
-  if [ -e /system/lib/egl/egl.cfg ]; then
    if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
     AV=$(du -k "/system/lib/egl/libGLESv2_adreno200.so" | cut -f1)
     if [ "$AV" -eq "1712" ]; then
@@ -50,8 +50,7 @@ if [ "$SDK" -eq "10" ]; then
    $B echo "Forcing GPU to render UI.."
    $B mount -o remount,rw /system
    $B sed -i '/0 0 android/d' /system/lib/egl/egl.cfg
-   $B rm /system/lib/egl/libGLES_android.so
-  fi;
+   $B rm -f /system/lib/egl/libGLES_android.so
  fi;
 fi;
 if [ -e /sys/module/mali/parameters/mali_debug_level ]; then
@@ -118,6 +117,12 @@ if [ -e /system/engine/prop/firstboot ]; then
   $B echo "Tuning Android animations.."
   $B echo "REPLACE INTO \"system\" VALUES(26,'window_animation_scale','0.25');REPLACE INTO \"system\" VALUES(27,'transition_animation_scale','0.25');" | sqlite3 /data/data/com.android.providers.settings/databases/settings.db
  fi;
+ settings put system window_animation_scale 0.25
+ settings put system transition_animation_scale 0.25
+ settings put system animator_duration_scale 0.25
+ content update --uri content://settings/system --bind value:s:0.25 --where 'name="window_animation_scale"'
+ content update --uri content://settings/system --bind value:s:0.25 --where 'name="transition_animation_scale"'
+ content update --uri content://settings/system --bind value:s:0.25 --where 'name="animator_duration_scale"'
 fi;
 if [ -e /sys/module/tpd_setting/parameters/tpd_mode ]; then
  $B chmod 644 /sys/module/tpd_setting/parameters/tpd_mode
@@ -160,7 +165,11 @@ setprop ro.floatingtouch.available 1
 setprop persist.sys.strictmode.disable true
 setprop vidc.debug.level 0
 setprop ro.camera.sound.forced 0
-setprop persist.sys.use_dithering 0
+if [ "$CORES" -gt "3" ] ; then
+ setprop persist.sys.use_dithering 1
+else
+ setprop persist.sys.use_dithering 0
+fi;
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***GPU gear*** - OK"
 sync;

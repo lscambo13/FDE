@@ -56,16 +56,12 @@ if [ "sleeper=1" = "$ON" ]; then
    L=$($B pgrep -l '' | $B grep -E "home" | $B awk '{print $1}')
    P=$($B pgrep -l '' | $B grep -E "phone" | $B awk '{print $1}')
    D=$($B pgrep -l '' | $B grep -E "dialer" | $B awk '{print $1}')
-   S=$($B pgrep -l '' | $B grep -E "swap" | $B awk '{print $1}')
    T=$($B pgrep -l '' | $B grep -E "trebuchet" | $B awk '{print $1}')
-   M=$($B pgrep -l '' | $B grep -E "service" | $B awk '{print $1}')
    renice [-18] "$H"
    renice [-18] "$L"
    renice [-18] "$P"
-   renice 1 "$S"
    renice [-18] "$T"
    renice [-18] "$D"
-   renice 1 "$M"
    until [ "$TR" = "$(dumpsys power | $B grep $GR | $B grep -o "$TR")" ]; do
     $B sleep 360
    done;

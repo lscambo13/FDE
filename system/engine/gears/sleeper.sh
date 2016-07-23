@@ -23,14 +23,14 @@ if [ "sleeper=1" = "$ON" ]; then
  $B echo "Sleeper daemon is active." >> $LOG
  while true; do
    until [ "$FS" = "$(dumpsys power | $B grep $GR | $B grep -o "$FS")" ]; do
-    $B sleep 180
+    $B sleep 90
    done;
   if [ "$FS" = "$(dumpsys power | $B grep -E $GR | $B grep -o "$FS")" ]; then
    sync;
-   sleep 2
+   $B sleep 2
    sync;
    service call activity 51 i32 0
-   sleep 9
+   $B sleep 9
    RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p)
    if [ "$RAMfree" -le "32" ]; then
     if [ -e /proc/sys/vm/drop_caches ]; then
@@ -48,7 +48,10 @@ if [ "sleeper=1" = "$ON" ]; then
     setprop ro.com.google.networklocation 0
     am broadcast -a android.intent.action.BATTERY_LOW
    fi;
+   $B sleep 3
    service call activity 51 i32 -1
+   sync;
+   $B sleep 1
    H=$($B pgrep -l '' | $B grep -E "launcher" | $B awk '{print $1}')
    L=$($B pgrep -l '' | $B grep -E "home" | $B awk '{print $1}')
    P=$($B pgrep -l '' | $B grep -E "phone" | $B awk '{print $1}')

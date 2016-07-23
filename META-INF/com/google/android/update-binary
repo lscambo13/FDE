@@ -48,10 +48,7 @@ elif [ -e /system/etc/hw_config.sh ]; then
 elif [ -e /system/xbin/zram.sh ]; then
  $B sed -e "s=$m=""=" -i /system/xbin/zram.sh
 fi;
-ARCH=$($B uname -m)
-if [ "$ARCH" = "armv6l" ]; then
- rm -f /system/etc/init.d/999fde
-elif [ -e /system/etc/init.qcom.post_boot.sh ]; then
+if [ -e /system/etc/init.qcom.post_boot.sh ]; then
  rm -f /system/etc/init.d/999fde
 elif [ -e /engine.sh ]; then
  rm -f /system/etc/init.d/999fde

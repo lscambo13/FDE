@@ -1,7 +1,6 @@
 #!/system/bin/sh
 ### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###
 B=/system/engine/bin/busybox
-ARCH=$($B uname -m)
 TIME=$($B date | $B awk '{ print $4 }')
 SDK=$(getprop ro.build.version.sdk)
 $B echo "[$TIME] ***GPU gear***"
@@ -142,30 +141,26 @@ if [ -e /sys/class/touch/switch/set_touchscreen ]; then
  $B echo 14005 > /sys/class/touch/switch/set_touchscreen
  $B echo "Touchscreen sensivity tune-up [2]"
 fi;
-if [ "$ARCH" = "armv6l" ]; then
- $B echo "No hard tuning for ARMv6.."
-else
- $B echo "Tuning Android graphics.."
- setprop debug.sf.hw 1
- setprop debug.egl.hw 1
- setprop debug.egl.swapinterval 1
- setprop debug.gr.swapinterval 1
- setprop debug.gr.numframebuffers 3
- setprop persist.sys.ui.hw 1
- setprop video.accelerate.hw 1
- setprop hwui.render_dirty_regions false
- setprop debug.hwui.render_dirty_regions false
- setprop ro.config.disable.hw_accel false
- setprop persist.sys.scrollingcache 3
- setprop ro.media.dec.jpeg.memcap 8000000
- setprop ro.media.enc.hprof.vid.bps 8000000
- setprop ro.media.enc.jpeg.quality 100
- setprop ro.floatingtouch.available 1
- setprop persist.sys.strictmode.disable true
- setprop vidc.debug.level 0
- setprop ro.camera.sound.forced 0
- setprop persist.sys.use_dithering 0
-fi;
+$B echo "Tuning Android graphics.."
+setprop debug.sf.hw 1
+setprop debug.egl.hw 1
+setprop debug.egl.swapinterval 1
+setprop debug.gr.swapinterval 1
+setprop debug.gr.numframebuffers 3
+setprop persist.sys.ui.hw 1
+setprop video.accelerate.hw 1
+setprop hwui.render_dirty_regions false
+setprop debug.hwui.render_dirty_regions false
+setprop ro.config.disable.hw_accel false
+setprop persist.sys.scrollingcache 3
+setprop ro.media.dec.jpeg.memcap 8000000
+setprop ro.media.enc.hprof.vid.bps 8000000
+setprop ro.media.enc.jpeg.quality 100
+setprop ro.floatingtouch.available 1
+setprop persist.sys.strictmode.disable true
+setprop vidc.debug.level 0
+setprop ro.camera.sound.forced 0
+setprop persist.sys.use_dithering 0
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***GPU gear*** - OK"
 sync;

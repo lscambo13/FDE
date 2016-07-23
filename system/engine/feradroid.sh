@@ -14,10 +14,9 @@ CORES=$($B grep -c 'processor' /proc/cpuinfo)
 LOG=/sdcard/Android/FDE_log.txt
 TIME=$($B date | $B awk '{ print $4 }')
 mount -o remount,rw /system
-chmod 755 /system/engine/bin/*
 setprop ro.feralab.engine 21
 $B sleep 54
-if [ "$CORES" -lt "3" ] ; then
+if [ "$CORES" -gt "3" ] ; then
  $B sleep 36
 fi;
 $B mount -o remount,rw /system
@@ -186,11 +185,11 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,ro /system
  $B echo "[$TIME] First boot completed." >> $LOG
 fi;
-$B echo 69 > /sys/devices/virtual/timed_output/vibrator/enable
+$B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
 $B sleep 0.5
-$B echo 69 > /sys/devices/virtual/timed_output/vibrator/enable
+$B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
 $B sleep 0.5
-$B echo 69 > /sys/devices/virtual/timed_output/vibrator/enable
+$B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] FDE status - OK" >> $LOG
 $B mount -o remount,ro /system

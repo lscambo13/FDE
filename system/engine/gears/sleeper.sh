@@ -6,7 +6,7 @@ LOG=/sdcard/Android/FDE_log.txt
 if [ -e $LOG ]; then
  $B echo "LOG - OK"
 else
- LOG=/data/media/0/Android/FDE_log.txt
+ LOG=/storage/emulated/0/Android/FDE_log.txt
 fi;
 if [ "$SDK" -le "19" ] ; then
  FS=false

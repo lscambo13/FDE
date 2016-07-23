@@ -52,15 +52,14 @@ $B echo "$DN" > /sys/devices/system/cpu/cpufreq/ondemand/down_differential
 $B echo "$RT" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
 $B echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
 $B echo "$SF" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
- if [ -e /sys/devices/system/cpu/cpufreq/ondemand/freq_step ]; then
-  $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/freq_step
-  $B echo "100" /sys/devices/system/cpu/cpufreq/ondemand/freq_step
- fi;
  if [ -e /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias ]; then
-  if [ "$MAX" -gt "1600000" ]; then
+  $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
+  if [ "$MAX" -ge "1400000" ]; then
    $B echo "Powersave bias - on"
-   $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
    $B echo "100" > /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
+  else
+   $B echo "Powersave bias - off"
+   $B echo "0" > /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
   fi;
  fi;
 fi;
@@ -75,14 +74,15 @@ $B echo "$UP" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/up_threshold
 $B echo "$DN" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/down_differential
 $B echo "$RT" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_rate
 $B echo "$SF" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_down_factor
- if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/freq_step ]; then
-  $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/freq_step
-  $B echo "100" /sys/devices/system/cpu/cpu0/cpufreq/ondemand/freq_step
- fi;
  if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias ]; then
-  $B echo "Powersave bias - on"
   $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias
-  $B echo "100" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias
+  if [ "$MAX" -gt "1400000" ]; then
+   $B echo "Powersave bias - on"
+   $B echo "100" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias
+  else
+   $B echo "Powersave bias - off"
+   $B echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias
+  fi;
  fi;
 fi;
 if [ -e /sys/devices/system/cpu/cpu4/cpufreq/ondemand/up_threshold ]; then
@@ -96,14 +96,15 @@ $B echo "$UP" > /sys/devices/system/cpu/cpu4/cpufreq/ondemand/up_threshold
 $B echo "$DN" > /sys/devices/system/cpu/cpu4/cpufreq/ondemand/down_differential
 $B echo "$RT" > /sys/devices/system/cpu/cpu4/cpufreq/ondemand/sampling_rate
 $B echo "$SF" > /sys/devices/system/cpu/cpu4/cpufreq/ondemand/sampling_down_factor
- if [ -e /sys/devices/system/cpu/cpu4/cpufreq/ondemand/freq_step ]; then
-  $B chmod 644 /sys/devices/system/cpu/cpu4/cpufreq/ondemand/freq_step
-  $B echo "100" /sys/devices/system/cpu/cpu4/cpufreq/ondemand/freq_step
- fi;
  if [ -e /sys/devices/system/cpu/cpu4/cpufreq/ondemand/powersave_bias ]; then
-  $B echo "Powersave bias - on"
   $B chmod 644 /sys/devices/system/cpu/cpu4/cpufreq/ondemand/powersave_bias
-  $B echo "100" > /sys/devices/system/cpu/cpu4/cpufreq/ondemand/powersave_bias
+  if [ "$MAX" -gt "1400000" ]; then
+   $B echo "Powersave bias - on"
+   $B echo "100" > /sys/devices/system/cpu/cpu4/cpufreq/ondemand/powersave_bias
+  else
+   $B echo "Powersave bias - off"
+   $B echo "0" > /sys/devices/system/cpu/cpu4/cpufreq/ondemand/powersave_bias
+  fi;
  fi;
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/up_threshold ]; then
@@ -118,11 +119,14 @@ if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/up_threshold ]; then
  $B echo "$RT" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_rate
  $B echo "1" > /sys/devices/system/cpu/cpufreq/sprdemand/io_is_busy
  $B echo "$SF" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_down_factor
- if [ -e /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias ]; then
-  if [ "$MAX" -gt "1600000" ]; then
+ if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias ]; then
+  $B chmod 644 /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias
+  if [ "$MAX" -gt "1400000" ]; then
    $B echo "Powersave bias - on"
-   $B chmod 644 /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias
    $B echo "100" > /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias
+  else
+   $B echo "Powersave bias - off"
+   $B echo "0" > /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias
   fi;
  fi;
 fi;
@@ -138,11 +142,14 @@ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/up_threshold ]; then
  $B echo "$RT" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/sampling_rate
  $B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/io_is_busy
  $B echo "$SF" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/sampling_down_factor
- if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias ]; then
-  if [ "$MAX" -gt "1600000" ]; then
+ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias ]; then
+  $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias
+  if [ "$MAX" -gt "1400000" ]; then
    $B echo "Powersave bias - on"
-   $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias
    $B echo "100" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias
+  else
+   $B echo "Powersave bias - off"
+   $B echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias
   fi;
  fi;
 fi;

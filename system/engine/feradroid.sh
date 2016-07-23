@@ -27,11 +27,13 @@ if [ -e $LOG ]; then
  $B echo "LOG - OK"
  CONFIG=/sdcard/Android/FDE_config.txt
 else
- LOG=/data/media/0/Android/FDE_log.txt
- CONFIG=/data/media/0/Android/FDE_config.txt
+ LOG=/storage/emulated/0/Android/FDE_log.txt
+ CONFIG=/storage/emulated/0/Android/FDE_config.txt
 fi;
 $B rm -f $LOG
 $B touch $LOG
+$B chown 0:0 $LOG
+$B chown 0:0 $CONFIG
 $B chmod 777 $LOG
 $B chmod 777 $CONFIG
 $B echo "### FeraLab ###" > $LOG

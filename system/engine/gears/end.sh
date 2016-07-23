@@ -5,7 +5,7 @@ LOG=/sdcard/Android/FDE_log.txt
 if [ -e $LOG ]; then
  $B echo "LOG - OK"
 else
- LOG=/data/media/0/Android/FDE_log.txt
+ LOG=/storage/emulated/0/Android/FDE_log.txt
 fi;
 SDK=$(getprop ro.build.version.sdk)
 sync;

@@ -165,7 +165,6 @@ if [ -e /system/engine/gears/10adblocker.sh ]; then
  $B echo "[$TIME] Running Ad-Blocker gear.." >> $LOG
  /system/engine/gears/10adblocker.sh | $B tee -a $LOG
 fi;
-service call activity 51 i32 -1
 if [ -e /system/engine/gears/11ram.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] Running RAM gear.." >> $LOG
@@ -178,6 +177,7 @@ if [ -e /system/engine/gears/end.sh ]; then
 fi;
 sync;
 $B sleep 1
+service call activity 51 i32 -1
 if [ -e /system/engine/gears/sleeper.sh ]; then
 $B echo "[$TIME] Init Sleeper daemon" >> $LOG
  /system/engine/gears/sleeper.sh &

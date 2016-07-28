@@ -23,7 +23,7 @@ if [ "sleeper=1" = "$ON" ]; then
  $B echo "Sleeper daemon is active." >> $LOG
  while true; do
    until [ "$FS" = "$(dumpsys power | $B grep $GR | $B grep -o "$FS")" ]; do
-    $B sleep 90
+    $B sleep 120
    done;
   if [ "$FS" = "$(dumpsys power | $B grep -E $GR | $B grep -o "$FS")" ]; then
    sync;

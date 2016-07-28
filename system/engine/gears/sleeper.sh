@@ -48,10 +48,6 @@ if [ "sleeper=1" = "$ON" ]; then
     setprop ro.com.google.networklocation 0
     am broadcast -a android.intent.action.BATTERY_LOW
    fi;
-   $B sleep 3
-   service call activity 51 i32 -1
-   sync;
-   $B sleep 1
    H=$($B pgrep -l '' | $B grep -E "launcher" | $B awk '{print $1}')
    L=$($B pgrep -l '' | $B grep -E "home" | $B awk '{print $1}')
    P=$($B pgrep -l '' | $B grep -E "phone" | $B awk '{print $1}')
@@ -64,6 +60,7 @@ if [ "sleeper=1" = "$ON" ]; then
    renice [-18] "$D"
    until [ "$TR" = "$(dumpsys power | $B grep $GR | $B grep -o "$TR")" ]; do
     $B sleep 360
+    service call activity 51 i32 -1
    done;
   fi;
  done;

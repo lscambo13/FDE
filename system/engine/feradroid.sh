@@ -16,7 +16,7 @@ TIME=$($B date | $B awk '{ print $4 }')
 mount -o remount,rw /system
 setprop ro.feralab.engine 21
 if [ "$CORES" -gt "3" ] ; then
- $B sleep 63
+ $B sleep 69
 else
  $B sleep 96
 fi;
@@ -38,7 +38,7 @@ $B chmod 777 $LOG
 $B chmod 777 $CONFIG
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
-$B echo "[$TIME] FeraDroid Engine v0.21-pre+" >> $LOG
+$B echo "[$TIME] FeraDroid Engine v0.21+" >> $LOG
 $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
 $B echo "[$TIME] Architecture: $ARCH" >> $LOG
@@ -63,7 +63,12 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B cp /system/engine/bin/boost /system/xbin/boost
  $B rm -f $CONFIG
  $B cp /system/engine/assets/FDE_config.txt $CONFIG
+ if [ -e /system/engine/assets/gp ]; then
+  $B echo "Google Play services fix" >> $LOG
+  /system/engine/assets/gp
+ fi;
 fi;
+service call activity 51 i32 0
 TIME=$($B date | $B awk '{ print $4 }')
 if [ -e $CONFIG ]; then
  $B echo "[$TIME] Loading FDE_config.." >> $LOG
@@ -160,16 +165,11 @@ if [ -e /system/engine/gears/10adblocker.sh ]; then
  $B echo "[$TIME] Running Ad-Blocker gear.." >> $LOG
  /system/engine/gears/10adblocker.sh | $B tee -a $LOG
 fi;
+service call activity 51 i32 -1
 if [ -e /system/engine/gears/11ram.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] Running RAM gear.." >> $LOG
  /system/engine/gears/11ram.sh | $B tee -a $LOG
-fi;
-if [ -e /system/engine/prop/firstboot ]; then
- if [ -e /system/engine/assets/gp ]; then
-  $B echo "Google Play services fix" >> $LOG
-  /system/engine/assets/gp
- fi;
 fi;
 if [ -e /system/engine/gears/end.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')

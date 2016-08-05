@@ -28,7 +28,7 @@ if [ "sleeper=1" = "$ON" ]; then
   if [ "$FS" = "$(dumpsys power | $B grep -E $GR | $B grep -o "$FS")" ]; then
    sync;
    $B sleep 2
-   sync;
+   $B killall -9 com.google.android.gms.persistent
    service call activity 51 i32 0
    $B sleep 9
    RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p)

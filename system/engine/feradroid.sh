@@ -13,7 +13,7 @@ CUR=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq)
 CORES=$($B grep -c 'processor' /proc/cpuinfo)
 LOG=/sdcard/Android/FDE_log.txt
 TIME=$($B date | $B awk '{ print $4 }')
-mount -o remount,rw /system
+$B mount -o remount,rw /system
 setprop ro.feralab.engine 21
 if [ "$CORES" -gt "3" ] ; then
  $B sleep 69
@@ -38,7 +38,7 @@ $B chmod 777 $LOG
 $B chmod 777 $CONFIG
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
-$B echo "[$TIME] FeraDroid Engine v0.21+" >> $LOG
+$B echo "[$TIME] FeraDroid Engine v0.21snap+" >> $LOG
 $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
 $B echo "[$TIME] Architecture: $ARCH" >> $LOG

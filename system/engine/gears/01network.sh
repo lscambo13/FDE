@@ -62,7 +62,7 @@ if [ -e /system/xbin/sqlite3 ]; then
  /system/xbin/sqlite3 /data/data/com.android.providers.settings/databases/settings.db "update global set value = 0 where name = 'wifi_scan_always_enabled'"
 fi;
 $B echo "Tuning Android networking settings.."
-setprop wifi.supplicant_scan_interval 360
+setprop wifi.supplicant_scan_interval 450
 setprop ro.telephony.call_ring.delay 0
 setprop ring.delay 0
 setprop ro.ril.enable.3g.prefix 1

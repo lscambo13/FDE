@@ -55,8 +55,7 @@ $B rm -f /mnt/sdcard/fix_permissions.log
 $B chmod -R 777 /data/tombstones
 $B rm -f /data/tombstones/*
 $B chmod -R 000 /data/tombstones
-$B echo "Cleaning cache.."
-$B find /data/data -type d -iname "cache*" -exec $B rm -Rf {}/ ';'
+pm trim-caches 16g
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Cleaner gear*** - OK"
 sync;

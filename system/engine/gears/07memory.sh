@@ -5,13 +5,13 @@ TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Memory gear***"
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 if [ "$RAM" -le "1024" ]; then
- SKB=$((RAM*9))
+ SKB=$((RAM*6))
 elif [ "$RAM" -le "2048" ]; then
  SKB=$((RAM*5))
 else
  SKB=$((RAM*4))
 fi;
-KB=512
+KB=1024
 AA="/sys/block/*"
 BB="/sys/devices/virtual/block/*"
 BD="/sys/devices/virtual/bdi/*"
@@ -79,6 +79,18 @@ if [ -e /sys/devices/virtual/bdi/179:1/read_ahead_kb ]; then
 fi;
 if [ -e /sys/devices/virtual/bdi/179:2/read_ahead_kb ]; then
  $B echo "$SKB" > /sys/devices/virtual/bdi/179:2/read_ahead_kb
+fi;
+if [ -e /sys/devices/virtual/bdi/179:32/read_ahead_kb ]; then
+ $B echo "$SKB" > /sys/devices/virtual/bdi/179:32/read_ahead_kb
+fi;
+if [ -e /sys/devices/virtual/bdi/179:64/read_ahead_kb ]; then
+ $B echo "$SKB" > /sys/devices/virtual/bdi/179:64/read_ahead_kb
+fi;
+if [ -e /sys/devices/virtual/bdi/179:96/read_ahead_kb ]; then
+ $B echo "$SKB" > /sys/devices/virtual/bdi/179:96/read_ahead_kb
+fi;
+if [ -e /sys/devices/virtual/bdi/179:*/read_ahead_kb ]; then
+ $B echo "$SKB" > /sys/devices/virtual/bdi/179:*/read_ahead_kb
 fi;
 if [ -e /sys/block/mmcblk0/max_write_speed ]; then
  $B echo "off" > /sys/block/mmcblk0/max_read_speed

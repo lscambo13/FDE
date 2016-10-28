@@ -9,7 +9,7 @@ if [ -e /sys/module/lowmemorykiller/parameters/cost ]; then
  $B echo "LMK cost fine-tuning.."
  $B chown 0:0 /sys/module/lowmemorykiller/parameters/cost
  $B chmod 644 /sys/module/lowmemorykiller/parameters/cost
- $B echo "16" > /sys/module/lowmemorykiller/parameters/cost
+ $B echo "32" > /sys/module/lowmemorykiller/parameters/cost
 fi;
 if [ -e /sys/module/lowmemorykiller/parameters/fudgeswap ]; then
  $B echo "FudgeSwap support detected. Tuning.."
@@ -56,8 +56,9 @@ setprop dalvik.vm.checkjni false
 setprop dalvik.vm.check-dex-sum false
 setprop dalvik.vm.debug.alloc 0
 setprop dalvik.vm.deadlock-predict off
+setprop dalvik.vm.heaptargetutilization 0.9
 setprop libc.debug.malloc 0
-setprop ro.sys.fw.bg_apps_limit 27
+setprop ro.sys.fw.bg_apps_limit 7
 setprop persist.sys.purgeable_assets 1
 $B echo "[$TIME] ***VM gear*** - OK"
 sync;

@@ -15,10 +15,10 @@ if [ "$RAM" -gt "1024" ]; then
  FZRAM=$((RAM/4))
  PZ=45
 elif [ "$RAM" -gt "512" ]; then
- FZRAM=$((RAM/3))
+ FZRAM=$(((RAM/3)+128))
  PZ=45
 elif [ "$RAM" -le "512" ]; then
- FZRAM=$(((RAM/2)+96))
+ FZRAM=$((RAM-96))
  PZ=50
 fi;
 $B echo "Current RAM values:"
@@ -136,6 +136,7 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  $B echo 100 > /proc/sys/vm/swappiness
  $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf
  $B sysctl -e -w vm.swappiness=100
+ setprop sys.vm.swappiness 100
 elif [ "$SWAP" -gt "0" ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  $B echo "SWAP detected. Size is $SWAP MB"
@@ -143,6 +144,7 @@ elif [ "$SWAP" -gt "0" ]; then
  $B echo 50 > /proc/sys/vm/swappiness
  $B echo "vm.swappiness=50" >> /system/etc/sysctl.conf
  $B sysctl -e -w vm.swappiness=50
+ setprop sys.vm.swappiness 50
  if [ -e /sys/module/zswap/parameters/enabled ]; then
   $B echo "ZSWAP detected. Enabling.."
   $B echo 1 > /sys/module/zswap/parameters/enabled
@@ -155,17 +157,15 @@ if [ -e /sys/block/zram0/disksize ]; then
  if [ "$SWAP" -gt "0" ]; then
   $B echo "Configuring kernel & ZRAM frienship.."
   if [ "$RAM" -gt "1024" ]; then
-   $B echo 70 > /proc/sys/vm/swappiness
-   $B echo "vm.swappiness=70" >> /system/etc/sysctl.conf
-   $B sysctl -e -w vm.swappiness=70
-  elif [ "$RAM" -gt "512" ]; then
    $B echo 90 > /proc/sys/vm/swappiness
    $B echo "vm.swappiness=90" >> /system/etc/sysctl.conf
    $B sysctl -e -w vm.swappiness=90
-  elif [ "$RAM" -le "512" ]; then
+   setprop sys.vm.swappiness 90
+  elif [ "$RAM" -le "1024" ]; then
    $B echo 100 > /proc/sys/vm/swappiness
    $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf
    $B sysctl -e -w vm.swappiness=100
+   setprop sys.vm.swappiness 100
   fi;
   setprop ro.config.zram.support true
   setprop zram.disksize $FZRAM

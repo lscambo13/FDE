@@ -7,28 +7,15 @@ RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 CORES=$($B grep -c 'processor' /proc/cpuinfo)
 FM=$((RAM*(64+1)))
 ME=$((RAM*27))
-FK=$((RAM*2*1024/100))
-EF=$(((RAM*3*1024/100)-1024))
+FK=$(((RAM*2*1024/100)-2048))
+EF=$(((RAM*3*1024/100)-2048))
 if [ "$EF" -gt "24576" ]; then
  EF=24576
 fi;
 if [ "$FK" -gt "18432" ]; then
  FK=18432
 elif [ "$FK" -le "4096" ]; then
- FK=5120
-fi;
-MALL=$((RAM*192))
-MMAX=$((MALL*4096))
-if [ "$MMAX" -le "268435456" ]; then
- MMAX=268435456
-fi;
-if [ "$RAM" -le "2048" ]; then
- LM=1
- if [ "$CORES" -gt "5" ]; then
-  LM=2
- fi;
-else
- LM=2
+ FK=4096
 fi;
 $B mount -o remount,rw /system
 $B echo "Applying optimized kernel parameters.."
@@ -103,9 +90,9 @@ if [ -e /proc/sys/vm/overcommit_ratio ]; then
  $B sysctl -e -w vm.overcommit_ratio=100
 fi;
 if [ -e /proc/sys/vm/laptop_mode ]; then
- $B echo $LM > /proc/sys/vm/laptop_mode
- $B echo "vm.laptop_mode=$LM" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.laptop_mode=$LM
+ $B echo 1 > /proc/sys/vm/laptop_mode
+ $B echo "vm.laptop_mode=1" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.laptop_mode=1
 fi;
 if [ -e /proc/sys/vm/block_dump ]; then
  $B echo 0 > /proc/sys/vm/block_dump
@@ -191,36 +178,6 @@ if [ -e /proc/sys/kernel/panic_on_oops ]; then
  $B echo 0 > /proc/sys/kernel/panic_on_oops
  $B echo "kernel.panic_on_oops=0" >> /system/etc/sysctl.conf
  $B sysctl -e -w kernel.panic_on_oops=0
-fi;
-if [ -e /proc/sys/kernel/shmmni ]; then
- $B echo 4096 > /proc/sys/kernel/shmmni
- $B echo "kernel.shmmni=4096" >> /system/etc/sysctl.conf
- $B sysctl -e -w kernel.shmmni=4096
-fi;
-if [ -e /proc/sys/kernel/shmall ]; then
- $B echo $MALL > /proc/sys/kernel/shmall
- $B echo "kernel.shmall=$MALL" >> /system/etc/sysctl.conf
- $B sysctl -e -w kernel.shmall=$MALL
-fi;
-if [ -e /proc/sys/kernel/shmmax ]; then
- $B echo $MMAX > /proc/sys/kernel/shmmax
- $B echo "kernel.shmmax=$MMAX" >> /system/etc/sysctl.conf
- $B sysctl -e -w kernel.shmmax=$MMAX
-fi;
-if [ -e /proc/sys/kernel/msgmni ]; then
- $B echo 16384 > /proc/sys/kernel/msgmni
- $B echo "kernel.msgmni=16384" >> /system/etc/sysctl.conf
- $B sysctl -e -w kernel.msgmni=16384
-fi;
-if [ -e /proc/sys/kernel/msgmax ]; then
- $B echo 8192 > /proc/sys/kernel/msgmax
- $B echo "kernel.msgmax=8192" >> /system/etc/sysctl.conf
- $B sysctl -e -w kernel.msgmax=8192
-fi;
-if [ -e /proc/sys/kernel/msgmnb ]; then
- $B echo 8192 > /proc/sys/kernel/msgmnb
- $B echo "kernel.msgmnb=8192" >> /system/etc/sysctl.conf
- $B sysctl -e -w kernel.msgmnb=8192
 fi;
 $B echo "Tuning kernel scheduling.."
 $B mount -t debugfs none /sys/kernel/debug

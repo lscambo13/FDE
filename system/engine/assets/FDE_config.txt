@@ -7,19 +7,3 @@
 #to update block-list. To disable it set below line to 0.
 
 adblocker=1
-
-#Sleeper daemon is ultimate script-daemon that helps to
-#save battery and improve performance of your device.
-#To disable Sleeper daemon change below trigger
-#from 1 to 0. Reboot to apply changes.
-
-sleeper=1
-
-#There is some kind of Stamina mode in Sleeper daemon
-#that disables data/wifi/nfc..etc when screen is off
-#and battery level is below the treshold in here.
-#To change low battery treshold percentage change
-#battery trigger to desired level.
-#Set 0 to disable this feature.
-
-battery=6

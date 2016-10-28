@@ -173,10 +173,6 @@ fi;
 sync;
 $B sleep 1
 service call activity 51 i32 -1
-if [ -e /system/engine/gears/sleeper.sh ]; then
-$B echo "[$TIME] Init Sleeper daemon" >> $LOG
- /system/engine/gears/sleeper.sh &
-fi;
 if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,rw /system
  $B rm -f /system/engine/prop/firstboot

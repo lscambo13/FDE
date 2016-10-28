@@ -20,8 +20,8 @@ mount -o rw,remount /
 mount -o rw,remount / /
 mkdir /fde
 unzip "$ZIP" -d /fde
-chmod 755 /fde/system/engine/bin/*
-chmod 755 /fde/system/engine/*
+chmod 777 /fde/system/engine/bin/*
+chmod 777 /fde/system/engine/*
 export PATH=$PATH:/fde/system/engine/bin
 rm -Rf /system/engine/*
 rm -Rf /system/etc/init.d/*
@@ -32,15 +32,15 @@ rm -f /storage/emulated/0/Android/FDE_config.txt
 rm -f /storage/emulated/0/Android/FDE_log.txt
 rm -f /system/etc/fde
 unzip -o "$ZIP"
-chmod -R 755 /system/engine
-chmod 755 /system/engine/*
-chmod 755 /system/engine/assets/*
-chmod 755 /system/engine/gears/*
-chmod 755 /system/engine/prop/*
+chmod -R 777 /system/engine
+chmod 777 /system/engine/*
+chmod 777 /system/engine/assets/*
+chmod 777 /system/engine/gears/*
+chmod 777 /system/engine/prop/*
 chmod 777 /system/etc/init.d/*
-chmod 755 /system/engine/bin/*
+chmod 777 /system/engine/bin/*
 if [ -e /system/xbin/sqlite3 ]; then
- chmod 755 /system/xbin/sqlite3
+ chmod 777 /system/xbin/sqlite3
 fi;
 B="/system/engine/bin/busybox"
 $B --install -s /system/xbin
@@ -69,7 +69,7 @@ elif [ -e /system/etc/init.qcom.post_boot.sh ]; then
  touch /system/engine/prop/qcompost
  echo "1" > /system/engine/prop/qcompost
  echo "" >> /system/engine/prop/qcompost
- chmod 755 /system/etc/init.qcom.post_boot.sh
+ chmod 777 /system/etc/init.qcom.post_boot.sh
  echo "" >> /system/etc/init.qcom.post_boot.sh
  echo "/system/engine/feradroid.sh" >> /system/etc/init.qcom.post_boot.sh
  echo "" >> /system/etc/init.qcom.post_boot.sh
@@ -78,7 +78,7 @@ elif [ -e /system/etc/hw_config.sh ]; then
  touch /system/engine/prop/hwconf
  echo "1" > /system/engine/prop/hwconf
  echo "" >> /system/engine/prop/hwconf
- chmod 755 /system/etc/hw_config.sh
+ chmod 777 /system/etc/hw_config.sh
  echo "" >> /system/etc/hw_config.sh
  echo "/system/engine/feradroid.sh" >> /system/etc/hw_config.sh
  echo "" >> /system/etc/hw_config.sh
@@ -89,7 +89,7 @@ elif [ -e /system/xbin/zram.sh ]; then
  echo "" >> /system/engine/prop/zrami
  rm -f /system/xbin/zram.sh
  touch /system/xbin/zram.sh
- chmod 755 /system/xbin/zram.sh
+ chmod 777 /system/xbin/zram.sh
  echo "#!/system/bin/sh" > /system/xbin/zram.sh
  echo "### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###" >> /system/xbin/zram.sh
  echo "" >> /system/xbin/zram.sh
@@ -101,7 +101,7 @@ elif [ -e /system/etc/install-recovery-2.sh ]; then
  exit
 fi;
 touch /system/etc/fde
-chmod 755 /system/etc/fde
+chmod 777 /system/etc/fde
 echo "21" > /system/etc/fde
 rm -Rf /fde/*
 umount /system

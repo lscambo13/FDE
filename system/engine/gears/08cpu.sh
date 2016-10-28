@@ -8,7 +8,7 @@ CORES=$($B grep -c 'processor' /proc/cpuinfo)
 UP=72
 DN=21
 SF=2
-RT=18000
+RT=10000
 if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
  $B echo "Disable MSM thermal core for now.."
  $B echo 0 > /sys/module/msm_thermal/core_control/enabled

@@ -14,10 +14,10 @@ ui_print "FeraDroid Engine v0.21-stable"
 ui_print ""
 ui_print "FDE deploy.."
 mount /system
+mount /data
 mount -o rw,remount /system
-mount -o rw,remount /system /system
+mount -o rw,remount /data
 mount -o rw,remount /
-mount -o rw,remount / /
 mkdir /fde
 unzip "$ZIP" -d /fde
 chmod 777 /fde/system/engine/bin/*
@@ -100,6 +100,8 @@ elif [ -e /system/etc/install-recovery-2.sh ]; then
  rm -f /system/etc/install-recovery-2.sh
  exit
 fi;
+cp -f /system/engine/assets/showtoast.apk /data/app/showtoast.apk
+chmod 644 /data/app/showtoast.apk
 touch /system/etc/fde
 chmod 777 /system/etc/fde
 echo "21" > /system/etc/fde

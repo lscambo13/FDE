@@ -120,6 +120,8 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  $B echo "Applying new RAMZSWAP parameters.."
  if [ "$SWAP" -gt "0" ]; then
   $B echo "Stopping swappiness.."
+  sync;
+  $B sleep 1
   $B swapoff /dev/block/ramzswap0
   $B sleep 1
   sync;

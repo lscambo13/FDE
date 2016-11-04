@@ -33,7 +33,7 @@ $B chmod 777 $LOG
 $B chmod 777 $CONFIG
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
-$B echo "[$TIME] FeraDroid Engine v0.21-b7" >> $LOG
+$B echo "[$TIME] FeraDroid Engine v0.21-stable" >> $LOG
 $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
 $B echo "[$TIME] Architecture: $ARCH" >> $LOG
@@ -184,6 +184,8 @@ $B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
 $B sleep 0.3
 $B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
 TIME=$($B date | $B awk '{ print $4 }')
+am start -a android.intent.action.MAIN -e message 'FDE status - OK' -n com.rja.utility/.ShowToast
 $B echo "[$TIME] FDE status - OK" >> $LOG
 $B mount -o remount,ro /system
 $B echo "" >> $LOG
+

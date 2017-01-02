@@ -9,7 +9,7 @@ if [ -e /sys/module/lowmemorykiller/parameters/cost ]; then
  $B echo "LMK cost fine-tuning.."
  $B chown 0:0 /sys/module/lowmemorykiller/parameters/cost
  $B chmod 644 /sys/module/lowmemorykiller/parameters/cost
- $B echo "64" > /sys/module/lowmemorykiller/parameters/cost
+ $B echo "32" > /sys/module/lowmemorykiller/parameters/cost
 fi;
 if [ -e /sys/module/lowmemorykiller/parameters/fudgeswap ]; then
  $B echo "FudgeSwap support detected. Tuning.."
@@ -33,12 +33,17 @@ fi;
 if [ "$RAM" -le "512" ]; then
  setprop ro.config.low_ram true
  setprop ro.sys.fw.bg_apps_limit 6
+ setprop persist.added_boot_bgservices 2
  setprop config.disable_atlas true
+ setprop ro.config.max_starting_bg 3
  $B echo "LOW RAM tweak.."
 fi;
 setprop ro.HOME_APP_MEM 2048
 setprop ro.HOME_APP_ADJ 0
+setprop MAX_SERVICE_INACTIVITY false
 setprop MIN_HIDDEN_APPS false
+setprop CONTENT_APP_IDLE_OFFSET false
+setprop EMPTY_APP_IDLE_OFFSET false
 setprop ACTIVITY_INACTIVE_RESET_TIME false
 setprop MIN_RECENT_TASKS false
 setprop APP_SWITCH_DELAY_TIME false
@@ -52,12 +57,8 @@ setprop dalvik.vm.check-dex-sum false
 setprop dalvik.vm.debug.alloc 0
 setprop dalvik.vm.deadlock-predict off
 setprop dalvik.vm.heaptargetutilization 0.9
-setprop dalvik.vm.dex2oat-swap true
-setprop dalvik.vm.dex2oat-filter everything
-setprop dalvik.vm.image-dex2oat-filter everything
 setprop libc.debug.malloc 0
+setprop ro.sys.fw.bg_apps_limit 7
 setprop persist.sys.purgeable_assets 1
-setprop persist.added_boot_bgservices 2
-setprop ro.config.max_starting_bg 3
 $B echo "[$TIME] ***VM gear*** - OK"
 sync;

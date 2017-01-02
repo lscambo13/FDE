@@ -4,16 +4,16 @@ B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Kernel gear***"
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
+CORES=$($B grep -c 'processor' /proc/cpuinfo)
 FM=$((RAM*(64+1)))
-FK=$(((RAM*2*1024/100)-4096))
-EF=$(((RAM*3*1024/100)-4096))
-if [ "$EF" -gt "18432" ]; then
- EF=18432
-elif [ "$EF" -le "4096" ]; then
- EF=4096
+ME=$((RAM*27))
+FK=$(((RAM*2*1024/100)-2048))
+EF=$(((RAM*3*1024/100)-2048))
+if [ "$EF" -gt "24576" ]; then
+ EF=24576
 fi;
-if [ "$FK" -gt "10240" ]; then
- FK=10240
+if [ "$FK" -gt "18432" ]; then
+ FK=18432
 elif [ "$FK" -le "4096" ]; then
  FK=4096
 fi;
@@ -25,9 +25,9 @@ if [ -e /proc/sys/kernel/random/read_wakeup_threshold ]; then
  $B sysctl -e -w kernel.random.read_wakeup_threshold=1536
 fi;
 if [ -e /proc/sys/kernel/random/write_wakeup_threshold ]; then
- $B echo 512 > /proc/sys/kernel/random/write_wakeup_threshold
- $B echo "kernel.random.write_wakeup_threshold=512" >> /system/etc/sysctl.conf
- $B sysctl -e -w kernel.random.write_wakeup_threshold=512
+ $B echo 256 > /proc/sys/kernel/random/write_wakeup_threshold
+ $B echo "kernel.random.write_wakeup_threshold=256" >> /system/etc/sysctl.conf
+ $B sysctl -e -w kernel.random.write_wakeup_threshold=256
 fi;
 if [ -e /proc/sys/vm/vfs_cache_pressure ]; then
  $B echo 100 > /proc/sys/vm/vfs_cache_pressure
@@ -55,9 +55,9 @@ if [ -e /proc/sys/vm/oom_kill_allocating_task ]; then
  $B sysctl -e -w vm.oom_kill_allocating_task=1
 fi;
 if [ -e /proc/sys/vm/dirty_ratio ]; then
- $B echo 45 > /proc/sys/vm/dirty_ratio
- $B echo "vm.dirty_ratio=45" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.dirty_ratio=45
+ $B echo 20 > /proc/sys/vm/dirty_ratio
+ $B echo "vm.dirty_ratio=20" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.dirty_ratio=20
 fi;
 if [ -e /proc/sys/vm/dirty_background_ratio ]; then
  $B echo 5 > /proc/sys/vm/dirty_background_ratio
@@ -110,9 +110,9 @@ if [ -e /proc/sys/vm/min_free_order_shift ]; then
  $B sysctl -e -w vm.min_free_order_shift=4
 fi;
 if [ -e /proc/sys/vm/page-cluster ]; then
- $B echo 1 > /proc/sys/vm/page-cluster
- $B echo "vm.page-cluster=1" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.page-cluster=1
+ $B echo 0 > /proc/sys/vm/page-cluster
+ $B echo "vm.page-cluster=0" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.page-cluster=0
 fi;
 if [ -e /proc/sys/vm/scan_unevictable_pages ]; then
  $B echo 0 > /proc/sys/vm/scan_unevictable_pages
@@ -140,9 +140,9 @@ if [ -e /proc/sys/fs/lease-break-time ]; then
  $B sysctl -e -w fs.lease-break-time=9
 fi;
 if [ -e /proc/sys/fs/inotify/max_queued_events ]; then
- $B echo 32768 > /proc/sys/fs/inotify/max_queued_events
- $B echo "fs.inotify.max_queued_events=32768" >> /system/etc/sysctl.conf
- $B sysctl -e -w fs.inotify.max_queued_events=32768
+ $B echo $ME > /proc/sys/fs/inotify/max_queued_events
+ $B echo "fs.inotify.max_queued_events=$ME" >> /system/etc/sysctl.conf
+ $B sysctl -e -w fs.inotify.max_queued_events=$ME
 fi;
 if [ -e /proc/sys/fs/inotify/max_user_instances ]; then
  $B echo 256 > /proc/sys/fs/inotify/max_user_instances

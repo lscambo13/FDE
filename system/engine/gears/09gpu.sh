@@ -149,7 +149,7 @@ fi;
 $B echo "Tuning Android graphics.."
 setprop debug.sf.hw 1
 setprop debug.egl.hw 1
-setprop debug.egl.swapinterval 
+setprop debug.egl.swapinterval 1
 setprop debug.gr.swapinterval 1
 setprop debug.gr.numframebuffers 3
 setprop persist.sys.ui.hw 1
@@ -157,8 +157,6 @@ setprop video.accelerate.hw 1
 setprop hwui.render_dirty_regions false
 setprop debug.hwui.render_dirty_regions false
 setprop ro.config.disable.hw_accel false
-setprop debug.composition.type gpu
-setprop persist.sys.composition.type gpu
 setprop persist.sys.scrollingcache 3
 setprop ro.media.dec.jpeg.memcap 8000000
 setprop ro.media.enc.hprof.vid.bps 8000000

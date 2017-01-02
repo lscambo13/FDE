@@ -65,6 +65,7 @@ $B echo "Applying new rnd parameters.."
 for b in $MMC $MTD; do
 if [ -e "${b}"/queue/add_random ]; then
  $B echo 0 > "${b}"/queue/add_random
+ $B echo 0 > "${b}"/queue/iosched/slice_idle 0
 fi;
 done;
 for node in $($B find /sys -name nr_requests | $B grep mmcblk); do
@@ -89,7 +90,7 @@ fi;
 if [ -e /sys/devices/virtual/bdi/179:96/read_ahead_kb ]; then
  $B echo "$SKB" > /sys/devices/virtual/bdi/179:96/read_ahead_kb
 fi;
-if [ -e /sys/devices/virtual/bdi/179:*/read_ahead_kb ]; then
+if [ -e /sys/devices/virtual/bdi/179:0/read_ahead_kb ]; then
  $B echo "$SKB" > /sys/devices/virtual/bdi/179:*/read_ahead_kb
 fi;
 if [ -e /sys/block/mmcblk0/max_write_speed ]; then

@@ -1,0 +1,6 @@
+#!/system/bin/sh
+### FeraDroid Engine v0.22 | By FeraVolt. 2017 ###
+
+/system/engine/feradroid.sh
+
+exec /system/xbin/debuggerd

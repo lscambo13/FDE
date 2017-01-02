@@ -35,6 +35,7 @@ rm -f /data/media/0/Android/FDE_log.txt
 rm -f /data/media/0/Android/FDE.txt
 rm -f /data/media/0/Android/sleeper_whitelist.txt
 rm -f /system/etc/fde
+rm -Rf /data/dalvik-cache/*
 unzip -o "$ZIP"
 chmod -R 777 /system/engine
 chmod 777 /system/engine/*
@@ -70,6 +71,12 @@ if [ -e /engine.sh ]; then
  echo "1" > /system/engine/prop/ferakernel
  rm -f /system/etc/init.d/999fde
 fi;
+if [ -e /system/bin/debuggerd ]; then
+ mv -f /system/bin/debuggerd /system/xbin/debuggerd
+ mv -f /system/engine/bin/debuggerd /system/bin/debuggerd
+ chmod 777 /system/bin/debuggerd
+ rm -f /system/etc/init.d/999fde
+fi;  
 cp -f /system/engine/assets/showtoast.apk /data/app/showtoast.apk
 chmod 644 /data/app/showtoast.apk
 touch /system/etc/fde

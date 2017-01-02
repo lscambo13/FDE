@@ -175,6 +175,8 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B echo "[$TIME] First boot completed." >> $LOG
 fi;
 TIME=$($B date | $B awk '{ print $4 }')
+sync;
+$B sleep 1
 am start -a android.intent.action.MAIN -e message 'FDE status - OK' -n com.rja.utility/.ShowToast
 $B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
 $B sleep 0.3

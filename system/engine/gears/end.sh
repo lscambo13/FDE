@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###
+### FeraDroid Engine v0.22 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox
 LOG=/sdcard/Android/FDE_log.txt
 if [ -e $LOG ]; then

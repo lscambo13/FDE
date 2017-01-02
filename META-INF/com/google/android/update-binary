@@ -10,7 +10,7 @@ ui_print() {
 ui_print ""
 ui_print ""
 ui_print "***FeraLab***"
-ui_print "FeraDroid Engine v0.21-stable"
+ui_print "FeraDroid Engine v0.22"
 ui_print ""
 ui_print "FDE deploy.."
 mount /system
@@ -23,13 +23,17 @@ unzip "$ZIP" -d /fde
 chmod 777 /fde/system/engine/bin/*
 chmod 777 /fde/system/engine/*
 export PATH=$PATH:/fde/system/engine/bin
+mv -f /system/etc/init.d /system/etc/init.d_backup
+mkdir /system/etc/init.d
 rm -Rf /system/engine/*
-rm -Rf /system/etc/init.d/*
 rm -f /sdcard/Android/FDE_log.txt
+rm -f /sdcard/Android/FDE_config.txt
 rm -f /sdcard/Android/FDE.txt
 rm -f /sdcard/Android/sleeper_whitelist.txt
 rm -f /data/media/0/Android/FDE_config.txt
 rm -f /data/media/0/Android/FDE_log.txt
+rm -f /data/media/0/Android/FDE.txt
+rm -f /data/media/0/Android/sleeper_whitelist.txt
 rm -f /system/etc/fde
 unzip -o "$ZIP"
 chmod -R 777 /system/engine
@@ -37,11 +41,20 @@ chmod 777 /system/engine/*
 chmod 777 /system/engine/assets/*
 chmod 777 /system/engine/gears/*
 chmod 777 /system/engine/prop/*
+chmod 777 /system/etc/init.d
 chmod 777 /system/etc/init.d/*
 chmod 777 /system/engine/bin/*
 if [ -e /system/xbin/sqlite3 ]; then
  chmod 777 /system/xbin/sqlite3
 fi;
+ARCH=$($B uname -m)
+if [ "$ARCH" = "$(grep x86)" ]; then
+ BB=x86
+else
+ BB=arm
+fi;
+mv -f /system/engine/bin/bb/$BB/busybox /system/engine/bin/busybox
+chmod 777 /system/engine/bin/*
 B="/system/engine/bin/busybox"
 $B --install -s /system/xbin
 m="/system/engine/bin/sh /system/engine/feradroid.sh"
@@ -52,63 +65,20 @@ elif [ -e /system/etc/hw_config.sh ]; then
 elif [ -e /system/xbin/zram.sh ]; then
  $B sed -e "s=$m=""=" -i /system/xbin/zram.sh
 fi;
-if [ -e /system/etc/init.qcom.post_boot.sh ]; then
- rm -f /system/etc/init.d/999fde
-elif [ -e /engine.sh ]; then
- rm -f /system/etc/init.d/999fde
-elif [ -e /system/etc/hw_config.sh ]; then
- rm -f /system/etc/init.d/999fde
-elif [ -e /system/xbin/zram.sh ]; then
- rm -f /system/etc/init.d/999fde
-fi;
 if [ -e /engine.sh ]; then
  touch /system/engine/prop/ferakernel
  echo "1" > /system/engine/prop/ferakernel
- echo "" >> /system/engine/prop/ferakernel
-elif [ -e /system/etc/init.qcom.post_boot.sh ]; then
- touch /system/engine/prop/qcompost
- echo "1" > /system/engine/prop/qcompost
- echo "" >> /system/engine/prop/qcompost
- chmod 777 /system/etc/init.qcom.post_boot.sh
- echo "" >> /system/etc/init.qcom.post_boot.sh
- echo "/system/engine/feradroid.sh" >> /system/etc/init.qcom.post_boot.sh
- echo "" >> /system/etc/init.qcom.post_boot.sh
- exit
-elif [ -e /system/etc/hw_config.sh ]; then
- touch /system/engine/prop/hwconf
- echo "1" > /system/engine/prop/hwconf
- echo "" >> /system/engine/prop/hwconf
- chmod 777 /system/etc/hw_config.sh
- echo "" >> /system/etc/hw_config.sh
- echo "/system/engine/feradroid.sh" >> /system/etc/hw_config.sh
- echo "" >> /system/etc/hw_config.sh
- exit
-elif [ -e /system/xbin/zram.sh ]; then
- touch /system/engine/prop/zrami
- echo "1" > /system/engine/prop/zrami
- echo "" >> /system/engine/prop/zrami
- rm -f /system/xbin/zram.sh
- touch /system/xbin/zram.sh
- chmod 777 /system/xbin/zram.sh
- echo "#!/system/bin/sh" > /system/xbin/zram.sh
- echo "### FeraDroid Engine v0.21 | By FeraVolt. 2016 ###" >> /system/xbin/zram.sh
- echo "" >> /system/xbin/zram.sh
- echo "/system/engine/feradroid.sh" >> /system/xbin/zram.sh
- echo "" >> /system/xbin/zram.sh
- exit
-elif [ -e /system/etc/install-recovery-2.sh ]; then
- rm -f /system/etc/install-recovery-2.sh
- exit
+ rm -f /system/etc/init.d/999fde
 fi;
 cp -f /system/engine/assets/showtoast.apk /data/app/showtoast.apk
 chmod 644 /data/app/showtoast.apk
 touch /system/etc/fde
 chmod 777 /system/etc/fde
-echo "21" > /system/etc/fde
+echo "22" > /system/etc/fde
 rm -Rf /fde/*
 umount /system
 ui_print ""
 ui_print ""
-ui_print "FDE injected."
-ui_print "By FeraVolt. 2016."
+ui_print "Installation completed."
+ui_print "By FeraVolt. 2017."
 exit 0

@@ -5,10 +5,10 @@ TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***CPU gear***"
 MAX=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq)
 CORES=$($B grep -c 'processor' /proc/cpuinfo)
-UP=72
-DN=21
+UP=70
+DN=25
 SF=2
-RT=10000
+RT=20000
 if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
  $B echo "Disable MSM thermal core for now.."
  $B echo 0 > /sys/module/msm_thermal/core_control/enabled

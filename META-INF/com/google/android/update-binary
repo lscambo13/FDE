@@ -47,7 +47,7 @@ chmod 777 /system/engine/bin/*
 if [ -e /system/xbin/sqlite3 ]; then
  chmod 777 /system/xbin/sqlite3
 fi;
-ARCH=$($B uname -m)
+ARCH=$(uname -m)
 if [ "$ARCH" = "$(grep x86)" ]; then
  BB=x86
 else

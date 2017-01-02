@@ -47,6 +47,7 @@ $B echo "[$TIME] ROM version: $ROM" >> $LOG
 $B echo "[$TIME] Android version: $(getprop ro.build.version.release)" >> $LOG
 $B echo "[$TIME] SDK: $SDK" >> $LOG
 $B echo "[$TIME] /system free space: $SF" >> $LOG
+service call activity 51 i32 0
 if [ -e /system/engine/prop/firstboot ]; then
  $B echo "[$TIME] First boot after deploy" >> $LOG
  $B mount -o remount,rw /system
@@ -58,10 +59,6 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B cp /system/engine/bin/boost /system/xbin/boost
  $B rm -f $CONFIG
  $B cp /system/engine/assets/FDE_config.txt $CONFIG
- if [ -e /system/engine/assets/gp ]; then
-  $B echo "Google Play services fix" >> $LOG
-  /system/engine/assets/gp
- fi;
 fi;
 TIME=$($B date | $B awk '{ print $4 }')
 if [ -e $CONFIG ]; then
@@ -164,7 +161,6 @@ if [ -e /system/engine/gears/11ram.sh ]; then
  $B echo "[$TIME] Running RAM gear.." >> $LOG
  /system/engine/gears/11ram.sh | $B tee -a $LOG
 fi;
-service call activity 51 i32 0
 if [ -e /system/engine/gears/end.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] END init.." >> $LOG
@@ -178,13 +174,13 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B rm -f /system/engine/prop/firstboot
  $B echo "[$TIME] First boot completed." >> $LOG
 fi;
-$B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
-$B sleep 0.3
-$B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
-$B sleep 0.3
-$B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
 TIME=$($B date | $B awk '{ print $4 }')
 am start -a android.intent.action.MAIN -e message 'FDE status - OK' -n com.rja.utility/.ShowToast
+$B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
+$B sleep 0.3
+$B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
+$B sleep 0.3
+$B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
 $B echo "[$TIME] FDE status - OK" >> $LOG
 $B mount -o remount,ro /system
 $B echo "" >> $LOG

@@ -55,6 +55,7 @@ else
  BB=arm
 fi;
 mv /system/engine/bin/bb/$BB/busybox /system/engine/bin/busybox
+rm -Rf /system/engine/bin/bb
 chmod 777 /system/engine/bin/*
 B="/system/engine/bin/busybox"
 $B --install -s /system/xbin
@@ -66,16 +67,22 @@ elif [ -e /system/etc/hw_config.sh ]; then
 elif [ -e /system/xbin/zram.sh ]; then
  $B sed -e "s=$m=""=" -i /system/xbin/zram.sh
 fi;
+f="/system/engine/feradroid.sh"
+if [ -e /system/etc/init.qcom.post_boot.sh ]; then
+ $B sed -e "s=$f=""=" -i /system/etc/init.qcom.post_boot.sh
+elif [ -e /system/etc/hw_config.sh ]; then
+ $B sed -e "s=$f=""=" -i /system/etc/hw_config.sh
+elif [ -e /system/xbin/zram.sh ]; then
+ $B sed -e "s=$f=""=" -i /system/xbin/zram.sh
+fi;
 if [ -e /engine.sh ]; then
  touch /system/engine/prop/ferakernel
  echo "1" > /system/engine/prop/ferakernel
  rm -f /system/etc/init.d/999fde
 fi;
-if [ -e /system/bin/debuggerd ]; then
- mv /system/bin/debuggerd /system/xbin/debuggerd
- mv /system/engine/bin/debuggerd /system/bin/debuggerd
- chmod 777 /system/bin/debuggerd
- rm -f /system/etc/init.d/999fde
+if [ -d /system/su.d ]; then
+ mv /system/etc/init.d/999fde /system/su.d/999fde.sh
+ chmod 777 /system/su.d/999fde.sh
 fi;  
 cp -f /system/engine/assets/showtoast.apk /data/app/showtoast.apk
 chmod 644 /data/app/showtoast.apk

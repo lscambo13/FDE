@@ -23,7 +23,7 @@ unzip "$ZIP" -d /fde
 chmod 777 /fde/system/engine/bin/*
 chmod 777 /fde/system/engine/*
 export PATH=$PATH:/fde/system/engine/bin
-mv -f /system/etc/init.d /system/etc/init.d_backup
+mv /system/etc/init.d /system/etc/init.d_backup
 mkdir /system/etc/init.d
 rm -Rf /system/engine/*
 rm -f /sdcard/Android/FDE_log.txt
@@ -54,7 +54,7 @@ if [ "$ARCH" = "$(grep x86)" ]; then
 else
  BB=arm
 fi;
-mv -f /system/engine/bin/bb/$BB/busybox /system/engine/bin/busybox
+mv /system/engine/bin/bb/$BB/busybox /system/engine/bin/busybox
 chmod 777 /system/engine/bin/*
 B="/system/engine/bin/busybox"
 $B --install -s /system/xbin
@@ -72,8 +72,8 @@ if [ -e /engine.sh ]; then
  rm -f /system/etc/init.d/999fde
 fi;
 if [ -e /system/bin/debuggerd ]; then
- mv -f /system/bin/debuggerd /system/xbin/debuggerd
- mv -f /system/engine/bin/debuggerd /system/bin/debuggerd
+ mv /system/bin/debuggerd /system/xbin/debuggerd
+ mv /system/engine/bin/debuggerd /system/bin/debuggerd
  chmod 777 /system/bin/debuggerd
  rm -f /system/etc/init.d/999fde
 fi;  

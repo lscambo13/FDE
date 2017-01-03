@@ -21,6 +21,7 @@ $B echo "net.ipv4.conf.all.rp_filter=2" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.conf.default.rp_filter=2" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.fwmark_reflect=1" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.tcp_tw_reuse=1" >> /system/etc/sysctl.conf
+$B echo "net.ipv4.tcp_no_metrics_save=1" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.tcp_congestion_control=westwood" >> /system/etc/sysctl.conf
 $B echo "Executing optimized network parameters via sysctl"
 $B sysctl -e -w net.ipv4.tcp_timestamps=1
@@ -38,23 +39,26 @@ $B sysctl -e -w net.ipv4.conf.all.rp_filter=2
 $B sysctl -e -w net.ipv4.conf.default.rp_filter=2
 $B sysctl -e -w net.ipv4.fwmark_reflect=1
 $B sysctl -e -w net.ipv4.tcp_tw_reuse=1
+$B sysctl -e -w net.ipv4.tcp_no_metrics_save=1
 $B sysctl -e -w net.ipv4.tcp_congestion_control=westwood
 $B echo "Applying optimized network parameters via sysfs"
-$B echo 1 > /proc/sys/net/ipv4/tcp_timestamps
-$B echo 1 > /proc/sys/net/ipv4/tcp_rfc1337
-$B echo 1 > /proc/sys/net/ipv4/tcp_window_scaling
-$B echo 1 > /proc/sys/net/ipv4/tcp_sack
-$B echo 1 > /proc/sys/net/ipv4/tcp_fack
-$B echo 1 > /proc/sys/net/ipv4/ip_no_pmtu_disc
-$B echo 1 > /proc/sys/net/ipv4/tcp_moderate_rcvbuf
-$B echo 2 > /proc/sys/net/ipv4/tcp_synack_retries
-$B echo 18 > /proc/sys/net/ipv4/tcp_keepalive_intvl
-$B echo 6 > /proc/sys/net/ipv4/tcp_keepalive_probes
-$B echo 15 > /proc/sys/net/ipv4/tcp_fin_timeout
-$B echo 2 > /proc/sys/net/ipv4/conf/all/rp_filter
-$B echo 2 > /proc/sys/net/ipv4/conf/default/rp_filter
-$B echo 1 > /proc/sys/net/ipv4/fwmark_reflect
-$B echo 1 > /proc/sys/net/ipv4/tcp_tw_reuse
+$B echo "1" > /proc/sys/net/ipv4/tcp_timestamps
+$B echo "1" > /proc/sys/net/ipv4/tcp_rfc1337
+$B echo "1" > /proc/sys/net/ipv4/tcp_window_scaling
+$B echo "1" > /proc/sys/net/ipv4/tcp_sack
+$B echo "1" > /proc/sys/net/ipv4/tcp_fack
+$B echo "1" > /proc/sys/net/ipv4/ip_no_pmtu_disc
+$B echo "1" > /proc/sys/net/ipv4/tcp_moderate_rcvbuf
+$B echo "2" > /proc/sys/net/ipv4/tcp_synack_retries
+$B echo "18" > /proc/sys/net/ipv4/tcp_keepalive_intvl
+$B echo "6" > /proc/sys/net/ipv4/tcp_keepalive_probes
+$B echo "15" > /proc/sys/net/ipv4/tcp_fin_timeout
+$B echo "2" > /proc/sys/net/ipv4/conf/all/rp_filter
+$B echo "2" > /proc/sys/net/ipv4/conf/default/rp_filter
+$B echo "1" > /proc/sys/net/ipv4/fwmark_reflect
+$B echo "1" > /proc/sys/net/ipv4/tcp_tw_reuse
+$B echo "1" > /proc/sys/net/ipv4/tcp_no_metrics_save
+$B echo "westwood" > /proc/sys/net/ipv4/tcp_congestion_control
 $B mount -o remount,rw /system
 $B echo "Tuning DNS.."
 $B echo "nameserver 8.8.8.8" > /system/etc/resolv.conf

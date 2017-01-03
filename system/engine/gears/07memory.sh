@@ -42,7 +42,7 @@ for m in $ST $SST; do
 done;
 $B echo "Remounting EXT4 partitions.."
 for x in $($B mount | grep ext4 | cut -d " " -f3); do
- $B mount -o remount,noatime,delalloc,nosuid,nodev,nodiratime,barrier=0,nobh,commit=90,discard,data=writeback,rw "${x}"
+ $B mount -o remount,noatime,delalloc,nosuid,nodev,nodiratime,barrier=0,nobh,commit=60,discard,data=writeback,rw "${x}"
 done;
 $B echo "Calculated readahead parameter is $SKB KB"
 $B echo "Applying new I/O parameters.."
@@ -65,7 +65,7 @@ $B echo "Applying new rnd parameters.."
 for b in $MMC $MTD; do
 if [ -e "${b}"/queue/add_random ]; then
  $B echo 0 > "${b}"/queue/add_random
- $B echo 0 > "${b}"/queue/iosched/slice_idle 0
+ $B echo 0 > "${b}"/queue/iosched/slice_idle
 fi;
 done;
 for node in $($B find /sys -name nr_requests | $B grep mmcblk); do

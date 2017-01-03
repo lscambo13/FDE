@@ -20,19 +20,19 @@ fi;
 $B mount -o remount,rw /system
 $B echo "Applying optimized kernel parameters.."
 if [ -e /proc/sys/kernel/random/read_wakeup_threshold ]; then
- $B echo 1536 > /proc/sys/kernel/random/read_wakeup_threshold
- $B echo "kernel.random.read_wakeup_threshold=1536" >> /system/etc/sysctl.conf
- $B sysctl -e -w kernel.random.read_wakeup_threshold=1536
+ $B echo 1024 > /proc/sys/kernel/random/read_wakeup_threshold
+ $B echo "kernel.random.read_wakeup_threshold=1024" >> /system/etc/sysctl.conf
+ $B sysctl -e -w kernel.random.read_wakeup_threshold=1024
 fi;
 if [ -e /proc/sys/kernel/random/write_wakeup_threshold ]; then
- $B echo 512 > /proc/sys/kernel/random/write_wakeup_threshold
- $B echo "kernel.random.write_wakeup_threshold=512" >> /system/etc/sysctl.conf
- $B sysctl -e -w kernel.random.write_wakeup_threshold=512
+ $B echo 2048 > /proc/sys/kernel/random/write_wakeup_threshold
+ $B echo "kernel.random.write_wakeup_threshold=2048" >> /system/etc/sysctl.conf
+ $B sysctl -e -w kernel.random.write_wakeup_threshold=2048
 fi;
 if [ -e /proc/sys/vm/vfs_cache_pressure ]; then
- $B echo 100 > /proc/sys/vm/vfs_cache_pressure
- $B echo "vm.vfs_cache_pressure=100" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.vfs_cache_pressure=100
+ $B echo 72 > /proc/sys/vm/vfs_cache_pressure
+ $B echo "vm.vfs_cache_pressure=72" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.vfs_cache_pressure=72
 fi;
 if [ -e /proc/sys/vm/min_free_kbytes ]; then
  $B echo $FK > /proc/sys/vm/min_free_kbytes
@@ -55,24 +55,24 @@ if [ -e /proc/sys/vm/oom_kill_allocating_task ]; then
  $B sysctl -e -w vm.oom_kill_allocating_task=1
 fi;
 if [ -e /proc/sys/vm/dirty_ratio ]; then
- $B echo 45 > /proc/sys/vm/dirty_ratio
- $B echo "vm.dirty_ratio=45" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.dirty_ratio=45
+ $B echo 36 > /proc/sys/vm/dirty_ratio
+ $B echo "vm.dirty_ratio=36" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.dirty_ratio=36
 fi;
 if [ -e /proc/sys/vm/dirty_background_ratio ]; then
- $B echo 5 > /proc/sys/vm/dirty_background_ratio
- $B echo "vm.dirty_background_ratio=5" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.dirty_background_ratio=5
+ $B echo 10 > /proc/sys/vm/dirty_background_ratio
+ $B echo "vm.dirty_background_ratio=10" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.dirty_background_ratio=10
 fi;
 if [ -e /proc/sys/vm/dirty_writeback_centisecs ]; then
- $B echo 0 > /proc/sys/vm/dirty_writeback_centisecs
- $B echo "vm.dirty_writeback_centisecs=0" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.dirty_writeback_centisecs=0
+ $B echo 3000 > /proc/sys/vm/dirty_writeback_centisecs
+ $B echo "vm.dirty_writeback_centisecs=3000" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.dirty_writeback_centisecs=3000
 fi;
 if [ -e /proc/sys/vm/dirty_expire_centisecs ]; then
- $B echo 0 > /proc/sys/vm/dirty_expire_centisecs
- $B echo "vm.dirty_expire_centisecs=0" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.dirty_expire_centisecs=0
+ $B echo 18000 > /proc/sys/vm/dirty_expire_centisecs
+ $B echo "vm.dirty_expire_centisecs=18000" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.dirty_expire_centisecs=18000
 fi;
 if [ -e /proc/sys/vm/panic_on_oom ]; then
  $B echo 0 > /proc/sys/vm/panic_on_oom
@@ -110,9 +110,9 @@ if [ -e /proc/sys/vm/min_free_order_shift ]; then
  $B sysctl -e -w vm.min_free_order_shift=4
 fi;
 if [ -e /proc/sys/vm/page-cluster ]; then
- $B echo 1 > /proc/sys/vm/page-cluster
- $B echo "vm.page-cluster=1" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.page-cluster=1
+ $B echo 4 > /proc/sys/vm/page-cluster
+ $B echo "vm.page-cluster=4" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.page-cluster=4
 fi;
 if [ -e /proc/sys/vm/scan_unevictable_pages ]; then
  $B echo 0 > /proc/sys/vm/scan_unevictable_pages
@@ -179,15 +179,22 @@ if [ -e /proc/sys/kernel/panic_on_oops ]; then
  $B echo "kernel.panic_on_oops=0" >> /system/etc/sysctl.conf
  $B sysctl -e -w kernel.panic_on_oops=0
 fi;
+if [ -e /proc/sys/kernel/nmi_watchdog ]; then
+ $B echo 0 > /proc/sys/kernel/nmi_watchdog
+ $B echo "kernel.nmi_watchdog=0" >> /system/etc/sysctl.conf
+ $B sysctl -e -w kernel.nmi_watchdog=0
+fi;
 $B echo "Tuning kernel scheduling.."
 $B mount -t debugfs none /sys/kernel/debug
 if [ -e /sys/kernel/debug/sched_features ]; then
  $B echo "NO_GENTLE_FAIR_SLEEPERS" > /sys/kernel/debug/sched_features
- $B echo "NO_NORMALIZED_SLEEPERS" > /sys/kernel/debug/sched_features
  $B echo "NO_AFFINE_WAKEUPS" > /sys/kernel/debug/sched_features
  $B echo "NO_WAKEUP_OVERLAP" > /sys/kernel/debug/sched_features
+ $B echo "NO_WAKEUP_PREEMPT" > /sys/kernel/debug/sched_features
  $B echo "NO_DOUBLE_TICK" > /sys/kernel/debug/sched_features
 fi;
+ABC=$(cat /proc/sys/kernel/sched_latency_ns)
+$B echo $((ABC/2)) > /proc/sys/kernel/sched_min_granularity_ns
 if [ -e /sys/kernel/sched/gentle_fair_sleepers ]; then
  $B echo 0 > /sys/kernel/sched/gentle_fair_sleepers
 fi;

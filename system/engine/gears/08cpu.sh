@@ -54,7 +54,7 @@ $B echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
 $B echo "$SF" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias ]; then
   $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
-  if [ "$MAX" -ge "1400000" ]; then
+  if [ "$MAX" -ge "1600000" ]; then
    $B echo "Powersave bias - on"
    $B echo "100" > /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
   else
@@ -76,7 +76,7 @@ $B echo "$RT" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_rate
 $B echo "$SF" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias ]; then
   $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias
-  if [ "$MAX" -gt "1400000" ]; then
+  if [ "$MAX" -gt "1600000" ]; then
    $B echo "Powersave bias - on"
    $B echo "100" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias
   else
@@ -98,7 +98,7 @@ $B echo "$RT" > /sys/devices/system/cpu/cpu4/cpufreq/ondemand/sampling_rate
 $B echo "$SF" > /sys/devices/system/cpu/cpu4/cpufreq/ondemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpu4/cpufreq/ondemand/powersave_bias ]; then
   $B chmod 644 /sys/devices/system/cpu/cpu4/cpufreq/ondemand/powersave_bias
-  if [ "$MAX" -gt "1400000" ]; then
+  if [ "$MAX" -gt "1600000" ]; then
    $B echo "Powersave bias - on"
    $B echo "100" > /sys/devices/system/cpu/cpu4/cpufreq/ondemand/powersave_bias
   else
@@ -121,7 +121,7 @@ if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/up_threshold ]; then
  $B echo "$SF" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias ]; then
   $B chmod 644 /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias
-  if [ "$MAX" -gt "1400000" ]; then
+  if [ "$MAX" -gt "1600000" ]; then
    $B echo "Powersave bias - on"
    $B echo "100" > /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias
   else
@@ -144,7 +144,7 @@ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/up_threshold ]; then
  $B echo "$SF" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias ]; then
   $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias
-  if [ "$MAX" -gt "1400000" ]; then
+  if [ "$MAX" -gt "1600000" ]; then
    $B echo "Powersave bias - on"
    $B echo "100" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias
   else
@@ -550,12 +550,10 @@ if [ -e /sys/devices/system/cpu/cpufreq/hotplug/up_threshold ]; then
 $B echo "CPU Hotplug tuning.."
 $B chmod 644 /sys/devices/system/cpu/cpufreq/hotplug/up_threshold
 $B chmod 644 /sys/devices/system/cpu/cpufreq/hotplug/down_threshold
-$B chmod 644 /sys/devices/system/cpu/cpufreq/hotplug/ignore_nice_load
 $B chmod 644 /sys/devices/system/cpu/cpufreq/hotplug/io_is_busy
 $B chmod 644 /sys/devices/system/cpu/cpufreq/hotplug/sampling_rate
 $B echo "$UP" > /sys/devices/system/cpu/cpufreq/hotplug/up_threshold
 $B echo "$DN" > /sys/devices/system/cpu/cpufreq/hotplug/down_threshold
-$B echo "0" > /sys/devices/system/cpu/cpufreq/hotplug/ignore_nice_load
 $B echo "1" > /sys/devices/system/cpu/cpufreq/hotplug/io_is_busy
 $B echo "$RT" > /sys/devices/system/cpu/cpufreq/hotplug/sampling_rate
 fi;
@@ -563,12 +561,10 @@ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/hotplug/up_threshold ]; then
 $B echo "CPU0 Hotplug tuning.."
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/hotplug/up_threshold
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/hotplug/down_threshold
-$B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/hotplug/ignore_nice_load
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/hotplug/io_is_busy
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/hotplug/sampling_rate
 $B echo "$UP" > /sys/devices/system/cpu/cpu0/cpufreq/hotplug/up_threshold
 $B echo "$DN" > /sys/devices/system/cpu/cpu0/cpufreq/hotplug/down_threshold
-$B echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/hotplug/ignore_nice_load
 $B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/hotplug/io_is_busy
 $B echo "$RT" > /sys/devices/system/cpu/cpu0/cpufreq/hotplug/sampling_rate
 fi;
@@ -576,12 +572,10 @@ if [ -e /sys/devices/system/cpu/cpu4/cpufreq/hotplug/up_threshold ]; then
 $B echo "CPU4 Hotplug tuning.."
 $B chmod 644 /sys/devices/system/cpu/cpu4/cpufreq/hotplug/up_threshold
 $B chmod 644 /sys/devices/system/cpu/cpu4/cpufreq/hotplug/down_threshold
-$B chmod 644 /sys/devices/system/cpu/cpu4/cpufreq/hotplug/ignore_nice_load
 $B chmod 644 /sys/devices/system/cpu/cpu4/cpufreq/hotplug/io_is_busy
 $B chmod 644 /sys/devices/system/cpu/cpu4/cpufreq/hotplug/sampling_rate
 $B echo "$UP" > /sys/devices/system/cpu/cpu4/cpufreq/hotplug/up_threshold
 $B echo "$DN" > /sys/devices/system/cpu/cpu4/cpufreq/hotplug/down_threshold
-$B echo "0" > /sys/devices/system/cpu/cpu4/cpufreq/hotplug/ignore_nice_load
 $B echo "1" > /sys/devices/system/cpu/cpu4/cpufreq/hotplug/io_is_busy
 $B echo "$RT" > /sys/devices/system/cpu/cpu4/cpufreq/hotplug/sampling_rate
 fi;
@@ -618,12 +612,12 @@ if [ -e /sys/devices/virtual/sec/sec_slow/io_is_busy ]; then
  $B echo "I/O is bz.."
  $B echo "1" > /sys/devices/virtual/sec/sec_slow/io_is_busy
 fi;
-if [ "$CORES" -le "2" ]; then
+if [ "$CORES" -le "3" ]; then
  if [ -e /sys/module/pm_hotplug/parameters/loadh ]; then
   $B echo "Tuning Dual-Core behavior.."
   $B echo "$UP" > /sys/module/pm_hotplug/parameters/loadh
   $B echo "$DN" > /sys/module/pm_hotplug/parameters/loadl
-  $B echo "90" > /sys/module/pm_hotplug/parameters/loadh_scroff
+  $B echo "80" > /sys/module/pm_hotplug/parameters/loadh_scroff
   $B echo "35" > /sys/module/pm_hotplug/parameters/loadl_scroff
  fi;
  if [ -e /sys/devices/virtual/misc/second_core/hotplug_on ]; then 
@@ -636,22 +630,6 @@ if [ "$CORES" -le "2" ]; then
   $B echo "2" > /sys/devices/system/cpu/cpu0/cpufreq/smooth_offset
   $B echo "2" > /sys/devices/system/cpu/cpu0/cpufreq/smooth_step
  fi;
-fi;
-if [ -e /system/etc/thermald.conf ]; then 
- $B mount -o remount,rw /system
- $B echo "Thermal control tune-up.."
- $B rm -f /system/etc/thermald.conf
- $B rm -f /system/etc/thermald-8974.conf
- $B rm -f /system/etc/thermal-engine.conf
- $B rm -f /system/etc/thermal-engine-8974.conf
- $B cp -f /system/engine/assets/thermald.conf /system/etc/thermald.conf
- $B cp -f /system/engine/assets/thermald.conf /system/etc/thermald-8974.conf
- $B cp -f /system/engine/assets/thermal-engine.conf /system/etc/thermal-engine.conf
- $B cp -f /system/engine/assets/thermal-engine.conf /system/etc/thermal-engine-8974.conf
- $B chmod 644 /system/etc/thermald.conf
- $B chmod 644 /system/etc/thermald-8974.conf
- $B chmod 644 /system/etc/thermal-engine.conf
- $B chmod 644 /system/etc/thermal-engine-8974.conf
 fi;
 if [ -e /dev/cpuctl/cpu.shares ]; then
  $B echo "62" > /dev/cpuctl/bg_non_interactive/cpu.shares

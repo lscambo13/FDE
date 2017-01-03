@@ -167,19 +167,17 @@ setprop ro.floatingtouch.available 1
 setprop persist.sys.strictmode.disable true
 setprop vidc.debug.level 0
 setprop ro.camera.sound.forced 0
-if [ "$CORES" -ge "3" ] ; then
- setprop persist.sys.use_dithering 1
-else
- setprop persist.sys.use_dithering 0
-fi;
-if [ "$SDK" -ge "21" ] ; then
- $B mount -o remount,rw /system
- setprop persist.bt.a2dp_offload_cap sbc-aptx-aptxhd
- $B cp -f /system/engine/assets/libaptX.so /system/vendor/lib/libaptX.so
- $B cp -f /system/engine/assets/libaptXHD.so /system/vendor/lib/libaptXHD.so
- $B cp -f /system/engine/assets/libaptXScheduler.so /system/vendor/lib/libaptXScheduler.so
- $B chmod 644 /system/vendor/lib/*
- $B echo "BT aptxHD codec activated"
+setprop persist.sys.use_dithering 0
+if [ -e /system/engine/prop/firstboot ]; then
+ if [ "$SDK" -ge "21" ] ; then
+  $B mount -o remount,rw /system
+  setprop persist.bt.a2dp_offload_cap sbc-aptx-aptxhd
+  $B cp -f /system/engine/assets/libaptX.so /system/vendor/lib/libaptX.so
+  $B cp -f /system/engine/assets/libaptXHD.so /system/vendor/lib/libaptXHD.so
+  $B cp -f /system/engine/assets/libaptXScheduler.so /system/vendor/lib/libaptXScheduler.so
+  $B chmod 644 /system/vendor/lib/*
+  $B echo "BT aptxHD codec activated"
+ fi;
 fi;
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***GPU gear*** - OK"

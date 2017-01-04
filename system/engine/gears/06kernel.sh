@@ -5,17 +5,17 @@ TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Kernel gear***"
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 FM=$((RAM*(64+1)))
-FK=$(((RAM*2*1024/100)-4096))
-EF=$(((RAM*3*1024/100)-4096))
+FK=$(((RAM*10)-2699))
+EF=$(((RAM*11)-2966))
 if [ "$EF" -gt "18432" ]; then
  EF=18432
 elif [ "$EF" -le "4096" ]; then
  EF=4096
 fi;
-if [ "$FK" -gt "10240" ]; then
- FK=10240
-elif [ "$FK" -le "4096" ]; then
- FK=4096
+if [ "$FK" -gt "12288" ]; then
+ FK=12288
+elif [ "$FK" -le "3072" ]; then
+ FK=3072
 fi;
 $B mount -o remount,rw /system
 $B echo "Applying optimized kernel parameters.."

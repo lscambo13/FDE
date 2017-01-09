@@ -4,9 +4,12 @@ B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Kernel gear***"
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
+CPU=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq)
 FM=$((RAM*(64+1)))
 FK=$(((RAM*10)-2699))
 EF=$(((RAM*11)-2966))
+DW=$(((CPU/1000))*2)
+DE=$(((CPU/1000))*6)
 if [ "$EF" -gt "18432" ]; then
  EF=18432
 elif [ "$EF" -le "4096" ]; then
@@ -65,14 +68,14 @@ if [ -e /proc/sys/vm/dirty_background_ratio ]; then
  $B sysctl -e -w vm.dirty_background_ratio=10
 fi;
 if [ -e /proc/sys/vm/dirty_writeback_centisecs ]; then
- $B echo 3000 > /proc/sys/vm/dirty_writeback_centisecs
- $B echo "vm.dirty_writeback_centisecs=3000" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.dirty_writeback_centisecs=3000
+ $B echo $DW > /proc/sys/vm/dirty_writeback_centisecs
+ $B echo "vm.dirty_writeback_centisecs=$DW" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.dirty_writeback_centisecs=$DW
 fi;
 if [ -e /proc/sys/vm/dirty_expire_centisecs ]; then
- $B echo 18000 > /proc/sys/vm/dirty_expire_centisecs
- $B echo "vm.dirty_expire_centisecs=18000" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.dirty_expire_centisecs=18000
+ $B echo $DE > /proc/sys/vm/dirty_expire_centisecs
+ $B echo "vm.dirty_expire_centisecs=$DE" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.dirty_expire_centisecs=$DE
 fi;
 if [ -e /proc/sys/vm/panic_on_oom ]; then
  $B echo 0 > /proc/sys/vm/panic_on_oom

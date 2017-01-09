@@ -52,9 +52,6 @@ setprop dalvik.vm.check-dex-sum false
 setprop dalvik.vm.debug.alloc 0
 setprop dalvik.vm.deadlock-predict off
 setprop dalvik.vm.heaptargetutilization 0.9
-setprop dalvik.vm.dex2oat-swap true
-setprop dalvik.vm.dex2oat-filter everything
-setprop dalvik.vm.image-dex2oat-filter speed
 setprop libc.debug.malloc 0
 setprop persist.sys.purgeable_assets 1
 setprop persist.added_boot_bgservices 2

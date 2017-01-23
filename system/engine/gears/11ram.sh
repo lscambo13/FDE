@@ -130,6 +130,10 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  $B sleep 1
  $B echo "Starting swappiness.."
  $B swapon /dev/block/ramzswap0
+ $B echo 100 > /proc/sys/vm/swappiness
+ $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.swappiness=100
+ setprop sys.vm.swappiness 100
  fi;
 elif [ "$SWAP" -gt "0" ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
@@ -151,6 +155,10 @@ if [ -e /sys/block/zram0/disksize ]; then
  if [ "$SWAP" -gt "0" ]; then
   setprop ro.config.zram.support true
   setprop zram.disksize $FZRAM
+  $B echo 91 > /proc/sys/vm/swappiness
+  $B echo "vm.swappiness=91" >> /system/etc/sysctl.conf
+  $B sysctl -e -w vm.swappiness=91
+  setprop sys.vm.swappiness 91
   if [ -e /sys/module/zram/parameters/total_mem_usage_percent ]; then
    $B echo "Tuning ZRAM parameter.."
    $B echo "$PZ" > /sys/module/zram/parameters/total_mem_usage_percent
@@ -166,6 +174,7 @@ if [ "$SWAP" -eq "0" ]; then
  $B echo 0 > /proc/sys/vm/swappiness
  $B echo "vm.swappiness=0" >> /system/etc/sysctl.conf
  $B sysctl -e -w vm.swappiness=0
+ setprop sys.vm.swappiness 0
 fi;
 if [ "$RAM" -le "512" ]; then
  if [ "$CORES" -ge "2" ]; then

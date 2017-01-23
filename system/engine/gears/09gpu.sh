@@ -111,14 +111,14 @@ fi;
 if [ -e /system/engine/prop/firstboot ]; then
  if [ -e /system/xbin/sqlite3 ]; then
   $B echo "Tuning Android animations.."
-  $B echo "REPLACE INTO \"system\" VALUES(26,'window_animation_scale','0.25');REPLACE INTO \"system\" VALUES(27,'transition_animation_scale','0.25');" | sqlite3 /data/data/com.android.providers.settings/databases/settings.db
+  $B echo "REPLACE INTO \"system\" VALUES(26,'window_animation_scale','0.75');REPLACE INTO \"system\" VALUES(27,'transition_animation_scale','0.25');" | sqlite3 /data/data/com.android.providers.settings/databases/settings.db
  fi;
- settings put system window_animation_scale 0.25
- settings put system transition_animation_scale 0.25
- settings put system animator_duration_scale 0.25
- content update --uri content://settings/system --bind value:s:0.25 --where 'name="window_animation_scale"'
- content update --uri content://settings/system --bind value:s:0.25 --where 'name="transition_animation_scale"'
- content update --uri content://settings/system --bind value:s:0.25 --where 'name="animator_duration_scale"'
+ settings put system window_animation_scale 0.75
+ settings put system transition_animation_scale 0.75
+ settings put system animator_duration_scale 0.75
+ content update --uri content://settings/system --bind value:s:0.75 --where 'name="window_animation_scale"'
+ content update --uri content://settings/system --bind value:s:0.75 --where 'name="transition_animation_scale"'
+ content update --uri content://settings/system --bind value:s:0.75 --where 'name="animator_duration_scale"'
 fi;
 if [ -e /sys/module/tpd_setting/parameters/tpd_mode ]; then
  $B chmod 644 /sys/module/tpd_setting/parameters/tpd_mode
@@ -143,7 +143,7 @@ if [ -e /sys/class/touch/switch/set_touchscreen ]; then
  $B echo "Touchscreen sensivity tune-up [2]"
 fi;
 $B echo "Tuning Android graphics.."
-if [ "$SDK" -le "19" ]; then
+if [ "$SDK" -le "20" ]; then
  $B echo "Butter.."
  setprop debug.sf.hw 1
  setprop debug.egl.hw 1

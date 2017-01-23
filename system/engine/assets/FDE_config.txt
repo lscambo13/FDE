@@ -1,4 +1,4 @@
-### FeraDroid Engine v0.22 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.23 | By FeraVolt. 2017 ###
 
 #FDE configuration file.
 

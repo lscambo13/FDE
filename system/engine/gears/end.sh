@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.22 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.23 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox
 LOG=/sdcard/Android/FDE_log.txt
 if [ -e $LOG ]; then
@@ -17,6 +17,8 @@ if [ "$SDK" -le "18" ]; then
  fi;
 fi;
 $B mount -o remount,rw /system
+$B echo "Allow mediaserver read write execute" >> $LOG
+supolicy --live "allow mediaserver mediaserver_tmpfs:file { read write execute };"
 if [ -e /system/engine/prop/firstboot ]; then
  if [ -e /etc/fstab ]; then
   $B echo "FStab onboard.." >> $LOG

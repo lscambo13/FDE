@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.22 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.23 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Kernel gear***"
@@ -8,8 +8,8 @@ CPU=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq)
 FM=$((RAM*(64+1)))
 FK=$(((RAM*10)-2699))
 EF=$(((RAM*11)-2966))
-DW=$(((CPU/1000))*2)
-DE=$(((CPU/1000))*6)
+DW=$((CPU/1000))
+DE=$((DW/3))
 if [ "$EF" -gt "18432" ]; then
  EF=18432
 elif [ "$EF" -le "4096" ]; then
@@ -23,19 +23,19 @@ fi;
 $B mount -o remount,rw /system
 $B echo "Applying optimized kernel parameters.."
 if [ -e /proc/sys/kernel/random/read_wakeup_threshold ]; then
- $B echo 1024 > /proc/sys/kernel/random/read_wakeup_threshold
- $B echo "kernel.random.read_wakeup_threshold=1024" >> /system/etc/sysctl.conf
- $B sysctl -e -w kernel.random.read_wakeup_threshold=1024
+ $B echo 1365 > /proc/sys/kernel/random/read_wakeup_threshold
+ $B echo "kernel.random.read_wakeup_threshold=1365" >> /system/etc/sysctl.conf
+ $B sysctl -e -w kernel.random.read_wakeup_threshold=1365
 fi;
 if [ -e /proc/sys/kernel/random/write_wakeup_threshold ]; then
- $B echo 2048 > /proc/sys/kernel/random/write_wakeup_threshold
- $B echo "kernel.random.write_wakeup_threshold=2048" >> /system/etc/sysctl.conf
- $B sysctl -e -w kernel.random.write_wakeup_threshold=2048
+ $B echo 2730 > /proc/sys/kernel/random/write_wakeup_threshold
+ $B echo "kernel.random.write_wakeup_threshold=2730" >> /system/etc/sysctl.conf
+ $B sysctl -e -w kernel.random.write_wakeup_threshold=2730
 fi;
 if [ -e /proc/sys/vm/vfs_cache_pressure ]; then
- $B echo 72 > /proc/sys/vm/vfs_cache_pressure
- $B echo "vm.vfs_cache_pressure=72" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.vfs_cache_pressure=72
+ $B echo 200 > /proc/sys/vm/vfs_cache_pressure
+ $B echo "vm.vfs_cache_pressure=200" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.vfs_cache_pressure=200
 fi;
 if [ -e /proc/sys/vm/min_free_kbytes ]; then
  $B echo $FK > /proc/sys/vm/min_free_kbytes
@@ -58,14 +58,14 @@ if [ -e /proc/sys/vm/oom_kill_allocating_task ]; then
  $B sysctl -e -w vm.oom_kill_allocating_task=1
 fi;
 if [ -e /proc/sys/vm/dirty_ratio ]; then
- $B echo 36 > /proc/sys/vm/dirty_ratio
- $B echo "vm.dirty_ratio=36" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.dirty_ratio=36
+ $B echo 33 > /proc/sys/vm/dirty_ratio
+ $B echo "vm.dirty_ratio=33" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.dirty_ratio=33
 fi;
 if [ -e /proc/sys/vm/dirty_background_ratio ]; then
- $B echo 10 > /proc/sys/vm/dirty_background_ratio
- $B echo "vm.dirty_background_ratio=10" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.dirty_background_ratio=10
+ $B echo 9 > /proc/sys/vm/dirty_background_ratio
+ $B echo "vm.dirty_background_ratio=9" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.dirty_background_ratio=9
 fi;
 if [ -e /proc/sys/vm/dirty_writeback_centisecs ]; then
  $B echo $DW > /proc/sys/vm/dirty_writeback_centisecs
@@ -113,9 +113,9 @@ if [ -e /proc/sys/vm/min_free_order_shift ]; then
  $B sysctl -e -w vm.min_free_order_shift=4
 fi;
 if [ -e /proc/sys/vm/page-cluster ]; then
- $B echo 4 > /proc/sys/vm/page-cluster
- $B echo "vm.page-cluster=4" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.page-cluster=4
+ $B echo 3 > /proc/sys/vm/page-cluster
+ $B echo "vm.page-cluster=3" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.page-cluster=3
 fi;
 if [ -e /proc/sys/vm/scan_unevictable_pages ]; then
  $B echo 0 > /proc/sys/vm/scan_unevictable_pages
@@ -221,6 +221,10 @@ if [ -e /sys/module/sync/parameters/fsync_enabled ]; then
  $B echo "N" > /sys/module/sync/parameters/fsync_enabled
  $B echo "Fsync module - OFF"
 fi;
+if [ -e /sys/module/wakelock/parameters/debug_mask ]; then
+ $B echo "7" > /sys/module/wakelock/parameters/debug_mask
+ $B echo "Wakelock debugging - OFF"
+fi;
 if [ -e /system/etc/sprd_monitor-user.conf ]; then
  $B echo "sysdump off" > /system/etc/sprd_monitor-user.conf
  $B echo "coredump off" >> /system/etc/sprd_monitor-user.conf
@@ -266,6 +270,7 @@ setprop profiler.debugmonitor false
 setprop profiler.hung.dumpdobugreport false
 setprop logcat.live disable
 setprop debugtool.anrhistory 0
+setprop ro.vold.umsdirtyratio 33
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Kernel gear*** - OK"
 sync;

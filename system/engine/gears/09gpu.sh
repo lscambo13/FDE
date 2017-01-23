@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.22 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.23 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 SDK=$(getprop ro.build.version.sdk)
@@ -33,24 +33,20 @@ if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
  setprop debug.qc.hardware true
  setprop debug.qctwa.statusbar 1
  setprop debug.qctwa.perservebuf 1
- setprop persist.hwc.mdpcomp.enable true
- setprop debug.mdpcomp.logs 0
- setprop debug.mdpcomp.maxlayer 3
- setprop debug.mdpcomp.idletime -1
 fi;
 if [ "$SDK" -eq "10" ]; then
  if [ -e /system/lib/egl/libGLES_android.so ]; then
-   if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
-    AV=$(du -k "/system/lib/egl/libGLESv2_adreno200.so" | cut -f1)
-    if [ "$AV" -eq "1712" ]; then
-     $B echo "You have legacy adreno libs. No HWA for you."
-     exit
-    fi;
+  if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
+   AV=$(du -k "/system/lib/egl/libGLESv2_adreno200.so" | cut -f1)
+   if [ "$AV" -eq "1712" ]; then
+    $B echo "You have legacy adreno libs. No HWA for you."
+   else
+    $B echo "Forcing GPU to render UI.."
+    $B mount -o remount,rw /system
+    $B sed -i '/0 0 android/d' /system/lib/egl/egl.cfg
+    $B rm -f /system/lib/egl/libGLES_android.so
    fi;
-   $B echo "Forcing GPU to render UI.."
-   $B mount -o remount,rw /system
-   $B sed -i '/0 0 android/d' /system/lib/egl/egl.cfg
-   $B rm -f /system/lib/egl/libGLES_android.so
+  fi;
  fi;
 fi;
 if [ -e /sys/module/mali/parameters/mali_debug_level ]; then
@@ -147,16 +143,19 @@ if [ -e /sys/class/touch/switch/set_touchscreen ]; then
  $B echo "Touchscreen sensivity tune-up [2]"
 fi;
 $B echo "Tuning Android graphics.."
-setprop debug.sf.hw 1
-setprop debug.egl.hw 1
-setprop debug.gr.swapinterval 1
-setprop debug.gr.numframebuffers 3
+if [ "$SDK" -le "19" ]; then
+ $B echo "Butter.."
+ setprop debug.sf.hw 1
+ setprop debug.egl.hw 1
+ setprop debug.gr.swapinterval 1
+ setprop debug.gr.numframebuffers 3
+ setprop persist.sys.scrollingcache 3
+fi;
 setprop persist.sys.ui.hw 1
 setprop video.accelerate.hw 1
 setprop hwui.render_dirty_regions false
 setprop debug.hwui.render_dirty_regions false
 setprop ro.config.disable.hw_accel false
-setprop persist.sys.scrollingcache 3
 setprop ro.media.dec.jpeg.memcap 8000000
 setprop ro.media.enc.hprof.vid.bps 8000000
 setprop ro.media.enc.jpeg.quality 100
@@ -164,9 +163,20 @@ setprop ro.floatingtouch.available 1
 setprop persist.sys.strictmode.disable true
 setprop vidc.debug.level 0
 setprop ro.camera.sound.forced 0
+if [ "$SDK" -le "21" ]; then
+$B echo "Fix stagerfright security vulnerabilities.."
+ setprop media.stagefright.enable-player false
+ setprop media.stagefright.enable-http false
+ setprop media.stagefright.enable-aac false
+ setprop media.stagefright.enable-qcp false
+ setprop media.stagefright.enable-fma2dp false
+ setprop media.stagefright.enable-scan false
+fi;
 if [ "$CORES" -ge "5" ] ; then
+ $B echo "Dithering - ON"
  setprop persist.sys.use_dithering 1
 else
+ $B echo "Dithering - OFF"
  setprop persist.sys.use_dithering 0
 fi;
 if [ -e /system/engine/prop/firstboot ]; then

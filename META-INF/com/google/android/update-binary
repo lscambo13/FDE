@@ -10,7 +10,7 @@ ui_print() {
 ui_print ""
 ui_print ""
 ui_print "***FeraLab***"
-ui_print "FeraDroid Engine v0.22"
+ui_print "FeraDroid Engine v0.23"
 ui_print ""
 ui_print "FDE deploy.."
 mount /system

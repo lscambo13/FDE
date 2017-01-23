@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.22 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.23 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox
 RZS=/system/engine/bin/rzscontrol
 TIME=$($B date | $B awk '{ print $4 }')
@@ -28,13 +28,6 @@ $B echo "  Real free:          $RAMfree MB"
 $B echo "  Cached:             $RAMcached MB"
 $B echo "  SWAP/ZRAM total:    $SWAP MB"
 $B echo "  SWAP/ZRAM used:     $SWAPused MB"
-if [ "$RAM" -gt "512" ]; then
- setprop ro.config.low_ram false
- setprop ro.board_ram_size high
-else
- setprop ro.config.low_ram true
- setprop ro.board_ram_size low
-fi;
 $B echo "Freeing RAM..."
 sync;
 $B sleep 1
@@ -66,10 +59,12 @@ if [ -e /sys/block/zram0/disksize ]; then
  elif [ "$RAM" -gt "1512" ]; then
   $B echo "You don't need zRAM"
   $B echo "Stopping swappiness.."
-  $B swapoff /dev/block/zram0
+  $B swapoff /dev/block/zram0 > /dev/null 2>&1
+  $B echo 0 > /sys/block/zram0/disksize
   $B umount /dev/block/zram0
   if [ -e /sys/block/zram1/disksize ]; then
-   $B swapoff /dev/block/zram1
+   $B swapoff /dev/block/zram1 > /dev/null 2>&1
+   $B echo 0 > /sys/block/zram1/disksize
    $B umount /dev/block/zram1
   fi;
   $B sleep 1
@@ -79,10 +74,12 @@ if [ -e /sys/block/zram0/disksize ]; then
  $B echo "Applying new ZRAM parameters.."
  if [ "$SWAP" -gt "0" ]; then
   $B echo "Stopping swappiness.."
-  $B swapoff /dev/block/zram0
+  $B swapoff /dev/block/zram0 > /dev/null 2>&1
+  $B echo 0 > /sys/block/zram0/disksize
   $B umount /dev/block/zram0
   if [ -e /sys/block/zram1/disksize ]; then
-   $B swapoff /dev/block/zram1
+   $B swapoff /dev/block/zram1 > /dev/null 2>&1
+   $B echo 0 > /sys/block/zram1/disksize
    $B umount /dev/block/zram1
    $B sleep 1
    $B echo 1 > /sys/block/zram1/reset
@@ -100,11 +97,11 @@ if [ -e /sys/block/zram0/disksize ]; then
  fi;
  if [ -e /sys/block/zram0/max_comp_streams ]; then
   $B echo "Set max compression streams.."
-  $B echo "3" > /sys/block/zram0/max_comp_streams
+  $B echo "2" > /sys/block/zram0/max_comp_streams
  fi;
  $B echo "Starting swappiness.."
- $B mkswap /dev/block/zram0
- $B swapon /dev/block/zram0
+ $B mkswap /dev/block/zram0 > /dev/null 2>&1
+ $B swapon /dev/block/zram0 > /dev/null 2>&1
  fi;
 elif [ -e /sys/block/ramzswap0/size ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
@@ -134,11 +131,6 @@ elif [ -e /sys/block/ramzswap0/size ]; then
  $B echo "Starting swappiness.."
  $B swapon /dev/block/ramzswap0
  fi;
- $B echo "Configuring kernel & RAMZSWAP frienship.."
- $B echo 100 > /proc/sys/vm/swappiness
- $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.swappiness=100
- setprop sys.vm.swappiness 100
 elif [ "$SWAP" -gt "0" ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  $B echo "SWAP detected. Size is $SWAP MB"
@@ -157,18 +149,6 @@ fi;
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
 if [ -e /sys/block/zram0/disksize ]; then
  if [ "$SWAP" -gt "0" ]; then
-  $B echo "Configuring kernel & ZRAM frienship.."
-  if [ "$RAM" -gt "1024" ]; then
-   $B echo 90 > /proc/sys/vm/swappiness
-   $B echo "vm.swappiness=90" >> /system/etc/sysctl.conf
-   $B sysctl -e -w vm.swappiness=90
-   setprop sys.vm.swappiness 90
-  elif [ "$RAM" -le "1024" ]; then
-   $B echo 100 > /proc/sys/vm/swappiness
-   $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf
-   $B sysctl -e -w vm.swappiness=100
-   setprop sys.vm.swappiness 100
-  fi;
   setprop ro.config.zram.support true
   setprop zram.disksize $FZRAM
   if [ -e /sys/module/zram/parameters/total_mem_usage_percent ]; then
@@ -193,16 +173,16 @@ if [ "$RAM" -le "512" ]; then
   if [ -e /sys/kernel/mm/uksm/run ]; then
    $B echo "uKSM detected"
    $B echo "Starting and tuning uKSM.."
-   $B echo 96 > /sys/kernel/mm/uksm/pages_to_scan
-   $B echo 9600 > /sys/kernel/mm/uksm/sleep_millisecs
+   $B echo 128 > /sys/kernel/mm/uksm/pages_to_scan
+   $B echo 5000 > /sys/kernel/mm/uksm/sleep_millisecs
    $B echo 45 > /sys/kernel/mm/uksm/max_cpu_percentage
    $B echo 1 > /sys/kernel/mm/uksm/run
    setprop ro.config.ksm.support true
   elif [ -e /sys/kernel/mm/ksm/run ]; then
    $B echo "KSM detected"
    $B echo "Starting and tuning KSM.."
-   $B echo 96 > /sys/kernel/mm/ksm/pages_to_scan
-   $B echo 9600 > /sys/kernel/mm/ksm/sleep_millisecs
+   $B echo 128 > /sys/kernel/mm/ksm/pages_to_scan
+   $B echo 5000 > /sys/kernel/mm/ksm/sleep_millisecs
    $B echo 1 > /sys/kernel/mm/ksm/run
    setprop ro.config.ksm.support true
   else

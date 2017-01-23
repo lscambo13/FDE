@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.22 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.23 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox
 KERNEL=$($B uname -r)
 ARCH=$($B uname -m)
@@ -13,9 +13,9 @@ CUR=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq)
 CORES=$($B grep -c 'processor' /proc/cpuinfo)
 LOG=/sdcard/Android/FDE_log.txt
 TIME=$($B date | $B awk '{ print $4 }')
-setprop ro.feralab.engine 21
-$B sleep 96
-$B mount -o remount,rw /system
+setprop ro.feralab.engine 23
+svc power stayon true
+$B sleep 101
 $B rm -f $LOG
 $B touch $LOG
 if [ -e $LOG ]; then
@@ -31,9 +31,10 @@ $B chown 0:0 $LOG
 $B chown 0:0 $CONFIG
 $B chmod 777 $LOG
 $B chmod 777 $CONFIG
+$B mount -o remount,rw /system
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
-$B echo "[$TIME] FeraDroid Engine v0.22" >> $LOG
+$B echo "[$TIME] FeraDroid Engine v0.23" >> $LOG
 $B echo "[$TIME] Firing up.." >> $LOG
 $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)" >> $LOG
 $B echo "[$TIME] Architecture: $ARCH" >> $LOG
@@ -47,6 +48,7 @@ $B echo "[$TIME] ROM version: $ROM" >> $LOG
 $B echo "[$TIME] Android version: $(getprop ro.build.version.release)" >> $LOG
 $B echo "[$TIME] SDK: $SDK" >> $LOG
 $B echo "[$TIME] /system free space: $SF" >> $LOG
+am start -a android.intent.action.MAIN -e message 'FDE v0.23 - firing up..' -n com.rja.utility/.ShowToast
 service call activity 51 i32 0
 if [ -e /system/engine/prop/firstboot ]; then
  $B echo "[$TIME] First boot after deploy" >> $LOG
@@ -168,6 +170,7 @@ if [ -e /system/engine/gears/end.sh ]; then
 fi;
 sync;
 $B sleep 1
+svc power stayon false
 service call activity 51 i32 -1
 if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,rw /system

@@ -1,14 +1,14 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.22 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.23 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***CPU gear***"
 MAX=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq)
 CORES=$($B grep -c 'processor' /proc/cpuinfo)
-UP=70
-DN=25
+UP=77
+DN=20
 SF=2
-RT=20000
+RT=10000
 if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
  $B echo "Disable MSM thermal core for now.."
  $B echo 0 > /sys/module/msm_thermal/core_control/enabled
@@ -54,7 +54,7 @@ $B echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy
 $B echo "$SF" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias ]; then
   $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
-  if [ "$MAX" -ge "1600000" ]; then
+  if [ "$MAX" -ge "1700000" ]; then
    $B echo "Powersave bias - on"
    $B echo "100" > /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
   else
@@ -76,7 +76,7 @@ $B echo "$RT" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_rate
 $B echo "$SF" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias ]; then
   $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias
-  if [ "$MAX" -gt "1600000" ]; then
+  if [ "$MAX" -gt "1700000" ]; then
    $B echo "Powersave bias - on"
    $B echo "100" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias
   else
@@ -98,7 +98,7 @@ $B echo "$RT" > /sys/devices/system/cpu/cpu4/cpufreq/ondemand/sampling_rate
 $B echo "$SF" > /sys/devices/system/cpu/cpu4/cpufreq/ondemand/sampling_down_factor
  if [ -e /sys/devices/system/cpu/cpu4/cpufreq/ondemand/powersave_bias ]; then
   $B chmod 644 /sys/devices/system/cpu/cpu4/cpufreq/ondemand/powersave_bias
-  if [ "$MAX" -gt "1600000" ]; then
+  if [ "$MAX" -gt "1700000" ]; then
    $B echo "Powersave bias - on"
    $B echo "100" > /sys/devices/system/cpu/cpu4/cpufreq/ondemand/powersave_bias
   else
@@ -114,21 +114,12 @@ if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/up_threshold ]; then
  $B chmod 644 /sys/devices/system/cpu/cpufreq/sprdemand/down_differential
  $B chmod 644 /sys/devices/system/cpu/cpufreq/sprdemand/io_is_busy
  $B chmod 644 /sys/devices/system/cpu/cpufreq/sprdemand/sampling_down_factor
- $B echo "$UP" > /sys/devices/system/cpu/cpufreq/sprdemand/up_threshold
+ $B echo "63" > /sys/devices/system/cpu/cpufreq/sprdemand/up_threshold
  $B echo "$DN" > /sys/devices/system/cpu/cpufreq/sprdemand/down_differential
  $B echo "$RT" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_rate
  $B echo "1" > /sys/devices/system/cpu/cpufreq/sprdemand/io_is_busy
  $B echo "$SF" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_down_factor
- if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias ]; then
-  $B chmod 644 /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias
-  if [ "$MAX" -gt "1600000" ]; then
-   $B echo "Powersave bias - on"
-   $B echo "100" > /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias
-  else
-   $B echo "Powersave bias - off"
-   $B echo "0" > /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias
-  fi;
- fi;
+ $B echo "0" > /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/up_threshold ]; then
  $B echo "CPU0 sprdemand tuning.."
@@ -137,21 +128,12 @@ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/up_threshold ]; then
  $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/down_differential
  $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/io_is_busy
  $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/sampling_down_factor
- $B echo "$UP" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/up_threshold
+ $B echo "63" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/up_threshold
  $B echo "$DN" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/down_differential
  $B echo "$RT" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/sampling_rate
  $B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/io_is_busy
  $B echo "$SF" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/sampling_down_factor
- if [ -e /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias ]; then
-  $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias
-  if [ "$MAX" -gt "1600000" ]; then
-   $B echo "Powersave bias - on"
-   $B echo "100" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias
-  else
-   $B echo "Powersave bias - off"
-   $B echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias
-  fi;
- fi;
+ $B echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/smartassH3/sample_rate_jiffies ]; then
 $B echo "CPU SmartassH3 tuning.."
@@ -166,7 +148,7 @@ $B chmod 644 /sys/devices/system/cpu/cpufreq/smartassH3/sample_rate_jiffies
 $B echo "0" > /sys/devices/system/cpu/cpufreq/smartassH3/debug_mask
 $B echo "192000" > /sys/devices/system/cpu/cpufreq/smartassH3/ramp_up_step
 $B echo "192000" > /sys/devices/system/cpu/cpufreq/smartassH3/ramp_down_step
-$B echo "$UP" > /sys/devices/system/cpu/cpufreq/smartassH3/max_cpu_load
+$B echo "63" > /sys/devices/system/cpu/cpufreq/smartassH3/max_cpu_load
 $B echo "$DN" > /sys/devices/system/cpu/cpufreq/smartassH3/min_cpu_load
 $B echo "$RT" > /sys/devices/system/cpu/cpufreq/smartassH3/up_rate_us
 $B echo "$RT" > /sys/devices/system/cpu/cpufreq/smartassH3/down_rate_us
@@ -192,7 +174,7 @@ $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sample_rate_jiffies
 $B echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/debug_mask
 $B echo "192000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/ramp_up_step
 $B echo "192000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/ramp_down_step
-$B echo "$UP" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/max_cpu_load
+$B echo "63" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/max_cpu_load
 $B echo "$DN" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/min_cpu_load
 $B echo "$RT" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/up_rate_us
 $B echo "$RT" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/down_rate_us
@@ -226,7 +208,7 @@ $B chmod 644 /sys/devices/system/cpu/cpu4/cpufreq/smartassH3/sample_rate_jiffies
 $B echo "0" > /sys/devices/system/cpu/cpu4/cpufreq/smartassH3/debug_mask
 $B echo "192000" > /sys/devices/system/cpu/cpu4/cpufreq/smartassH3/ramp_up_step
 $B echo "192000" > /sys/devices/system/cpu/cpu4/cpufreq/smartassH3/ramp_down_step
-$B echo "$UP" > /sys/devices/system/cpu/cpu4/cpufreq/smartassH3/max_cpu_load
+$B echo "63" > /sys/devices/system/cpu/cpu4/cpufreq/smartassH3/max_cpu_load
 $B echo "$DN" > /sys/devices/system/cpu/cpu4/cpufreq/smartassH3/min_cpu_load
 $B echo "$RT" > /sys/devices/system/cpu/cpu4/cpufreq/smartassH3/up_rate_us
 $B echo "$RT" > /sys/devices/system/cpu/cpu4/cpufreq/smartassH3/down_rate_us
@@ -353,39 +335,42 @@ $B echo "$RT" > /sys/devices/system/cpu/cpu4/cpufreq/smartass/up_rate_us
 $B echo "$RT" > /sys/devices/system/cpu/cpu4/cpufreq/smartass/down_rate_us
 $B echo "$SF" > /sys/devices/system/cpu/cpu4/cpufreq/smartass/sample_rate_jiffies
 fi;
-if [ -e /sys/devices/system/cpu/cpufreq/interactive/min_sample_time ]; then
+if [ -e /sys/devices/system/cpu/cpufreq/interactive/go_highspeed_load ]; then
 $B echo "CPU Interactive tuning.."
 $B chmod 644 /sys/devices/system/cpu/cpufreq/interactive/go_highspeed_load
-$B chmod 644 /sys/devices/system/cpu/cpufreq/interactive/go_maxspeed_load
-if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time ]; then
+$B chmod 644 /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
+$B echo "$UP" > /sys/devices/system/cpu/cpufreq/interactive/go_highspeed_load
+$B echo "1" > /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
+fi;
+if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_highspeed_load ]; then
 $B echo "CPU0 Interactive tuning.."
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_highspeed_load
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy
 $B echo "$UP" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_highspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy
 fi;
-if [ -e /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time ]; then
+if [ -e /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_highspeed_load ]; then
 $B echo "CPU4 Interactive tuning.."
 $B chmod 644 /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_highspeed_load
 $B chmod 644 /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy
 $B echo "$UP" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_highspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy
 fi;
-if [ -e /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time ]; then
+if [ -e /sys/devices/system/cpu/cpufreq/interactivex/go_highspeed_load ]; then
 $B echo "CPU InteractiveX tuning.."
 $B chmod 644 /sys/devices/system/cpu/cpufreq/interactivex/go_highspeed_load
 $B chmod 644 /sys/devices/system/cpu/cpufreq/interactivex/io_is_busy
 $B echo "$UP" > /sys/devices/system/cpu/cpufreq/interactivex/go_highspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpufreq/interactivex/io_is_busy
 fi;
-if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactivex/min_sample_time ]; then
+if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactivex/go_highspeed_load ]; then
 $B echo "CPU0 InteractiveX tuning.."
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/interactivex/go_highspeed_load
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/interactivex/io_is_busy
 $B echo "$UP" > /sys/devices/system/cpu/cpu0/cpufreq/interactivex/go_highspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/interactivex/io_is_busy
 fi;
-if [ -e /sys/devices/system/cpu/cpu4/cpufreq/interactivex/min_sample_time ]; then
+if [ -e /sys/devices/system/cpu/cpu4/cpufreq/interactivex/go_highspeed_load ]; then
 $B echo "CPU4 InteractiveX tuning.."
 $B chmod 644 /sys/devices/system/cpu/cpu4/cpufreq/interactivex/go_highspeed_load
 $B chmod 644 /sys/devices/system/cpu/cpu4/cpufreq/interactivex/io_is_busy
@@ -583,6 +568,7 @@ if [ -e /sys/module/workqueue/parameters/power_efficient ]; then
  $B echo "Enabling power-save workqueues.."
  $B chmod 644 /sys/module/workqueue/parameters/power_efficient
  $B echo "1" > /sys/module/workqueue/parameters/power_efficient
+ $B echo "Y" > /sys/module/workqueue/parameters/power_efficient
 fi;
 if [ -e /sys/module/subsystem_restart/parameters/enable_ramdumps ]; then
  $B echo "Disabling RAM-dumps.."
@@ -605,7 +591,7 @@ if [ -e /sys/devices/system/cpu/sched_mc_power_savings ]; then
  $B echo "2" > /sys/devices/system/cpu/sched_mc_power_savings
 fi;
 if [ -e /proc/sys/abi/swp ]; then
- $B echo "SWP active.."
+ $B echo "ARM8 SWP active.."
  $B echo "1" > /proc/sys/abi/swp
 fi;
 if [ -e /sys/devices/virtual/sec/sec_slow/io_is_busy ]; then
@@ -617,8 +603,6 @@ if [ "$CORES" -le "3" ]; then
   $B echo "Tuning Dual-Core behavior.."
   $B echo "$UP" > /sys/module/pm_hotplug/parameters/loadh
   $B echo "$DN" > /sys/module/pm_hotplug/parameters/loadl
-  $B echo "80" > /sys/module/pm_hotplug/parameters/loadh_scroff
-  $B echo "35" > /sys/module/pm_hotplug/parameters/loadl_scroff
  fi;
  if [ -e /sys/devices/virtual/misc/second_core/hotplug_on ]; then 
   $B echo "Activating dynamic hot-plug.."

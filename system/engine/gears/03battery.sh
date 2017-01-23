@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.22 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.23 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox
 A=$(cat /sys/class/power_supply/battery/capacity)
 TIME=$($B date | $B awk '{ print $4 }')
@@ -12,11 +12,12 @@ if [ "$A" -eq "100" ] ; then
   $B mount -o remount,rw /system
   $B rm -f /data/system/batterystats.bin
   $B rm -f /system/engine/prop/nobat
+  if [ -e /sys/devices/platform/i2c-gpio.9/i2c-9/9-0036/power_supply/fuelgauge/fg_reset_soc ]; then
+   $B echo "Reset Fuelgauge report."
+   $B echo "1" > /sys/devices/platform/i2c-gpio.9/i2c-9/9-0036/power_supply/fuelgauge/fg_reset_soc
+  fi;
+  $B echo "Fully charge your battery now."
  fi;
-fi;
-if [ -e /sys/devices/platform/i2c-gpio.9/i2c-9/9-0036/power_supply/fuelgauge/fg_reset_soc ]; then
- $B echo "Reset Fuelgauge report."
- $B echo "1" > /sys/devices/platform/i2c-gpio.9/i2c-9/9-0036/power_supply/fuelgauge/fg_reset_soc
 fi;
 if [ -e /sys/kernel/fast_charge/force_fast_charge ]; then
  $B echo "Fast charge support detected. Activating.."
@@ -49,14 +50,12 @@ fi;
 $B echo "Tuning Android power-saving.."
 setprop power.saving.mode 1
 setprop persist.radio.ramdump 0
-setprop ro.vold.umsdirtyratio 20
 setprop pm.sleep_mode 1
 setprop ro.ril.disable.power.collapse 0
 setprop ro.config.hw_power_saving 1
 setprop dev.pm.dyn_samplingrate 1
 setprop persist.radio.add_power_save 1
 setprop ro.com.google.networklocation 0
-svc power stayon false
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Battery gear*** - OK"
 sync;

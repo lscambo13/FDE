@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.22 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.23 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***GPS gear***"
@@ -40,7 +40,7 @@ if [ -e /system/engine/prop/nogps ]; then
   $B sed -e "s=SUPL_VER=#=" -i /system/etc/gps.conf
   $B sed -e "s=REPORT=#=" -i /system/etc/gps.conf
   $B echo "" >> /system/etc/gps.conf
-  $B echo "### FeraDroid Engine v0.22 | By FeraVolt. 2017 ###" >> /system/etc/gps.conf
+  $B echo "### FeraDroid Engine v0.23 | By FeraVolt. 2017 ###" >> /system/etc/gps.conf
   $B echo "DEBUG_LEVEL=0" >> /system/etc/gps.conf
   $B echo "ERR_ESTIMATE=0" >> /system/etc/gps.conf
   $B echo "NTP_SERVER=time.gpsonextra.net" >> /system/etc/gps.conf

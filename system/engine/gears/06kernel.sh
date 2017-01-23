@@ -33,9 +33,9 @@ if [ -e /proc/sys/kernel/random/write_wakeup_threshold ]; then
  $B sysctl -e -w kernel.random.write_wakeup_threshold=2730
 fi;
 if [ -e /proc/sys/vm/vfs_cache_pressure ]; then
- $B echo 200 > /proc/sys/vm/vfs_cache_pressure
- $B echo "vm.vfs_cache_pressure=200" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.vfs_cache_pressure=200
+ $B echo 50 > /proc/sys/vm/vfs_cache_pressure
+ $B echo "vm.vfs_cache_pressure=50" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.vfs_cache_pressure=50
 fi;
 if [ -e /proc/sys/vm/min_free_kbytes ]; then
  $B echo $FK > /proc/sys/vm/min_free_kbytes
@@ -88,9 +88,9 @@ if [ -e /proc/sys/vm/overcommit_memory ]; then
  $B sysctl -e -w vm.overcommit_memory=1
 fi;
 if [ -e /proc/sys/vm/overcommit_ratio ]; then
- $B echo 100 > /proc/sys/vm/overcommit_ratio
- $B echo "vm.overcommit_ratio=100" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.overcommit_ratio=100
+ $B echo 75 > /proc/sys/vm/overcommit_ratio
+ $B echo "vm.overcommit_ratio=75" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.overcommit_ratio=75
 fi;
 if [ -e /proc/sys/vm/laptop_mode ]; then
  $B echo 1 > /proc/sys/vm/laptop_mode
@@ -190,15 +190,20 @@ fi;
 $B echo "Tuning kernel scheduling.."
 $B mount -t debugfs none /sys/kernel/debug
 if [ -e /sys/kernel/debug/sched_features ]; then
+ $B echo "Sched feautres tuning.."
  $B echo "NO_GENTLE_FAIR_SLEEPERS" > /sys/kernel/debug/sched_features
  $B echo "NO_AFFINE_WAKEUPS" > /sys/kernel/debug/sched_features
  $B echo "NO_WAKEUP_OVERLAP" > /sys/kernel/debug/sched_features
  $B echo "NO_WAKEUP_PREEMPT" > /sys/kernel/debug/sched_features
  $B echo "NO_DOUBLE_TICK" > /sys/kernel/debug/sched_features
 fi;
-ABC=$(cat /proc/sys/kernel/sched_latency_ns)
-$B echo $((ABC/2)) > /proc/sys/kernel/sched_min_granularity_ns
+if [ -e /proc/sys/kernel/sched_min_granularity_ns ]; then
+ ABC=$(cat /proc/sys/kernel/sched_latency_ns)
+ $B echo "Tuning kernel sched latency.."
+ $B echo $((ABC/2)) > /proc/sys/kernel/sched_min_granularity_ns
+fi;
 if [ -e /sys/kernel/sched/gentle_fair_sleepers ]; then
+ $B echo "Sleepers tuning.."
  $B echo 0 > /sys/kernel/sched/gentle_fair_sleepers
 fi;
 if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
@@ -218,6 +223,7 @@ if [ -e /sys/module/sync/parameters/fsync ]; then
  $B echo "Fsync module - OFF"
 fi;
 if [ -e /sys/module/sync/parameters/fsync_enabled ]; then
+ $B echo "0" > /sys/module/sync/parameters/fsync_enabled
  $B echo "N" > /sys/module/sync/parameters/fsync_enabled
  $B echo "Fsync module - OFF"
 fi;

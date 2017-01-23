@@ -32,18 +32,6 @@ $B echo "Freeing RAM..."
 sync;
 $B sleep 1
 $B echo 3 > /proc/sys/vm/drop_caches
-$B sleep 1
-sync;
-$B sleep 1
-$B echo 2 > /proc/sys/vm/drop_caches
-$B sleep 1
-sync;
-$B sleep 1
-$B echo 1 > /proc/sys/vm/drop_caches
-$B sleep 1
-sync;
-$B sleep 1
-$B echo 3 > /proc/sys/vm/drop_caches
 $B sleep 3
 $B mount -o remount,rw /system
 sync;
@@ -139,10 +127,10 @@ elif [ "$SWAP" -gt "0" ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p)
  $B echo "SWAP detected. Size is $SWAP MB"
  $B echo "Configuring kernel & SWAP frienship.."
- $B echo 50 > /proc/sys/vm/swappiness
- $B echo "vm.swappiness=50" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.swappiness=50
- setprop sys.vm.swappiness 50
+ $B echo 40 > /proc/sys/vm/swappiness
+ $B echo "vm.swappiness=40" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.swappiness=40
+ setprop sys.vm.swappiness 40
  if [ -e /sys/module/zswap/parameters/enabled ]; then
   $B echo "ZSWAP detected. Enabling.."
   $B echo 1 > /sys/module/zswap/parameters/enabled
@@ -155,10 +143,10 @@ if [ -e /sys/block/zram0/disksize ]; then
  if [ "$SWAP" -gt "0" ]; then
   setprop ro.config.zram.support true
   setprop zram.disksize $FZRAM
-  $B echo 91 > /proc/sys/vm/swappiness
-  $B echo "vm.swappiness=91" >> /system/etc/sysctl.conf
-  $B sysctl -e -w vm.swappiness=91
-  setprop sys.vm.swappiness 91
+  $B echo 100 > /proc/sys/vm/swappiness
+  $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf
+  $B sysctl -e -w vm.swappiness=100
+  setprop sys.vm.swappiness 100
   if [ -e /sys/module/zram/parameters/total_mem_usage_percent ]; then
    $B echo "Tuning ZRAM parameter.."
    $B echo "$PZ" > /sys/module/zram/parameters/total_mem_usage_percent

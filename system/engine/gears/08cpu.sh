@@ -114,7 +114,7 @@ if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/up_threshold ]; then
  $B chmod 644 /sys/devices/system/cpu/cpufreq/sprdemand/down_differential
  $B chmod 644 /sys/devices/system/cpu/cpufreq/sprdemand/io_is_busy
  $B chmod 644 /sys/devices/system/cpu/cpufreq/sprdemand/sampling_down_factor
- $B echo "63" > /sys/devices/system/cpu/cpufreq/sprdemand/up_threshold
+ $B echo "66" > /sys/devices/system/cpu/cpufreq/sprdemand/up_threshold
  $B echo "$DN" > /sys/devices/system/cpu/cpufreq/sprdemand/down_differential
  $B echo "$RT" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_rate
  $B echo "1" > /sys/devices/system/cpu/cpufreq/sprdemand/io_is_busy
@@ -128,7 +128,7 @@ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/up_threshold ]; then
  $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/down_differential
  $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/io_is_busy
  $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/sampling_down_factor
- $B echo "63" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/up_threshold
+ $B echo "66" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/up_threshold
  $B echo "$DN" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/down_differential
  $B echo "$RT" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/sampling_rate
  $B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/io_is_busy
@@ -148,7 +148,7 @@ $B chmod 644 /sys/devices/system/cpu/cpufreq/smartassH3/sample_rate_jiffies
 $B echo "0" > /sys/devices/system/cpu/cpufreq/smartassH3/debug_mask
 $B echo "192000" > /sys/devices/system/cpu/cpufreq/smartassH3/ramp_up_step
 $B echo "192000" > /sys/devices/system/cpu/cpufreq/smartassH3/ramp_down_step
-$B echo "63" > /sys/devices/system/cpu/cpufreq/smartassH3/max_cpu_load
+$B echo "66" > /sys/devices/system/cpu/cpufreq/smartassH3/max_cpu_load
 $B echo "$DN" > /sys/devices/system/cpu/cpufreq/smartassH3/min_cpu_load
 $B echo "$RT" > /sys/devices/system/cpu/cpufreq/smartassH3/up_rate_us
 $B echo "$RT" > /sys/devices/system/cpu/cpufreq/smartassH3/down_rate_us
@@ -174,7 +174,7 @@ $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/sample_rate_jiffies
 $B echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/debug_mask
 $B echo "192000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/ramp_up_step
 $B echo "192000" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/ramp_down_step
-$B echo "63" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/max_cpu_load
+$B echo "66" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/max_cpu_load
 $B echo "$DN" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/min_cpu_load
 $B echo "$RT" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/up_rate_us
 $B echo "$RT" > /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/down_rate_us
@@ -208,7 +208,7 @@ $B chmod 644 /sys/devices/system/cpu/cpu4/cpufreq/smartassH3/sample_rate_jiffies
 $B echo "0" > /sys/devices/system/cpu/cpu4/cpufreq/smartassH3/debug_mask
 $B echo "192000" > /sys/devices/system/cpu/cpu4/cpufreq/smartassH3/ramp_up_step
 $B echo "192000" > /sys/devices/system/cpu/cpu4/cpufreq/smartassH3/ramp_down_step
-$B echo "63" > /sys/devices/system/cpu/cpu4/cpufreq/smartassH3/max_cpu_load
+$B echo "66" > /sys/devices/system/cpu/cpu4/cpufreq/smartassH3/max_cpu_load
 $B echo "$DN" > /sys/devices/system/cpu/cpu4/cpufreq/smartassH3/min_cpu_load
 $B echo "$RT" > /sys/devices/system/cpu/cpu4/cpufreq/smartassH3/up_rate_us
 $B echo "$RT" > /sys/devices/system/cpu/cpu4/cpufreq/smartassH3/down_rate_us

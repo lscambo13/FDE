@@ -31,7 +31,7 @@ if [ -e /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk ]; then
 fi;
 $B chmod 666 /sys/module/lowmemorykiller/parameters/minfree
 $B chown root /sys/module/lowmemorykiller/parameters/minfree
-$B echo '2439,4878,7317,9756,12195,14634' > /sys/module/lowmemorykiller/parameters/minfree
+$B echo '2439,4878,7317,9756,17073,21951' > /sys/module/lowmemorykiller/parameters/minfree
 setprop ro.HOME_APP_MEM 2048
 setprop ro.HOME_APP_ADJ 0
 setprop MIN_HIDDEN_APPS false

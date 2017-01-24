@@ -57,9 +57,13 @@ if [ -e /system/engine/prop/firstboot ]; then
   /sbin/sysrw
   $B sleep 1
  fi;
+ $B rm -f $CONFIG
  $B cp /system/engine/bin/zipalign /system/xbin/zipalign
  $B cp /system/engine/bin/boost /system/xbin/boost
- $B rm -f $CONFIG
+ $B cp /system/engine/bin/dynbsd /system/xbin/dynbsd
+ $B chmod 777 /system/xbin/zipalign
+ $B chmod 777 /system/xbin/boost
+ $B chmod 777 /system/xbin/dynbsd
  $B cp /system/engine/assets/FDE_config.txt $CONFIG
 fi;
 TIME=$($B date | $B awk '{ print $4 }')

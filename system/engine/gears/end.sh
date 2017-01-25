@@ -8,6 +8,7 @@ else
  LOG=/data/media/0/Android/FDE_log.txt
 fi;
 SDK=$(getprop ro.build.version.sdk)
+$B mount -o remount,rw /system
 sync;
 if [ "$SDK" -le "18" ]; then
  if [ "$SDK" -gt "10" ]; then
@@ -16,7 +17,6 @@ if [ "$SDK" -le "18" ]; then
  $B killall -9 mediaserver
  fi;
 fi;
-$B mount -o remount,rw /system
 $B echo "Allow mediaserver read write execute" >> $LOG
 supolicy --live "allow mediaserver mediaserver_tmpfs:file { read write execute };"
 if [ -e /system/engine/prop/firstboot ]; then

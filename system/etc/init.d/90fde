@@ -4,4 +4,4 @@
 /system/engine/feradroid.sh
 sync;
 sleep 1
-/system/xbin/dynbsd s -2 -h 1
+dynbsd s -2 -h 1

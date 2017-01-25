@@ -101,17 +101,6 @@ $B rm -f /system/etc/sysctl.conf
 $B touch /system/etc/sysctl.conf
 $B chmod 777 /system/etc/sysctl.conf
 TIME=$($B date | $B awk '{ print $4 }')
-if [ -e /system/engine/prop/ferakernel ]; then
- $B echo "[$TIME] FeraKernel init.." >> $LOG
-elif [ -e /system/engine/prop/qcompost ]; then
- $B echo "[$TIME] Qcomm post-boot init.." >> $LOG
-elif [ -e /system/engine/prop/hwconf ]; then
- $B echo "[$TIME] HW-conf init.." >> $LOG
-elif [ -e /system/engine/prop/zrami ]; then
- $B echo "[$TIME] Zram init.." >> $LOG
-elif [ -e /system/etc/init.d/999fde ]; then
- $B echo "[$TIME] Init.d init.." >> $LOG
-fi;
 if [ -e /system/engine/gears/01network.sh ]; then
  TIME=$($B date | $B awk '{ print $4 }')
  $B echo "[$TIME] Running Network gear.." >> $LOG
@@ -195,4 +184,3 @@ $B sleep 0.3
 $B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
 $B echo "[$TIME] FDE status - OK" >> $LOG
 $B echo "" >> $LOG
-

@@ -29,10 +29,12 @@ if [ -e /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk ]; then
  $B echo "0" > /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk
  $B echo "Disabled adaptive LMK."
 fi;
+$B chmod 666 /sys/module/lowmemorykiller/parameters/adj
 $B chmod 666 /sys/module/lowmemorykiller/parameters/minfree
 $B chown root /sys/module/lowmemorykiller/parameters/minfree
 $B echo '2439,4878,7317,9756,17073,21951' > /sys/module/lowmemorykiller/parameters/minfree
-setprop ro.HOME_APP_MEM 2048
+$B chmod 644 /sys/module/lowmemorykiller/parameters/minfree
+setprop ro.HOME_APP_MEM 2439
 setprop ro.HOME_APP_ADJ 0
 setprop MIN_HIDDEN_APPS false
 setprop MIN_RECENT_TASKS false

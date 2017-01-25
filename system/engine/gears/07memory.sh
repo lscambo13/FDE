@@ -9,30 +9,16 @@ ZR="/sys/block/zram*"
 ST="/storage/emulated/*"
 SST="/storage/*"
 if [ -e /mnt/sd-ext ]; then
- $B echo "Trying to mount SD-EXT partition if it exists.."
- $B mount -t ext3 -o rw /dev/block/vold/179:2 /mnt/sd-ext
- $B mount -t ext3 -o rw /dev/block/mmcblk0p2 /mnt/sd-ext
- $B sleep 1
+ $B echo "Trying to mount SD-EXT (EXT4) partition if it exists.."
  $B mount -t ext4 -o rw /dev/block/vold/179:2 /mnt/sd-ext
  $B mount -t ext4 -o rw /dev/block/mmcblk0p2 /mnt/sd-ext
- $B sleep 1
+ $B sleep 0.5
 fi;
 if [ -e /storage/extSdCard ]; then
- $B echo "Trying to mount extSdCard partition if it exists.."
- $B mount -t ext3 -o rw /dev/block/mmcblk1p1 /storage/extSdCard
- $B sleep 1
+ $B echo "Trying to mount extSdCard partition (EXT4) if it exists.."
  $B mount -t ext4 -o rw /dev/block/mmcblk1p1 /storage/extSdCard
- $B sleep 1
+ $B sleep 0.5
 fi;
-$B echo "Remounting storage partitions.."
-for m in $ST $SST; do
-  $B mount -o remount,nosuid,nodev,noatime,nodiratime -t auto "${m}"
-  $B mount -o remount,nosuid,nodev,noatime,nodiratime -t auto "${m}"/Android/obb
-done;
-$B echo "Remounting EXT4 partitions.."
-for x in $($B mount | grep ext4 | cut -d " " -f3); do
- $B mount -o remount,noatime,delalloc,nosuid,nodev,nodiratime,barrier=0,nobh,commit=60,discard,data=writeback,rw "${x}"
-done;
 $B echo "Applying new I/O parameters.."
 for b in $MMC $MTD $ZR; do
  $B echo "5120" > "${b}"/queue/read_ahead_kb
@@ -46,6 +32,22 @@ for b in $MMC $MTD $ZR; do
  $B echo "off" > "${b}"/max_read_speed
  $B echo "off" > "${b}"/max_write_speed
  $B echo "off" > "${b}"/cache_size
+done;
+sync;
+$B sleep 1
+$B echo 3 > /proc/sys/vm/drop_caches
+$B sleep 1
+$B echo "Remounting EXT4 partitions.."
+for x in $($B mount | grep ext4 | cut -d " " -f3); do
+ $B mount -o remount,noatime,delalloc,nosuid,nodev,nodiratime,barrier=0,nobh,commit=60,discard,data=writeback "${x}"
+done;
+sync;
+$B sleep 0.5
+$B echo "Remounting storage partitions.."
+for m in $ST $SST; do
+  $B mount -o remount,nosuid,nodev,noatime,nodiratime -t auto "${m}"
+  $B mount -o remount,nosuid,nodev,noatime,nodiratime -t auto "${m}"/Android/obb
+  $B sleep 0.5
 done;
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Memory gear*** - OK"

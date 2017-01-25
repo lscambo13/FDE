@@ -172,7 +172,7 @@ $B echo "Fix stagerfright security vulnerabilities.."
  setprop media.stagefright.enable-fma2dp false
  setprop media.stagefright.enable-scan false
 fi;
-if [ "$CORES" -ge "4" ] ; then
+if [ "$CORES" -ge "3" ] ; then
  $B echo "Dithering - ON"
  setprop persist.sys.use_dithering 1
 else

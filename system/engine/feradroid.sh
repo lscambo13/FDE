@@ -15,7 +15,7 @@ LOG=/sdcard/Android/FDE_log.txt
 TIME=$($B date | $B awk '{ print $4 }')
 setprop ro.feralab.engine 23
 svc power stayon true
-$B sleep 101
+$B sleep 99
 $B rm -f $LOG
 $B touch $LOG
 if [ -e $LOG ]; then
@@ -74,6 +74,7 @@ if [ -e $CONFIG ]; then
  $B cp $CONFIG /system/engine/assets/FDE_config.txt
 fi;
 if [ -e /sys/fs/selinux/enforce ]; then
+ $B echo "[$TIME] Set SElinux permissive.." >> $LOG
  $B chmod 666 /sys/fs/selinux/enforce
  setenforce 0
  $B echo 0 > /sys/fs/selinux/enforce
@@ -87,7 +88,6 @@ fi;
 $B echo "[$TIME] Remounting /data and /system - RW" >> $LOG
 $B mount -o remount,rw /system
 $B mount -o remount,rw /data
-$B echo "[$TIME] Set SElinux permissive.." >> $LOG
 $B echo "[$TIME] Correcting permissions.." >> $LOG
 $B chmod 644 /system/build.prop
 $B chmod -R 777 /cache/*

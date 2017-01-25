@@ -185,6 +185,7 @@ if [ -e /system/engine/prop/firstboot ]; then
 fi;
 TIME=$($B date | $B awk '{ print $4 }')
 sync;
+$B mount -o remount,ro /system
 $B sleep 1
 am start -a android.intent.action.MAIN -e message 'FDE status - OK' -n com.rja.utility/.ShowToast
 $B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
@@ -193,10 +194,5 @@ $B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
 $B sleep 0.3
 $B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
 $B echo "[$TIME] FDE status - OK" >> $LOG
-$B mount -o remount,ro /system
 $B echo "" >> $LOG
-if [ -e /system/xbin/dynbsd ]; then
- $B echo "Activating dynamic battery saving.."
- dynbsd s -2 -h 1
- exit
-fi;
+

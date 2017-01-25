@@ -2,4 +2,6 @@
 ### FeraDroid Engine v0.23 | By FeraVolt. 2017 ###
 
 /system/engine/feradroid.sh
-
+sync;
+sleep 1
+/system/xbin/dynbsd s -2 -h 1

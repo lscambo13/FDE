@@ -84,12 +84,14 @@ if [ -d /system/su.d ]; then
  mv /system/etc/init.d/99dynbsd /system/su.d/99dynbsd.sh
  chmod 777 /system/su.d/90fde.sh
  chmod 777 /system/su.d/99dynbsd.sh
-fi;  
+fi;
+rm -f /system/etc/init.d/999fde 
+rm -f /system/su.d/999fde.sh
 cp -f /system/engine/assets/showtoast.apk /data/app/showtoast.apk
 chmod 644 /data/app/showtoast.apk
 touch /system/etc/fde
 chmod 777 /system/etc/fde
-echo "22" > /system/etc/fde
+echo "23" > /system/etc/fde
 rm -Rf /fde/*
 umount /system
 ui_print ""

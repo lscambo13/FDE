@@ -47,10 +47,6 @@ if [ -e /sys/class/lcd/panel/power_reduce ]; then
  $B echo "LCD power reduce detected. Activating.."
  $B echo "1" > /sys/class/lcd/panel/power_reduce
 fi;
-if [ -e /system/xbin/dynbsd ]; then
- $B echo "Activating dynamic battery saving.."
- /system/xbin/dynbsd s -2 -h 1 -ns 5 -d 1200 -lt 0
-fi;
 $B echo "Tuning Android power-saving.."
 setprop power.saving.mode 1
 setprop persist.radio.ramdump 0

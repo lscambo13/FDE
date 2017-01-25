@@ -175,7 +175,9 @@ fi;
 sync;
 $B sleep 1
 svc power stayon false
-service call activity 51 i32 -1
+if [ "$RAM" -gt "512" ]; then
+ service call activity 51 i32 -1
+fi;
 if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,rw /system
  $B rm -f /system/engine/prop/firstboot
@@ -193,4 +195,8 @@ $B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
 $B echo "[$TIME] FDE status - OK" >> $LOG
 $B mount -o remount,ro /system
 $B echo "" >> $LOG
-
+if [ -e /system/xbin/dynbsd ]; then
+ $B echo "Activating dynamic battery saving.."
+ dynbsd s -2 -h 1
+ exit
+fi;

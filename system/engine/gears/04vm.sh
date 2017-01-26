@@ -9,7 +9,7 @@ if [ -e /sys/module/lowmemorykiller/parameters/cost ]; then
  $B echo "LMK cost fine-tuning.."
  $B chmod 666 /sys/module/lowmemorykiller/parameters/cost
  $B chown 0:0 /sys/module/lowmemorykiller/parameters/cost
- $B echo "16" > /sys/module/lowmemorykiller/parameters/cost
+ $B echo "8" > /sys/module/lowmemorykiller/parameters/cost
 fi;
 if [ -e /sys/module/lowmemorykiller/parameters/fudgeswap ]; then
  $B echo "FudgeSwap support detected. Tuning.."
@@ -29,11 +29,10 @@ if [ -e /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk ]; then
  $B echo "0" > /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk
  $B echo "Disabled adaptive LMK."
 fi;
-$B chmod 666 /sys/module/lowmemorykiller/parameters/adj
-$B chmod 666 /sys/module/lowmemorykiller/parameters/minfree
+$B chmod 664 /sys/module/lowmemorykiller/parameters/adj
+$B chmod 664 /sys/module/lowmemorykiller/parameters/minfree
 $B chown root /sys/module/lowmemorykiller/parameters/minfree
 $B echo '2439,4878,7317,9756,17073,21951' > /sys/module/lowmemorykiller/parameters/minfree
-$B chmod 644 /sys/module/lowmemorykiller/parameters/minfree
 setprop ro.HOME_APP_MEM 2439
 setprop ro.HOME_APP_ADJ 0
 setprop MIN_HIDDEN_APPS false

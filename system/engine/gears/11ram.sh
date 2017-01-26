@@ -15,7 +15,7 @@ if [ "$RAM" -gt "1024" ]; then
  FZRAM=$((RAM/4))
  PZ=45
 elif [ "$RAM" -gt "512" ]; then
- FZRAM=$(((RAM/3)+128))
+ FZRAM=$(((RAM/3)+96))
  PZ=45
 elif [ "$RAM" -le "512" ]; then
  FZRAM=$((RAM-96))
@@ -143,10 +143,10 @@ if [ -e /sys/block/zram0/disksize ]; then
  if [ "$SWAP" -gt "0" ]; then
   setprop ro.config.zram.support true
   setprop zram.disksize $FZRAM
-  $B echo 100 > /proc/sys/vm/swappiness
-  $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf
-  $B sysctl -e -w vm.swappiness=100
-  setprop sys.vm.swappiness 100
+  $B echo 80 > /proc/sys/vm/swappiness
+  $B echo "vm.swappiness=80" >> /system/etc/sysctl.conf
+  $B sysctl -e -w vm.swappiness=80
+  setprop sys.vm.swappiness 80
   if [ -e /sys/module/zram/parameters/total_mem_usage_percent ]; then
    $B echo "Tuning ZRAM parameter.."
    $B echo "$PZ" > /sys/module/zram/parameters/total_mem_usage_percent
@@ -171,7 +171,7 @@ if [ "$RAM" -le "512" ]; then
    $B echo "uKSM detected"
    $B echo "Starting and tuning uKSM.."
    $B echo 128 > /sys/kernel/mm/uksm/pages_to_scan
-   $B echo 5000 > /sys/kernel/mm/uksm/sleep_millisecs
+   $B echo 9000 > /sys/kernel/mm/uksm/sleep_millisecs
    $B echo 45 > /sys/kernel/mm/uksm/max_cpu_percentage
    $B echo 1 > /sys/kernel/mm/uksm/run
    setprop ro.config.ksm.support true
@@ -179,7 +179,7 @@ if [ "$RAM" -le "512" ]; then
    $B echo "KSM detected"
    $B echo "Starting and tuning KSM.."
    $B echo 128 > /sys/kernel/mm/ksm/pages_to_scan
-   $B echo 5000 > /sys/kernel/mm/ksm/sleep_millisecs
+   $B echo 9000 > /sys/kernel/mm/ksm/sleep_millisecs
    $B echo 1 > /sys/kernel/mm/ksm/run
    setprop ro.config.ksm.support true
   else

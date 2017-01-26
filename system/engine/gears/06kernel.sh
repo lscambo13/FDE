@@ -8,8 +8,8 @@ CPU=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq)
 FM=$((RAM*(64+1)))
 FK=$(((RAM*10)-2699))
 EF=$(((RAM*11)-2966))
-DW=$((CPU/1000))
-DE=$((DW/3))
+DW=$(((CPU/1000)+800))
+DE=$((DW/4))
 if [ "$EF" -gt "18432" ]; then
  EF=18432
 elif [ "$EF" -le "4096" ]; then
@@ -33,9 +33,9 @@ if [ -e /proc/sys/kernel/random/write_wakeup_threshold ]; then
  $B sysctl -e -w kernel.random.write_wakeup_threshold=2730
 fi;
 if [ -e /proc/sys/vm/vfs_cache_pressure ]; then
- $B echo 50 > /proc/sys/vm/vfs_cache_pressure
- $B echo "vm.vfs_cache_pressure=50" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.vfs_cache_pressure=50
+ $B echo 70 > /proc/sys/vm/vfs_cache_pressure
+ $B echo "vm.vfs_cache_pressure=70" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.vfs_cache_pressure=70
 fi;
 if [ -e /proc/sys/vm/min_free_kbytes ]; then
  $B echo $FK > /proc/sys/vm/min_free_kbytes
@@ -53,19 +53,19 @@ if [ -e /proc/sys/vm/drop_caches ]; then
  $B sysctl -e -w vm.drop_caches=3
 fi;
 if [ -e /proc/sys/vm/oom_kill_allocating_task ]; then
- $B echo 1 > /proc/sys/vm/oom_kill_allocating_task
- $B echo "vm.oom_kill_allocating_task=1" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.oom_kill_allocating_task=1
+ $B echo 0 > /proc/sys/vm/oom_kill_allocating_task
+ $B echo "vm.oom_kill_allocating_task=0" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.oom_kill_allocating_task=0
 fi;
 if [ -e /proc/sys/vm/dirty_ratio ]; then
- $B echo 33 > /proc/sys/vm/dirty_ratio
- $B echo "vm.dirty_ratio=33" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.dirty_ratio=33
+ $B echo 30 > /proc/sys/vm/dirty_ratio
+ $B echo "vm.dirty_ratio=30" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.dirty_ratio=30
 fi;
 if [ -e /proc/sys/vm/dirty_background_ratio ]; then
- $B echo 9 > /proc/sys/vm/dirty_background_ratio
- $B echo "vm.dirty_background_ratio=9" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.dirty_background_ratio=9
+ $B echo 5 > /proc/sys/vm/dirty_background_ratio
+ $B echo "vm.dirty_background_ratio=5" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.dirty_background_ratio=5
 fi;
 if [ -e /proc/sys/vm/dirty_writeback_centisecs ]; then
  $B echo $DW > /proc/sys/vm/dirty_writeback_centisecs
@@ -88,9 +88,9 @@ if [ -e /proc/sys/vm/overcommit_memory ]; then
  $B sysctl -e -w vm.overcommit_memory=1
 fi;
 if [ -e /proc/sys/vm/overcommit_ratio ]; then
- $B echo 75 > /proc/sys/vm/overcommit_ratio
- $B echo "vm.overcommit_ratio=75" >> /system/etc/sysctl.conf
- $B sysctl -e -w vm.overcommit_ratio=75
+ $B echo 100 > /proc/sys/vm/overcommit_ratio
+ $B echo "vm.overcommit_ratio=100" >> /system/etc/sysctl.conf
+ $B sysctl -e -w vm.overcommit_ratio=100
 fi;
 if [ -e /proc/sys/vm/laptop_mode ]; then
  $B echo 1 > /proc/sys/vm/laptop_mode

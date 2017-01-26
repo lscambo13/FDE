@@ -5,7 +5,7 @@ A=$(cat /sys/class/power_supply/battery/capacity)
 TIME=$($B date | $B awk '{ print $4 }')
 CORES=$($B grep -c 'processor' /proc/cpuinfo)
 $B echo "[$TIME] ***Battery gear***"
-if [ "$A" -eq "100" ] ; then
+if [ "$A" -ge "99" ] ; then
  if [ -e /system/engine/prop/nobat ]; then
   $B echo "Re-calibrating battery.."
   $B mount -o remount,rw /data

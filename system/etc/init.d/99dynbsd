@@ -1,2 +1,2 @@
 #!/system/bin/sh
-dynbsd start -2 -h 1 
+dynbsd sa -2 -h 1 

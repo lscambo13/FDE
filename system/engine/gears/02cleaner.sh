@@ -52,10 +52,13 @@ $B rm -Rf /mnt/sdcard/baidu
 $B rm -Rf /mnt/sdcard/Backucup
 $B rm -Rf /mnt/sdcard/UnityAdsVideoCache
 $B rm -f /mnt/sdcard/fix_permissions.log
-$B chmod -R 777 /data/tombstones
-$B rm -f /data/tombstones/*
-$B chmod -R 000 /data/tombstones
+if [ -e /system/engine/prop/firstboot ]; then
+ $B chmod -R 777 /data/tombstones
+ $B rm -f /data/tombstones/*
+ $B chmod -R 000 /data/tombstones
+fi;
 pm trim-caches 36g
+$B sleep 0.5
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Cleaner gear*** - OK"
 sync;

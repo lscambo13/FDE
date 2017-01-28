@@ -33,6 +33,12 @@ if [ -e /sys/module/lpm_levels/parameters/sleep_disabled ]; then
  $B echo "LowPower mode 1 support detected. Activating."
  $B echo "0" > /sys/module/lpm_levels/parameters/sleep_disabled
 fi;
+if [ -e /sys/module/cpuidle_scx35/parameters/cpuidle_debug ]; then
+ $B echo "Spreadtrum cpuidle tune-up.."
+ $B echo "0" > /sys/module/cpuidle_scx35/parameters/cpuidle_debug
+ $B echo "1" > /sys/module/cpuidle_scx35/parameters/idle_deep_en
+ $B echo "0" > /sys/module/cpuidle_scx35/parameters/light_sleep_en
+fi;
 if [ "$CORES" -le "2" ]; then
  if [ -e /sys/module/pm2/modes/cpu0/power_collapse/suspend_enabled ]; then
   $B echo "LowPower mode 2 support detected. Activating.."

@@ -6,7 +6,7 @@ $B echo "[$TIME] ***CPU gear***"
 MAX=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq)
 CORES=$($B grep -c 'processor' /proc/cpuinfo)
 UP=77
-DN=20
+DN=18
 SF=2
 RT=10000
 if [ -e /sys/module/msm_thermal/core_control/enabled ]; then

@@ -83,6 +83,11 @@ if [ -e /sys/block/zram0/disksize ]; then
   $B echo "Setting compression algorithm to LZ4.."
   $B echo "lz4" > /sys/block/zram0/comp_algorithm
  fi;
+ if [ -e /sys/module/zram/parameters/lzo_algo_type ]; then
+  $B echo "Setting compression algorithm to LZO.."
+  $B chmod 644 /sys/module/zram/parameters/lzo_algo_type 
+  $B echo "1" > /sys/module/zram/parameters/lzo_algo_type 
+ fi;
  if [ -e /sys/block/zram0/max_comp_streams ]; then
   $B echo "Set max compression streams.."
   $B echo "2" > /sys/block/zram0/max_comp_streams

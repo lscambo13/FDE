@@ -24,7 +24,7 @@ if [ "sleeper=1" = "$ON" ]; then
  $B echo "Sleeper daemon is active." >> $LOG
  while true; do
    until [ "$FS" = "$(dumpsys power | $B grep $GR | $B grep -o "$FS")" ]; do
-    $B sleep 180
+    $B sleep 120
    done;
   if [ "$FS" = "$(dumpsys power | $B grep -E $GR | $B grep -o "$FS")" ]; then
    $B sleep 9
@@ -213,6 +213,7 @@ if [ "sleeper=1" = "$ON" ]; then
     fi;
    fi;
    until [ "$TR" = "$(dumpsys power | $B grep $GR | $B grep -o "$TR")" ]; do
+    $B sleep 360
     if [ "$MAX" -ge "2000000" ]; then
      if [ -e /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias ]; then
       $B echo "100" > /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
@@ -289,7 +290,6 @@ if [ "sleeper=1" = "$ON" ]; then
      fi;
     fi;
     service call activity 51 i32 -1
-    $B sleep 450
    done;
   fi;
  done;

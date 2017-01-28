@@ -250,11 +250,17 @@ if [ -e /sys/module/logger/parameters/log_mode ]; then
  $B echo 2 > /sys/module/logger/parameters/log_mode
  $B echo "Disable Android logger.."
 fi;
+if [ -e /sys/module/sit/parameters/log_ecn_error ]; then
+ $B echo 0 > /sys/module/sit/parameters/log_ecn_error
+ $B echo "SIT log OFF."
+fi;
 $B echo "Turning debugging OFF.."
 for n in /sys/module/*
 do
  if [ -e "$n"/parameters/debug_mask ]; then
   $B echo "0" > "$n"/parameters/debug_mask
+  $B echo "0" > "$n"/parameters/debug
+  $B echo "N" > "$n"/parameters/debug
  fi;
 done;
 $B echo "Tuning Android.."

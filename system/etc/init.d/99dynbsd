@@ -1,2 +1,5 @@
 #!/system/bin/sh
-/system/xbin/dynbsd sa -2 -h 1 -ns 2 -d 3000 -lt 600 &
+if [ ! -e /sys/power/dvfs_plug ]; then
+ /system/xbin/dynbsd sa -2 -h 1 -ns 5 -d 1800 -lt 0 &
+fi;
+

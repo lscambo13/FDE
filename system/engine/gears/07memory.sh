@@ -34,7 +34,6 @@ for b in $MMC $MTD $ZR; do
  $B echo "0" > "${b}"/queue/rotational
  $B echo "2" > "${b}"/queue/nomerges
  $B echo "1" > "${b}"/queue/rq_affinity
- $B echo "1" > "${b}"/queue/rq_affinity
  $B echo "1024" > "${b}"/queue/nr_requests
  $B echo "off" > "${b}"/max_read_speed
  $B echo "off" > "${b}"/max_write_speed
@@ -43,7 +42,7 @@ for b in $MMC $MTD $ZR; do
  $B echo "120" > "${b}"/sync_read_expire
  $B echo "4500" > "${b}"/async_write_expire
  $B echo "1200" > "${b}"/async_read_expire
- $B echo "1200" > "${b}"/write_expire
+ $B echo "600" > "${b}"/write_expire
  $B echo "120" > "${b}"/read_expire
  $B echo "3" > "${b}"/fifo_batch
  $B echo "3" > "${b}"/writes_starved

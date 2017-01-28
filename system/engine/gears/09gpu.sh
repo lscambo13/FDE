@@ -98,6 +98,12 @@ if [ -e /sys/module/mali/parameters/mali_debug_level ]; then
   $B chmod 444 /sys/module/mali/parameters/gpu_cur_freq
  fi;
 fi;
+if [ -e /sys/devices/14ac0000.mali/dvfs ]; then
+ $B echo "Disabling Mali DVFS.."
+ $B chmod 000 /sys/devices/14ac0000.mali/dvfs
+ $B chmod 000 /sys/devices/14ac0000.mali/dvfs_max_lock
+ $B chmod 000 /sys/devices/14ac0000.mali/dvfs_min_lock
+fi;
 $B mount -t debugfs debugfs /sys/kernel/debug
 $B chmod 777 /dev/graphics/fb0
 if [ -e /sys/kernel/debug/msm_fb/0/vsync_enable ]; then

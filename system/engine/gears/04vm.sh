@@ -52,7 +52,6 @@ if [ "$RAM" -le "512" ]; then
  setprop ro.config.low_ram true
  setprop ro.sys.fw.bg_apps_limit 6
  setprop config.disable_atlas true
- service call activity 51 i32 4
  $B echo "LOW RAM tweak.."
 fi;
 $B echo "[$TIME] ***VM gear*** - OK"

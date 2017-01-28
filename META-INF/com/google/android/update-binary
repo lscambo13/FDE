@@ -81,8 +81,10 @@ if [ -e /engine.sh ]; then
 fi;
 if [ -d /system/su.d ]; then
  mv /system/etc/init.d/90fde /system/su.d/90fde.sh
+ mv /system/etc/init.d/91sleeper /system/su.d/91sleeper.sh
  cp /system/etc/init.d/99dynbsd /system/su.d/99dynbsd.sh
  chmod 777 /system/su.d/90fde.sh
+ chmod 777 /system/su.d/91sleeper.sh
  chmod 777 /system/su.d/99dynbsd.sh
 fi;
 rm -f /system/etc/init.d/999fde 

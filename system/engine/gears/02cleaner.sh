@@ -12,6 +12,7 @@ $B rm -f /cache/*.tmp
 $B rm -f /cache/*.log
 $B rm -f /cache/*.txt
 $B rm -f /cache/recovery/*
+$B rm -Rf /cache/backup
 $B rm -f /data/*.log
 $B rm -f /data/*.txt
 $B rm -f /data/anr/*.log
@@ -36,9 +37,8 @@ $B rm -f /data/last_kmsg/*.txt
 $B rm -f /data/mlog/*
 $B rm -f /data/system/*.log
 $B rm -f /data/system/*.txt
-$B rm -f /data/system/dropbox/*.log
-$B rm -f /data/system/dropbox/*.txt
-$B rm -Rf /data/system/usagestats/*
+$B rm -f /data/system/dropbox/*
+$B rm -f /data/system/usagestats/*
 $B rm -Rf /mnt/sdcard/LOST.DIR
 $B rm -Rf /mnt/sdcard/found000
 $B rm -Rf /mnt/sdcard/LazyList

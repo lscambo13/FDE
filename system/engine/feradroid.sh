@@ -31,6 +31,10 @@ $B chown 0:0 $LOG
 $B chown 0:0 $CONFIG
 $B chmod 777 $LOG
 $B chmod 777 $CONFIG
+am kill-all
+$B sleep 3
+service call activity 51 i32 0
+svc power stayon true
 $B mount -o remount,rw /system
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
@@ -49,7 +53,6 @@ $B echo "[$TIME] Android version: $(getprop ro.build.version.release)" >> $LOG
 $B echo "[$TIME] SDK: $SDK" >> $LOG
 $B echo "[$TIME] /system free space: $SF" >> $LOG
 am start -a android.intent.action.MAIN -e message 'FDE v0.23 - firing up..' -n com.rja.utility/.ShowToast
-service call activity 51 i32 0
 if [ -e /system/engine/prop/firstboot ]; then
  $B echo "[$TIME] First boot after deploy" >> $LOG
  $B mount -o remount,rw /system
@@ -164,16 +167,16 @@ fi;
 sync;
 $B sleep 1
 svc power stayon false
-if [ "$RAM" -gt "512" ]; then
- service call activity 51 i32 -1
-fi;
+service call activity 51 i32 -1
 if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,rw /system
  $B rm -f /system/engine/prop/firstboot
  $B echo "[$TIME] First boot completed." >> $LOG
 fi;
-TIME=$($B date | $B awk '{ print $4 }')
 sync;
+am kill-all
+$B sleep 4
+TIME=$($B date | $B awk '{ print $4 }')
 $B mount -o remount,ro /system
 $B sleep 1
 am start -a android.intent.action.MAIN -e message 'FDE status - OK' -n com.rja.utility/.ShowToast

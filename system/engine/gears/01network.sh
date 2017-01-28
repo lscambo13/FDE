@@ -3,6 +3,7 @@
 B=/system/engine/bin/busybox
 SDK=$(getprop ro.build.version.sdk)
 TIME=$($B date | $B awk '{ print $4 }')
+RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 $B echo "[$TIME] ***Network gear***"
 $B mount -o remount,rw /system
 $B echo "Writing optimized network parameters to sysctl"
@@ -117,14 +118,16 @@ setprop ro.ril.enable.amr.wideband 1
 setprop persist.cust.tel.eons 1
 setprop persist.eons.enabled true
 setprop persist.wpa_supplicant.debug false
-setprop net.tcp.buffersize.default 4096,87380,110208,4096,16384,110208
-setprop net.tcp.buffersize.wifi 4095,87380,110208,4096,16384,110208
-setprop net.tcp.buffersize.umts 4095,87380,110208,4096,16384,110208
-setprop net.tcp.buffersize.hsdpa 4096,32768,65536,4096,32768,65536
-setprop net.tcp.buffersize.hspa 4096,32768,65536,4096,32768,65536
-setprop net.tcp.buffersize.hsupa 4096,32768,65536,4096,32768,65536
-setprop net.tcp.buffersize.edge 4093,26280,35040,4096,16384,35040
-setprop net.tcp.buffersize.gprs 4092,8760,11680,4096,8760,11680
+if [ "$RAM" -le "1024" ]; then
+ setprop net.tcp.buffersize.default 4096,87380,110208,4096,16384,110208
+ setprop net.tcp.buffersize.wifi 4095,87380,110208,4096,16384,110208
+ setprop net.tcp.buffersize.umts 4095,87380,110208,4096,16384,110208
+ setprop net.tcp.buffersize.hsdpa 4096,32768,65536,4096,32768,65536
+ setprop net.tcp.buffersize.hspa 4096,32768,65536,4096,32768,65536
+ setprop net.tcp.buffersize.hsupa 4096,32768,65536,4096,32768,65536
+ setprop net.tcp.buffersize.edge 4093,26280,35040,4096,16384,35040
+ setprop net.tcp.buffersize.gprs 4092,8760,11680,4096,8760,11680
+fi;
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Network gear*** - OK"
 sync;

@@ -3,6 +3,12 @@
 B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Memory gear***"
+RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
+if [ "$RAM" -gt "512" ]; then
+ KB=5120
+else
+ KB=2048
+fi;
 MMC="/sys/block/mmc*"
 MTD="/sys/block/mtd*"
 ZR="/sys/block/zram*"
@@ -21,17 +27,26 @@ if [ -e /storage/extSdCard ]; then
 fi;
 $B echo "Applying new I/O parameters.."
 for b in $MMC $MTD $ZR; do
- $B echo "5120" > "${b}"/queue/read_ahead_kb
+ $B echo "$KB" > "${b}"/queue/read_ahead_kb
  $B echo "0" > "${b}"/queue/add_random
  $B echo "0" > "${b}"/queue/iosched/slice_idle
  $B echo "0" > "${b}"/queue/iostats
  $B echo "0" > "${b}"/queue/rotational
  $B echo "2" > "${b}"/queue/nomerges
  $B echo "1" > "${b}"/queue/rq_affinity
+ $B echo "1" > "${b}"/queue/rq_affinity
  $B echo "1024" > "${b}"/queue/nr_requests
  $B echo "off" > "${b}"/max_read_speed
  $B echo "off" > "${b}"/max_write_speed
  $B echo "off" > "${b}"/cache_size
+ $B echo "600" > "${b}"/sync_write_expire
+ $B echo "120" > "${b}"/sync_read_expire
+ $B echo "4500" > "${b}"/async_write_expire
+ $B echo "1200" > "${b}"/async_read_expire
+ $B echo "1200" > "${b}"/write_expire
+ $B echo "120" > "${b}"/read_expire
+ $B echo "3" > "${b}"/fifo_batch
+ $B echo "3" > "${b}"/writes_starved
 done;
 sync;
 $B sleep 1

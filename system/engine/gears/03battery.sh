@@ -11,6 +11,7 @@ if [ "$A" -ge "99" ] ; then
   $B mount -o remount,rw /data
   $B mount -o remount,rw /system
   $B rm -f /data/system/batterystats.bin
+  $B rm -f /data/system/batterystats-checkin.bin
   $B rm -f /system/engine/prop/nobat
   if [ -e /sys/devices/platform/i2c-gpio.9/i2c-9/9-0036/power_supply/fuelgauge/fg_reset_soc ]; then
    $B echo "Reset Fuelgauge report."

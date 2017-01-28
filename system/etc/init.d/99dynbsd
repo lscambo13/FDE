@@ -1,2 +1,2 @@
 #!/system/bin/sh
-dynbsd sa -2 -h 1 
+/system/xbin/dynbsd sa -2 -h 1 -ns 2 -d 3000 -lt 600 &

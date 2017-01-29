@@ -13,7 +13,7 @@ adblocker=1
 #To disable Sleeper daemon change below trigger
 #from 1 to 0. Reboot to apply changes.
 
-sleeper=0
+sleeper=1
 
 #There is some kind of Stamina mode in Sleeper daemon
 #that disables data/wifi/nfc/gps/bt when screen is off

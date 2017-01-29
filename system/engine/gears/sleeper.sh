@@ -212,6 +212,7 @@ if [ "sleeper=1" = "$ON" ]; then
      $B echo "100" > /sys/devices/system/cpu/cpu4/cpufreq/intellidemand/powersave_bias
     fi;
    fi;
+   service call activity 51 i32 -1
    until [ "$TR" = "$(dumpsys power | $B grep $GR | $B grep -o "$TR")" ]; do
     $B sleep 360
     if [ "$MAX" -ge "2000000" ]; then
@@ -289,7 +290,6 @@ if [ "sleeper=1" = "$ON" ]; then
       $B echo "0" > /sys/devices/system/cpu/cpu4/cpufreq/intellidemand/powersave_bias
      fi;
     fi;
-    service call activity 51 i32 -1
    done;
   fi;
  done;

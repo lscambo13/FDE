@@ -13,6 +13,10 @@ if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
  $B echo "Disable MSM thermal core for now.."
  $B echo 0 > /sys/module/msm_thermal/core_control/enabled
 fi;
+if [ -e /system/bin/mpdecision ]; then
+ $B echo "Stop mpdecision for now.."
+ stop mpdecision
+fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels ]; then
  $B chown root system /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
  $B chmod 664 /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels
@@ -695,6 +699,10 @@ fi;
 if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
  $B echo "Enable MSM thermal core now.."
  $B echo 1 > /sys/module/msm_thermal/core_control/enabled
+fi;
+if [ -e /system/bin/mpdecision ]; then
+ $B echo "Start mpdecision now.."
+ start mpdecision
 fi;
 $B echo "[$TIME] ***CPU gear*** - OK"
 sync;

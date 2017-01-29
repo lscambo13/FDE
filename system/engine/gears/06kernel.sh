@@ -19,6 +19,9 @@ elif [ "$FK" -le "3072" ]; then
  FK=3072
 fi;
 $B mount -o remount,rw /system
+if [ -e /sbin/sysrw ]; then
+ /sbin/sysrw
+fi;
 $B echo "Applying optimized kernel parameters.."
 if [ -e /proc/sys/kernel/random/read_wakeup_threshold ]; then
  $B echo 1365 > /proc/sys/kernel/random/read_wakeup_threshold

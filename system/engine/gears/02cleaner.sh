@@ -6,7 +6,11 @@ $B echo "[$TIME] ***Cleaner gear***"
 $B echo "Remounting /data and /system - RW"
 $B mount -o remount,rw /system
 $B mount -o remount,rw /data
+if [ -e /sbin/sysrw ]; then
+ /sbin/sysrw
+fi;
 $B echo "Cleaning trash.."
+$B chmod 777 /cache
 $B rm -f /cache/*.apk
 $B rm -f /cache/*.tmp
 $B rm -f /cache/*.log

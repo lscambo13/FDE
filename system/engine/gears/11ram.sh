@@ -34,6 +34,9 @@ $B sleep 1
 $B echo 3 > /proc/sys/vm/drop_caches
 $B sleep 3
 $B mount -o remount,rw /system
+if [ -e /sbin/sysrw ]; then
+ /sbin/sysrw
+fi;
 sync;
 $B echo "Paging check.."
 if [ -e /sys/block/zram0/disksize ]; then
@@ -179,6 +182,7 @@ if [ "$RAM" -le "512" ]; then
    $B echo 9000 > /sys/kernel/mm/uksm/sleep_millisecs
    $B echo 45 > /sys/kernel/mm/uksm/max_cpu_percentage
    $B echo 1 > /sys/kernel/mm/uksm/run
+   $B echo 1 > /sys/kernel/mm/uksm/deferred_timer
    setprop ro.config.ksm.support true
   elif [ -e /sys/kernel/mm/ksm/run ]; then
    $B echo "KSM detected"
@@ -186,6 +190,7 @@ if [ "$RAM" -le "512" ]; then
    $B echo 128 > /sys/kernel/mm/ksm/pages_to_scan
    $B echo 9000 > /sys/kernel/mm/ksm/sleep_millisecs
    $B echo 1 > /sys/kernel/mm/ksm/run
+   $B echo 1 > /sys/kernel/mm/ksm/deferred_timer
    setprop ro.config.ksm.support true
   else
    $B echo "No KSM was detected"

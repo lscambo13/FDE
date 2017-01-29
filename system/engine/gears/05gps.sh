@@ -5,6 +5,11 @@ TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***GPS gear***"
 $B mount -o remount,rw /system
 $B mount -o remount,rw /data
+if [ -e /sbin/sysrw ]; then
+ /sbin/sysrw
+fi;
+setprop ro.ril.def.agps.feature 1
+setprop ro.ril.def.agps.mode 2
 if [ -e /data/misc/mtkgps.dat ]; then
  $B rm -f /data/misc/mtkgps.dat
  $B echo "MTK GPS data cleared."

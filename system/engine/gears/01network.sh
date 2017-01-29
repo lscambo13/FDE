@@ -6,6 +6,9 @@ TIME=$($B date | $B awk '{ print $4 }')
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
 $B echo "[$TIME] ***Network gear***"
 $B mount -o remount,rw /system
+if [ -e /sbin/sysrw ]; then
+ /sbin/sysrw
+fi;
 $B echo "Writing optimized network parameters to sysctl"
 $B echo "net.ipv4.tcp_timestamps=1" >> /system/etc/sysctl.conf
 $B echo "net.ipv4.tcp_rfc1337=1" >> /system/etc/sysctl.conf

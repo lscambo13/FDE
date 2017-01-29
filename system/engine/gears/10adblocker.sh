@@ -9,6 +9,9 @@ if [ "adblock=0" = "$NO" ]; then
 else 
  $B echo "Updating hosts.." 
  $B mount -o remount,rw /system
+ if [ -e /sbin/sysrw ]; then
+  /sbin/sysrw
+ fi;
  $B touch /system/engine/assets/hosts
  $B chmod 777 /system/engine/assets/hosts
  $B sleep 1

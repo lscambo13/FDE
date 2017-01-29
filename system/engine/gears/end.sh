@@ -2,13 +2,16 @@
 ### FeraDroid Engine v0.23 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox
 LOG=/sdcard/Android/FDE_log.txt
+SDK=$(getprop ro.build.version.sdk)
 if [ -e $LOG ]; then
  $B echo "LOG - OK"
 else
  LOG=/data/media/0/Android/FDE_log.txt
 fi;
-SDK=$(getprop ro.build.version.sdk)
 $B mount -o remount,rw /system
+if [ -e /sbin/sysrw ]; then
+ /sbin/sysrw
+fi;
 sync;
 $B echo "Allow mediaserver read write execute" >> $LOG
 supolicy --live "allow mediaserver mediaserver_tmpfs:file { read write execute };"

@@ -36,6 +36,10 @@ $B sleep 3
 service call activity 51 i32 0
 svc power stayon true
 $B mount -o remount,rw /system
+if [ -e /sbin/sysrw ]; then
+ $B echo "[$TIME] Remapped partition layout detected.." >> $LOG
+ /sbin/sysrw
+fi;
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
 $B echo "[$TIME] FeraDroid Engine v0.23" >> $LOG
@@ -52,27 +56,51 @@ $B echo "[$TIME] ROM version: $ROM" >> $LOG
 $B echo "[$TIME] Android version: $(getprop ro.build.version.release)" >> $LOG
 $B echo "[$TIME] SDK: $SDK" >> $LOG
 $B echo "[$TIME] /system free space: $SF" >> $LOG
-am start -a android.intent.action.MAIN -e message 'FDE v0.23 - firing up..' -n com.rja.utility/.ShowToast
+if [ -e /engine.sh ]; then
+ $B echo '50' > /sys/class/timed_output/vibrator/enable
+ $B echo '255' > /sys/class/leds/lv5219lg:rgb1:blue/brightness
+ $B echo '255' > /sys/class/leds/lv5219lg:rgb1:red/brightness
+ $B echo '255' > /sys/class/leds/lv5219lg:rgb1:green/brightness
+ $B sleep 0.3
+ $B echo '0' > /sys/class/leds/lv5219lg:rgb1:blue/brightness
+ $B echo '0' > /sys/class/leds/lv5219lg:rgb1:red/brightness
+ $B echo '0' > /sys/class/leds/lv5219lg:rgb1:green/brightness
+ $B sleep 0.3
+ $B echo '50' > /sys/class/timed_output/vibrator/enable
+ $B echo '255' > /sys/class/leds/lv5219lg:rgb1:blue/brightness
+ $B echo '255' > /sys/class/leds/lv5219lg:rgb1:red/brightness
+ $B echo '255' > /sys/class/leds/lv5219lg:rgb1:green/brightness
+ $B sleep 0.3
+ $B echo '0' > /sys/class/leds/lv5219lg:rgb1:blue/brightness
+ $B echo '0' > /sys/class/leds/lv5219lg:rgb1:red/brightness
+ $B echo '0' > /sys/class/leds/lv5219lg:rgb1:green/brightness
+else
+ $B echo 50 > /sys/devices/virtual/timed_output/vibrator/enable
+ $B sleep 0.3
+ $B echo 50 > /sys/devices/virtual/timed_output/vibrator/enable
+ am start -a android.intent.action.MAIN -e message 'FDE v0.23 - firing up..' -n com.rja.utility/.ShowToast
+fi;
 if [ -e /system/engine/prop/firstboot ]; then
  $B echo "[$TIME] First boot after deploy" >> $LOG
  $B mount -o remount,rw /system
  if [ -e /sbin/sysrw ]; then
   /sbin/sysrw
-  $B sleep 1
  fi;
  $B rm -f $CONFIG
- $B cp /system/engine/bin/zipalign /system/xbin/zipalign
  $B cp /system/engine/bin/boost /system/xbin/boost
  $B cp /system/engine/bin/dynbsd /system/xbin/dynbsd
- $B chmod 777 /system/xbin/zipalign
  $B chmod 777 /system/xbin/boost
  $B chmod 777 /system/xbin/dynbsd
+ $B chmod 666 /system/lib/modules/*
  $B cp /system/engine/assets/FDE_config.txt $CONFIG
 fi;
 TIME=$($B date | $B awk '{ print $4 }')
 if [ -e $CONFIG ]; then
  $B echo "[$TIME] Loading FDE_config.." >> $LOG
  $B mount -o remount,rw /system
+ if [ -e /sbin/sysrw ]; then
+  /sbin/sysrw
+ fi;
  $B rm -f /system/engine/assets/FDE_config.txt
  $B cp $CONFIG /system/engine/assets/FDE_config.txt
 fi;
@@ -83,14 +111,12 @@ if [ -e /sys/fs/selinux/enforce ]; then
  $B echo 0 > /sys/fs/selinux/enforce
  $B chmod 444 /sys/fs/selinux/enforce
 fi;
-if [ -e /sbin/sysrw ]; then
- $B echo "[$TIME] Remapped partition mount detected" >> $LOG
- /sbin/sysrw
- $B sleep 1
-fi;
 $B echo "[$TIME] Remounting /data and /system - RW" >> $LOG
 $B mount -o remount,rw /system
 $B mount -o remount,rw /data
+if [ -e /sbin/sysrw ]; then
+ /sbin/sysrw
+fi;
 $B echo "[$TIME] Correcting permissions.." >> $LOG
 $B chmod 644 /system/build.prop
 $B chmod -R 777 /cache/*
@@ -100,6 +126,9 @@ $B chmod 777 /system/engine/gears/*
 $B chmod 777 /system/engine/prop/*
 sync;
 $B mount -o remount,rw /system
+if [ -e /sbin/sysrw ]; then
+ /sbin/sysrw
+fi;
 $B rm -f /system/etc/sysctl.conf
 $B touch /system/etc/sysctl.conf
 $B chmod 777 /system/etc/sysctl.conf
@@ -170,6 +199,9 @@ svc power stayon false
 service call activity 51 i32 -1
 if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,rw /system
+ if [ -e /sbin/sysrw ]; then
+  /sbin/sysrw
+ fi;
  $B rm -f /system/engine/prop/firstboot
  $B echo "[$TIME] First boot completed." >> $LOG
 fi;
@@ -178,12 +210,47 @@ am kill-all
 $B sleep 4
 TIME=$($B date | $B awk '{ print $4 }')
 $B mount -o remount,ro /system
+if [ -e /sbin/sysrwo ]; then
+ /sbin/sysro
+fi;
 $B sleep 1
-am start -a android.intent.action.MAIN -e message 'FDE status - OK' -n com.rja.utility/.ShowToast
-$B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
-$B sleep 0.3
-$B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
-$B sleep 0.3
-$B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
+if [ -e /engine.sh ]; then
+ $B echo '96' > /sys/class/timed_output/vibrator/enable
+ $B echo '255' > /sys/class/leds/lv5219lg:rgb1:blue/brightness
+ $B echo '255' > /sys/class/leds/lv5219lg:rgb1:red/brightness
+ $B echo '255' > /sys/class/leds/lv5219lg:rgb1:green/brightness
+ $B sleep 0.3
+ $B echo '0' > /sys/class/leds/lv5219lg:rgb1:blue/brightness
+ $B echo '0' > /sys/class/leds/lv5219lg:rgb1:red/brightness
+ $B echo '0' > /sys/class/leds/lv5219lg:rgb1:green/brightness
+ $B sleep 0.3
+ $B echo '96' > /sys/class/timed_output/vibrator/enable
+ $B echo '255' > /sys/class/leds/lv5219lg:rgb1:blue/brightness
+ $B echo '255' > /sys/class/leds/lv5219lg:rgb1:red/brightness
+ $B echo '255' > /sys/class/leds/lv5219lg:rgb1:green/brightness
+ $B sleep 0.3
+ $B echo '0' > /sys/class/leds/lv5219lg:rgb1:blue/brightness
+ $B echo '0' > /sys/class/leds/lv5219lg:rgb1:red/brightness
+ $B echo '0' > /sys/class/leds/lv5219lg:rgb1:green/brightness
+ $B sleep 0.3
+ $B echo '96' > /sys/class/timed_output/vibrator/enable
+ $B echo '255' > /sys/class/leds/lv5219lg:rgb1:blue/brightness
+ $B echo '255' > /sys/class/leds/lv5219lg:rgb1:red/brightness
+ $B echo '255' > /sys/class/leds/lv5219lg:rgb1:green/brightness
+ $B sleep 0.3
+ $B echo '0' > /sys/class/leds/lv5219lg:rgb1:blue/brightness
+ $B echo '0' > /sys/class/leds/lv5219lg:rgb1:red/brightness
+ $B echo '0' > /sys/class/leds/lv5219lg:rgb1:green/brightness
+else
+ $B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
+ $B sleep 0.3
+ $B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
+ $B sleep 0.3
+ $B echo 96 > /sys/devices/virtual/timed_output/vibrator/enable
+ am start -a android.intent.action.MAIN -e message 'FDE status - OK' -n com.rja.utility/.ShowToast
+fi;
 $B echo "[$TIME] FDE status - OK" >> $LOG
 $B echo "" >> $LOG
+if [ -e /engine.sh ]; then
+ $B run-parts /system/etc/init.d
+fi;

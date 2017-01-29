@@ -10,6 +10,9 @@ if [ "$A" -ge "99" ] ; then
   $B echo "Re-calibrating battery.."
   $B mount -o remount,rw /data
   $B mount -o remount,rw /system
+  if [ -e /sbin/sysrw ]; then
+   /sbin/sysrw
+  fi;
   $B rm -f /data/system/batterystats.bin
   $B rm -f /data/system/batterystats-checkin.bin
   $B rm -f /system/engine/prop/nobat

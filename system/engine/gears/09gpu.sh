@@ -7,6 +7,9 @@ CORES=$($B grep -c 'processor' /proc/cpuinfo)
 $B echo "[$TIME] ***GPU gear***"
 $B echo "Remounting /system - RW"
 $B mount -o remount,rw /system
+if [ -e /sbin/sysrw ]; then
+ /sbin/sysrw
+fi;
 $B mount -t debugfs debugfs /sys/kernel/debug
 if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
  $B echo "Adreno GPU detected"
@@ -107,8 +110,10 @@ fi;
 $B mount -t debugfs debugfs /sys/kernel/debug
 $B chmod 777 /dev/graphics/fb0
 if [ -e /sys/kernel/debug/msm_fb/0/vsync_enable ]; then
- $B echo "Disabling VSYNC.."
+ $B echo "Disabling VSYNC and tuning FB.."
  $B echo 0 > /sys/kernel/debug/msm_fb/0/vsync_enable
+ $B echo 16 > /sys/kernel/debug/msm_fb/mdp/mdp_usec_diff_treshold
+ $B echo 30 > /sys/kernel/debug/msm_fb/mdp/vs_rdcnt_slow
 fi;
 if [ -e /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction ]; then
  $B echo 50 > /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction
@@ -178,7 +183,7 @@ $B echo "Fix stagerfright security vulnerabilities.."
  setprop media.stagefright.enable-fma2dp false
  setprop media.stagefright.enable-scan false
 fi;
-if [ "$CORES" -ge "3" ] ; then
+if [ "$CORES" -ge "5" ] ; then
  $B echo "Dithering - ON"
  setprop persist.sys.use_dithering 1
 else
@@ -188,6 +193,9 @@ fi;
 if [ -e /system/engine/prop/firstboot ]; then
  if [ "$SDK" -ge "21" ] ; then
   $B mount -o remount,rw /system
+  if [ -e /sbin/sysrw ]; then
+   /sbin/sysrw
+  fi;
   setprop persist.bt.a2dp_offload_cap sbc-aptx-aptxhd
   $B cp -f /system/engine/assets/libaptX.so /system/vendor/lib/libaptX.so
   $B cp -f /system/engine/assets/libaptXHD.so /system/vendor/lib/libaptXHD.so

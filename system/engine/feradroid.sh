@@ -213,7 +213,6 @@ $B mount -o remount,ro /system
 if [ -e /sbin/sysrwo ]; then
  /sbin/sysro
 fi;
-$B sleep 1
 if [ -e /engine.sh ]; then
  $B echo '96' > /sys/class/timed_output/vibrator/enable
  $B echo '255' > /sys/class/leds/lv5219lg:rgb1:blue/brightness

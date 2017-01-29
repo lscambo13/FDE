@@ -25,6 +25,81 @@ if [ "sleeper=1" = "$ON" ]; then
  while true; do
    until [ "$FS" = "$(dumpsys power | $B grep $GR | $B grep -o "$FS")" ]; do
     $B sleep 120
+    if [ "$MAX" -ge "2000000" ]; then
+     if [ -e /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias ]; then
+      $B echo "100" > /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias ]; then
+      $B echo "100" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpu4/cpufreq/ondemand/powersave_bias ]; then
+      $B echo "100" > /sys/devices/system/cpu/cpu4/cpufreq/ondemand/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpufreq/ondemandx/powersave_bias ]; then
+      $B echo "100" > /sys/devices/system/cpu/cpufreq/ondemandx/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemandx/powersave_bias ]; then
+      $B echo "100" > /sys/devices/system/cpu/cpu0/cpufreq/ondemandx/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpu4/cpufreq/ondemandx/powersave_bias ]; then
+      $B echo "100" > /sys/devices/system/cpu/cpu4/cpufreq/ondemandx/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias ]; then
+      $B echo "100" > /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias ]; then
+      $B echo "100" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpu4/cpufreq/sprdemand/powersave_bias ]; then
+      $B echo "100" > /sys/devices/system/cpu/cpu4/cpufreq/sprdemand/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpufreq/intellidemand/powersave_bias ]; then
+      $B echo "100" > /sys/devices/system/cpu/cpufreq/intellidemand/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpu0/cpufreq/intellidemand/powersave_bias ]; then
+      $B echo "100" > /sys/devices/system/cpu/cpu0/cpufreq/intellidemand/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpu4/cpufreq/intellidemand/powersave_bias ]; then
+      $B echo "100" > /sys/devices/system/cpu/cpu4/cpufreq/intellidemand/powersave_bias
+     fi;
+    else
+     if [ -e /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias ]; then
+      $B echo "0" > /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias ]; then
+      $B echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpu4/cpufreq/ondemand/powersave_bias ]; then
+      $B echo "0" > /sys/devices/system/cpu/cpu4/cpufreq/ondemand/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpufreq/ondemandx/powersave_bias ]; then
+      $B echo "0" > /sys/devices/system/cpu/cpufreq/ondemandx/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemandx/powersave_bias ]; then
+      $B echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/ondemandx/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpu4/cpufreq/ondemandx/powersave_bias ]; then
+      $B echo "0" > /sys/devices/system/cpu/cpu4/cpufreq/ondemandx/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias ]; then
+      $B echo "0" > /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias ]; then
+      $B echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpu4/cpufreq/sprdemand/powersave_bias ]; then
+      $B echo "0" > /sys/devices/system/cpu/cpu4/cpufreq/sprdemand/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpufreq/intellidemand/powersave_bias ]; then
+      $B echo "0" > /sys/devices/system/cpu/cpufreq/intellidemand/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpu0/cpufreq/intellidemand/powersave_bias ]; then
+      $B echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/intellidemand/powersave_bias
+     fi;
+     if [ -e /sys/devices/system/cpu/cpu4/cpufreq/intellidemand/powersave_bias ]; then
+      $B echo "0" > /sys/devices/system/cpu/cpu4/cpufreq/intellidemand/powersave_bias
+     fi;
+    fi;
    done;
   if [ "$FS" = "$(dumpsys power | $B grep -E $GR | $B grep -o "$FS")" ]; then
    $B sleep 9
@@ -37,10 +112,9 @@ if [ "sleeper=1" = "$ON" ]; then
    fi;
    $B killall -9 com.google.android.gms.persistent
    service call activity 51 i32 0
-   $B sleep 3
+   $B sleep 1
    am kill-all
-   $B sleep 3
-   sync;
+   $B sleep 2
    BA=$($B cat /system/engine/assets/FDE_config.txt | $B grep -e 'battery=' | $B sed -e "s|battery=|""|")
    if [ "$($B cat /sys/class/power_supply/battery/capacity)" -le "$BA" ]; then
     svc nfc disable
@@ -51,7 +125,6 @@ if [ "sleeper=1" = "$ON" ]; then
     setprop ro.com.google.networklocation 0
     am broadcast -a android.intent.action.BATTERY_LOW
    fi;
-   $B sleep 1
    H=$($B pgrep -l '' | $B grep -E "launcher" | $B awk '{print $1}')
    L=$($B pgrep -l '' | $B grep -E "home" | $B awk '{print $1}')
    P=$($B pgrep -l '' | $B grep -E "phone" | $B awk '{print $1}')
@@ -62,7 +135,6 @@ if [ "sleeper=1" = "$ON" ]; then
    renice [-17] "$P"
    renice [-17] "$T"
    renice [-17] "$D"
-   $B sleep 1
    if [ "$MAX" -ge "2000000" ]; then
     if [ -e /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias ]; then
      $B echo "400" > /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
@@ -214,82 +286,7 @@ if [ "sleeper=1" = "$ON" ]; then
    fi;
    service call activity 51 i32 -1
    until [ "$TR" = "$(dumpsys power | $B grep $GR | $B grep -o "$TR")" ]; do
-    $B sleep 360
-    if [ "$MAX" -ge "2000000" ]; then
-     if [ -e /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias ]; then
-      $B echo "100" > /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias ]; then
-      $B echo "100" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpu4/cpufreq/ondemand/powersave_bias ]; then
-      $B echo "100" > /sys/devices/system/cpu/cpu4/cpufreq/ondemand/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpufreq/ondemandx/powersave_bias ]; then
-      $B echo "100" > /sys/devices/system/cpu/cpufreq/ondemandx/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemandx/powersave_bias ]; then
-      $B echo "100" > /sys/devices/system/cpu/cpu0/cpufreq/ondemandx/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpu4/cpufreq/ondemandx/powersave_bias ]; then
-      $B echo "100" > /sys/devices/system/cpu/cpu4/cpufreq/ondemandx/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias ]; then
-      $B echo "100" > /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias ]; then
-      $B echo "100" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpu4/cpufreq/sprdemand/powersave_bias ]; then
-      $B echo "100" > /sys/devices/system/cpu/cpu4/cpufreq/sprdemand/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpufreq/intellidemand/powersave_bias ]; then
-      $B echo "100" > /sys/devices/system/cpu/cpufreq/intellidemand/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpu0/cpufreq/intellidemand/powersave_bias ]; then
-      $B echo "100" > /sys/devices/system/cpu/cpu0/cpufreq/intellidemand/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpu4/cpufreq/intellidemand/powersave_bias ]; then
-      $B echo "100" > /sys/devices/system/cpu/cpu4/cpufreq/intellidemand/powersave_bias
-     fi;
-    else
-     if [ -e /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias ]; then
-      $B echo "0" > /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias ]; then
-      $B echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpu4/cpufreq/ondemand/powersave_bias ]; then
-      $B echo "0" > /sys/devices/system/cpu/cpu4/cpufreq/ondemand/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpufreq/ondemandx/powersave_bias ]; then
-      $B echo "0" > /sys/devices/system/cpu/cpufreq/ondemandx/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemandx/powersave_bias ]; then
-      $B echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/ondemandx/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpu4/cpufreq/ondemandx/powersave_bias ]; then
-      $B echo "0" > /sys/devices/system/cpu/cpu4/cpufreq/ondemandx/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias ]; then
-      $B echo "0" > /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias ]; then
-      $B echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpu4/cpufreq/sprdemand/powersave_bias ]; then
-      $B echo "0" > /sys/devices/system/cpu/cpu4/cpufreq/sprdemand/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpufreq/intellidemand/powersave_bias ]; then
-      $B echo "0" > /sys/devices/system/cpu/cpufreq/intellidemand/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpu0/cpufreq/intellidemand/powersave_bias ]; then
-      $B echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/intellidemand/powersave_bias
-     fi;
-     if [ -e /sys/devices/system/cpu/cpu4/cpufreq/intellidemand/powersave_bias ]; then
-      $B echo "0" > /sys/devices/system/cpu/cpu4/cpufreq/intellidemand/powersave_bias
-     fi;
-    fi;
+    $B sleep 540
    done;
   fi;
  done;

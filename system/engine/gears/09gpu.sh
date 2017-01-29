@@ -116,8 +116,13 @@ if [ -e /sys/kernel/debug/msm_fb/0/vsync_enable ]; then
  $B echo 30 > /sys/kernel/debug/msm_fb/mdp/vs_rdcnt_slow
 fi;
 if [ -e /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction ]; then
+ $B echo "Adreno i/o fraction tune-up.."
  $B echo 50 > /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction
- $B echo "KGSL tune-up.."
+fi;
+if [ -e /sys/class/kgsl/kgsl-3d0/max_pwrlevel ]; then
+ $B echo "Adreno GPU freq. tune-up.."
+ $B echo 0 > /sys/class/kgsl/kgsl-3d0/max_pwrlevel
+ $B echo 5 > /sys/class/kgsl/kgsl-3d0/default_pwrlevel
 fi;
 if [ -e /system/engine/prop/firstboot ]; then
  if [ -e /system/xbin/sqlite3 ]; then

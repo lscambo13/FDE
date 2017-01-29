@@ -4,7 +4,6 @@ B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Kernel gear***"
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p)
-CPU=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq)
 FM=$((RAM*(64+1)))
 FK=$(((RAM*10)-2699))
 EF=$(((RAM*11)-2966))
@@ -16,7 +15,7 @@ fi;
 if [ "$FK" -gt "12288" ]; then
  FK=12288
 elif [ "$FK" -le "3072" ]; then
- FK=3072
+ FK=5120
 fi;
 $B mount -o remount,rw /system
 if [ -e /sbin/sysrw ]; then
@@ -193,15 +192,63 @@ if [ -e /sys/kernel/debug/sched_features ]; then
  $B echo "NO_WAKEUP_PREEMPT" > /sys/kernel/debug/sched_features
  $B echo "NO_DOUBLE_TICK" > /sys/kernel/debug/sched_features
 fi;
+if [ -e /sys/kernel/sched/gentle_fair_sleepers ]; then
+ $B echo "Sleepers tuning.."
+ $B echo 0 > /sys/kernel/sched/gentle_fair_sleepers
+fi;
+$B echo "Tuning big-little kernel scheduling.."
+if [ -e /proc/sys/kernel/sched_window_stats_policy ]; then
+ $B echo 3 > /proc/sys/kernel/sched_window_stats_policy
+fi;
+if [ -e /proc/sys/kernel/sched_ravg_hist_size ]; then
+ $B echo 3 > /proc/sys/kernel/sched_ravg_hist_size
+fi;
+if [ -e /proc/sys/kernel/sched_spill_load ]; then
+ $B echo 96 > /proc/sys/kernel/sched_spill_load
+fi;
+if [ -e /proc/sys/kernel/sched_spill_nr_run ]; then
+ $B echo 9 > /proc/sys/kernel/sched_spill_nr_run
+fi;
+if [ -e /proc/sys/kernel/sched_upmigrate ]; then
+ $B echo 90 > /proc/sys/kernel/sched_upmigrate
+fi;
+if [ -e /proc/sys/kernel/sched_downmigrate ]; then
+ $B echo 70 > /proc/sys/kernel/sched_downmigrate
+fi;
+if [ -e /proc/sys/kernel/sched_heavy_task ]; then
+ $B echo 90 > /proc/sys/kernel/sched_heavy_task
+fi;
+if [ -e /proc/sys/kernel/sched_init_task_load ]; then
+ $B echo 30 > /proc/sys/kernel/sched_init_task_load
+fi;
+if [ -e /proc/sys/kernel/sched_enable_power_aware ]; then
+ $B echo 1 > /proc/sys/kernel/sched_enable_power_aware
+fi;
+if [ -e /proc/sys/kernel/sched_upmigrate_min_nice ]; then
+ $B echo 9 > /proc/sys/kernel/sched_upmigrate_min_nice
+fi;
+if [ -e /proc/sys/kernel/sched_small_wakee_task_load ]; then
+ $B echo 12 > /proc/sys/kernel/sched_small_wakee_task_load
+fi;
+if [ -e /proc/sys/kernel/sched_small_task ]; then
+ $B echo 12 > /proc/sys/kernel/sched_small_task
+fi;
+if [ -e /proc/sys/kernel/sched_wakeup_load_threshold ]; then
+ $B echo 110 > /proc/sys/kernel/sched_wakeup_load_threshold
+fi;
+if [ -e /proc/sys/kernel/sched_migration_fixup ]; then
+ $B echo 1 > /proc/sys/kernel/sched_migration_fixup
+fi;
+if [ -e /proc/sys/kernel/sched_boost ]; then
+ $B echo 0 > /proc/sys/kernel/sched_boost
+fi;
 if [ -e /proc/sys/kernel/sched_min_granularity_ns ]; then
  ABC=$(cat /proc/sys/kernel/sched_latency_ns)
  $B echo "Tuning kernel sched latency.."
  $B echo $((ABC/2)) > /proc/sys/kernel/sched_min_granularity_ns
 fi;
-if [ -e /sys/kernel/sched/gentle_fair_sleepers ]; then
- $B echo "Sleepers tuning.."
- $B echo 0 > /sys/kernel/sched/gentle_fair_sleepers
-fi;
+$B echo 950000 > /proc/sys/kernel/sched_rt_runtime_us
+$B echo 1000000 > /proc/sys/kernel/sched_rt_period_us
 if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
  $B echo "Dynamic fsync detected. Activating.."
  $B echo "1" > /sys/kernel/dyn_fsync/Dyn_fsync_active

@@ -36,13 +36,7 @@ if [ -e /sys/module/lpm_levels/parameters/sleep_disabled ]; then
  $B echo "LowPower mode 1 support detected. Activating."
  $B echo "0" > /sys/module/lpm_levels/parameters/sleep_disabled
 fi;
-if [ -e /sys/module/cpuidle_scx35/parameters/cpuidle_debug ]; then
- $B echo "Spreadtrum cpuidle tune-up.."
- $B echo "0" > /sys/module/cpuidle_scx35/parameters/cpuidle_debug
- $B echo "1" > /sys/module/cpuidle_scx35/parameters/idle_deep_en
- $B echo "0" > /sys/module/cpuidle_scx35/parameters/light_sleep_en
-fi;
-if [ "$CORES" -le "2" ]; then
+if [ "$CORES" -le "3" ]; then
  if [ -e /sys/module/pm2/modes/cpu0/power_collapse/suspend_enabled ]; then
   $B echo "LowPower mode 2 support detected. Activating.."
   $B echo 1 > /sys/module/pm2/modes/cpu0/standalone_power_collapse/idle_enabled
@@ -52,6 +46,22 @@ if [ "$CORES" -le "2" ]; then
   $B echo 1 > /sys/module/pm2/modes/cpu0/power_collapse/suspend_enabled
   $B echo 1 > /sys/module/pm2/modes/cpu0/power_collapse/idle_enabled
  fi;
+fi;
+if [ -e /sys/module/pm2/parameters/idle_sleep_mode ]; then
+ $B echo "LowPower mode 3 support detected. Activating."
+ $B echo 1 > /sys/module/pm2/parameters/idle_sleep_mode
+fi;
+if [ -e /sys/module/msm_performance/parameters/touchboost ]; then
+ $B echo "Touchboost - OFF.."
+ $B chmod 644 /sys/module/msm_performance/parameters/touchboost
+ $B echo 0 > /sys/module/msm_performance/parameters/touchboost
+fi;
+if [ -e /sys/module/cpu_boost/parameters/boost_ms ]; then
+ $B echo "Tuning input-boost.."
+ $B chmod 644 /sys/module/cpu_boost/parameters/boost_ms
+ $B echo 0 > /sys/module/cpu_boost/parameters/boost_ms
+ $B chmod 644 /sys/module/cpu_boost/parameters/input_boost_ms
+ $B echo 69 > /sys/module/cpu_boost/parameters/input_boost_ms
 fi;
 if [ -e /sys/class/lcd/panel/power_reduce ]; then
  $B echo "LCD power reduce detected. Activating.."
@@ -65,6 +75,12 @@ if [ -e /sys/power/cpufreq_min_limit ]; then
  $B chmod 444 /sys/power/dvfs_score
  $B chmod 444 /sys/power/dvfs_unplug
  $B chmod 444 /sys/power/dvfs_prop
+fi;
+if [ -e /sys/module/cpuidle_scx35/parameters/cpuidle_debug ]; then
+ $B echo "Spreadtrum cpuidle tune-up.."
+ $B echo "0" > /sys/module/cpuidle_scx35/parameters/cpuidle_debug
+ $B echo "1" > /sys/module/cpuidle_scx35/parameters/idle_deep_en
+ $B echo "0" > /sys/module/cpuidle_scx35/parameters/light_sleep_en
 fi;
 $B echo "Tuning Android power-saving.."
 setprop power.saving.mode 1

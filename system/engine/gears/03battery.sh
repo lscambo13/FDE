@@ -68,13 +68,9 @@ if [ -e /sys/class/lcd/panel/power_reduce ]; then
  $B echo "1" > /sys/class/lcd/panel/power_reduce
 fi;
 if [ -e /sys/power/cpufreq_min_limit ]; then
- $B echo "Allow CPU underclock & try to disable DVFS.."
+ $B echo "Allow CPU underclock.."
  $B echo "0" > /sys/power/cpufreq_min_limit
  $B chmod 444 /sys/power/cpufreq_min_limit
- $B chmod 444 /sys/power/dvfs_plug
- $B chmod 444 /sys/power/dvfs_score
- $B chmod 444 /sys/power/dvfs_unplug
- $B chmod 444 /sys/power/dvfs_prop
 fi;
 if [ -e /sys/module/cpuidle_scx35/parameters/cpuidle_debug ]; then
  $B echo "Spreadtrum cpuidle tune-up.."

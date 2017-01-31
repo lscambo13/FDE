@@ -8,11 +8,6 @@ if [ -e $LOG ]; then
 else
  LOG=/data/media/0/Android/FDE_log.txt
 fi;
-$B mount -o remount,rw /system
-if [ -e /sbin/sysrw ]; then
- /sbin/sysrw
-fi;
-sync;
 $B echo "Allow mediaserver read write execute" >> $LOG
 supolicy --live "allow mediaserver mediaserver_tmpfs:file { read write execute };"
 if [ "$SDK" -le "18" ]; then

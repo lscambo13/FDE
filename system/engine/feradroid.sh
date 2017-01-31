@@ -16,6 +16,9 @@ TIME=$($B date | $B awk '{ print $4 }')
 setprop ro.feralab.engine 23
 svc power stayon true
 $B sleep 99
+am kill-all
+$B sleep 2
+service call activity 51 i32 0
 $B rm -f $LOG
 $B touch $LOG
 if [ -e $LOG ]; then
@@ -31,15 +34,16 @@ $B chown 0:0 $LOG
 $B chown 0:0 $CONFIG
 $B chmod 777 $LOG
 $B chmod 777 $CONFIG
-am kill-all
-$B sleep 3
-service call activity 51 i32 0
-svc power stayon true
+$B echo "[$TIME] Mounting partitions as RW.." >> $LOG
+$B mount -o remount,rw /data
 $B mount -o remount,rw /system
 if [ -e /sbin/sysrw ]; then
  $B echo "[$TIME] Remapped partition layout detected.." >> $LOG
  /sbin/sysrw
 fi;
+$B mount -t debugfs debugfs /sys/kernel/debug
+sync;
+$B sleep 1
 $B echo "### FeraLab ###" > $LOG
 $B echo "" >> $LOG
 $B echo "[$TIME] FeraDroid Engine v0.23" >> $LOG
@@ -82,10 +86,6 @@ else
 fi;
 if [ -e /system/engine/prop/firstboot ]; then
  $B echo "[$TIME] First boot after deploy" >> $LOG
- $B mount -o remount,rw /system
- if [ -e /sbin/sysrw ]; then
-  /sbin/sysrw
- fi;
  $B rm -f $CONFIG
  $B cp /system/engine/bin/boost /system/xbin/boost
  $B cp /system/engine/bin/dynbsd /system/xbin/dynbsd
@@ -97,10 +97,6 @@ fi;
 TIME=$($B date | $B awk '{ print $4 }')
 if [ -e $CONFIG ]; then
  $B echo "[$TIME] Loading FDE_config.." >> $LOG
- $B mount -o remount,rw /system
- if [ -e /sbin/sysrw ]; then
-  /sbin/sysrw
- fi;
  $B rm -f /system/engine/assets/FDE_config.txt
  $B cp $CONFIG /system/engine/assets/FDE_config.txt
 fi;
@@ -111,12 +107,6 @@ if [ -e /sys/fs/selinux/enforce ]; then
  $B echo 0 > /sys/fs/selinux/enforce
  $B chmod 444 /sys/fs/selinux/enforce
 fi;
-$B echo "[$TIME] Remounting /data and /system - RW" >> $LOG
-$B mount -o remount,rw /system
-$B mount -o remount,rw /data
-if [ -e /sbin/sysrw ]; then
- /sbin/sysrw
-fi;
 $B echo "[$TIME] Correcting permissions.." >> $LOG
 $B chmod 644 /system/build.prop
 $B chmod -R 777 /cache/*
@@ -124,11 +114,6 @@ $B chmod -R 777 /system/engine/*
 $B chmod 777 /system/engine/assets/*
 $B chmod 777 /system/engine/gears/*
 $B chmod 777 /system/engine/prop/*
-sync;
-$B mount -o remount,rw /system
-if [ -e /sbin/sysrw ]; then
- /sbin/sysrw
-fi;
 $B rm -f /system/etc/sysctl.conf
 $B touch /system/etc/sysctl.conf
 $B chmod 777 /system/etc/sysctl.conf
@@ -205,9 +190,8 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B rm -f /system/engine/prop/firstboot
  $B echo "[$TIME] First boot completed." >> $LOG
 fi;
-sync;
 am kill-all
-$B sleep 4
+$B sleep 2
 TIME=$($B date | $B awk '{ print $4 }')
 $B mount -o remount,ro /system
 if [ -e /sbin/sysrwo ]; then

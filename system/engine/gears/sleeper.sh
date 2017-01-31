@@ -116,10 +116,13 @@ if [ "sleeper=1" = "$ON" ]; then
    am kill-all
    $B sleep 2
    BA=$($B cat /system/engine/assets/FDE_config.txt | $B grep -e 'battery=' | $B sed -e "s|battery=|""|")
+   DT=$($B cat /system/engine/assets/FDE_config.txt | $B grep -e 'internet_control=1')
    if [ "$($B cat /sys/class/power_supply/battery/capacity)" -le "$BA" ]; then
     svc nfc disable
-    svc data disable
-    svc wifi disable
+    if [ "internet_control=1" = "$DT" ]; then
+     svc data disable
+     svc wifi disable
+    fi;
     svc power stayon false
     service call bluetooth_manager 8
     setprop ro.com.google.networklocation 0

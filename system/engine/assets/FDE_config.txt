@@ -4,7 +4,7 @@
 
 #Trigger to enable or disable FDE ad-blocking mechanism
 #FDE ad-block wants internet connection while booting OS
-#to update block-list. To disable it set below line to 0.
+#to update ad-block-list. To disable it set trigger to 0.
 
 adblocker=1
 
@@ -22,5 +22,12 @@ sleeper=1
 #battery trigger to desired level.
 #Set 0 to disable this feature.
 
-battery=6
+battery=9
 
+#If Stamina mode is enabled in Sleeper daemon 
+#this option triggers the logic of internet control
+#If set to 0, Sleeper daemon will not disable data/wifi
+#when battery level is below the trigger above.
+#Set to 1 for deeper power-saving mode.
+
+internet_control=0

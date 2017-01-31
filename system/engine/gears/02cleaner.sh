@@ -3,12 +3,6 @@
 B=/system/engine/bin/busybox
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Cleaner gear***"
-$B echo "Remounting /data and /system - RW"
-$B mount -o remount,rw /system
-$B mount -o remount,rw /data
-if [ -e /sbin/sysrw ]; then
- /sbin/sysrw
-fi;
 $B echo "Cleaning trash.."
 $B chmod 777 /cache
 $B rm -f /cache/*.apk
@@ -62,7 +56,7 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B chmod -R 000 /data/tombstones
 fi;
 pm trim-caches 36g
-$B sleep 0.5
+$B sleep 1
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Cleaner gear*** - OK"
 sync;

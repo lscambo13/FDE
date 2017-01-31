@@ -325,7 +325,7 @@ setprop profiler.debugmonitor false
 setprop profiler.hung.dumpdobugreport false
 setprop logcat.live disable
 setprop debugtool.anrhistory 0
-setprop ro.vold.umsdirtyratio 33
+setprop ro.vold.umsdirtyratio 36
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Kernel gear*** - OK"
 sync;

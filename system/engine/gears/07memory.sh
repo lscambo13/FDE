@@ -62,7 +62,6 @@ $B echo "Remounting storage partitions.."
 for m in $ST $SST; do
   $B mount -o remount,nosuid,nodev,noatime,nodiratime -t auto "${m}"
   $B mount -o remount,nosuid,nodev,noatime,nodiratime -t auto "${m}"/Android/obb
-  $B sleep 0.5
 done;
 TIME=$($B date | $B awk '{ print $4 }')
 $B echo "[$TIME] ***Memory gear*** - OK"

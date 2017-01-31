@@ -296,49 +296,49 @@ fi;
 if [ -e /sys/devices/system/cpu/cpufreq/interactive/go_highspeed_load ]; then
 $B echo "CPU Interactive tuning.."
 $B chmod 644 /sys/devices/system/cpu/cpufreq/interactive/*
-$B echo "79" > /sys/devices/system/cpu/cpufreq/interactive/go_highspeed_load
+$B echo "77" > /sys/devices/system/cpu/cpufreq/interactive/go_highspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
-$B echo "40000" > /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
+$B echo "60000" > /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
 $B echo "10000" > /sys/devices/system/cpu/cpufreq/interactive/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_highspeed_load ]; then
 $B echo "CPU0 Interactive tuning.."
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/*
-$B echo "79" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_highspeed_load
+$B echo "77" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_highspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy
-$B echo "40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
+$B echo "60000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
 $B echo "10000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_highspeed_load ]; then
 $B echo "CPU4 Interactive tuning.."
 $B chmod 644 /sys/devices/system/cpu/cpu4/cpufreq/interactive/*
-$B echo "79" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_highspeed_load
+$B echo "77" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_highspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy
-$B echo "40000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time
+$B echo "60000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time
 $B echo "10000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/interactivex/go_highspeed_load ]; then
 $B echo "CPU InteractiveX tuning.."
 $B chmod 644 /sys/devices/system/cpu/cpufreq/interactivex/*
-$B echo "79" > /sys/devices/system/cpu/cpufreq/interactivex/go_highspeed_load
+$B echo "77" > /sys/devices/system/cpu/cpufreq/interactivex/go_highspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpufreq/interactivex/io_is_busy
-$B echo "40000" > /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time
+$B echo "60000" > /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time
 $B echo "10000" > /sys/devices/system/cpu/cpufreq/interactivex/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactivex/go_highspeed_load ]; then
 $B echo "CPU0 InteractiveX tuning.."
 $B chmod 644 /sys/devices/system/cpu/cpu0/cpufreq/interactivex/*
-$B echo "79" > /sys/devices/system/cpu/cpu0/cpufreq/interactivex/go_highspeed_load
+$B echo "77" > /sys/devices/system/cpu/cpu0/cpufreq/interactivex/go_highspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/interactivex/io_is_busy
-$B echo "40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactivex/min_sample_time
+$B echo "60000" > /sys/devices/system/cpu/cpu0/cpufreq/interactivex/min_sample_time
 $B echo "10000" > /sys/devices/system/cpu/cpu0/cpufreq/interactivex/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpu4/cpufreq/interactivex/go_highspeed_load ]; then
 $B echo "CPU4 InteractiveX tuning.."
 $B chmod 644 /sys/devices/system/cpu/cpu4/cpufreq/interactivex/*
-$B echo "79" > /sys/devices/system/cpu/cpu4/cpufreq/interactivex/go_highspeed_load
+$B echo "77" > /sys/devices/system/cpu/cpu4/cpufreq/interactivex/go_highspeed_load
 $B echo "1" > /sys/devices/system/cpu/cpu4/cpufreq/interactivex/io_is_busy
-$B echo "40000" > /sys/devices/system/cpu/cpu4/cpufreq/interactivex/min_sample_time
+$B echo "60000" > /sys/devices/system/cpu/cpu4/cpufreq/interactivex/min_sample_time
 $B echo "10000" > /sys/devices/system/cpu/cpu4/cpufreq/interactivex/timer_rate
 fi;
 if [ -e /sys/devices/system/cpu/cpufreq/pegasusq/up_threshold ]; then

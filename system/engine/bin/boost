@@ -1,3 +1,3 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.23 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.24 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;sync;$B sleep 1;$B echo 3 > /proc/sys/vm/drop_caches;$B sleep 1;sync;$B sleep 1;$B echo 2 > /proc/sys/vm/drop_caches;$B sleep 1;sync;$B sleep 1;$B echo 1 > /proc/sys/vm/drop_caches;$B sleep 1;sync;$B sleep 1;$B echo 3 > /proc/sys/vm/drop_caches;$B sleep 3;sync;$B free -m

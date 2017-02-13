@@ -49,12 +49,10 @@ if [ -e /system/xbin/sqlite3 ]; then
 fi;
 ARCH=$(uname -m)
 if [ "$ARCH" = "$(grep x86)" ]; then
- BB=x86
-else
- BB=arm
+ rm -f /system/engine/bin/busybox
+ mv /system/engine/bin/x86/busybox /system/engine/bin/busybox
+ rm -Rf /system/engine/bin/x86
 fi;
-mv /system/engine/bin/bb/$BB/busybox /system/engine/bin/busybox
-rm -Rf /system/engine/bin/bb
 chmod 777 /system/engine/bin/*
 B="/system/engine/bin/busybox"
 $B --install -s /system/xbin
@@ -93,7 +91,7 @@ cp -f /system/engine/assets/showtoast.apk /data/app/showtoast.apk
 chmod 644 /data/app/showtoast.apk
 touch /system/etc/fde
 chmod 777 /system/etc/fde
-echo "23" > /system/etc/fde
+echo "24" > /system/etc/fde
 rm -Rf /fde/*
 umount /system
 ui_print ""

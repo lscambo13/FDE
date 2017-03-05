@@ -1,4 +1,4 @@
-### FeraDroid Engine v0.24 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.25 | By FeraVolt. 2017 ###
 #FDE configuration file.
 
 
@@ -44,7 +44,3 @@ lowbatt=9
 
 internet_control=0
 
-#Dynamic battery saving daemon. Available for 2+Ghz CPUs
-#Set 0 to disable it.
-
-dynbsd=1

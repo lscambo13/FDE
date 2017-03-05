@@ -10,7 +10,7 @@ ui_print() {
 ui_print ""
 ui_print ""
 ui_print "***FeraLab***"
-ui_print "FeraDroid Engine v0.23"
+ui_print "FeraDroid Engine v0.25"
 ui_print ""
 ui_print "FDE deploy.."
 mount /system
@@ -56,22 +56,6 @@ fi;
 chmod 777 /system/engine/bin/*
 B="/system/engine/bin/busybox"
 $B --install -s /system/xbin
-m="/system/engine/bin/sh /system/engine/feradroid.sh"
-if [ -e /system/etc/init.qcom.post_boot.sh ]; then
- $B sed -e "s=$m=""=" -i /system/etc/init.qcom.post_boot.sh
-elif [ -e /system/etc/hw_config.sh ]; then
- $B sed -e "s=$m=""=" -i /system/etc/hw_config.sh
-elif [ -e /system/xbin/zram.sh ]; then
- $B sed -e "s=$m=""=" -i /system/xbin/zram.sh
-fi;
-f="/system/engine/feradroid.sh"
-if [ -e /system/etc/init.qcom.post_boot.sh ]; then
- $B sed -e "s=$f=""=" -i /system/etc/init.qcom.post_boot.sh
-elif [ -e /system/etc/hw_config.sh ]; then
- $B sed -e "s=$f=""=" -i /system/etc/hw_config.sh
-elif [ -e /system/xbin/zram.sh ]; then
- $B sed -e "s=$f=""=" -i /system/xbin/zram.sh
-fi;
 if [ -e /engine.sh ]; then
  touch /system/engine/prop/ferakernel
  echo "1" > /system/engine/prop/ferakernel
@@ -80,10 +64,8 @@ fi;
 if [ -d /system/su.d ]; then
  mv /system/etc/init.d/90fde /system/su.d/90fde.sh
  mv /system/etc/init.d/91sleeper /system/su.d/91sleeper.sh
- cp /system/etc/init.d/99dynbsd /system/su.d/99dynbsd.sh
  chmod 777 /system/su.d/90fde.sh
  chmod 777 /system/su.d/91sleeper.sh
- chmod 777 /system/su.d/99dynbsd.sh
 fi;
 rm -f /system/etc/init.d/999fde 
 rm -f /system/su.d/999fde.sh
@@ -91,7 +73,7 @@ cp -f /system/engine/assets/showtoast.apk /data/app/showtoast.apk
 chmod 644 /data/app/showtoast.apk
 touch /system/etc/fde
 chmod 777 /system/etc/fde
-echo "24" > /system/etc/fde
+echo "25" > /system/etc/fde
 rm -Rf /fde/*
 umount /system
 ui_print ""

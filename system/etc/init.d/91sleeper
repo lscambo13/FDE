@@ -1,4 +1,4 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.24 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.25 | By FeraVolt. 2017 ###
 
 if [ -e /system/engine/gears/sleeper.sh ];then echo "Init Sleeper daemon";/system/engine/gears/sleeper.sh &;fi;

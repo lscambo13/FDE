@@ -1,3 +1,0 @@
-#!/system/bin/sh
-
-B=/system/engine/bin/busybox;LOG=/sdcard/Android/FDE_log.txt;MAX=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq);SDK=$(getprop ro.build.version.sdk);if [ -e $LOG ];then $B echo "LOG - OK";else LOG=/storage/emulated/0/Android/FDE_log.txt;fi;DBS=$($B cat /system/engine/assets/FDE_config.txt | $B grep -e 'dynbsd=1');if [ "dynbsd=1" = "$DBS" ];then if [ "$SDK" -gt "10" ];then if [ "$MAX" -ge "1700000" ];then if [ ! -e /engine.sh ];then if [ ! -e /sys/power/dvfs_plug ];then /system/xbin/dynbsd sa -1 -h 0 -ns 5 -d 1800 -lt 0 &;$B echo "DynBS daemon is active." >> $LOG;fi;fi;fi;fi;fi;

@@ -16,11 +16,7 @@ LOG=/sdcard/Android/FDE_log.txt;
 TIME=$($B date | $B awk '{ print $4 }');
 setprop ro.feralab.engine 25;
 svc power stayon true;
-am kill-all;
 $B sleep 90;
-am kill-all;
-$B sleep 2;
-service call activity 51 i32 0;
 $B rm -f $LOG;
 $B touch $LOG;
 if [ -e $LOG ]; then
@@ -210,7 +206,6 @@ fi;
 sync;
 $B sleep 1;
 svc power stayon false;
-service call activity 51 i32 -1;
 TIME=$($B date | $B awk '{ print $4 }');
 if [ -e /system/engine/prop/firstboot ]; then
  $B mount -o remount,rw /system;

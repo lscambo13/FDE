@@ -29,10 +29,17 @@ $B echo "  Cached:             $RAMcached MB";
 $B echo "  SWAP/ZRAM total:    $SWAP MB";
 $B echo "  SWAP/ZRAM used:     $SWAPused MB";
 $B echo "Freeing RAM...";
+setprop sys.swap 0
+setprop ro.config.zram.support true
+$B sleep 1;
+service call activity 51 i32 0;
+$B sleep 2;
+am kill-all;
+$B sleep 3;
 sync;
 $B sleep 1;
 $B echo "3" > /proc/sys/vm/drop_caches;
-$B sleep 3;
+$B sleep 2;
 $B mount -o remount,rw /system;
 if [ -e /sbin/sysrw ]; then
  /sbin/sysrw;
@@ -135,10 +142,10 @@ elif [ "$SWAP" -gt "0" ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p);
  $B echo "SWAP detected. Size is $SWAP MB";
  $B echo "Configuring kernel & SWAP frienship..";
- $B echo "40" > /proc/sys/vm/swappiness;
- $B echo "vm.swappiness=40" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.swappiness=40;
- setprop sys.vm.swappiness 40;
+ $B echo "50" > /proc/sys/vm/swappiness;
+ $B echo "vm.swappiness=50" >> /system/etc/sysctl.conf;
+ $B sysctl -e -w vm.swappiness=50;
+ setprop sys.vm.swappiness 50;
  if [ -e /sys/module/zswap/parameters/enabled ]; then
   $B echo "ZSWAP detected. Enabling..";
   $B echo "1" > /sys/module/zswap/parameters/enabled;
@@ -151,10 +158,10 @@ if [ -e /sys/block/zram0/disksize ]; then
  if [ "$SWAP" -gt "0" ]; then
   setprop ro.config.zram.support true;
   setprop zram.disksize $FZRAM;
-  $B echo "80" > /proc/sys/vm/swappiness;
-  $B echo "vm.swappiness=80" >> /system/etc/sysctl.conf;
-  $B sysctl -e -w vm.swappiness=80;
-  setprop sys.vm.swappiness 80;
+  $B echo "90" > /proc/sys/vm/swappiness;
+  $B echo "vm.swappiness=90" >> /system/etc/sysctl.conf;
+  $B sysctl -e -w vm.swappiness=90;
+  setprop sys.vm.swappiness 90;
   if [ -e /sys/module/zram/parameters/total_mem_usage_percent ]; then
    $B echo "Tuning ZRAM parameter..";
    $B echo "$PZ" > /sys/module/zram/parameters/total_mem_usage_percent;
@@ -172,13 +179,13 @@ if [ "$SWAP" -eq "0" ]; then
  $B sysctl -e -w vm.swappiness=0;
  setprop sys.vm.swappiness 0;
 fi;
-if [ "$RAM" -le "512" ]; then
- if [ "$CORES" -ge "2" ]; then
+if [ "$RAM" -le "1024" ]; then
+ if [ "$CORES" -ge "3" ]; then
   $B echo "Small RAM - KSM wanted..";
   if [ -e /sys/kernel/mm/uksm/run ]; then
    $B echo "uKSM detected";
    $B echo "Starting and tuning uKSM..";
-   $B echo "128" > /sys/kernel/mm/uksm/pages_to_scan;
+   $B echo "1024" > /sys/kernel/mm/uksm/pages_to_scan;
    $B echo "9000" > /sys/kernel/mm/uksm/sleep_millisecs;
    $B echo "45" > /sys/kernel/mm/uksm/max_cpu_percentage;
    $B echo "1" > /sys/kernel/mm/uksm/run;
@@ -187,7 +194,7 @@ if [ "$RAM" -le "512" ]; then
   elif [ -e /sys/kernel/mm/ksm/run ]; then
    $B echo "KSM detected";
    $B echo "Starting and tuning KSM..";
-   $B echo "128" > /sys/kernel/mm/ksm/pages_to_scan;
+   $B echo "1024" > /sys/kernel/mm/ksm/pages_to_scan;
    $B echo "9000" > /sys/kernel/mm/ksm/sleep_millisecs;
    $B echo "1" > /sys/kernel/mm/ksm/run;
    $B echo "1" > /sys/kernel/mm/ksm/deferred_timer;
@@ -229,6 +236,8 @@ $B echo "  Real free:          $RAMfree MB";
 $B echo "  Cached:             $RAMcached MB";
 $B echo "  SWAP/ZRAM total:    $SWAP MB";
 $B echo "  SWAP/ZRAM used:     $SWAPused MB";
+$B sleep 1;
+service call activity 51 i32 -1;
 TIME=$($B date | $B awk '{ print $4 }');
 $B echo "[$TIME] ***RAM gear*** - OK";
 sync;

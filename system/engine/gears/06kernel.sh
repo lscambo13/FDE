@@ -30,9 +30,9 @@ if [ -e /proc/sys/kernel/random/write_wakeup_threshold ]; then
  $B sysctl -e -w kernel.random.write_wakeup_threshold=2730;
 fi;
 if [ -e /proc/sys/vm/vfs_cache_pressure ]; then
- $B echo "75" > /proc/sys/vm/vfs_cache_pressure;
- $B echo "vm.vfs_cache_pressure=75" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.vfs_cache_pressure=75;
+ $B echo "90" > /proc/sys/vm/vfs_cache_pressure;
+ $B echo "vm.vfs_cache_pressure=90" >> /system/etc/sysctl.conf;
+ $B sysctl -e -w vm.vfs_cache_pressure=90;
 fi;
 if [ -e /proc/sys/vm/min_free_kbytes ]; then
  $B echo "$FK" > /proc/sys/vm/min_free_kbytes;

@@ -108,21 +108,21 @@ if [ "sleeper=1" = "$ON" ]; then
     sync;
     $B sleep 1;
     $B echo "3" > /proc/sys/vm/drop_caches;
-    $B sleep 1;
+    $B sleep 2;
    fi;
    $B killall -9 com.google.android.gms.persistent;
    service call activity 51 i32 0;
    $B sleep 1;
    am kill-all;
-   $B sleep 2;
+   $B sleep 3;
    BA=$($B cat /system/engine/assets/FDE_config.txt | $B grep -e 'lowbatt=' | $B sed -e "s|lowbatt=|""|");
    DT=$($B cat /system/engine/assets/FDE_config.txt | $B grep -e 'internet_control=1');
    if [ "$($B cat /sys/class/power_supply/battery/capacity)" -le "$BA" ]; then
-    svc nfc disable;
     if [ "internet_control=1" = "$DT" ]; then
-	 svc data disable;
+	   svc data disable;
      svc wifi disable;
     fi;
+    svc nfc disable;
     svc power stayon false;
     service call bluetooth_manager 8;
     settings put global bluetooth_on 0;
@@ -291,7 +291,7 @@ if [ "sleeper=1" = "$ON" ]; then
    fi;
    service call activity 51 i32 -1;
    until [ "$TR" = "$(dumpsys power | $B grep $GR | $B grep -o "$TR")" ]; do
-    $B sleep 540;
+    $B sleep 360;
    done;
   fi;
  done;

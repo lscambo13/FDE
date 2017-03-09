@@ -38,7 +38,7 @@ fi;
 if [ "$SDK" -eq "10" ]; then
  if [ -e /system/lib/egl/libGLES_android.so ]; then
   if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
-   AV=$(du -k "/system/lib/egl/libGLESv2_adreno200.so" | cut -f1);
+   AV=$($B du -k "/system/lib/egl/libGLESv2_adreno200.so" | $B cut -f1);
    if [ "$AV" -eq "1712" ]; then
     $B echo "You have legacy adreno libs. No HWA for you.";
    else

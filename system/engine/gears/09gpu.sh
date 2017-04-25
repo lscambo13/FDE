@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.25 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.27 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
 TIME=$($B date | $B awk '{ print $4 }');
 SDK=$(getprop ro.build.version.sdk);
@@ -34,6 +34,7 @@ if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
  setprop debug.qc.hardware true;
  setprop debug.qctwa.statusbar 1;
  setprop debug.qctwa.perservebuf 1;
+ setprop persist.hwc.mdpcomp.enable true;
 fi;
 if [ "$SDK" -eq "10" ]; then
  if [ -e /system/lib/egl/libGLES_android.so ]; then
@@ -173,6 +174,10 @@ setprop ro.fling.duration.coef 3.0;
 setprop persist.sys.strictmode.disable true;
 setprop vidc.debug.level 0;
 setprop ro.camera.sound.forced 0;
+setprop mm.enable.smoothstreaming true
+setprop mmp.enable.3g2 true
+setprop media.aac_51_output_enabled true
+setprop debug.mdpcomp.logs 0
 if [ "$SDK" -le "21" ]; then
  $B echo "Fix stagerfright security vulnerabilities..";
  setprop media.stagefright.enable-player false;

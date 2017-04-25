@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.25 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.27 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
 A=$(cat/sys/class/power_supply/battery/capacity);
 TIME=$($B date | $B awk '{ print $4 }');
@@ -58,7 +58,7 @@ if [ -e /sys/module/cpu_boost/parameters/boost_ms ]; then
  $B chmod 644 /sys/module/cpu_boost/parameters/boost_ms;
  $B echo "0" > /sys/module/cpu_boost/parameters/boost_ms;
  $B chmod 644 /sys/module/cpu_boost/parameters/input_boost_ms;
- $B echo "69" > /sys/module/cpu_boost/parameters/input_boost_ms;
+ $B echo "0" > /sys/module/cpu_boost/parameters/input_boost_ms;
 fi;
 if [ -e /sys/class/lcd/panel/power_reduce ]; then
  $B echo "LCD power reduce detected. Activating..";
@@ -68,6 +68,10 @@ if [ -e /sys/power/cpufreq_min_limit ]; then
  $B echo "Allow CPU underclock..";
  $B echo "0" > /sys/power/cpufreq_min_limit;
  $B chmod 444 /sys/power/cpufreq_min_limit;
+fi;
+if [ -e /sys/class/timed_output/vibrator/vtg_level ]; then
+ $B echo "Vbrator undervolting..";
+ $B echo "1369" > /sys/class/timed_output/vibrator/vtg_level;
 fi;
 if [ -e /sys/module/cpuidle_scx35/parameters/cpuidle_debug ]; then
  $B echo "Spreadtrum cpuidle tune-up..";

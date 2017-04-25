@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.25 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.27 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
 TIME=$($B date | $B awk '{ print $4 }');
 $B echo "[$TIME] ***Cleaner gear***";
@@ -38,19 +38,21 @@ $B rm -f /data/system/*.txt;
 $B rm -f /data/system/dropbox/*;
 $B rm -f /data/system/usagestats/*;
 $B rm -f /data/system/shared_prefs/*;
-$B rm -Rf /mnt/sdcard/LOST.DIR;
-$B rm -Rf /mnt/sdcard/found000;
-$B rm -Rf /mnt/sdcard/LazyList;
-$B rm -Rf /mnt/sdcard/cleanmaster;
-$B rm -Rf /mnt/sdcard/albumthumbs;
-$B rm -Rf /mnt/sdcard/kunlun;
-$B rm -Rf /mnt/sdcard/.antutu;
-$B rm -Rf /mnt/sdcard/.estrongs;
-$B rm -Rf /mnt/sdcard/.taobao;
-$B rm -Rf /mnt/sdcard/baidu;
-$B rm -Rf /mnt/sdcard/Backucup;
-$B rm -Rf /mnt/sdcard/UnityAdsVideoCache;
-$B rm -f /mnt/sdcard/fix_permissions.log;
+$B rm -Rf /sdcard/LOST.DIR;
+$B rm -Rf /sdcard/found000;
+$B rm -Rf /sdcard/LazyList;
+$B rm -Rf /sdcard/cleanmaster;
+$B rm -Rf /sdcard/albumthumbs;
+$B rm -Rf /sdcard/kunlun;
+$B rm -Rf /sdcard/.antutu;
+$B rm -Rf /sdcard/.taobao;
+$B rm -Rf /sdcard/baidu;
+$B rm -Rf /sdcard/Backucup;
+$B rm -Rf /sdcard/wlan_logs;
+$B rm -Rf /sdcard/msc;
+$B rm -Rf /sdcard/UnityAdsVideoCache;
+$B rm -f /sdcard/*.log;
+$B rm -f /sdcard/*.CHK;
 if [ -e /system/engine/prop/firstboot ]; then
  $B chmod -R 777 /data/tombstones;
  $B rm -f /data/tombstones/*;

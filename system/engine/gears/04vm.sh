@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.25 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.27 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
 TIME=$($B date | $B awk '{ print $4 }');
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
@@ -25,14 +25,14 @@ if [ -e /sys/module/lowmemorykiller/parameters/debug_level ]; then
 fi;
 if [ -e /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk ]; then
  $B chmod 666 /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk;
- $B chown 0:0 /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk;
- $B echo "0" > /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk;
- $B echo "Disabled adaptive LMK.";
+ $B echo "1" > /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk;
+ $B echo "Enable adaptive LMK.";
+else
+ $B chmod 664 /sys/module/lowmemorykiller/parameters/adj;
+ $B chmod 664 /sys/module/lowmemorykiller/parameters/minfree;
+ $B chown root /sys/module/lowmemorykiller/parameters/minfree;
+ $B echo "2439,4878,7317,9756,17073,21951" > /sys/module/lowmemorykiller/parameters/minfree;
 fi;
-$B chmod 664 /sys/module/lowmemorykiller/parameters/adj;
-$B chmod 664 /sys/module/lowmemorykiller/parameters/minfree;
-$B chown root /sys/module/lowmemorykiller/parameters/minfree;
-$B echo "2439,4878,7317,9756,17073,21951" > /sys/module/lowmemorykiller/parameters/minfree;
 setprop ro.HOME_APP_MEM 2439;
 setprop ro.HOME_APP_ADJ 0;
 setprop MIN_HIDDEN_APPS false;
@@ -43,6 +43,7 @@ setprop dalvik.vm.checkjni false;
 setprop dalvik.vm.check-dex-sum false;
 setprop dalvik.vm.debug.alloc 0;
 setprop dalvik.vm.deadlock-predict off;
+setprop ro.sys.fw.dex2oat_thread_count 4;
 setprop libc.debug.malloc 0;
 setprop persist.sys.purgeable_assets 1;
 setprop persist.added_boot_bgservices 2;

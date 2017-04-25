@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.25 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.27 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
 LOG=/sdcard/Android/FDE_log.txt;
 SDK=$(getprop ro.build.version.sdk);

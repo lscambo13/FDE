@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.25 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.27 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
 TIME=$($B date | $B awk '{ print $4 }');
 MAX=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq);
@@ -456,7 +456,7 @@ if [ -e /sys/devices/virtual/sec/sec_slow/io_is_busy ]; then
  $B echo "I/O is bz..";
  $B echo "1" > /sys/devices/virtual/sec/sec_slow/io_is_busy;
 fi;
-if [ "$CORES" -le "3" ]; then
+if [ "$CORES" -le "4" ]; then
  if [ -e /sys/module/pm_hotplug/parameters/loadh ]; then
   $B echo "Tuning Dual-Core behavior..";
   $B echo "85" > /sys/module/pm_hotplug/parameters/loadh;
@@ -474,8 +474,14 @@ if [ "$CORES" -le "3" ]; then
  fi;
 fi;
 if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
+ $B echo "BIG-LITTLE tune-up";
+ $B echo "36" > /sys/devices/system/cpu/cpu4/core_ctl/busy_down_thres;
+ $B echo "72" > /sys/devices/system/cpu/cpu4/core_ctl/busy_up_thres;
+ $B echo "0" > /sys/devices/system/cpu/cpu4/core_ctl/offline_delay_ms;
+fi;
+if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
  $B echo "Enable MSM thermal core & tune it..";
- $B echo 1 > /sys/module/msm_thermal/core_control/enabled;
+ $B echo "1" > /sys/module/msm_thermal/core_control/enabled;
  $B echo "N" > /sys/module/msm_thermal/parameters/enabled;
 fi;
 if [ -e /system/bin/mpdecision ]; then

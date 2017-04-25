@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.25 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.27 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
 KERNEL=$($B uname -r);
 ARCH=$($B uname -m);
@@ -14,7 +14,7 @@ CORES=$($B grep -c 'processor' /proc/cpuinfo);
 AXI=$($B cat /sys/power/cpufreq_max_axi_freq);
 LOG=/sdcard/Android/FDE_log.txt;
 TIME=$($B date | $B awk '{ print $4 }');
-setprop ro.feralab.engine 25;
+setprop ro.feralab.engine 27;
 svc power stayon true;
 $B sleep 90;
 $B rm -f $LOG;
@@ -36,7 +36,7 @@ $B sleep 1;
 {
  $B echo "### FeraLab ###"
  $B echo ""
- $B echo "[$TIME] FeraDroid Engine v0.25"
+ $B echo "[$TIME] FeraDroid Engine v0.27"
  $B echo "[$TIME] Firing up.."
  $B echo "[$TIME] Device: $(getprop ro.product.brand) $(getprop ro.product.model)"
  $B echo "[$TIME] Architecture: $ARCH"
@@ -76,7 +76,7 @@ if [ -e /engine.sh ]; then
  $B echo '0' > /sys/class/leds/lv5219lg:rgb1:red/brightness;
  $B echo '0' > /sys/class/leds/lv5219lg:rgb1:green/brightness;
 else $B echo 50 > /sys/devices/virtual/timed_output/vibrator/enable;
- am start -a android.intent.action.MAIN -e message 'FDE v0.25 - firing up..' -n com.rja.utility/.ShowToast;
+ am start -a android.intent.action.MAIN -e message 'FDE v0.27 - firing up..' -n com.rja.utility/.ShowToast;
 fi;
 if [ -e /system/engine/prop/firstboot ]; then
  $B echo "[$TIME] First boot after deploy" >> $LOG;
@@ -261,4 +261,9 @@ $B echo "[$TIME] FDE status - OK" >> $LOG;
 $B echo "" >> $LOG;
 if [ -e /engine.sh ]; then
  $B run-parts /system/etc/init.d;
+fi;
+if [ "$SDK" -lt "22" ]; then
+ if [ -e /system/engine/gears/sleeper.sh ]; then
+  /system/engine/gears/sleeper.sh &
+ fi;
 fi;

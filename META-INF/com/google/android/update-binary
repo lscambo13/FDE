@@ -10,7 +10,7 @@ ui_print() {
 ui_print ""
 ui_print ""
 ui_print "***FeraLab***"
-ui_print "FeraDroid Engine v0.25"
+ui_print "FeraDroid Engine v0.27"
 ui_print ""
 ui_print "FDE deploy.."
 mount /system
@@ -63,18 +63,21 @@ if [ -e /engine.sh ]; then
 fi;
 if [ -d /system/su.d ]; then
  mv /system/etc/init.d/90fde /system/su.d/90fde.sh
- mv /system/etc/init.d/91sleeper /system/su.d/91sleeper.sh
  chmod 777 /system/su.d/90fde.sh
- chmod 777 /system/su.d/91sleeper.sh
 fi;
 rm -f /system/etc/init.d/999fde 
 rm -f /system/su.d/999fde.sh
+rm -f /system/su.d/91sleeper.sh
 cp -f /system/engine/assets/showtoast.apk /data/app/showtoast.apk
 chmod 644 /data/app/showtoast.apk
 touch /system/etc/fde
 chmod 777 /system/etc/fde
-echo "25" > /system/etc/fde
+echo "27" > /system/etc/fde
 rm -Rf /fde/*
+mv /system/bin/tiny_mkswap /system/bin/tiny_mkswap_bak
+mv /system/bin/tiny_swapon /system/bin/tiny_swapon_bak
+mv /system/xbin/zram.sh /system/xbin/zram_sh_bak
+sleep 1
 umount /system
 ui_print ""
 ui_print ""

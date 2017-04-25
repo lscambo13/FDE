@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.25 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.27 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
 RZS=/system/engine/bin/rzscontrol;
 TIME=$($B date | $B awk '{ print $4 }');
@@ -99,7 +99,7 @@ if [ -e /sys/block/zram0/disksize ]; then
   fi;
   if [ -e /sys/block/zram0/max_comp_streams ]; then
    $B echo "Set max compression streams..";
-   $B echo "2" > /sys/block/zram0/max_comp_streams;
+   $B echo "1" > /sys/block/zram0/max_comp_streams;
   fi;
   $B echo "Starting swappiness..";
   $B mkswap /dev/block/zram0 > /dev/null 2>&1;
@@ -142,10 +142,17 @@ elif [ "$SWAP" -gt "0" ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p);
  $B echo "SWAP detected. Size is $SWAP MB";
  $B echo "Configuring kernel & SWAP frienship..";
- $B echo "50" > /proc/sys/vm/swappiness;
- $B echo "vm.swappiness=50" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.swappiness=50;
- setprop sys.vm.swappiness 50;
+  if [ "$RAM" -le "512" ]; then
+   $B echo "100" > /proc/sys/vm/swappiness;
+   $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf;
+   $B sysctl -e -w vm.swappiness=100;
+   setprop sys.vm.swappiness 100;
+  else
+   $B echo "50" > /proc/sys/vm/swappiness;
+   $B echo "vm.swappiness=50" >> /system/etc/sysctl.conf;
+   $B sysctl -e -w vm.swappiness=50;
+   setprop sys.vm.swappiness 50;
+  fi;
  if [ -e /sys/module/zswap/parameters/enabled ]; then
   $B echo "ZSWAP detected. Enabling..";
   $B echo "1" > /sys/module/zswap/parameters/enabled;
@@ -158,10 +165,17 @@ if [ -e /sys/block/zram0/disksize ]; then
  if [ "$SWAP" -gt "0" ]; then
   setprop ro.config.zram.support true;
   setprop zram.disksize $FZRAM;
-  $B echo "90" > /proc/sys/vm/swappiness;
-  $B echo "vm.swappiness=90" >> /system/etc/sysctl.conf;
-  $B sysctl -e -w vm.swappiness=90;
-  setprop sys.vm.swappiness 90;
+  if [ "$RAM" -le "1024" ]; then
+   $B echo "100" > /proc/sys/vm/swappiness;
+   $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf;
+   $B sysctl -e -w vm.swappiness=100;
+   setprop sys.vm.swappiness 100;
+  else
+   $B echo "90" > /proc/sys/vm/swappiness;
+   $B echo "vm.swappiness=90" >> /system/etc/sysctl.conf;
+   $B sysctl -e -w vm.swappiness=90;
+   setprop sys.vm.swappiness 90;
+  fi;
   if [ -e /sys/module/zram/parameters/total_mem_usage_percent ]; then
    $B echo "Tuning ZRAM parameter..";
    $B echo "$PZ" > /sys/module/zram/parameters/total_mem_usage_percent;
@@ -185,8 +199,8 @@ if [ "$RAM" -le "1024" ]; then
   if [ -e /sys/kernel/mm/uksm/run ]; then
    $B echo "uKSM detected";
    $B echo "Starting and tuning uKSM..";
-   $B echo "1024" > /sys/kernel/mm/uksm/pages_to_scan;
-   $B echo "9000" > /sys/kernel/mm/uksm/sleep_millisecs;
+   $B echo "128" > /sys/kernel/mm/uksm/pages_to_scan;
+   $B echo "6000" > /sys/kernel/mm/uksm/sleep_millisecs;
    $B echo "45" > /sys/kernel/mm/uksm/max_cpu_percentage;
    $B echo "1" > /sys/kernel/mm/uksm/run;
    $B echo "1" > /sys/kernel/mm/uksm/deferred_timer;
@@ -194,8 +208,8 @@ if [ "$RAM" -le "1024" ]; then
   elif [ -e /sys/kernel/mm/ksm/run ]; then
    $B echo "KSM detected";
    $B echo "Starting and tuning KSM..";
-   $B echo "1024" > /sys/kernel/mm/ksm/pages_to_scan;
-   $B echo "9000" > /sys/kernel/mm/ksm/sleep_millisecs;
+   $B echo "128" > /sys/kernel/mm/ksm/pages_to_scan;
+   $B echo "6000" > /sys/kernel/mm/ksm/sleep_millisecs;
    $B echo "1" > /sys/kernel/mm/ksm/run;
    $B echo "1" > /sys/kernel/mm/ksm/deferred_timer;
    setprop ro.config.ksm.support true;

@@ -1,9 +1,8 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.25 | By FeraVolt.2017###
+### FeraDroid Engine v0.27 | By FeraVolt.2017###
 B=/system/engine/bin/busybox;
 TIME=$($B date | $B awk '{ print $4 }');
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
-CPU=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq);
 FM=$((RAM*(64 + 1)));
 FK=$(((RAM*10) - 2699));
 EF=$(((RAM*11) - 2966));
@@ -30,9 +29,15 @@ if [ -e /proc/sys/kernel/random/write_wakeup_threshold ]; then
  $B sysctl -e -w kernel.random.write_wakeup_threshold=2730;
 fi;
 if [ -e /proc/sys/vm/vfs_cache_pressure ]; then
- $B echo "90" > /proc/sys/vm/vfs_cache_pressure;
- $B echo "vm.vfs_cache_pressure=90" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.vfs_cache_pressure=90;
+ if [ "RAM" -le "512" ]; then
+  $B echo "150" > /proc/sys/vm/vfs_cache_pressure;
+  $B echo "vm.vfs_cache_pressure=150" >> /system/etc/sysctl.conf;
+  $B sysctl -e -w vm.vfs_cache_pressure=150;
+ else
+ $B echo "81" > /proc/sys/vm/vfs_cache_pressure;
+ $B echo "vm.vfs_cache_pressure=81" >> /system/etc/sysctl.conf;
+ $B sysctl -e -w vm.vfs_cache_pressure=81;
+ fi;
 fi;
 if [ -e /proc/sys/vm/min_free_kbytes ]; then
  $B echo "$FK" > /proc/sys/vm/min_free_kbytes;
@@ -75,14 +80,14 @@ if [ -e /proc/sys/vm/dirty_background_ratio ]; then
  $B sysctl -e -w vm.dirty_background_ratio=4;
 fi;
 if [ -e /proc/sys/vm/dirty_writeback_centisecs ]; then
- $B echo "0" > /proc/sys/vm/dirty_writeback_centisecs;
- $B echo "vm.dirty_writeback_centisecs=0" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.dirty_writeback_centisecs=0;
+ $B echo "3600" > /proc/sys/vm/dirty_writeback_centisecs;
+ $B echo "vm.dirty_writeback_centisecs=3600" >> /system/etc/sysctl.conf;
+ $B sysctl -e -w vm.dirty_writeback_centisecs=3600;
 fi;
 if [ -e /proc/sys/vm/dirty_expire_centisecs ]; then
- $B echo "0" > /proc/sys/vm/dirty_expire_centisecs;
- $B echo "vm.dirty_expire_centisecs=0" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.dirty_expire_centisecs=0;
+ $B echo "1800" > /proc/sys/vm/dirty_expire_centisecs;
+ $B echo "vm.dirty_expire_centisecs=1800" >> /system/etc/sysctl.conf;
+ $B sysctl -e -w vm.dirty_expire_centisecs=1800;
 fi;
 if [ -e /proc/sys/vm/panic_on_oom ]; then
  $B echo "0" > /proc/sys/vm/panic_on_oom;
@@ -95,15 +100,9 @@ if [ -e /proc/sys/vm/overcommit_memory ]; then
  $B sysctl -e -w vm.overcommit_memory=1;
 fi;
 if [ -e /proc/sys/vm/laptop_mode ]; then
- if [ "$CPU" -ge "1800000" ]; then
-  $B echo "2" > /proc/sys/vm/laptop_mode;
-  $B echo "vm.laptop_mode=2" >> /system/etc/sysctl.conf;
-  $B sysctl -e -w vm.laptop_mode=2;
- else
-  $B echo "1" > /proc/sys/vm/laptop_mode;
-  $B echo "vm.laptop_mode=1" >> /system/etc/sysctl.conf;
-  $B sysctl -e -w vm.laptop_mode=1;
- fi;
+ $B echo "0" > /proc/sys/vm/laptop_mode;
+ $B echo "vm.laptop_mode=0" >> /system/etc/sysctl.conf;
+ $B sysctl -e -w vm.laptop_mode=0;
 fi;
 if [ -e /proc/sys/vm/block_dump ]; then
  $B echo "0" > /proc/sys/vm/block_dump;
@@ -341,7 +340,7 @@ setprop profiler.debugmonitor false;
 setprop profiler.hung.dumpdobugreport false;
 setprop logcat.live disable;
 setprop debugtool.anrhistory 0;
-setprop ro.vold.umsdirtyratio 30
+setprop ro.vold.umsdirtyratio 30;
 TIME=$($B date | $B awk '{ print $4 }');
 $B echo "[$TIME] ***Kernel gear*** -OK";
 sync;

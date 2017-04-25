@@ -1,5 +1,5 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.25 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.27 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
 SDK=$(getprop ro.build.version.sdk);
 TIME=$($B date | $B awk '{ print $4 }');
@@ -77,10 +77,17 @@ settings put secure wifi_idle_ms 300000;
 settings put global wifi_idle_ms 300000;
 settings put secure wifi_watchdog_on 0;
 settings put secure wifi_watchdog_poor_network_test_enabled 0;
-if [ "$SDK" -le "22" ]; then
+if [ "$SDK" -le "21" ]; then
  $B echo "Disable Bandwidth restrictions.";
  setprop persist.bandwidth.enable 0;
+ setprop ro.use_data_netmgrd false;
+ setprop persist.data.netmgrd.qos.enable false;
  ndc bandwidth disable;
+else
+ setprop ro.use_data_netmgrd true;
+ setprop persist.data.netmgrd.qos.enable true;
+ setprop persist.data.mode concurrent;
+ setprop persist.data.iwlan.enable true;
 fi;
 $B echo "Tethering fix..";
 settings put global tether_dun_required 0;

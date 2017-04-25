@@ -1,14 +1,10 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.25 | By FeraVolt.2017###
+### FeraDroid Engine v0.27 | By FeraVolt.2017###
 B=/system/engine/bin/busybox;
 TIME=$($B date | $B awk '{ print $4 }');
 RAM=$($B free - m | $B awk '{ print $2 }' | $B sed - n 2p);
 $B echo "[$TIME] ***Memory gear***";
-if [ "$RAM" -gt "512" ]; then
- KB=5120;
-else
- KB=2048;
-fi;
+KB=5120;
 MMC="/sys/block/mmc*";
 MTD="/sys/block/mtd*";
 DM="/sys/block/dm-0";

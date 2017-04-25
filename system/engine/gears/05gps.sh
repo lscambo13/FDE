@@ -1,10 +1,11 @@
 #!/system/bin/sh
-### FeraDroid Engine v0.25 | By FeraVolt. 2017 ###
+### FeraDroid Engine v0.27 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
 TIME=$($B date | $B awk '{ print $4 }');
 $B echo "[$TIME] ***GPS gear***";
 setprop ro.ril.def.agps.feature 1;
 setprop ro.ril.def.agps.mode 2;
+setprop ro.gps.agps_provider 1;
 if [ -e /data/misc/mtkgps.dat ]; then
  $B rm -f /data/misc/mtkgps.dat;
  $B echo "MTK GPS data cleared.";
@@ -41,7 +42,7 @@ if [ -e /system/engine/prop/nogps ]; then
  $B sed -e "s=REPORT=#=" -i /system/etc/gps.conf;
  {
   $B echo ""
-  $B echo "### FeraDroid Engine v0.25 | By FeraVolt. 2017 ###"
+  $B echo "### FeraDroid Engine v0.27 | By FeraVolt. 2017 ###"
   $B echo "DEBUG_LEVEL=0"
   $B echo "ERR_ESTIMATE=0"
   $B echo "NTP_SERVER=time.gpsonextra.net"

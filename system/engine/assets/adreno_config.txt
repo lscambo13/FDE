@@ -1,3 +1,0 @@
-; FeraLab
-forceAutoTextureCompression=1
-triJuice=3

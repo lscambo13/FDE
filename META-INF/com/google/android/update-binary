@@ -1,2 +1,99 @@
 #!/sbin/sh
 ###FeraLab###
+FD=$2
+ZIP=$3
+set -o pipefail
+ui_print() {
+  echo -e "ui_print $1\n
+  ui_print" >> /proc/self/fd/"$FD"
+}
+ui_print "  "
+ui_print "  "
+ui_print "  "
+ui_print "  "
+ui_print "  "
+ui_print "  "
+ui_print "  "
+ui_print "  "
+ui_print "  "
+ui_print "***FeraLab***"
+ui_print "FeraDroid Engine v1.1"
+ui_print "  "
+ui_print "FDE deploy..."
+mount /system
+mount /data
+mount -o rw,remount /
+mount -o rw,remount /system
+mount -o rw,remount /data
+sleep 1
+rm -Rf /system/engine/*
+rm -f /sdcard/Android/FDE_log.txt
+rm -f /sdcard/Android/FDE_config.txt
+rm -f /sdcard/Android/FDE.txt
+rm -f /sdcard/Android/sleeper_whitelist.txt
+rm -f /data/media/0/Android/FDE_config.txt
+rm -f /data/media/0/Android/FDE_log.txt
+rm -f /data/media/0/Android/FDE.txt
+rm -f /data/media/0/Android/sleeper_whitelist.txt
+rm -f /system/etc/fde
+mv /system/bin/tiny_mkswap /system/bin/tiny_mkswap_bak
+mv /system/bin/tiny_swapon /system/bin/tiny_swapon_bak
+mv /system/xbin/zram.sh /system/xbin/zram_sh_bak
+if [ -d /system/etc/init.d_fde_backup ]; then
+ chmod -R 777 /system/etc/init.d
+else
+ mv /system/etc/init.d /system/etc/init.d_fde_backup
+ mkdir /system/etc/init.d
+ chmod 777 /system/etc/init.d
+fi;
+unzip -o "$ZIP"
+sleep 1
+chmod -R 777 /system/engine
+ARCH=$(grep -Eo "ro.product.cpu.abi(2)?=.+" /system/build.prop 2>/dev/null | grep -Eo "[^=]*$" | head -n1)
+if [ "$ARCH" = "$(grep -E "${ARCH}(_)?arm64")" ]; then
+ ui_print "64-bit ARM CPU detected."
+ mv /system/engine/bin/bin64/arm/busybox /system/engine/bin/busybox
+elif [ "$ARCH" = "$(grep -E "${ARCH}(_)?armeabi")" ]; then
+ ui_print "32-bit ARM CPU detected."
+ mv /system/engine/bin/bin32/arm/busybox /system/engine/bin/busybox
+elif [ "$ARCH" = "$(grep -E "${ARCH}(_)?x86_64")" ]; then
+ ui_print "64-bit X86 CPU detected."
+ mv /system/engine/bin/bin64/x86/busybox /system/engine/bin/busybox
+elif [ "$ARCH" = "$(grep -E "${ARCH}(_)?x86")" ]; then
+ ui_print "32-bit X86 CPU detected."
+ mv /system/engine/bin/bin32/x86/busybox /system/engine/bin/busybox
+else
+ ui_print "armeabi bb."
+ mv /system/engine/bin/bin32/arm/busybox /system/engine/bin/busybox
+fi;
+rm -Rf /system/engine/bin/bin32
+rm -Rf /system/engine/bin/bin64
+chmod 777 /system/engine/*
+chmod 777 /system/engine/bin/*
+chmod 777 /system/engine/prop/*
+chmod 777 /system/engine/raw/*
+chmod 777 /system/engine/gears/*
+/system/engine/bin/busybox --install -s /system/xbin
+cp -f /system/engine/assets/showtoast.apk /data/app/showtoast.apk
+chmod 644 /data/app/showtoast.apk
+cp -f /system/engine/assets/b.zip /data/local/bootanimation.zip
+chmod 644 /data/local/bootanimation.zip
+if [ -e /engine.sh ]; then
+ touch /system/engine/prop/ferakernel
+ echo "1" > /system/engine/prop/ferakernel
+ rm -f /system/etc/init.d/90fde
+fi;
+if [ -d /system/su.d ]; then
+ mv /system/etc/init.d/90fde /system/su.d/90fde.sh
+ chmod 777 /system/su.d/90fde.sh
+fi;
+touch /system/etc/fde
+chmod 777 /system/etc/fde
+echo "1.1" > /system/etc/fde
+sleep 1
+umount /system
+ui_print "  "
+ui_print "  "
+ui_print "Installation completed."
+ui_print "By FeraVolt. 2017."
+exit 0

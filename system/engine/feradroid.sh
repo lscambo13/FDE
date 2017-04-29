@@ -4,4 +4,3 @@
 ARCH=$(grep -Eo "ro.product.cpu.abi(2)?=.+" /system/build.prop 2>/dev/null | grep -Eo "[^=]*$" | head -n1);
 if [ -e /system/engine/prop/firstboot ]; then
 
-| grep -E "${ARCH}(_)?64"

@@ -1,4 +1,3 @@
 #!/system/bin/sh
 ### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###
-
-/system/engine/feradroid.sh
+B=/system/engine/bin/busybox;

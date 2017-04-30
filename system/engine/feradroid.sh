@@ -6,13 +6,15 @@ ROM=$(getprop ro.build.display.id);
 SDK=$(getprop ro.build.version.sdk);
 SF=$($B df -Ph /system | $B grep -v ^Filesystem | $B awk '{print $4}');
 MAX=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq);
-BIGMAX=$($B cat /sys/devices/system/cpu/cpu5/cpufreq/scaling_max_freq);
+BIGMAX=$($B cat /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq);
 MIN=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq);
 CUR=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq);
 CORES=$($B grep -c 'processor' /proc/cpuinfo);
-AXI=$($B cat /sys/power/cpufreq_max_axi_freq);
 GPU=$(dumpsys SurfaceFlinger | $B grep "GLES:" | sed -e "s=GLES: ==");
 ARCH=$($B grep -Eo "ro.product.cpu.abi(2)?=.+" /system/build.prop 2>/dev/null | $B grep -Eo "[^=]*$" | head -n1);
+if [ -e /sys/power/cpufreq_max_axi_freq ]; then
+ AXI=$($B cat /sys/power/cpufreq_max_axi_freq);
+fi;
 LOG=/sdcard/Android/FDE_log.txt;
 BG=$((RAM/100));
 if [ "$CORES" = "0" ]; then
@@ -58,7 +60,7 @@ fi;
  $B echo ">> Firing up..."
  $B echo ">> Device: $(getprop ro.product.brand) $(getprop ro.product.model)"
  $B echo ">> Architecture: $ARCH"
- if [ -e /sys/devices/system/cpu/cpu5/cpufreq/scaling_max_freq ]; then
+ if [ -e /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq ]; then
   $B echo ">> Max CPU freq: $((BIGMAX/1000))Mhz"
  else
   $B echo ">> Max CPU freq: $((MAX/1000))Mhz"
@@ -82,10 +84,10 @@ fi;
 service call activity 51 i32 0;
 $B sleep 1;
 $B echo ">> Mounting partitions RW.." >> $LOG;
-$B mount -o remount,rw /data;
-$B mount -o remount,rw /system;
-$B mount -t debugfs debugfs /sys/kernel/debug;
-$B mount -t debugfs none /sys/kernel/debug;
+mount -o remount,rw /data;
+mount -o remount,rw /system;
+mount -t debugfs debugfs /sys/kernel/debug;
+mount -t debugfs none /sys/kernel/debug;
 if [ -e /sbin/sysrw ]; then
  $B echo ">> Remapped partition layout detected." >> $LOG;
  /sbin/sysrw;
@@ -185,10 +187,10 @@ fi;
 am kill-all;
 $B sleep 3;
 service call activity 51 i32 "$BG";
+svc power stayon false;
 if [ "$SDK" -lt "22" ]; then
  if [ -e /system/engine/gears/sleeper.sh ]; then
-  svc power stayon false;
   /system/engine/gears/sleeper.sh &
  fi;
 fi;
-svc power stayon false;
+

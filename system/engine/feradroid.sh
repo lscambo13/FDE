@@ -1,9 +1,6 @@
 #!/system/bin/sh
 ### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
-$B sleep 81;
-svc power stayon true;
-setprop ro.feralab.engine 1.1;
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 ROM=$(getprop ro.build.display.id);
 SDK=$(getprop ro.build.version.sdk);
@@ -14,9 +11,18 @@ MIN=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq);
 CUR=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq);
 CORES=$($B grep -c 'processor' /proc/cpuinfo);
 AXI=$($B cat /sys/power/cpufreq_max_axi_freq);
-GPU=$(dumpsys SurfaceFlinger | $B grep "GLES:" | sed -e "s=GLES: ==")
+GPU=$(dumpsys SurfaceFlinger | $B grep "GLES:" | sed -e "s=GLES: ==");
 ARCH=$($B grep -Eo "ro.product.cpu.abi(2)?=.+" /system/build.prop 2>/dev/null | $B grep -Eo "[^=]*$" | head -n1);
 LOG=/sdcard/Android/FDE_log.txt;
+if [ "$CORES" = "0" ]; then
+ CORES=1;
+fi;
+setprop persist.added_boot_bgservices "$CORES";
+setprop ro.config.max_starting_bg "$((CORES +1))";
+setprop ro.sys.fw.bg_apps_limit "$((RAM/100))";
+$B sleep 81;
+svc power stayon true;
+setprop ro.feralab.engine 1.1;
 $B rm -f $LOG;
 $B touch $LOG;
 if [ -e $LOG ]; then
@@ -97,6 +103,7 @@ $B touch /system/etc/sysctl.conf;
 $B chmod 777 /system/etc/sysctl.conf;
 if [ -e /system/engine/prop/firstboot ]; then
  $B echo ">> First boot after deploy" >> $LOG;
+ $B rm -f /data/local/bootanimation.zip;
  $B rm -f $CONFIG;
  $B cp /system/engine/assets/FDE_config.txt $CONFIG;
 fi;

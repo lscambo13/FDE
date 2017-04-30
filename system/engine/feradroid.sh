@@ -1,6 +1,7 @@
 #!/system/bin/sh
 ### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
+su;
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 ROM=$(getprop ro.build.display.id);
 SDK=$(getprop ro.build.version.sdk);
@@ -18,6 +19,12 @@ LOG=/sdcard/Android/FDE_log.txt;
 BG=$((RAM/100));
 if [ "$CORES" = "0" ]; then
  CORES=1;
+fi;
+if [ -e /sys/fs/selinux/enforce ]; then
+ $B chmod 666 /sys/fs/selinux/enforce;
+ setenforce 0;
+ $B echo "0" > /sys/fs/selinux/enforce;
+ $B chmod 444 /sys/fs/selinux/enforce;
 fi;
 setprop persist.added_boot_bgservices "$CORES";
 setprop ro.config.max_starting_bg "$((CORES +1))";
@@ -117,13 +124,6 @@ if [ -e $CONFIG ]; then
  $B rm -f /system/engine/assets/FDE_config.txt;
  $B cp $CONFIG /system/engine/assets/FDE_config.txt;
 fi;
-if [ -e /sys/fs/selinux/enforce ]; then
- $B echo ">> Setting SElinux permissive..." >> $LOG;
- $B chmod 666 /sys/fs/selinux/enforce;
- setenforce 0;
- $B echo "0" > /sys/fs/selinux/enforce;
- $B chmod 444 /sys/fs/selinux/enforce;
-fi;
 if [ -e /system/engine/gears/dummy.sh ]; then
  DUMMY=$($B cat /system/engine/assets/FDE_config.txt | $B grep -e 'dummy=1');
  if [ "dummy=1" = "$DUMMY" ]; then
@@ -134,7 +134,7 @@ fi;
 sync;
 $B sleep 1;
 if [ -e /system/engine/prop/firstboot ]; then
- $B mount -o remount,rw /system;
+ mount -o remount,rw /system;
  if [ -e /sbin/sysrw ]; then
   /sbin/sysrw;
  fi;
@@ -182,7 +182,7 @@ if [ -e /engine.sh ]; then
  $B run-parts /system/etc/init.d;
 fi;
 $B sleep 1;
-$B mount -o remount,ro /system;
+mount -o remount,ro /system;
 if [ -e /sbin/sysro ]; then
  /sbin/sysro;
 fi;

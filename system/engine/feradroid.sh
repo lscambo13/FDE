@@ -6,7 +6,6 @@ ROM=$(getprop ro.build.display.id);
 SDK=$(getprop ro.build.version.sdk);
 SF=$($B df -Ph /system | $B grep -v ^Filesystem | $B awk '{print $4}');
 MAX=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq);
-BIGMAX=$($B cat /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq);
 MIN=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq);
 CUR=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq);
 CORES=$($B grep -c 'processor' /proc/cpuinfo);
@@ -23,16 +22,15 @@ fi;
 setprop persist.added_boot_bgservices "$CORES";
 setprop ro.config.max_starting_bg "$((CORES +1))";
 setprop ro.sys.fw.bg_apps_limit "$BG";
-$B sleep 81;
+$B sleep 90;
 svc power stayon true;
 setprop ro.feralab.engine 1.1;
-$B rm -f $LOG;
-$B touch $LOG;
-if [ -e $LOG ]; then
- CONFIG=/sdcard/Android/FDE_config.txt;
-else
+if [ -d /data/media/0/Android ]; then
  LOG=/data/media/0/Android/FDE_log.txt;
  CONFIG=/data/media/0/Android/FDE_config.txt;
+else
+ LOG=/sdcard/Android/FDE_log.txt;
+ CONFIG=/sdcard/Android/FDE_config.txt;
 fi;
 $B rm -f $LOG;
 $B touch $LOG;
@@ -61,6 +59,10 @@ fi;
  $B echo ">> Device: $(getprop ro.product.brand) $(getprop ro.product.model)"
  $B echo ">> Architecture: $ARCH"
  if [ -e /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq ]; then
+  BIGMAX=$($B cat /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq);
+  $B echo ">> Max CPU freq: $((BIGMAX/1000))Mhz"
+ elif [ -e /sys/devices/system/cpu/cpu5/cpufreq/scaling_max_freq ]; then
+  BIGMAX=$($B cat /sys/devices/system/cpu/cpu5/cpufreq/scaling_max_freq);
   $B echo ">> Max CPU freq: $((BIGMAX/1000))Mhz"
  else
   $B echo ">> Max CPU freq: $((MAX/1000))Mhz"

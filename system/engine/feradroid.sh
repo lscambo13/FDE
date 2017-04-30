@@ -14,12 +14,13 @@ AXI=$($B cat /sys/power/cpufreq_max_axi_freq);
 GPU=$(dumpsys SurfaceFlinger | $B grep "GLES:" | sed -e "s=GLES: ==");
 ARCH=$($B grep -Eo "ro.product.cpu.abi(2)?=.+" /system/build.prop 2>/dev/null | $B grep -Eo "[^=]*$" | head -n1);
 LOG=/sdcard/Android/FDE_log.txt;
+BG=$((RAM/100));
 if [ "$CORES" = "0" ]; then
  CORES=1;
 fi;
 setprop persist.added_boot_bgservices "$CORES";
 setprop ro.config.max_starting_bg "$((CORES +1))";
-setprop ro.sys.fw.bg_apps_limit "$((RAM/100))";
+setprop ro.sys.fw.bg_apps_limit "$BG";
 $B sleep 81;
 svc power stayon true;
 setprop ro.feralab.engine 1.1;
@@ -78,7 +79,7 @@ fi;
  $B echo ">> SElinux state: $(getenforce)"
  $B echo ">> /system free space: $SF"
 } >> $LOG;
-am kill-all;
+service call activity 51 i32 0;
 $B sleep 1;
 $B echo ">> Mounting partitions RW.." >> $LOG;
 $B mount -o remount,rw /data;
@@ -182,7 +183,8 @@ if [ -e /sbin/sysro ]; then
  /sbin/sysro;
 fi;
 am kill-all;
-$B sleep 1;
+$B sleep 3;
+service call activity 51 i32 "$BG";
 if [ "$SDK" -lt "22" ]; then
  if [ -e /system/engine/gears/sleeper.sh ]; then
   svc power stayon false;

@@ -36,9 +36,12 @@ rm -f /data/media/0/Android/FDE_log.txt
 rm -f /data/media/0/Android/FDE.txt
 rm -f /data/media/0/Android/sleeper_whitelist.txt
 rm -f /system/etc/fde
-mv /system/bin/tiny_mkswap /system/bin/tiny_mkswap_bak
-mv /system/bin/tiny_swapon /system/bin/tiny_swapon_bak
-mv /system/xbin/zram.sh /system/xbin/zram_sh_bak
+if [ -e /system/bin/tiny_mkswap ]; then
+ mv /system/bin/tiny_mkswap /system/bin/tiny_mkswap_bak
+ mv /system/bin/tiny_swapon /system/bin/tiny_swapon_bak
+elif [ -e /system/xbin/zram.sh ]; then
+ mv /system/xbin/zram.sh /system/xbin/zram_sh_bak
+fi;
 if [ -d /system/etc/init.d_fde_backup ]; then
  chmod -R 777 /system/etc/init.d
 else
@@ -50,17 +53,17 @@ unzip -o "$ZIP"
 sleep 1
 chmod -R 777 /system/engine
 ARCH=$(grep -Eo "ro.product.cpu.abi(2)?=.+" /system/build.prop 2>/dev/null | grep -Eo "[^=]*$" | head -n1)
-if [ "$ARCH" = "$(grep -E "${ARCH}(_)?arm64")" ]; then
+if [ "$ARCH" = "$(echo $ARCH | grep "arm64")" ]; then
  ui_print "64-bit ARM CPU detected."
  mv /system/engine/bin/bin64/arm/busybox /system/engine/bin/busybox
-elif [ "$ARCH" = "$(grep -E "${ARCH}(_)?armeabi")" ]; then
+elif [ "$ARCH" = "$(echo $ARCH | grep "armeabi")" ]; then
  ui_print "32-bit ARM CPU detected."
  mv /system/engine/bin/bin32/arm/busybox /system/engine/bin/busybox
  mv /system/engine/bin/bin32/arm/rzscontrol /system/engine/bin/rzscontrol
-elif [ "$ARCH" = "$(grep -E "${ARCH}(_)?x86_64")" ]; then
+elif [ "$ARCH" = "$(echo $ARCH | grep "x86_64")" ]; then
  ui_print "64-bit X86 CPU detected."
  mv /system/engine/bin/bin64/x86/busybox /system/engine/bin/busybox
-elif [ "$ARCH" = "$(grep -E "${ARCH}(_)?x86")" ]; then
+elif [ "$ARCH" = "$(echo $ARCH | grep "x86")" ]; then
  ui_print "32-bit X86 CPU detected."
  mv /system/engine/bin/bin32/x86/busybox /system/engine/bin/busybox
 else
@@ -76,9 +79,9 @@ chmod 777 /system/engine/prop/*
 chmod 777 /system/engine/raw/*
 chmod 777 /system/engine/gears/*
 /system/engine/bin/busybox --install -s /system/xbin
-cp -f /system/engine/assets/showtoast.apk /data/app/showtoast.apk
+cp -f /system/engine/raw/showtoast.apk /data/app/showtoast.apk
 chmod 644 /data/app/showtoast.apk
-cp -f /system/engine/assets/b.zip /data/local/bootanimation.zip
+cp -f /system/engine/raw/b.zip /data/local/bootanimation.zip
 chmod 644 /data/local/bootanimation.zip
 if [ -e /engine.sh ]; then
  touch /system/engine/prop/ferakernel
@@ -88,6 +91,8 @@ fi;
 if [ -d /system/su.d ]; then
  mv /system/etc/init.d/90fde /system/su.d/90fde.sh
  chmod 777 /system/su.d/90fde.sh
+else
+ chmod 777 /system/etc/init.d/90fde
 fi;
 touch /system/etc/fde
 chmod 777 /system/etc/fde

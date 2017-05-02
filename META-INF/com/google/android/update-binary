@@ -13,9 +13,6 @@ ui_print "  "
 ui_print "  "
 ui_print "  "
 ui_print "  "
-ui_print "  "
-ui_print "  "
-ui_print "  "
 ui_print "***FeraLab***"
 ui_print "FeraDroid Engine v1.1"
 ui_print "  "
@@ -39,6 +36,9 @@ rm -f /system/etc/fde
 if [ -e /system/bin/tiny_mkswap ]; then
  mv /system/bin/tiny_mkswap /system/bin/tiny_mkswap_bak
  mv /system/bin/tiny_swapon /system/bin/tiny_swapon_bak
+elif [ -e /system/bin/mkswap ]; then
+ mv /system/bin/mkswap /system/bin/mkswap_bak
+ mv /system/bin/swapon /system/bin/swapon_bak
 elif [ -e /system/xbin/zram.sh ]; then
  mv /system/xbin/zram.sh /system/xbin/zram_sh_bak
 fi;
@@ -49,6 +49,7 @@ else
  mkdir /system/etc/init.d
  chmod 777 /system/etc/init.d
 fi;
+chown 0.0 /system/etc/init.d
 unzip -o "$ZIP"
 sleep 1
 chmod -R 777 /system/engine
@@ -81,17 +82,31 @@ chmod 777 /system/engine/gears/*
 /system/engine/bin/busybox --install -s /system/xbin
 cp -f /system/engine/raw/showtoast.apk /data/app/showtoast.apk
 chmod 644 /data/app/showtoast.apk
-cp -f /system/engine/raw/b.zip /data/local/bootanimation.zip
-chmod 644 /data/local/bootanimation.zip
+mv /system/media/bootanimation.zip /system/media/bak_bootanimation.zip
+cp -f /system/engine/raw/b.zip /system/media/bootanimation.zip
+chmod 644 /system/media/bootanimation.zip
+rm -f /system/etc/init.d/90fde
 if [ -e /engine.sh ]; then
  touch /system/engine/prop/ferakernel
  echo "1" > /system/engine/prop/ferakernel
- rm -f /system/etc/init.d/90fde
-fi;
-if [ -d /system/su.d ]; then
- mv /system/etc/init.d/90fde /system/su.d/90fde.sh
- chmod 777 /system/su.d/90fde.sh
+elif [ -e /system/bin/sysinit ]; then
+ rm -f /system/bin/sysinit
+ touch /system/bin/sysinit
+ echo "#!/system/bin/sh" >> /system/bin/sysinit
+ echo "   " >> /system/bin/sysinit
+ echo "export PATH=/sbin:/system/sbin:/system/bin:/system/xbin" >> /system/bin/sysinit
+ echo "run-parts /system/etc/init.d" >> /system/bin/sysinit
+ echo "sleep 1" >> /system/bin/sysinit
+ echo "/system/engine/feradroid.sh" >> /system/bin/sysinit
+ echo "   " >> /system/bin/sysinit
+ chmod 755 /system/bin/sysinit
+ chown 0.2000 /system/bin/sysinit
 else
+ touch /system/etc/init.d/90fde
+ echo "#!/system/bin/sh" >> /system/etc/init.d/90fde
+ echo "   " >> /system/etc/init.d/90fde
+ echo "/system/engine/feradroid.sh" >> /system/etc/init.d/90fde
+ echo "   " >> /system/etc/init.d/90fde
  chmod 777 /system/etc/init.d/90fde
 fi;
 touch /system/etc/fde
@@ -99,8 +114,7 @@ chmod 777 /system/etc/fde
 echo "1.1" > /system/etc/fde
 sleep 1
 umount /system
-ui_print "  "
-ui_print "  "
 ui_print "Installation completed."
+ui_print "  "
 ui_print "By FeraVolt. 2017."
 exit 0

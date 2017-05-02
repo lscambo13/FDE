@@ -1,7 +1,6 @@
 #!/system/bin/sh
 ### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
-su;
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 ROM=$(getprop ro.build.display.id);
 SDK=$(getprop ro.build.version.sdk);
@@ -115,7 +114,11 @@ $B touch /system/etc/sysctl.conf;
 $B chmod 777 /system/etc/sysctl.conf;
 if [ -e /system/engine/prop/firstboot ]; then
  $B echo ">> First boot after deploy" >> $LOG;
- $B rm -f /data/local/bootanimation.zip;
+ if [ -e /system/media/bak_bootanimation.zip; ]; then
+  $B rm -f /system/media/bootanimation.zip;
+  $B mv /system/media/bak_bootanimation.zip /system/media/bootanimation.zip;
+  $B chmod 644 /system/media/bootanimation.zip;
+ fi;
  $B rm -f $CONFIG;
  $B cp /system/engine/assets/FDE_config.txt $CONFIG;
 fi;

@@ -120,6 +120,13 @@ else
  echo "   " >> /system/etc/init.d/90fde
  chmod 777 /system/etc/init.d/90fde
 fi;
+rm -f /system/xbin/fde
+touch /system/xbin/fde
+echo "#!/system/bin/sh" >> /system/xbin/fde
+echo "   " >> /system/xbin/fde
+echo "su -c /system/engine/feradroid.sh" >> /system/xbin/fde
+echo "   " >> /system/xbin/fde
+chmod 777 /system/xbin/fde
 touch /system/etc/fde
 chmod 777 /system/etc/fde
 echo "1.1" > /system/etc/fde

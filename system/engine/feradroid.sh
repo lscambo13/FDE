@@ -87,11 +87,10 @@ fi;
 service call activity 51 i32 1;
 $B sleep 1;
 $B echo ">> Tuning SElinux.." >> $LOG;
-supolicy --live
-	"allow sdcardd unlabeled dir { append create execute write relabelfrom link unlink ioctl getattr setattr read rename lock mounton quotaon swapon rmdir audit_access remove_name add_name reparent execmod search open }"
-	"allow sdcardd unlabeled file { append create write relabelfrom link unlink ioctl getattr setattr read rename lock mounton quotaon swapon audit_access open }"
-	"allow unlabeled unlabeled filesystem associate"
-	"allow mediaserver mediaserver_tmpfs:file { read write execute }";
+supolicy --live "allow sdcardd unlabeled dir { append create execute write relabelfrom link unlink ioctl getattr setattr read rename lock mounton quotaon swapon rmdir audit_access remove_name add_name reparent execmod search open }";
+supolicy --live "allow sdcardd unlabeled file { append create write relabelfrom link unlink ioctl getattr setattr read rename lock mounton quotaon swapon audit_access open }";
+supolicy --live "allow unlabeled unlabeled filesystem associate";
+supolicy --live "allow mediaserver mediaserver_tmpfs:file { read write execute }";
 $B echo ">> Mounting partitions RW.." >> $LOG;
 mount -o remount,rw /data;
 mount -o remount,rw /system;
@@ -150,11 +149,12 @@ if [ -e /etc/fstab ]; then
 else
  $B cp /fstab.* /etc/fstab;
 fi;
-$B fsck -A -C -V -T;
-$B echo ">> FStrim..." >> $LOG;
-$B fstrim -v /system;
-$B fstrim -v /data;
-$B fstrim -v /cache;
+$B echo ">> FileSystem check..." >> $LOG;
+$B fsck -A -C -V -T | $B tee -a $LOG;
+$B echo ">> FileSystem trim..." >> $LOG;
+$B fstrim -v /system | $B tee -a $LOG;
+$B fstrim -v /data | $B tee -a $LOG;
+$B fstrim -v /cache | $B tee -a $LOG;
 sync;
 $B killall -9 com.google.android.gms.persistent;
 if [ -e /system/engine/prop/firstboot ]; then
@@ -165,13 +165,22 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B rm -f /system/engine/prop/firstboot;
  $B echo ">> First boot completed." >> $LOG;
 fi;
+$B echo ">> Harden security..." >> $LOG;
 if [ -e /sys/fs/selinux/enforce ]; then
  $B chmod 666 /sys/fs/selinux/enforce;
- $B echo ">> Harden kernel security." >> $LOG;
- setenforce 1;
- $B echo "1" > /sys/fs/selinux/enforce;
+ if [ -e /system/lib/soundfx/libv4a_fx_ics.so ]; then
+  $B echo ">> Viper4Android support." >> $LOG;
+  setenforce 0;
+  $B echo "0" > /sys/fs/selinux/enforce;
+ else
+  setenforce 1;
+  $B echo "1" > /sys/fs/selinux/enforce;
+ fi;
  $B chmod 444 /sys/fs/selinux/enforce;
 fi;
+setprop ro.secure 1
+setprop ro.adb.secure 1
+setprop security.perf_harden 1
 if [ -e /engine.sh ]; then
  $B echo "96" > /sys/class/timed_output/vibrator/enable;
  $B echo "255" > /sys/class/leds/lv5219lg:rgb1:blue/brightness;

@@ -25,7 +25,6 @@ if [ -e /sys/fs/selinux/enforce ]; then
 fi;
 setprop persist.added_boot_bgservices "$CORES";
 setprop ro.config.max_starting_bg "$((CORES +1))";
-setprop ro.sys.fw.bg_apps_limit "$BG";
 $B sleep 81;
 svc power stayon true;
 setprop ro.feralab.engine 1.1;
@@ -94,8 +93,9 @@ supolicy --live "allow mediaserver mediaserver_tmpfs:file { read write execute }
 $B echo ">> Mounting partitions RW.." >> $LOG;
 mount -o remount,rw /data;
 mount -o remount,rw /system;
-mount -t debugfs debugfs /sys/kernel/debug;
 mount -t debugfs none /sys/kernel/debug;
+mount debugfs debugfs /sys/kernel/debug;
+$B chmod 0755 /sys/kernel/debug;
 if [ -e /sbin/sysrw ]; then
  $B echo ">> Remapped partition layout detected." >> $LOG;
  /sbin/sysrw;
@@ -139,10 +139,9 @@ $B sleep 1;
 $B echo ">> Executing kernel configuration..." >> $LOG;
 sysctl -p;
 if [ "$SDK" -le "18" ]; then
- if [ "$SDK" -gt "10" ]; then
-  $B killall -9 android.process.media;
-  $B killall -9 mediaserver;
- fi;
+ $B echo ">> Mediaserver fix..." >> $LOG;
+ $B killall -9 android.process.media;
+ $B killall -9 mediaserver;
 fi;
 if [ -e /etc/fstab ]; then
  $B echo "FStab onboard.";
@@ -156,7 +155,6 @@ $B fstrim -v /system | $B tee -a $LOG;
 $B fstrim -v /data | $B tee -a $LOG;
 $B fstrim -v /cache | $B tee -a $LOG;
 sync;
-$B killall -9 com.google.android.gms.persistent;
 if [ -e /system/engine/prop/firstboot ]; then
  mount -o remount,rw /system;
  if [ -e /sbin/sysrw ]; then
@@ -178,9 +176,14 @@ if [ -e /sys/fs/selinux/enforce ]; then
  fi;
  $B chmod 444 /sys/fs/selinux/enforce;
 fi;
-setprop ro.secure 1
-setprop ro.adb.secure 1
-setprop security.perf_harden 1
+setprop ro.secure 1;
+setprop ro.adb.secure 1;
+setprop security.perf_harden 1;
+setprop ro.debuggable 0;
+$B echo ">> Tweaking multitasking.." >> $LOG;
+setprop ro.sys.fw.bg_apps_limit "$BG";
+service call activity 51 i32 "$BG";
+svc power stayon false;
 if [ -e /engine.sh ]; then
  $B echo "96" > /sys/class/timed_output/vibrator/enable;
  $B echo "255" > /sys/class/leds/lv5219lg:rgb1:blue/brightness;
@@ -216,6 +219,7 @@ else
  $B echo "96" > /sys/devices/virtual/timed_output/vibrator/enable;
  am start -a android.intent.action.MAIN -e message "FDE status - OK" -n com.rja.utility/.ShowToast;
 fi;
+$B killall -9 com.google.android.gms.persistent;
 $B echo ">> FDE status - OK" >> $LOG;
 $B echo "  " >> $LOG;
 if [ -e /engine.sh ]; then
@@ -226,8 +230,6 @@ mount -o remount,ro /system;
 if [ -e /sbin/sysro ]; then
  /sbin/sysro;
 fi;
-service call activity 51 i32 "$BG";
-svc power stayon false;
 if [ "$SDK" -lt "22" ]; then
  if [ -e /system/engine/gears/sleeper.sh ]; then
   /system/engine/gears/sleeper.sh &

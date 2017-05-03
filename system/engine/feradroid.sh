@@ -1,10 +1,10 @@
 #!/system/bin/sh
 ### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###
+export PATH=/sbin:/system/sbin:/system/bin:/system/xbin:/system/engine/bin
 B=/system/engine/bin/busybox;
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 ROM=$(getprop ro.build.display.id);
 SDK=$(getprop ro.build.version.sdk);
-SF=$($B df -Ph /system | $B grep -v ^Filesystem | $B awk '{print $4}');
 MAX=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq);
 MIN=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq);
 CUR=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq);
@@ -14,7 +14,6 @@ ARCH=$($B grep -Eo "ro.product.cpu.abi(2)?=.+" /system/build.prop 2>/dev/null | 
 if [ -e /sys/power/cpufreq_max_axi_freq ]; then
  AXI=$($B cat /sys/power/cpufreq_max_axi_freq);
 fi;
-LOG=/sdcard/Android/FDE_log.txt;
 BG=$((RAM/100));
 if [ "$CORES" = "0" ]; then
  CORES=1;
@@ -23,12 +22,11 @@ if [ -e /sys/fs/selinux/enforce ]; then
  $B chmod 666 /sys/fs/selinux/enforce;
  setenforce 0;
  $B echo "0" > /sys/fs/selinux/enforce;
- $B chmod 444 /sys/fs/selinux/enforce;
 fi;
 setprop persist.added_boot_bgservices "$CORES";
 setprop ro.config.max_starting_bg "$((CORES +1))";
 setprop ro.sys.fw.bg_apps_limit "$BG";
-$B sleep 90;
+$B sleep 81;
 svc power stayon true;
 setprop ro.feralab.engine 1.1;
 if [ -d /data/media/0/Android ]; then
@@ -40,8 +38,6 @@ else
 fi;
 $B rm -f $LOG;
 $B touch $LOG;
-$B chown 0:0 $LOG;
-$B chown 0:0 $CONFIG;
 $B chmod 666 $LOG;
 $B chmod 666 $CONFIG;
 if [ -e /engine.sh ]; then
@@ -87,10 +83,15 @@ fi;
  $B echo ">> Android version: $(getprop ro.build.version.release)"
  $B echo ">> SDK: $SDK"
  $B echo ">> SElinux state: $(getenforce)"
- $B echo ">> /system free space: $SF"
 } >> $LOG;
-service call activity 51 i32 0;
+service call activity 51 i32 1;
 $B sleep 1;
+$B echo ">> Tuning SElinux.." >> $LOG;
+supolicy --live
+	"allow sdcardd unlabeled dir { append create execute write relabelfrom link unlink ioctl getattr setattr read rename lock mounton quotaon swapon rmdir audit_access remove_name add_name reparent execmod search open }"
+	"allow sdcardd unlabeled file { append create write relabelfrom link unlink ioctl getattr setattr read rename lock mounton quotaon swapon audit_access open }"
+	"allow unlabeled unlabeled filesystem associate"
+	"allow mediaserver mediaserver_tmpfs:file { read write execute }";
 $B echo ">> Mounting partitions RW.." >> $LOG;
 mount -o remount,rw /data;
 mount -o remount,rw /system;
@@ -114,13 +115,13 @@ $B touch /system/etc/sysctl.conf;
 $B chmod 777 /system/etc/sysctl.conf;
 if [ -e /system/engine/prop/firstboot ]; then
  $B echo ">> First boot after deploy" >> $LOG;
- if [ -e /system/media/bak_bootanimation.zip; ]; then
-  $B rm -f /system/media/bootanimation.zip;
-  $B mv /system/media/bak_bootanimation.zip /system/media/bootanimation.zip;
-  $B chmod 644 /system/media/bootanimation.zip;
- fi;
  $B rm -f $CONFIG;
  $B cp /system/engine/assets/FDE_config.txt $CONFIG;
+fi;
+if [ -e /system/media/bak_bootanimation.zip ]; then
+ $B rm -f /system/media/bootanimation.zip;
+ $B mv /system/media/bak_bootanimation.zip /system/media/bootanimation.zip;
+ $B chmod 644 /system/media/bootanimation.zip;
 fi;
 if [ -e $CONFIG ]; then
  $B echo ">> Loading FDE_config..." >> $LOG;
@@ -130,12 +131,32 @@ fi;
 if [ -e /system/engine/gears/dummy.sh ]; then
  DUMMY=$($B cat /system/engine/assets/FDE_config.txt | $B grep -e 'dummy=1');
  if [ "dummy=1" = "$DUMMY" ]; then
-  $B echo "[$TIME] Running Dummy gear.." >> $LOG;
+  $B echo ">> Running Dummy gear..." >> $LOG;
   /system/engine/gears/dummy.sh | $B tee -a $LOG;
  fi;
 fi;
 sync;
 $B sleep 1;
+$B echo ">> Executing kernel configuration..." >> $LOG;
+sysctl -p;
+if [ "$SDK" -le "18" ]; then
+ if [ "$SDK" -gt "10" ]; then
+  $B killall -9 android.process.media;
+  $B killall -9 mediaserver;
+ fi;
+fi;
+if [ -e /etc/fstab ]; then
+ $B echo "FStab onboard.";
+else
+ $B cp /fstab.* /etc/fstab;
+fi;
+$B fsck -A -C -V -T;
+$B echo ">> FStrim..." >> $LOG;
+$B fstrim -v /system;
+$B fstrim -v /data;
+$B fstrim -v /cache;
+sync;
+$B killall -9 com.google.android.gms.persistent;
 if [ -e /system/engine/prop/firstboot ]; then
  mount -o remount,rw /system;
  if [ -e /sbin/sysrw ]; then
@@ -143,6 +164,13 @@ if [ -e /system/engine/prop/firstboot ]; then
  fi;
  $B rm -f /system/engine/prop/firstboot;
  $B echo ">> First boot completed." >> $LOG;
+fi;
+if [ -e /sys/fs/selinux/enforce ]; then
+ $B chmod 666 /sys/fs/selinux/enforce;
+ $B echo ">> Harden kernel security." >> $LOG;
+ setenforce 1;
+ $B echo "1" > /sys/fs/selinux/enforce;
+ $B chmod 444 /sys/fs/selinux/enforce;
 fi;
 if [ -e /engine.sh ]; then
  $B echo "96" > /sys/class/timed_output/vibrator/enable;
@@ -189,8 +217,6 @@ mount -o remount,ro /system;
 if [ -e /sbin/sysro ]; then
  /sbin/sysro;
 fi;
-am kill-all;
-$B sleep 3;
 service call activity 51 i32 "$BG";
 svc power stayon false;
 if [ "$SDK" -lt "22" ]; then

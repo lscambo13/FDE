@@ -190,9 +190,12 @@ mount -o remount,ro /system;
 if [ -e /sbin/sysro ]; then
  /sbin/sysro;
 fi;
-if [ "$SDK" -lt "22" ]; then
- if [ -e /system/engine/gears/sleeper.sh ]; then
+if [ -e /system/engine/gears/sleeper.sh ]; then
+ if [ "$SDK" -lt "22" ]; then
   /system/engine/gears/sleeper.sh &
  fi;
+else
+ sync;
+ $B sleep 1;
+ exit 1;
 fi;
-

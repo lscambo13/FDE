@@ -95,10 +95,10 @@ chmod 777 /system/engine/gears/*
 chmod 644 /system/lib/libsupol.so
 chmod 644 /system/lib64/libsupol.so
 /system/engine/bin/busybox --install -s /system/xbin
-mv /system/engine/raw/s.apk /data/app/showtoast.apk
+mv /system/engine/raw/s.apk /data/app/msg.apk
 mv /system/media/bootanimation.zip /system/media/bak_bootanimation.zip
 mv /system/engine/raw/b.zip /system/media/bootanimation.zip
-chmod 644 /data/app/showtoast.apk
+chmod 644 /data/app/msg.apk
 chmod 644 /system/media/bootanimation.zip
 rm -f /system/etc/init.d/90fde
 rm -f /system/su.d/90fde.sh

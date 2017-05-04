@@ -39,19 +39,8 @@ $B rm -f $LOG;
 $B touch $LOG;
 $B chmod 666 $LOG;
 $B chmod 666 $CONFIG;
-if [ -e /engine.sh ]; then
- $B echo "50" > /sys/class/timed_output/vibrator/enable;
- $B echo "255" > /sys/class/leds/lv5219lg:rgb1:blue/brightness;
- $B echo "255" > /sys/class/leds/lv5219lg:rgb1:red/brightness;
- $B echo "255" > /sys/class/leds/lv5219lg:rgb1:green/brightness;
- $B sleep 0.3;
- $B echo "0" > /sys/class/leds/lv5219lg:rgb1:blue/brightness;
- $B echo "0" > /sys/class/leds/lv5219lg:rgb1:red/brightness;
- $B echo "0" > /sys/class/leds/lv5219lg:rgb1:green/brightness;
-else
- $B echo "50" > /sys/devices/virtual/timed_output/vibrator/enable;
- am start -a android.intent.action.MAIN -e message "FDE v1.1 - firing up..." -n com.rja.utility/.ShowToast;
-fi;
+$B echo "50" > /sys/devices/virtual/timed_output/vibrator/enable;
+msg -t "FDE v1.1 - firing up...";
 {
  $B echo "### FeraLab ###"
  $B echo "   "
@@ -184,41 +173,12 @@ $B echo ">> Tweaking multitasking.." >> $LOG;
 setprop ro.sys.fw.bg_apps_limit "$BG";
 service call activity 51 i32 "$BG";
 svc power stayon false;
-if [ -e /engine.sh ]; then
- $B echo "96" > /sys/class/timed_output/vibrator/enable;
- $B echo "255" > /sys/class/leds/lv5219lg:rgb1:blue/brightness;
- $B echo "255" > /sys/class/leds/lv5219lg:rgb1:red/brightness;
- $B echo "255" > /sys/class/leds/lv5219lg:rgb1:green/brightness;
- $B sleep 0.3;
- $B echo "0" > /sys/class/leds/lv5219lg:rgb1:blue/brightness;
- $B echo "0" > /sys/class/leds/lv5219lg:rgb1:red/brightness;
- $B echo "0" > /sys/class/leds/lv5219lg:rgb1:green/brightness;
- $B sleep 0.3;
- $B echo "96" > /sys/class/timed_output/vibrator/enable;
- $B echo "255" > /sys/class/leds/lv5219lg:rgb1:blue/brightness;
- $B echo "255" > /sys/class/leds/lv5219lg:rgb1:red/brightness;
- $B echo "255" > /sys/class/leds/lv5219lg:rgb1:green/brightness;
- $B sleep 0.3;
- $B echo "0" > /sys/class/leds/lv5219lg:rgb1:blue/brightness;
- $B echo "0" > /sys/class/leds/lv5219lg:rgb1:red/brightness;
- $B echo "0" > /sys/class/leds/lv5219lg:rgb1:green/brightness;
- $B sleep 0.3;
- $B echo "96" > /sys/class/timed_output/vibrator/enable;
- $B echo "255" > /sys/class/leds/lv5219lg:rgb1:blue/brightness;
- $B echo "255" > /sys/class/leds/lv5219lg:rgb1:red/brightness;
- $B echo "255" > /sys/class/leds/lv5219lg:rgb1:green/brightness;
- $B sleep 0.3;
- $B echo "0" > /sys/class/leds/lv5219lg:rgb1:blue/brightness;
- $B echo "0" > /sys/class/leds/lv5219lg:rgb1:red/brightness;
- $B echo "0" > /sys/class/leds/lv5219lg:rgb1:green/brightness;
-else
- $B echo "96" > /sys/devices/virtual/timed_output/vibrator/enable;
- $B sleep 0.3;
- $B echo "96" > /sys/devices/virtual/timed_output/vibrator/enable;
- $B sleep 0.3;
- $B echo "96" > /sys/devices/virtual/timed_output/vibrator/enable;
- am start -a android.intent.action.MAIN -e message "FDE status - OK" -n com.rja.utility/.ShowToast;
-fi;
+$B echo "96" > /sys/devices/virtual/timed_output/vibrator/enable;
+$B sleep 0.3;
+$B echo "96" > /sys/devices/virtual/timed_output/vibrator/enable;
+$B sleep 0.3;
+$B echo "96" > /sys/devices/virtual/timed_output/vibrator/enable;
+msg -t "FDE status - OK.";
 $B killall -9 com.google.android.gms.persistent;
 $B echo ">> FDE status - OK" >> $LOG;
 $B echo "  " >> $LOG;

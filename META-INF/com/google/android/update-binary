@@ -17,22 +17,22 @@ ui_print "***FeraLab***"
 ui_print "FeraDroid Engine v1.1"
 ui_print "  "
 ui_print "FDE deploy..."
+if [ -e /sys/fs/selinux/enforce ]; then
+ chmod 666 /sys/fs/selinux/enforce
+ setenforce 0
+ echo "0" > /sys/fs/selinux/enforce
+fi;
 mount /system
 mount /data
 mount -o rw,remount /
 mount -o rw,remount /system
 mount -o rw,remount /data
-setenforce 0
 sleep 1
 rm -Rf /system/engine/*
 rm -f /sdcard/Android/FDE_log.txt
 rm -f /sdcard/Android/FDE_config.txt
-rm -f /sdcard/Android/FDE.txt
-rm -f /sdcard/Android/sleeper_whitelist.txt
 rm -f /data/media/0/Android/FDE_config.txt
 rm -f /data/media/0/Android/FDE_log.txt
-rm -f /data/media/0/Android/FDE.txt
-rm -f /data/media/0/Android/sleeper_whitelist.txt
 rm -f /system/etc/fde
 if [ -e /system/bin/tiny_mkswap ]; then
  mv /system/bin/tiny_mkswap /system/bin/tiny_mkswap_bak
@@ -85,8 +85,6 @@ else
 fi;
 rm -Rf /system/engine/bin/bin32
 rm -Rf /system/engine/bin/bin64
-chown 0.0 /system/engine
-chown 0.0 /system/engine/feradroid.sh
 chmod 777 /system/engine/*
 chmod 777 /system/engine/bin/*
 chmod 777 /system/engine/prop/*
@@ -95,6 +93,7 @@ chmod 777 /system/engine/gears/*
 chmod 644 /system/lib/libsupol.so
 chmod 644 /system/lib64/libsupol.so
 /system/engine/bin/busybox --install -s /system/xbin
+export PATH=/sbin:/system/sbin:/system/bin:/system/xbin:/system/engine/bin
 mv /system/engine/raw/s.apk /data/app/msg.apk
 mv /system/media/bootanimation.zip /system/media/bak_bootanimation.zip
 mv /system/engine/raw/b.zip /system/media/bootanimation.zip
@@ -107,10 +106,14 @@ if [ -e /engine.sh ]; then
  echo "1" > /system/engine/prop/ferakernel
 elif [ -d /system/su.d ]; then
  touch /system/su.d/90fde.sh
- echo "#!/system/bin/sh" >> /system/su.d/90fde.sh
+ if [ -e /su/bin/sush ]; then
+  echo "#!/su/bin/sush" >> /system/su.d/90fde.sh
+ else
+  echo "#!/system/bin/sh" >> /system/su.d/90fde.sh
+ fi;
  echo "   " >> /system/su.d/90fde.sh
  echo "(" >> /system/su.d/90fde.sh
- echo "su -c /system/engine/feradroid.sh" >> /system/su.d/90fde.sh
+ echo "/system/engine/feradroid.sh" >> /system/su.d/90fde.sh
  echo ")&" >> /system/su.d/90fde.sh
  echo "   " >> /system/su.d/90fde.sh
  chmod 777 /system/su.d/90fde.sh
@@ -132,6 +135,8 @@ chmod 777 /system/xbin/fde
 touch /system/etc/fde
 chmod 777 /system/etc/fde
 echo "1.1" > /system/etc/fde
+cp /fstab.* /etc/fstab
+fsck -A -C -V -T
 sleep 1
 umount /system
 ui_print "Installation completed."

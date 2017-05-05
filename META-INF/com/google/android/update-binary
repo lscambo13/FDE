@@ -106,11 +106,7 @@ if [ -e /engine.sh ]; then
  echo "1" > /system/engine/prop/ferakernel
 elif [ -d /system/su.d ]; then
  touch /system/su.d/90fde.sh
- if [ -e /su/bin/sush ]; then
-  echo "#!/su/bin/sush" >> /system/su.d/90fde.sh
- else
-  echo "#!/system/bin/sh" >> /system/su.d/90fde.sh
- fi;
+ echo "#!/system/bin/sh" >> /system/su.d/90fde.sh
  echo "   " >> /system/su.d/90fde.sh
  echo "(" >> /system/su.d/90fde.sh
  echo "/system/engine/feradroid.sh" >> /system/su.d/90fde.sh

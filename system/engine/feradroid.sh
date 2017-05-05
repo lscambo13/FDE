@@ -3,18 +3,8 @@
 export PATH=/sbin:/system/sbin:/system/bin:/system/xbin:/system/engine/bin
 B=/system/engine/bin/busybox;
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
-ROM=$(getprop ro.build.display.id);
-SDK=$(getprop ro.build.version.sdk);
-MAX=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq);
-MIN=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq);
-CUR=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq);
 CORES=$($B grep -c 'processor' /proc/cpuinfo);
-GPU=$(dumpsys SurfaceFlinger | $B grep "GLES:" | sed -e "s=GLES: ==");
-ARCH=$($B grep -Eo "ro.product.cpu.abi(2)?=.+" /system/build.prop 2>/dev/null | $B grep -Eo "[^=]*$" | head -n1);
 SCORE=/system/engine/prop/score;
-if [ -e /sys/power/cpufreq_max_axi_freq ]; then
- AXI=$($B cat /sys/power/cpufreq_max_axi_freq);
-fi;
 BG=$((RAM/100));
 if [ "$CORES" = "0" ]; then
  CORES=1;
@@ -41,6 +31,17 @@ $B rm -f $LOG;
 $B touch $LOG;
 $B chmod 666 $LOG;
 $B chmod 666 $CONFIG;
+ROM=$(getprop ro.build.display.id);
+SDK=$(getprop ro.build.version.sdk);
+MAX=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq);
+MIN=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq);
+CUR=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq);
+GPU=$(dumpsys SurfaceFlinger | $B grep "GLES:" | sed -e "s=GLES: ==");
+KERNEL=$($B uname -r);
+ARCH=$($B grep -Eo "ro.product.cpu.abi(2)?=.+" /system/build.prop 2>/dev/null | $B grep -Eo "[^=]*$" | head -n1);
+if [ -e /sys/power/cpufreq_max_axi_freq ]; then
+ AXI=$($B cat /sys/power/cpufreq_max_axi_freq);
+fi;
 $B echo "60" > /sys/devices/virtual/timed_output/vibrator/enable;
 msg -t "FDE v1.1 - firing up...";
 {
@@ -66,8 +67,8 @@ msg -t "FDE v1.1 - firing up...";
   $B chmod 664 /sys/power/cpufreq_max_axi_freq
   $B echo ">> CPU max AXI freq: $AXI MHz"
  fi;
- $B echo ">> GPU: $GPU"
  $B echo ">> RAM: $RAM MB"
+ $B echo ">> GPU: $GPU"
  $B echo ">> Kernel version: $KERNEL"
  $B echo ">> ROM version: $ROM"
  $B echo ">> Android version: $(getprop ro.build.version.release)"
@@ -125,6 +126,10 @@ $B echo "0" > $SCORE;
 $B echo "$((CORES+CORES+1))" >> $SCORE;
 if [ -e /sys/fs/selinux/enforce ]; then
  $B echo "5" >> $SCORE;
+fi;
+if [ -e /system/engine/prop/firstboot ]; then
+ $B echo ">> Running one time init gear..." >> $LOG;
+ /system/engine/gears/runonce.sh & | $B tee -a $LOG;
 fi;
 if [ -e /system/engine/gears/dummy.sh ]; then
  DUMMY=$($B cat /system/engine/assets/FDE_config.txt | $B grep -e 'dummy=1');

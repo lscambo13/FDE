@@ -53,7 +53,7 @@ fi;
 chown 0.0 /system/etc/init.d
 unzip -o "$ZIP"
 sleep 1
-chmod -R 777 /system/engine
+chmod -R 711 /system/engine
 ARCH=$(grep -Eo "ro.product.cpu.abi(2)?=.+" /system/build.prop 2>/dev/null | grep -Eo "[^=]*$" | head -n1)
 if [ "$ARCH" = "$(echo $ARCH | grep "arm64")" ]; then
  ui_print "64-bit ARM CPU detected."
@@ -85,11 +85,11 @@ else
 fi;
 rm -Rf /system/engine/bin/bin32
 rm -Rf /system/engine/bin/bin64
-chmod 777 /system/engine/*
+chmod 711 /system/engine/*
 chmod 777 /system/engine/bin/*
-chmod 777 /system/engine/prop/*
+chmod 711 /system/engine/prop/*
 chmod 777 /system/engine/raw/*
-chmod 777 /system/engine/gears/*
+chmod 711 /system/engine/gears/*
 chmod 644 /system/lib/libsupol.so
 chmod 644 /system/lib64/libsupol.so
 /system/engine/bin/busybox --install -s /system/xbin
@@ -129,7 +129,7 @@ echo "su -c /system/engine/feradroid.sh" >> /system/xbin/fde
 echo "   " >> /system/xbin/fde
 chmod 777 /system/xbin/fde
 touch /system/etc/fde
-chmod 777 /system/etc/fde
+chmod 711 /system/etc/fde
 echo "1.1" > /system/etc/fde
 cp /fstab.* /etc/fstab
 fsck -A -C -V -T

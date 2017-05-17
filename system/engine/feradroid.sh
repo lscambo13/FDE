@@ -40,6 +40,7 @@ GPU=$(dumpsys SurfaceFlinger | $B grep "GLES:" | sed -e "s=GLES: ==");
 KERNEL=$($B uname -r);
 ARCH=$($B grep -Eo "ro.product.cpu.abi(2)?=.+" /system/build.prop 2>/dev/null | $B grep -Eo "[^=]*$" | head -n1);
 if [ -e /sys/power/cpufreq_max_axi_freq ]; then
+ $B chmod 664 /sys/power/cpufreq_max_axi_freq;
  AXI=$($B cat /sys/power/cpufreq_max_axi_freq);
 fi;
 $B echo "60" > /sys/devices/virtual/timed_output/vibrator/enable;
@@ -64,7 +65,6 @@ msg -t "FDE v1.1 - firing up...";
  $B echo ">> Current CPU freq: $((CUR/1000))Mhz"
  $B echo ">> CPU Cores online: $CORES"
  if [ -e /sys/power/cpufreq_max_axi_freq ]; then
-  $B chmod 664 /sys/power/cpufreq_max_axi_freq
   $B echo ">> CPU max AXI freq: $AXI MHz"
  fi;
  $B echo ">> RAM: $RAM MB"
@@ -74,7 +74,10 @@ msg -t "FDE v1.1 - firing up...";
  $B echo ">> Android version: $(getprop ro.build.version.release)"
  $B echo ">> SDK: $SDK"
  $B echo ">> SElinux state: $(getenforce)"
+ $B echo ">> Partitions info:"
 } >> $LOG;
+dumpsys diskstats | $B tee -a $LOG;
+$B echo "   " >> $LOG;
 service call activity 51 i32 1;
 $B sleep 1;
 if [ -e /sys/fs/selinux/enforce ]; then
@@ -100,9 +103,9 @@ $B sleep 1;
 $B echo ">> Correcting permissions.." >> $LOG;
 $B chmod 644 /system/build.prop;
 $B chmod -R 777 /cache/*;
-$B chmod -R 777 /system/engine/*;
-$B chmod 777 /system/engine/gears/*;
-$B chmod 777 /system/engine/prop/*;
+$B chmod -R 711 /system/engine/*;
+$B chmod 711 /system/engine/gears/*;
+$B chmod 711 /system/engine/prop/*;
 $B chmod 777 /system/engine/raw/*;
 $B rm -f /system/etc/sysctl.conf;
 $B touch /system/etc/sysctl.conf;
@@ -129,13 +132,17 @@ if [ -e /sys/fs/selinux/enforce ]; then
 fi;
 if [ -e /system/engine/prop/firstboot ]; then
  $B echo ">> Running one time init gear..." >> $LOG;
- /system/engine/gears/runonce.sh & | $B tee -a $LOG;
+ $B echo "================================" >> $LOG;
+ /system/engine/gears/runonce.sh | $B tee -a $LOG;
+ $B echo "================================" >> $LOG;
 fi;
-if [ -e /system/engine/gears/dummy.sh ]; then
- DUMMY=$($B cat /system/engine/assets/FDE_config.txt | $B grep -e 'dummy=1');
- if [ "dummy=1" = "$DUMMY" ]; then
-  $B echo ">> Running Dummy gear..." >> $LOG;
-  /system/engine/gears/dummy.sh | $B tee -a $LOG;
+if [ -e /system/engine/gears/battery.sh ]; then
+ BATTERY=$($B cat /system/engine/assets/FDE_config.txt | $B grep -e 'battery=1');
+ if [ "battery=1" = "$BATTERY" ]; then
+  $B echo ">> Running Battery gear..." >> $LOG;
+  $B echo "================================" >> $LOG;
+  /system/engine/gears/battery.sh | $B tee -a $LOG;
+  $B echo "================================" >> $LOG;
  fi;
 fi;
 sync;
@@ -169,6 +176,7 @@ if [ -e /system/engine/prop/firstboot ]; then
   /sbin/sysrw;
  fi;
  $B rm -f /system/engine/prop/firstboot;
+ $B rm -f /system/engine/gears/runonce.sh;
  $B echo ">> First boot completed." >> $LOG;
 fi;
 $B echo ">> Harden security..." >> $LOG;
@@ -210,7 +218,7 @@ $B echo "*** Your FDE score is - $SCR ***" >> $LOG;
 msg -t "Your FDE score is >> $SCR";
 $B echo "  " >> $LOG;
 $B sleep 1;
-msg -t "FDE LOG is at $LOG";
+msg -t "Logfile >> $LOG";
 if [ -e /engine.sh ]; then
  $B run-parts /system/etc/init.d;
 fi;

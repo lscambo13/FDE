@@ -52,39 +52,50 @@ else
 fi;
 chown 0.0 /system/etc/init.d
 unzip -o "$ZIP"
-sleep 1
+sleep 2
 chmod -R 711 /system/engine
 ARCH=$(grep -Eo "ro.product.cpu.abi(2)?=.+" /system/build.prop 2>/dev/null | grep -Eo "[^=]*$" | head -n1)
 if [ "$ARCH" = "$(echo $ARCH | grep "arm64")" ]; then
  ui_print "64-bit ARM CPU detected."
- mv /system/engine/bin/bin64/arm/busybox /system/engine/bin/busybox
- mv /system/engine/bin/bin64/arm/libsupol.so /system/lib64/libsupol.so
- mv /system/engine/bin/bin64/arm/supolicy /system/engine/bin/supolicy
+ cp /system/engine/bin/bin64/arm/busybox /system/xbin/busybox
+ cp /system/engine/bin/bin64/arm/busybox /system/engine/bin/busybox
+ cp /system/engine/bin/bin64/arm/libsupol.so /system/lib64/libsupol.so
+ cp /system/engine/bin/bin64/arm/supolicy /system/engine/bin/supolicy
+ sleep 2
 elif [ "$ARCH" = "$(echo $ARCH | grep "armeabi")" ]; then
  ui_print "32-bit ARM CPU detected."
- mv /system/engine/bin/bin32/arm/busybox /system/engine/bin/busybox
- mv /system/engine/bin/bin32/arm/libsupol.so /system/lib/libsupol.so
- mv /system/engine/bin/bin32/arm/rzscontrol /system/engine/bin/rzscontrol
- mv /system/engine/bin/bin32/arm/supolicy /system/engine/bin/supolicy
+ cp /system/engine/bin/bin32/arm/busybox /system/xbin/busybox
+ cp /system/engine/bin/bin32/arm/busybox /system/engine/bin/busybox
+ cp /system/engine/bin/bin32/arm/libsupol.so /system/lib/libsupol.so
+ cp /system/engine/bin/bin32/arm/rzscontrol /system/engine/bin/rzscontrol
+ cp /system/engine/bin/bin32/arm/supolicy /system/engine/bin/supolicy
+ sleep 2
 elif [ "$ARCH" = "$(echo $ARCH | grep "x86_64")" ]; then
  ui_print "64-bit X86 CPU detected."
- mv /system/engine/bin/bin64/x86/busybox /system/engine/bin/busybox
- mv /system/engine/bin/bin64/x86/libsupol.so /system/lib64/libsupol.so
- mv /system/engine/bin/bin64/x86/supolicy /system/engine/bin/supolicy
+ cp /system/engine/bin/bin64/x86/busybox /system/xbin/busybox
+ cp /system/engine/bin/bin64/x86/busybox /system/engine/bin/busybox
+ cp /system/engine/bin/bin64/x86/libsupol.so /system/lib64/libsupol.so
+ cp /system/engine/bin/bin64/x86/supolicy /system/engine/bin/supolicy
+ sleep 2
 elif [ "$ARCH" = "$(echo $ARCH | grep "x86")" ]; then
  ui_print "32-bit X86 CPU detected."
- mv /system/engine/bin/bin32/x86/busybox /system/engine/bin/busybox
- mv /system/engine/bin/bin32/x86/libsupol.so /system/lib/libsupol.so
- mv /system/engine/bin/bin32/x86/supolicy /system/engine/bin/supolicy
+ cp /system/engine/bin/bin32/x86/busybox /system/xbin/busybox
+ cp /system/engine/bin/bin32/x86/busybox /system/engine/bin/busybox
+ cp /system/engine/bin/bin32/x86/libsupol.so /system/lib/libsupol.so
+ cp /system/engine/bin/bin32/x86/supolicy /system/engine/bin/supolicy
+ sleep 2
 else
  ui_print "Generic armeabi."
- mv /system/engine/bin/bin32/arm/busybox /system/engine/bin/busybox
- mv /system/engine/bin/bin32/arm/libsupol.so /system/lib/libsupol.so
- mv /system/engine/bin/bin32/arm/rzscontrol /system/engine/bin/rzscontrol
- mv /system/engine/bin/bin32/arm/supolicy /system/engine/bin/supolicy
+ cp /system/engine/bin/bin32/arm/busybox /system/xbin/busybox
+ cp /system/engine/bin/bin32/arm/busybox /system/engine/bin/busybox
+ cp /system/engine/bin/bin32/arm/libsupol.so /system/lib/libsupol.so
+ cp /system/engine/bin/bin32/arm/rzscontrol /system/engine/bin/rzscontrol
+ cp /system/engine/bin/bin32/arm/supolicy /system/engine/bin/supolicy
+ sleep 2
 fi;
 rm -Rf /system/engine/bin/bin32
 rm -Rf /system/engine/bin/bin64
+chmod 777 /system/xbin/busybox
 chmod 711 /system/engine/*
 chmod 777 /system/engine/bin/*
 chmod 711 /system/engine/prop/*
@@ -92,11 +103,15 @@ chmod 777 /system/engine/raw/*
 chmod 711 /system/engine/gears/*
 chmod 644 /system/lib/libsupol.so
 chmod 644 /system/lib64/libsupol.so
-/system/engine/bin/busybox --install -s /system/xbin
+sleep 1
+/system/xbin/busybox --install -s /system/xbin
 export PATH=/sbin:/system/sbin:/system/bin:/system/xbin:/system/engine/bin
+sleep 1
 mv /system/engine/raw/s.apk /data/app/msg.apk
 mv /system/media/bootanimation.zip /system/media/bak_bootanimation.zip
 mv /system/engine/raw/b.zip /system/media/bootanimation.zip
+sleep 1
+ui_print "Bootanimantion is changed for first boot only."
 chmod 644 /data/app/msg.apk
 chmod 644 /system/media/bootanimation.zip
 rm -f /system/etc/init.d/90fde
@@ -132,6 +147,8 @@ touch /system/etc/fde
 chmod 711 /system/etc/fde
 echo "1.1" > /system/etc/fde
 cp /fstab.* /etc/fstab
+ui_print "Checking file-system..."
+sleep 1
 fsck -A -C -V -T
 sleep 1
 umount /system

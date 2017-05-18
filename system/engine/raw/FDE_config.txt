@@ -1,0 +1,8 @@
+### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###
+#FDE configuration file.
+
+#Triggers to enable or disable FDE gears
+#Set 0 to disable any gear you want.
+
+battery=1
+graphics=1

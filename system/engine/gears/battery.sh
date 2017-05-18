@@ -2,7 +2,6 @@
 ### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
 SCORE=/system/engine/prop/score;
-dumpsys battery;
 if [ -e /sys/kernel/fast_charge/force_fast_charge ]; then
  $B echo "Fast charge support detected. Activating...";
  $B echo "1" > /sys/kernel/fast_charge/force_fast_charge;
@@ -71,16 +70,3 @@ if [ -e /sys/module/cpuidle_scx35/parameters/cpuidle_debug ]; then
  $B echo "0" > /sys/module/cpuidle_scx35/parameters/light_sleep_en;
  $B echo "1" >> $SCORE;
 fi;
-$B echo "Tuning Android power-saving...";
-setprop power.saving.mode 1;
-setprop persist.radio.ramdump 0;
-setprop pm.sleep_mode 1;
-setprop ro.ril.disable.power.collapse 0;
-setprop ro.semc.enable.fast_dormancy false;
-setprop ro.ril.fast.dormancy.rule 0;
-setprop ro.ril.fast.dormancy 0;
-setprop ro.config.hw_power_saving 1;
-setprop dev.pm.dyn_samplingrate 1;
-setprop persist.radio.add_power_save 1;
-setprop ro.com.google.networklocation 0;
-$B echo "1" >> $SCORE;

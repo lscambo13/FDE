@@ -1,7 +1,7 @@
 #!/system/bin/sh
 ### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###
 export PATH=/sbin:/system/sbin:/system/bin:/system/xbin:/system/engine/bin
-B=/system/engine/bin/busybox;
+B=/system/engine/bin/bb;
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 CORES=$($B grep -c 'processor' /proc/cpuinfo);
 SCORE=/system/engine/prop/score;
@@ -17,7 +17,11 @@ fi;
 setprop persist.added_boot_bgservices "$CORES";
 setprop ro.config.max_starting_bg "$((CORES+1))";
 svc power stayon true;
-$B sleep 72;
+if [ "$CORES" -gt "4" ]; then
+ $B sleep 45;
+else
+ $B sleep 72;
+fi;
 svc power stayon true;
 setprop ro.feralab.engine 1.1;
 if [ -d /sdcard/Android/ ]; then
@@ -48,8 +52,8 @@ msg -t "FDE v1.1 - firing up...";
 {
  $B echo "### FeraLab ###"
  $B echo "   "
+ $B echo "   "
  $B echo ">> FeraDroid Engine v1.1"
- $B echo ">> Firing up..."
  $B echo ">> Device: $(getprop ro.product.brand) $(getprop ro.product.model)"
  $B echo ">> Architecture: $ARCH"
  if [ -e /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq ]; then
@@ -77,6 +81,7 @@ msg -t "FDE v1.1 - firing up...";
  $B echo ">> Partitions info:"
 } >> $LOG;
 dumpsys diskstats | $B tee -a $LOG;
+$B echo ">> Firing up..." >> $LOG;
 $B echo "   " >> $LOG;
 service call activity 51 i32 1;
 $B sleep 1;
@@ -111,19 +116,22 @@ $B rm -f /system/etc/sysctl.conf;
 $B touch /system/etc/sysctl.conf;
 $B chmod 777 /system/etc/sysctl.conf;
 if [ -e /system/engine/prop/firstboot ]; then
- $B echo ">> First boot after deploy" >> $LOG;
+ $B echo ">> First boot after deploy.." >> $LOG;
  $B rm -f $CONFIG;
- $B cp /system/engine/assets/FDE_config.txt $CONFIG;
+ $B cp /system/engine/raw/FDE_config.txt $CONFIG;
+ $B touch /system/engine/prop/fscore;
+ $B chmod 777 /system/engine/prop/fscore;
 fi;
 if [ -e /system/media/bak_bootanimation.zip ]; then
  $B rm -f /system/media/bootanimation.zip;
  $B mv /system/media/bak_bootanimation.zip /system/media/bootanimation.zip;
  $B chmod 644 /system/media/bootanimation.zip;
+ $B echo ">> Bootanimation restored." >> $LOG;
 fi;
 if [ -e $CONFIG ]; then
  $B echo ">> Loading FDE_config..." >> $LOG;
- $B rm -f /system/engine/assets/FDE_config.txt;
- $B cp $CONFIG /system/engine/assets/FDE_config.txt;
+ $B rm -f /system/engine/raw/FDE_config.txt;
+ $B cp $CONFIG /system/engine/raw/FDE_config.txt;
 fi;
 $B echo "0" > $SCORE;
 $B echo "$((CORES+CORES+1))" >> $SCORE;
@@ -137,11 +145,20 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B echo "================================" >> $LOG;
 fi;
 if [ -e /system/engine/gears/battery.sh ]; then
- BATTERY=$($B cat /system/engine/assets/FDE_config.txt | $B grep -e 'battery=1');
+ BATTERY=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'battery=1');
  if [ "battery=1" = "$BATTERY" ]; then
   $B echo ">> Running Battery gear..." >> $LOG;
   $B echo "================================" >> $LOG;
   /system/engine/gears/battery.sh | $B tee -a $LOG;
+  $B echo "================================" >> $LOG;
+ fi;
+fi;
+if [ -e /system/engine/gears/graphics.sh ]; then
+ GRAPHICS=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'graphics=1');
+ if [ "graphics=1" = "$GRAPHICS" ]; then
+  $B echo ">> Running Graphics gear..." >> $LOG;
+  $B echo "================================" >> $LOG;
+  /system/engine/gears/graphics.sh | $B tee -a $LOG;
   $B echo "================================" >> $LOG;
  fi;
 fi;

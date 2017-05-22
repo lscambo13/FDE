@@ -1,7 +1,7 @@
 #!/system/bin/sh
 ### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###
 export PATH=/sbin:/system/sbin:/system/bin:/system/xbin:/system/engine/bin
-B=/system/engine/bin/bb;
+B=/system/engine/bin/busybox;
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 CORES=$($B grep -c 'processor' /proc/cpuinfo);
 SCORE=/system/engine/prop/score;

@@ -1,8 +1,14 @@
 #!/system/bin/sh
 ### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
+RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
+CORES=$($B grep -c 'processor' /proc/cpuinfo);
 FSCORE=/system/engine/prop/fscore;
 SCORE=/system/engine/prop/score;
+BG=$((RAM/100));
+if [ "$CORES" = "0" ]; then
+ CORES=1;
+fi;
 mount -o remount,rw /data;
 mount -o remount,rw /system;
 $B echo "Re-calibrating battery...";
@@ -21,11 +27,15 @@ if [ -e /system/etc/calib.cfg_bak ]; then
 elif [ -e /system/etc/calib.cfg ]; then
  $B mv /system/etc/calib.cfg /system/etc/calib.cfg_bak;
  $B mv /system/engine/raw/calib.cfg /system/etc/calib.cfg;
+ $B chmod 644 /system/etc/calib.cfg;
+ $B echo "Assertive display detected.";
  $B echo "Patching to powersave and optimized display calibration...";
  $B echo "1" >> $FSCORE;
 elif [ -e /system/etc/ad_calib.cfg ]; then
  $B mv /system/etc/ad_calib.cfg /system/etc/calib.cfg_bak;
  $B mv /system/engine/raw/calib.cfg /system/etc/calib.cfg;
+ $B chmod 644 /system/etc/calib.cfg;
+ $B echo "Assertive display detected.";
  $B echo "Patching to powersave and optimized display calibration...";
  $B echo "1" >> $FSCORE;
 fi;
@@ -93,21 +103,63 @@ else
  $B echo "GPS config is already patched.";
  $B echo "1" >> $FSCORE;
 fi;
-$B echo "Tuning Android power-saving...";
-setprop power.saving.mode 1;
-setprop persist.radio.ramdump 0;
-setprop pm.sleep_mode 1;
-setprop ro.ril.disable.power.collapse 0;
-setprop ro.semc.enable.fast_dormancy false;
-setprop ro.ril.fast.dormancy.rule 0;
-setprop ro.ril.fast.dormancy 0;
-setprop ro.config.hw_power_saving 1;
-setprop dev.pm.dyn_samplingrate 1;
-setprop persist.radio.add_power_save 1;
-setprop ro.com.google.networklocation 0;
-setprop ro.ril.def.agps.feature 1;
-setprop ro.ril.def.agps.mode 2;
-setprop ro.gps.agps_provider 1;
-$B echo "1" >> $FSCORE;
+$B echo "Patching build.prop...";
+$B cp /system/build.prop /system/engine/raw/build.prop;
+$B cp /system/build.prop /system/build.prop_bak;
+$B chmod 777 /system/engine/raw/build.prop;
+$B sed -e "s=power.saving.mode=#power.saving.mode=" -i /system/engine/raw/build.prop;
+$B sed -e "s=persist.radio.ramdump=#persist.radio.ramdump=" -i /system/engine/raw/build.prop;
+$B sed -e "s=pm.sleep_mode=#pm.sleep_mode=" -i /system/engine/raw/build.prop;
+$B sed -e "s=ro.ril.disable.power.collapse=#ro.ril.disable.power.collapse=" -i /system/engine/raw/build.prop;
+$B sed -e "s=ro.ril.fast.dormancy=#ro.ril.fast.dormancy=" -i /system/engine/raw/build.prop;
+$B sed -e "s=ro.ril.fast.dormancy.rule=#ro.ril.fast.dormancy.rule=" -i /system/engine/raw/build.prop;
+$B sed -e "s=ro.config.hw_power_saving=#ro.config.hw_power_saving=" -i /system/engine/raw/build.prop;
+$B sed -e "s=dev.pm.dyn_samplingrate=#dev.pm.dyn_samplingrate=" -i /system/engine/raw/build.prop;
+$B sed -e "s=persist.radio.add_power_save=#persist.radio.add_power_save=" -i /system/engine/raw/build.prop;
+$B sed -e "s=ro.com.google.networklocation=#ro.com.google.networklocation=" -i /system/engine/raw/build.prop;
+$B sed -e "s=ro.ril.def.agps.feature=#ro.ril.def.agps.feature=" -i /system/engine/raw/build.prop;
+$B sed -e "s=ro.ril.def.agps.mode=#ro.ril.def.agps.mode=" -i /system/engine/raw/build.prop;
+$B sed -e "s=ro.gps.agps_provider=#ro.gps.agps_provider=" -i /system/engine/raw/build.prop;
+$B sed -e "s=persist.added_boot_bgservices=#persist.added_boot_bgservices=" -i /system/engine/raw/build.prop;
+$B sed -e "s=ro.config.max_starting_bg=#ro.config.max_starting_bg=" -i /system/engine/raw/build.prop;
+$B sed -e "s=ro.sys.fw.bg_apps_limit=#ro.sys.fw.bg_apps_limit=" -i /system/engine/raw/build.prop;
+if [ -e /system/etc/calib.cfg ]; then
+ $B sed -e "s=ro.qcom.ad=#ro.qcom.ad=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=ro.qcom.ad.calib.data=#ro.qcom.ad.calib.data=" -i /system/engine/raw/build.prop;
+fi;
+{
+ $B echo "   "
+ $B echo "   "
+ $B echo "### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###"
+ $B echo "bp_patch=v1.1"
+ $B echo "ro.feralab.engine=1.1"
+ $B echo "power.saving.mode=1"
+ $B echo "persist.radio.ramdump=0"
+ $B echo "pm.sleep_mode=1"
+ $B echo "ro.ril.disable.power.collapse=0"
+ $B echo "ro.semc.enable.fast_dormancy=false"
+ $B echo "ro.ril.fast.dormancy=0"
+ $B echo "ro.ril.fast.dormancy.rule=0"
+ $B echo "ro.config.hw_power_saving=1"
+ $B echo "dev.pm.dyn_samplingrate=1"
+ $B echo "persist.radio.add_power_save=1"
+ $B echo "ro.com.google.networklocation=0"
+ $B echo "ro.ril.def.agps.feature=1"
+ $B echo "ro.ril.def.agps.mode=1"
+ $B echo "ro.gps.agps_provider=1"
+ $B echo "persist.added_boot_bgservices=$CORES"
+ $B echo "ro.config.max_starting_bg=$((CORES+1))"
+ $B echo "ro.sys.fw.bg_apps_limit=$BG"
+ if [ -e /system/etc/calib.cfg ]; then
+  $B echo "ro.qcom.ad=1"
+  $B echo "ro.qcom.ad.calib.data=/system/etc/calib.cfg"
+ fi;
+} >> /system/engine/raw/build.prop;
+
+
+
+$B cp -f /system/engine/raw/build.prop /system/build.prop;
+$B chmod 644 /system/build.prop;
+$B echo "19" >> $FSCORE;
 FSCR=$($B awk '{ sum += $1 } END { print sum }' $FSCORE);
 $B echo "$FSCR" >> $SCORE;

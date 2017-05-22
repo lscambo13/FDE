@@ -51,9 +51,8 @@ $B echo "60" > /sys/devices/virtual/timed_output/vibrator/enable;
 msg -t "FDE v1.1 - firing up...";
 {
  $B echo "### FeraLab ###"
+ $B echo "FeraDroid Engine v1.1"
  $B echo "   "
- $B echo "   "
- $B echo ">> FeraDroid Engine v1.1"
  $B echo ">> Device: $(getprop ro.product.brand) $(getprop ro.product.model)"
  $B echo ">> Architecture: $ARCH"
  if [ -e /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq ]; then
@@ -78,11 +77,8 @@ msg -t "FDE v1.1 - firing up...";
  $B echo ">> Android version: $(getprop ro.build.version.release)"
  $B echo ">> SDK: $SDK"
  $B echo ">> SElinux state: $(getenforce)"
- $B echo ">> Partitions info:"
 } >> $LOG;
-dumpsys diskstats | $B tee -a $LOG;
-$B echo ">> Firing up..." >> $LOG;
-$B echo "   " >> $LOG;
+$B echo "Firing up..." >> $LOG;
 service call activity 51 i32 1;
 $B sleep 1;
 if [ -e /sys/fs/selinux/enforce ]; then
@@ -136,9 +132,9 @@ fi;
 MADMAX=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'mad_max=1');
 if [ "mad_max=1" = "$MADMAX" ]; then
 {
- $B echo "\xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0"
- $B echo "  MAD MAX MODE ACTIVE  "
- $B echo "\xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0"
+ $B echo -e "\xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0"
+ $B echo " MAD MAX MODE ACTIVE "
+ $B echo -e "\xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0"
 } >> $LOG;
 fi;
 $B echo "0" > $SCORE;
@@ -244,8 +240,8 @@ $B sleep 0.3;
 $B echo "96" > /sys/devices/virtual/timed_output/vibrator/enable;
 $B sleep 0.3;
 $B echo "96" > /sys/devices/virtual/timed_output/vibrator/enable;
-msg -t "FDE status - OK.";
-$B echo ">> FDE status - OK" >> $LOG;
+msg -t "FDE status - OK";
+$B echo "FDE status - OK" >> $LOG;
 $B echo "  " >> $LOG;
 SCR=$($B awk '{ sum += $1 } END { print sum }' $SCORE);
 $B sleep 1;

@@ -3,6 +3,7 @@
 B=/system/engine/bin/busybox;
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 CORES=$($B grep -c 'processor' /proc/cpuinfo);
+MADMAX=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'mad_max=1');
 FSCORE=/system/engine/prop/fscore;
 SCORE=/system/engine/prop/score;
 BG=$((RAM/100));
@@ -11,6 +12,11 @@ if [ "$CORES" = "0" ]; then
 fi;
 mount -o remount,rw /data;
 mount -o remount,rw /system;
+$B echo "Cleaning trash...";
+$B chmod -R 777 /data/tombstones;
+$B rm -f /data/tombstones/*;
+$B chmod -R 000 /data/tombstones;
+$B echo "1" > $FSCORE;
 $B echo "Re-calibrating battery...";
 dumpsys batteryinfo --reset;
 dumpsys batterystats --reset;
@@ -155,9 +161,6 @@ fi;
   $B echo "ro.qcom.ad.calib.data=/system/etc/calib.cfg"
  fi;
 } >> /system/engine/raw/build.prop;
-
-
-
 $B cp -f /system/engine/raw/build.prop /system/build.prop;
 $B chmod 644 /system/build.prop;
 $B echo "19" >> $FSCORE;

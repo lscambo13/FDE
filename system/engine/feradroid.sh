@@ -133,6 +133,14 @@ if [ -e $CONFIG ]; then
  $B rm -f /system/engine/raw/FDE_config.txt;
  $B cp $CONFIG /system/engine/raw/FDE_config.txt;
 fi;
+MADMAX=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'mad_max=1');
+if [ "mad_max=1" = "$MADMAX" ]; then
+{
+ $B echo "\xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0"
+ $B echo "  MAD MAX MODE ACTIVE  "
+ $B echo "\xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0"
+} >> $LOG;
+fi;
 $B echo "0" > $SCORE;
 $B echo "$((CORES+CORES+1))" >> $SCORE;
 if [ -e /sys/fs/selinux/enforce ]; then
@@ -147,16 +155,26 @@ fi;
 if [ -e /system/engine/gears/battery.sh ]; then
  BATTERY=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'battery=1');
  if [ "battery=1" = "$BATTERY" ]; then
-  $B echo ">> Running Battery gear..." >> $LOG;
+  $B echo ">> Running BATTERY gear..." >> $LOG;
   $B echo "================================" >> $LOG;
   /system/engine/gears/battery.sh | $B tee -a $LOG;
   $B echo "================================" >> $LOG;
  fi;
 fi;
+if [ -e /system/engine/gears/cleaner.sh ]; then
+ CLEANER=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'cleaner=1');
+ if [ "cleaner=1" = "$CLEANER" ]; then
+  $B echo ">> Running CLEANER gear..." >> $LOG;
+  $B echo "================================" >> $LOG;
+  /system/engine/gears/cleaner.sh | $B tee -a $LOG;
+  $B echo "================================" >> $LOG;
+  $B echo "3" >> $SCORE;
+ fi;
+fi;
 if [ -e /system/engine/gears/graphics.sh ]; then
  GRAPHICS=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'graphics=1');
  if [ "graphics=1" = "$GRAPHICS" ]; then
-  $B echo ">> Running Graphics gear..." >> $LOG;
+  $B echo ">> Running GRAPHICS gear..." >> $LOG;
   $B echo "================================" >> $LOG;
   /system/engine/gears/graphics.sh | $B tee -a $LOG;
   $B echo "================================" >> $LOG;
@@ -244,9 +262,30 @@ mount -o remount,ro /system;
 if [ -e /sbin/sysro ]; then
  /sbin/sysro;
 fi;
-if [ -e /system/engine/gears/sleeper.sh ]; then
- if [ "$SDK" -lt "22" ]; then
-  /system/engine/gears/sleeper.sh &
+if [ -e /system/engine/gears/cleaner.sh ]; then
+ CLEANERD=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'cleanerd=1');
+ if [ "cleanerd=1" = "$CLEANERD" ]; then
+  $B echo ">> Starting CLEANERD daemon.." >> $LOG;
+  (
+   while true; do /system/engine/gears/cleaner.sh; sleep 259200; done
+  )&
+ fi;
+fi;
+if [ "$SDK" -lt "22" ]; then
+ if [ -e /system/engine/gears/sleeper.sh ]; then
+  SLEEPER=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'sleeper=1');
+  if [ "sleeper=1" = "$SLEEPER" ]; then
+   $B echo ">> Starting SLEEPER daemon.." >> $LOG;
+   $B setsid /system/engine/gears/sleeper.sh >> $LOG 2>&1 < /dev/null &
+  fi;
+ fi;
+elif [ "mad_max=1" = "$MADMAX" ]; then
+ if [ -e /system/engine/gears/sleeper.sh ]; then
+  SLEEPER=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'sleeper=1');
+  if [ "sleeper=1" = "$SLEEPER" ]; then
+   $B echo ">> Starting SLEEPER daemon.." >> $LOG;
+   $B setsid /system/engine/gears/sleeper.sh >> $LOG 2>&1 < /dev/null &
+  fi;
  fi;
 else
  sync;

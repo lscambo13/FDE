@@ -3,7 +3,6 @@
 B=/system/engine/bin/busybox;
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 CORES=$($B grep -c 'processor' /proc/cpuinfo);
-MADMAX=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'mad_max=1');
 FSCORE=/system/engine/prop/fscore;
 SCORE=/system/engine/prop/score;
 BG=$((RAM/100));
@@ -45,6 +44,20 @@ elif [ -e /system/etc/ad_calib.cfg ]; then
  $B echo "Patching to powersave and optimized display calibration...";
  $B echo "1" >> $FSCORE;
 fi;
+$B echo "Chaning to OpenDNS..";
+$B rm -f /system/etc/resolv.conf;
+$B touch /system/etc/resolv.conf;
+$B chmod 666 /system/etc/resolv.conf
+$B echo "nameserver 208.67.222.222" > /system/etc/resolv.conf;
+$B echo "nameserver 208.67.220.220" >> /system/etc/resolv.conf;
+$B echo "  " >> /system/etc/resolv.conf;
+$B rm -f /system/etc/ppp/options;
+$B touch /system/etc/ppp/options;
+$B chmod 666 /system/etc/ppp/options;
+$B echo "bsdcomp" > /system/etc/resolv.conf;
+$B echo "deflate" >> /system/etc/resolv.conf;
+$B echo " " >> /system/etc/resolv.conf;
+$B echo "Data compression enabled.";
 if [ -e /data/misc/mtkgps.dat ]; then
  $B rm -f /data/misc/mtkgps.dat;
  $B echo "MTK GPS data cleared.";
@@ -134,6 +147,38 @@ if [ ! -e /system/build.prop_bak ]; then
   $B sed -e "s=ro.qcom.ad=#ro.qcom.ad=" -i /system/engine/raw/build.prop;
   $B sed -e "s=ro.qcom.ad.calib.data=#ro.qcom.ad.calib.data=" -i /system/engine/raw/build.prop;
  fi;
+ $B sed -e "s=persist.bandwidth.enable=#persist.bandwidth.enable=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=ro.use_data_netmgrd=#ro.use_data_netmgrd=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=persist.data.netmgrd.qos.enable=#persist.data.netmgrd.qos.enable=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=persist.data.mode=#persist.data.mode=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=persist.data.iwlan.enable=#persist.data.iwlan.enable=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=net.dns1=#net.dns1=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=net.dns2=#net.dns2=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=wifi.supplicant_scan_interval=#wifi.supplicant_scan_interval=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=ro.telephony.call_ring.delay=#ro.telephony.call_ring.delay=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=ring.delay=#ring.delay=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=ro.ril.enable.3g.prefix=#ro.ril.enable.3g.prefix=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=ro.ril.enable.sdr=#ro.ril.enable.sdr=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=ro.ril.enable.gea3=#ro.ril.enable.gea3=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=ro.ril.enable.a52=#ro.ril.enable.a52=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=ro.ril.enable.a53=#ro.ril.enable.a53=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=ro.ril.hep=#ro.ril.hep=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=ro.ril.enable.amr.wideband=#ro.ril.enable.amr.wideband=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=persist.cust.tel.eons=#persist.cust.tel.eons=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=persist.eons.enabled=#persist.eons.enabled=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=persist.wpa_supplicant.debug=#persist.wpa_supplicant.debug=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=net.tethering.noprovisioning=#net.tethering.noprovisioning=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=tether_dun_required=#tether_dun_required=" -i /system/engine/raw/build.prop;
+ if [ "$RAM" -le "1024" ]; then
+  $B sed -e "s=net.tcp.buffersize.default=#net.tcp.buffersize.default=" -i /system/engine/raw/build.prop;
+  $B sed -e "s=net.tcp.buffersize.wifi=#net.tcp.buffersize.wifi=" -i /system/engine/raw/build.prop;
+  $B sed -e "s=net.tcp.buffersize.umts=#net.tcp.buffersize.umts=" -i /system/engine/raw/build.prop;
+  $B sed -e "s=net.tcp.buffersize.hsdpa=#net.tcp.buffersize.hsdpa=" -i /system/engine/raw/build.prop;
+  $B sed -e "s=net.tcp.buffersize.hspa=#net.tcp.buffersize.hspa=" -i /system/engine/raw/build.prop;
+  $B sed -e "s=net.tcp.buffersize.hsupa=#net.tcp.buffersize.hsupa=" -i /system/engine/raw/build.prop;
+  $B sed -e "s=net.tcp.buffersize.edge=#net.tcp.buffersize.edge=" -i /system/engine/raw/build.prop;
+  $B sed -e "s=net.tcp.buffersize.gprs=#net.tcp.buffersize.gprs=" -i /system/engine/raw/build.prop;
+ fi;
  {
   $B echo "   "
   $B echo "   "
@@ -161,6 +206,44 @@ if [ ! -e /system/build.prop_bak ]; then
    $B echo "ro.qcom.ad=1"
    $B echo "ro.qcom.ad.calib.data=/system/etc/calib.cfg"
   fi;
+  if [ "$SDK" -le "20" ]; then
+   $B echo "persist.bandwidth.enable=0"
+   $B echo "ro.use_data_netmgrd=false"
+   $B echo "persist.data.netmgrd.qos.enable=false"
+  else
+   $B echo "persist.bandwidth.enable=1"
+   $B echo "ro.use_data_netmgrd=true"
+   $B echo "persist.data.netmgrd.qos.enable=true"
+   $B echo "persist.data.mode=concurrent"
+   $B echo "persist.data.iwlan.enable=true"
+  fi;
+  $B echo "net.dns1=208.67.222.222"
+  $B echo "net.dns2=208.67.220.220"
+  $B echo "wifi.supplicant_scan_interval=300000"
+  $B echo "ro.telephony.call_ring.delay=0"
+  $B echo "ring.delay=0"
+  $B echo "ro.ril.enable.3g.prefix=1"
+  $B echo "ro.ril.enable.sdr=1"
+  $B echo "ro.ril.enable.gea3=1"
+  $B echo "ro.ril.enable.a52=0"
+  $B echo "ro.ril.enable.a53=1"
+  $B echo "ro.ril.hep=1"
+  $B echo "ro.ril.enable.amr.wideband=1"
+  $B echo "persist.cust.tel.eons=1"
+  $B echo "persist.eons.enabled=true"
+  $B echo "persist.wpa_supplicant.debug=false"
+  $B echo "net.tethering.noprovisioning=true"
+  $B echo "tether_dun_required=0"
+  if [ "$RAM" -le "1024" ]; then
+   $B echo "net.tcp.buffersize.default=4096,87380,110208,4096,16384,110208"
+   $B echo "net.tcp.buffersize.wifi=4095,87380,110208,4096,16384,110208"
+   $B echo "net.tcp.buffersize.umts=4095,87380,110208,4096,16384,110208"
+   $B echo "net.tcp.buffersize.hsdpa=4096,32768,65536,4096,32768,65536"
+   $B echo "net.tcp.buffersize.hspa=4096,32768,65536,4096,32768,65536"
+   $B echo "net.tcp.buffersize.hsupa=4096,32768,65536,4096,32768,65536"
+   $B echo "net.tcp.buffersize.edge=4093,26280,35040,4096,16384,35040"
+   $B echo "net.tcp.buffersize.gprs=4092,8760,11680,4096,8760,11680"
+  fi;
  } >> /system/engine/raw/build.prop;
  $B cp -f /system/engine/raw/build.prop /system/build.prop;
  $B chmod 644 /system/build.prop;
@@ -168,5 +251,4 @@ else
  $B echo "Build.prop is already patched to $(getprop bp_patch)";
 fi;
 $B echo "19" >> $FSCORE;
-FSCR=$($B awk '{ sum += $1 } END { print sum }' $FSCORE);
-$B echo "$FSCR" >> $SCORE;
+

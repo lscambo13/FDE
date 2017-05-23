@@ -5,6 +5,7 @@ B=/system/engine/bin/busybox;
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 CORES=$($B grep -c 'processor' /proc/cpuinfo);
 SCORE=/system/engine/prop/score;
+FSCORE=/system/engine/prop/fscore;
 BG=$((RAM/100));
 if [ "$CORES" = "0" ]; then
  CORES=1;
@@ -176,6 +177,15 @@ if [ -e /system/engine/gears/graphics.sh ]; then
   $B echo "================================" >> $LOG;
  fi;
 fi;
+if [ -e /system/engine/gears/network.sh ]; then
+ NETWORK=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'network=1');
+ if [ "network=1" = "$NETWROK" ]; then
+  $B echo ">> Running NETWORK gear..." >> $LOG;
+  $B echo "================================" >> $LOG;
+  /system/engine/gears/network.sh | $B tee -a $LOG;
+  $B echo "================================" >> $LOG;
+ fi;
+fi;
 sync;
 $B sleep 1;
 $B echo ">> Executing kernel configuration..." >> $LOG;
@@ -234,6 +244,8 @@ $B echo "$BG" >> $SCORE;
 svc power stayon false;
 $B killall -9 com.google.android.gms.persistent;
 $B echo "1" >> $SCORE;
+FSCR=$($B awk '{ sum += $1 } END { print sum }' $FSCORE);
+$B echo "$FSCR" >> $SCORE;
 $B sleep 1;
 $B echo "96" > /sys/devices/virtual/timed_output/vibrator/enable;
 $B sleep 0.3;

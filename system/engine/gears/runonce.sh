@@ -11,6 +11,10 @@ if [ "$CORES" = "0" ]; then
 fi;
 mount -o remount,rw /data;
 mount -o remount,rw /system;
+$B echo "Installing busybox system-wide..";
+cp /system/engine/bin/busybox /system/xbin/busybox
+chmod 777 /system/xbin/busybox
+/system/xbin/busybox --install -s /system/xbin
 $B echo "Cleaning trash...";
 $B chmod -R 777 /data/tombstones;
 $B rm -f /data/tombstones/*;
@@ -54,9 +58,9 @@ $B echo "  " >> /system/etc/resolv.conf;
 $B rm -f /system/etc/ppp/options;
 $B touch /system/etc/ppp/options;
 $B chmod 666 /system/etc/ppp/options;
-$B echo "bsdcomp" > /system/etc/resolv.conf;
-$B echo "deflate" >> /system/etc/resolv.conf;
-$B echo " " >> /system/etc/resolv.conf;
+$B echo "bsdcomp" > /system/etc/ppp/options;
+$B echo "deflate" >> /system/etc/ppp/options;
+$B echo " " >> /system/etc/ppp/options;
 $B echo "Data compression enabled.";
 if [ -e /data/misc/mtkgps.dat ]; then
  $B rm -f /data/misc/mtkgps.dat;
@@ -145,13 +149,9 @@ if [ ! -e /system/build.prop_bak ]; then
  $B sed -e "s=ro.sys.fw.bg_apps_limit=#ro.sys.fw.bg_apps_limit=" -i /system/engine/raw/build.prop;
  if [ -e /system/etc/calib.cfg ]; then
   $B sed -e "s=ro.qcom.ad=#ro.qcom.ad=" -i /system/engine/raw/build.prop;
+  $B sed -e "s=ro.qualcomm.cabl=#ro.qualcomm.cabl=" -i /system/engine/raw/build.prop;
   $B sed -e "s=ro.qcom.ad.calib.data=#ro.qcom.ad.calib.data=" -i /system/engine/raw/build.prop;
  fi;
- $B sed -e "s=persist.bandwidth.enable=#persist.bandwidth.enable=" -i /system/engine/raw/build.prop;
- $B sed -e "s=ro.use_data_netmgrd=#ro.use_data_netmgrd=" -i /system/engine/raw/build.prop;
- $B sed -e "s=persist.data.netmgrd.qos.enable=#persist.data.netmgrd.qos.enable=" -i /system/engine/raw/build.prop;
- $B sed -e "s=persist.data.mode=#persist.data.mode=" -i /system/engine/raw/build.prop;
- $B sed -e "s=persist.data.iwlan.enable=#persist.data.iwlan.enable=" -i /system/engine/raw/build.prop;
  $B sed -e "s=net.dns1=#net.dns1=" -i /system/engine/raw/build.prop;
  $B sed -e "s=net.dns2=#net.dns2=" -i /system/engine/raw/build.prop;
  $B sed -e "s=wifi.supplicant_scan_interval=#wifi.supplicant_scan_interval=" -i /system/engine/raw/build.prop;
@@ -204,18 +204,8 @@ if [ ! -e /system/build.prop_bak ]; then
   $B echo "ro.sys.fw.bg_apps_limit=$BG"
   if [ -e /system/etc/calib.cfg ]; then
    $B echo "ro.qcom.ad=1"
+   $B echo "ro.qualcomm.cabl=0"
    $B echo "ro.qcom.ad.calib.data=/system/etc/calib.cfg"
-  fi;
-  if [ "$SDK" -le "20" ]; then
-   $B echo "persist.bandwidth.enable=0"
-   $B echo "ro.use_data_netmgrd=false"
-   $B echo "persist.data.netmgrd.qos.enable=false"
-  else
-   $B echo "persist.bandwidth.enable=1"
-   $B echo "ro.use_data_netmgrd=true"
-   $B echo "persist.data.netmgrd.qos.enable=true"
-   $B echo "persist.data.mode=concurrent"
-   $B echo "persist.data.iwlan.enable=true"
   fi;
   $B echo "net.dns1=208.67.222.222"
   $B echo "net.dns2=208.67.220.220"

@@ -34,6 +34,7 @@ rm -f /sdcard/Android/FDE_config.txt
 rm -f /data/media/0/Android/FDE_config.txt
 rm -f /data/media/0/Android/FDE_log.txt
 rm -f /system/etc/fde
+rm -f /system/xbin/busybox
 if [ -e /system/bin/tiny_mkswap ]; then
  mv /system/bin/tiny_mkswap /system/bin/tiny_mkswap_bak
  mv /system/bin/tiny_swapon /system/bin/tiny_swapon_bak
@@ -57,14 +58,12 @@ chmod -R 711 /system/engine
 ARCH=$(grep -Eo "ro.product.cpu.abi(2)?=.+" /system/build.prop 2>/dev/null | grep -Eo "[^=]*$" | head -n1)
 if [ "$ARCH" = "$(echo $ARCH | grep "arm64")" ]; then
  ui_print "64-bit ARM CPU detected."
- cp /system/engine/bin/bin64/arm/busybox /system/xbin/busybox
  cp /system/engine/bin/bin64/arm/busybox /system/engine/bin/busybox
  cp /system/engine/bin/bin64/arm/libsupol.so /system/lib64/libsupol.so
  cp /system/engine/bin/bin64/arm/supolicy /system/engine/bin/supolicy
  sleep 2
 elif [ "$ARCH" = "$(echo $ARCH | grep "armeabi")" ]; then
  ui_print "32-bit ARM CPU detected."
- cp /system/engine/bin/bin32/arm/busybox /system/xbin/busybox
  cp /system/engine/bin/bin32/arm/busybox /system/engine/bin/busybox
  cp /system/engine/bin/bin32/arm/libsupol.so /system/lib/libsupol.so
  cp /system/engine/bin/bin32/arm/rzscontrol /system/engine/bin/rzscontrol
@@ -72,21 +71,18 @@ elif [ "$ARCH" = "$(echo $ARCH | grep "armeabi")" ]; then
  sleep 2
 elif [ "$ARCH" = "$(echo $ARCH | grep "x86_64")" ]; then
  ui_print "64-bit X86 CPU detected."
- cp /system/engine/bin/bin64/x86/busybox /system/xbin/busybox
  cp /system/engine/bin/bin64/x86/busybox /system/engine/bin/busybox
  cp /system/engine/bin/bin64/x86/libsupol.so /system/lib64/libsupol.so
  cp /system/engine/bin/bin64/x86/supolicy /system/engine/bin/supolicy
  sleep 2
 elif [ "$ARCH" = "$(echo $ARCH | grep "x86")" ]; then
  ui_print "32-bit X86 CPU detected."
- cp /system/engine/bin/bin32/x86/busybox /system/xbin/busybox
  cp /system/engine/bin/bin32/x86/busybox /system/engine/bin/busybox
  cp /system/engine/bin/bin32/x86/libsupol.so /system/lib/libsupol.so
  cp /system/engine/bin/bin32/x86/supolicy /system/engine/bin/supolicy
  sleep 2
 else
  ui_print "Generic armeabi."
- cp /system/engine/bin/bin32/arm/busybox /system/xbin/busybox
  cp /system/engine/bin/bin32/arm/busybox /system/engine/bin/busybox
  cp /system/engine/bin/bin32/arm/libsupol.so /system/lib/libsupol.so
  cp /system/engine/bin/bin32/arm/rzscontrol /system/engine/bin/rzscontrol
@@ -95,7 +91,6 @@ else
 fi;
 rm -Rf /system/engine/bin/bin32
 rm -Rf /system/engine/bin/bin64
-chmod 777 /system/xbin/busybox
 chmod 711 /system/engine/*
 chmod 777 /system/engine/bin/*
 chmod 711 /system/engine/prop/*
@@ -103,8 +98,6 @@ chmod 777 /system/engine/raw/*
 chmod 711 /system/engine/gears/*
 chmod 644 /system/lib/libsupol.so
 chmod 644 /system/lib64/libsupol.so
-sleep 1
-/system/xbin/busybox --install -s /system/xbin
 export PATH=/sbin:/system/sbin:/system/bin:/system/xbin:/system/engine/bin
 sleep 1
 mv /system/engine/raw/s.apk /data/app/msg.apk
@@ -116,6 +109,12 @@ chmod 644 /data/app/msg.apk
 chmod 644 /system/media/bootanimation.zip
 rm -f /system/etc/init.d/90fde
 rm -f /system/su.d/90fde.sh
+if [ ! -d /system/su.d ]; then
+ if [ -e /init.supersu.rc ]; then
+  mkdir /system/su.d
+  chmod 777 /system/su.d
+ fi;
+fi;
 if [ -e /engine.sh ]; then
  touch /system/engine/prop/ferakernel
  echo "1" > /system/engine/prop/ferakernel

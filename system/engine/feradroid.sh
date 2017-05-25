@@ -179,7 +179,7 @@ if [ -e /system/engine/gears/graphics.sh ]; then
 fi;
 if [ -e /system/engine/gears/network.sh ]; then
  NETWORK=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'network=1');
- if [ "network=1" = "$NETWROK" ]; then
+ if [ "network=1" = "$NETWORK" ]; then
   $B echo ">> Running NETWORK gear..." >> $LOG;
   $B echo "================================" >> $LOG;
   /system/engine/gears/network.sh | $B tee -a $LOG;

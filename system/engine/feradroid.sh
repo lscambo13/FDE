@@ -113,7 +113,7 @@ $B rm -f /system/etc/sysctl.conf;
 $B touch /system/etc/sysctl.conf;
 $B chmod 777 /system/etc/sysctl.conf;
 if [ -e /system/engine/prop/firstboot ]; then
- $B echo ">> First boot after deploy.." >> $LOG;
+ $B echo ">> First boot." >> $LOG;
  $B rm -f $CONFIG;
  $B cp /system/engine/raw/FDE_config.txt $CONFIG;
  $B touch /system/engine/prop/fscore;
@@ -137,7 +137,12 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B rm -f /system/engine/gears/runonce.sh;
  $B echo ">> First boot completed." >> $LOG;
  sync;
- $B sleep 5;
+ $B sleep 3;
+ mount -o remount,ro /system;
+ if [ -e /sbin/sysro ]; then
+  /sbin/sysro;
+ fi;
+ $B sleep 2;
  reboot
  $B sleep 9;
  exit 0;
@@ -285,6 +290,7 @@ msg -t "Logfile >> $LOG";
 if [ -e /engine.sh ]; then
  $B run-parts /system/etc/init.d;
 fi;
+sync;
 $B sleep 1;
 mount -o remount,ro /system;
 if [ -e /sbin/sysro ]; then

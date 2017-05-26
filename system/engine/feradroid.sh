@@ -206,6 +206,15 @@ if [ -e /system/engine/gears/network.sh ]; then
   $B echo "================================" >> $LOG;
  fi;
 fi;
+if [ -e /system/engine/gears/ram.sh ]; then
+ RAM=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'ram=1');
+ if [ "ram=1" = "$RAM" ]; then
+  $B echo ">> Running RAM gear..." >> $LOG;
+  $B echo "================================" >> $LOG;
+  /system/engine/gears/ram.sh | $B tee -a $LOG;
+  $B echo "================================" >> $LOG;
+ fi;
+fi;
 sync;
 $B sleep 1;
 $B echo ">> Executing kernel configuration..." >> $LOG;

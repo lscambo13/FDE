@@ -9,6 +9,7 @@ cleaner=1
 graphics=1
 io=1
 network=1
+ram=1
 
 # Cleaner daemon is same cleaner gear
 # which will run every 3 days

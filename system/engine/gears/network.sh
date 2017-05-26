@@ -1,7 +1,6 @@
 #!/system/bin/sh
 ### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
-RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 SDK=$(getprop ro.build.version.sdk);
 MADMAX=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'mad_max=1');
 $B echo "Writing optimized network parameters...";
@@ -60,8 +59,8 @@ $B echo "1" > /proc/sys/net/ipv4/tcp_no_metrics_save;
 $B echo "2" > /proc/sys/net/ipv4/tcp_adv_win_scale;
 $B echo "westwood" > /proc/sys/net/ipv4/tcp_congestion_control;
 $B echo "Optimizing WiFi..";
-settings put secure wifi_idle_ms 300000;
 settings put global wifi_idle_ms 300000;
+settings put secure wifi_idle_ms 300000;
 settings put secure wifi_watchdog_on 0;
 settings put secure wifi_watchdog_poor_network_test_enabled 0;
 if [ "$SDK" -le "20" ]; then

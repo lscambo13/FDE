@@ -4,7 +4,6 @@ B=/system/engine/bin/busybox;
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 CORES=$($B grep -c 'processor' /proc/cpuinfo);
 FSCORE=/system/engine/prop/fscore;
-SCORE=/system/engine/prop/score;
 BG=$((RAM/100));
 if [ "$CORES" = "0" ]; then
  CORES=1;
@@ -203,11 +202,6 @@ if [ ! -e /system/build.prop_bak ]; then
   $B echo "persist.added_boot_bgservices=$CORES"
   $B echo "ro.config.max_starting_bg=$((CORES+1))"
   $B echo "ro.sys.fw.bg_apps_limit=$BG"
-  if [ -e /system/etc/calib.cfg ]; then
-   $B echo "ro.qcom.ad=1"
-   $B echo "ro.qualcomm.cabl=0"
-   $B echo "ro.qcom.ad.calib.data=/system/etc/calib.cfg"
-  fi;
   $B echo "net.dns1=208.67.222.222"
   $B echo "net.dns2=208.67.220.220"
   $B echo "wifi.supplicant_scan_interval=300000"
@@ -225,21 +219,30 @@ if [ ! -e /system/build.prop_bak ]; then
   $B echo "persist.wpa_supplicant.debug=false"
   $B echo "net.tethering.noprovisioning=true"
   $B echo "tether_dun_required=0"
-  if [ "$RAM" -le "1024" ]; then
-   $B echo "net.tcp.buffersize.default=4096,87380,110208,4096,16384,110208"
-   $B echo "net.tcp.buffersize.wifi=4095,87380,110208,4096,16384,110208"
-   $B echo "net.tcp.buffersize.umts=4095,87380,110208,4096,16384,110208"
-   $B echo "net.tcp.buffersize.hsdpa=4096,32768,65536,4096,32768,65536"
-   $B echo "net.tcp.buffersize.hspa=4096,32768,65536,4096,32768,65536"
-   $B echo "net.tcp.buffersize.hsupa=4096,32768,65536,4096,32768,65536"
-   $B echo "net.tcp.buffersize.edge=4093,26280,35040,4096,16384,35040"
-   $B echo "net.tcp.buffersize.gprs=4092,8760,11680,4096,8760,11680"
-  fi;
  } >> /system/engine/raw/build.prop;
+if [ -e /system/etc/calib.cfg ]; then
+ {
+  $B echo "ro.qcom.ad=1"
+  $B echo "ro.qualcomm.cabl=0"
+  $B echo "ro.qcom.ad.calib.data=/system/etc/calib.cfg"
+ } >> /system/engine/raw/build.prop;
+fi;
+if [ "$RAM" -le "1024" ]; then
+ {
+  $B echo "net.tcp.buffersize.default=4096,87380,110208,4096,16384,110208"
+  $B echo "net.tcp.buffersize.wifi=4095,87380,110208,4096,16384,110208"
+  $B echo "net.tcp.buffersize.umts=4095,87380,110208,4096,16384,110208"
+  $B echo "net.tcp.buffersize.hsdpa=4096,32768,65536,4096,32768,65536"
+  $B echo "net.tcp.buffersize.hspa=4096,32768,65536,4096,32768,65536"
+  $B echo "net.tcp.buffersize.hsupa=4096,32768,65536,4096,32768,65536"
+  $B echo "net.tcp.buffersize.edge=4093,26280,35040,4096,16384,35040"
+  $B echo "net.tcp.buffersize.gprs=4092,8760,11680,4096,8760,11680"
+ } >> /system/engine/raw/build.prop;
+fi;
  $B cp -f /system/engine/raw/build.prop /system/build.prop;
  $B chmod 644 /system/build.prop;
 else
- $B echo "Build.prop is already patched to $(getprop bp_patch)";
+ $B echo "Build.prop is already patched by FDE to $(getprop bp_patch)";
 fi;
 $B echo "19" >> $FSCORE;
 

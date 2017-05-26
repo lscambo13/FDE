@@ -26,6 +26,10 @@ elif [ "$RAM" -le "512" ]; then
  FZRAM=$((RAM-96));
  PZ=50;
 fi;
+if [ "mad_max=1" = "$MADMAX" ]; then
+ FZRAM=$((FZRAM+50));
+ $B echo "Mad zRam.";
+fi;
 $B echo "Current RAM values:";
 $B echo "  Total:              $RAM MB";
 $B echo "  Free:               $RAMreported MB";
@@ -36,20 +40,21 @@ $B echo "  SWAP/ZRAM used:     $SWAPused MB";
 $B echo "Freeing RAM...";
 setprop sys.swap 0
 setprop ro.config.zram.support true
-$B sleep 1;
 service call activity 51 i32 0;
 $B sleep 2;
 am kill-all;
-$B sleep 3;
+$B sleep 5;
 sync;
 $B sleep 1;
 $B echo "3" > /proc/sys/vm/drop_caches;
+$B echo "3" >> $SCORE;
 $B sleep 2;
+sync;
+$B sleep 1;
 $B mount -o remount,rw /system;
 if [ -e /sbin/sysrw ]; then
  /sbin/sysrw;
 fi;
-sync;
 $B echo "Paging check..";
 if [ -e /sys/block/zram0/disksize ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p);
@@ -59,6 +64,7 @@ if [ -e /sys/block/zram0/disksize ]; then
  if [ "$RAM" -gt "2048" ]; then
   $B echo "You don't need zRAM";
   $B echo "Stopping swappiness..";
+  $B echo "5" >> $SCORE;
   $B swapoff /dev/block/zram0 > /dev/null 2>&1;
   $B echo "0" > /sys/block/zram0/disksize;
   $B umount /dev/block/zram0;
@@ -67,8 +73,8 @@ if [ -e /sys/block/zram0/disksize ]; then
    $B echo "0" > /sys/block/zram1/disksize;
    $B umount /dev/block/zram1;
   fi;
-  $B sleep 1;
   sync;
+  $B sleep 1;
  else
   $B echo "Perfect ZRAM size according to your RAM should be $FZRAM MB";
   $B echo "Applying new ZRAM parameters..";
@@ -85,14 +91,15 @@ if [ -e /sys/block/zram0/disksize ]; then
     $B echo "1" > /sys/block/zram1/reset;
     $B sleep 1;
    fi;
-   $B sleep 1;
    sync;
+   $B sleep 1;
   fi;
   $B echo "Resetting ZRAM blockdev..";
   $B echo "1" > /sys/block/zram0/reset;
   $B sleep 1;
   $B echo "Creating ZRAM blockdev - $FZRAM MB";
   $B echo "$((FZRAM*1024*1024))" > /sys/block/zram0/disksize;
+  $B echo "$((FZRAM/10))" >> $SCORE;
   if [ -e /sys/block/zram0/comp_algorithm ]; then
    $B echo "Setting compression algorithm to LZ4..";
    $B echo "lz4" > /sys/block/zram0/comp_algorithm;
@@ -101,10 +108,12 @@ if [ -e /sys/block/zram0/disksize ]; then
    $B echo "Setting compression algorithm to LZO..";
    $B chmod 644 /sys/module/zram/parameters/lzo_algo_type;
    $B echo "1" > /sys/module/zram/parameters/lzo_algo_type;
+   $B echo "1" >> $SCORE;
   fi;
   if [ -e /sys/block/zram0/max_comp_streams ]; then
    $B echo "Set max compression streams..";
    $B echo "1" > /sys/block/zram0/max_comp_streams;
+   $B echo "1" >> $SCORE;
   fi;
   $B echo "Starting swappiness..";
   $B mkswap /dev/block/zram0 > /dev/null 2>&1;
@@ -135,6 +144,7 @@ elif [ -e /sys/block/ramzswap0/size ]; then
   $B sleep 1;
   $B echo "Creating RAMZSWAP blockdev - $FZRAM MB";
   $RZS /dev/block/ramzswap0 -i -d $ZRF;
+  $B echo "$((FZRAM/10))" >> $SCORE;
   $B sleep 1;
   $B echo "Starting swappiness..";
   $B swapon /dev/block/ramzswap0;
@@ -142,27 +152,44 @@ elif [ -e /sys/block/ramzswap0/size ]; then
   $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf;
   $B sysctl -e -w vm.swappiness=100;
   setprop sys.vm.swappiness 100;
+  if [ -e /sys/fs/cgroup/memory/sw/memory.swappiness ]; then
+   $B echo "100" > /sys/fs/cgroup/memory/sw/memory.swappiness;
+   $B echo "1" >> $SCORE;
+   $B echo "Tuning memory cgroups";
+  fi;
  fi;
 elif [ "$SWAP" -gt "0" ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p);
  $B echo "SWAP detected. Size is $SWAP MB";
  $B echo "Configuring kernel & SWAP frienship..";
+ $B echo "5" >> $SCORE;
   if [ "$RAM" -le "512" ]; then
-   $B echo "100" > /proc/sys/vm/swappiness;
-   $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf;
-   $B sysctl -e -w vm.swappiness=100;
-   setprop sys.vm.swappiness 100;
+   $B echo "90" > /proc/sys/vm/swappiness;
+   $B echo "vm.swappiness=90" >> /system/etc/sysctl.conf;
+   $B sysctl -e -w vm.swappiness=90;
+   setprop sys.vm.swappiness 90;
+   if [ -e /sys/fs/cgroup/memory/sw/memory.swappiness ]; then
+    $B echo "90" > /sys/fs/cgroup/memory/sw/memory.swappiness;
+    $B echo "1" >> $SCORE;
+    $B echo "Tuning memory cgroups";
+   fi;
   else
-   $B echo "50" > /proc/sys/vm/swappiness;
-   $B echo "vm.swappiness=50" >> /system/etc/sysctl.conf;
-   $B sysctl -e -w vm.swappiness=50;
-   setprop sys.vm.swappiness 50;
+   $B echo "40" > /proc/sys/vm/swappiness;
+   $B echo "vm.swappiness=40" >> /system/etc/sysctl.conf;
+   $B sysctl -e -w vm.swappiness=40;
+   setprop sys.vm.swappiness 40;
+   if [ -e /sys/fs/cgroup/memory/sw/memory.swappiness ]; then
+    $B echo "40" > /sys/fs/cgroup/memory/sw/memory.swappiness;
+    $B echo "1" >> $SCORE;
+    $B echo "Tuning memory cgroups";
+   fi;
   fi;
  if [ -e /sys/module/zswap/parameters/enabled ]; then
   $B echo "ZSWAP detected. Enabling..";
   $B echo "1" > /sys/module/zswap/parameters/enabled;
   $B echo "LZ4 compression algorithm for ZSWAP";
   $B echo "lz4" > /sys/module/zswap/parameters/compressor;
+  $B echo "1" >> $SCORE;
  fi;
 fi;
 SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p);
@@ -175,19 +202,31 @@ if [ -e /sys/block/zram0/disksize ]; then
    $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf;
    $B sysctl -e -w vm.swappiness=100;
    setprop sys.vm.swappiness 100;
+   if [ -e /sys/fs/cgroup/memory/sw/memory.swappiness ]; then
+    $B echo "100" > /sys/fs/cgroup/memory/sw/memory.swappiness;
+    $B echo "1" >> $SCORE;
+    $B echo "Tuning memory cgroups";
+   fi;
   else
-   $B echo "90" > /proc/sys/vm/swappiness;
-   $B echo "vm.swappiness=90" >> /system/etc/sysctl.conf;
-   $B sysctl -e -w vm.swappiness=90;
-   setprop sys.vm.swappiness 90;
+   $B echo "82" > /proc/sys/vm/swappiness;
+   $B echo "vm.swappiness=82" >> /system/etc/sysctl.conf;
+   $B sysctl -e -w vm.swappiness=82;
+   setprop sys.vm.swappiness 82;
+   if [ -e /sys/fs/cgroup/memory/sw/memory.swappiness ]; then
+    $B echo "82" > /sys/fs/cgroup/memory/sw/memory.swappiness;
+    $B echo "1" >> $SCORE;
+    $B echo "Tuning memory cgroups";
+   fi;
   fi;
   if [ -e /sys/module/zram/parameters/total_mem_usage_percent ]; then
-   $B echo "Tuning ZRAM parameter..";
+   $B echo "Tuning ZRAM parameters..";
    $B echo "$PZ" > /sys/module/zram/parameters/total_mem_usage_percent;
+   $B echo "1" >> $SCORE;
   fi;
   if [ -e /sys/block/zram0/compact ]; then
    $B echo "Activate ZRAM compaction..";
    $B echo "1" > /sys/block/zram0/compact;
+   $B echo "1" >> $SCORE;
   fi;
  fi;
 fi;
@@ -197,6 +236,12 @@ if [ "$SWAP" -eq "0" ]; then
  $B echo "vm.swappiness=0" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.swappiness=0;
  setprop sys.vm.swappiness 0;
+ $B echo "3" >> $SCORE;
+ if [ -e /sys/fs/cgroup/memory/sw/memory.swappiness ]; then
+  $B echo "0" > /sys/fs/cgroup/memory/sw/memory.swappiness;
+  $B echo "1" >> $SCORE;
+  $B echo "Tuning memory cgroups";
+ fi;
 fi;
 if [ "$RAM" -le "1024" ]; then
  if [ "$CORES" -ge "3" ]; then
@@ -210,6 +255,7 @@ if [ "$RAM" -le "1024" ]; then
    $B echo "1" > /sys/kernel/mm/uksm/run;
    $B echo "1" > /sys/kernel/mm/uksm/deferred_timer;
    setprop ro.config.ksm.support true;
+   $B echo "1" >> $SCORE;
   elif [ -e /sys/kernel/mm/ksm/run ]; then
    $B echo "KSM detected";
    $B echo "Starting and tuning KSM..";
@@ -218,6 +264,7 @@ if [ "$RAM" -le "1024" ]; then
    $B echo "1" > /sys/kernel/mm/ksm/run;
    $B echo "1" > /sys/kernel/mm/ksm/deferred_timer;
    setprop ro.config.ksm.support true;
+   $B echo "3" >> $SCORE;
   else
    $B echo "No KSM was detected";
   fi;
@@ -228,11 +275,13 @@ else
   $B echo "Disabling KSM..";
   $B echo "0" > /sys/kernel/mm/uksm/run;
   setprop ro.config.ksm.support false;
+  $B echo "1" >> $SCORE;
  elif [ -e /sys/kernel/mm/ksm/run ]; then
   $B echo "KSM detected";
   $B echo "Disabling KSM..";
   $B echo "0" > /sys/kernel/mm/ksm/run;
   setprop ro.config.ksm.support false;
+  $B echo "1" >> $SCORE;
  else
   $B echo "No KSM was detected";
  fi;
@@ -242,7 +291,9 @@ sync;
 $B sleep 1;
 $B echo "3" > /proc/sys/vm/drop_caches;
 $B sleep 1;
+$B echo "1" >> $SCORE;
 sync;
+$B sleep 1;
 RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p);
 RAMcached=$($B free -m | $B awk '{ print $7 }' | $B sed -n 2p);
 RAMreported=$((RAMfree + RAMcached));
@@ -255,9 +306,7 @@ $B echo "  Real free:          $RAMfree MB";
 $B echo "  Cached:             $RAMcached MB";
 $B echo "  SWAP/ZRAM total:    $SWAP MB";
 $B echo "  SWAP/ZRAM used:     $SWAPused MB";
-$B sleep 1;
 service call activity 51 i32 -1;
-TIME=$($B date | $B awk '{ print $4 }');
-$B echo "[$TIME] ***RAM gear*** - OK";
+$B echo "1" >> $SCORE;
 sync;
-
+$B sleep 1;

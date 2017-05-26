@@ -172,6 +172,7 @@ if [ ! -e /system/build.prop_bak ]; then
  $B sed -e "s=persist.wpa_supplicant.debug=#persist.wpa_supplicant.debug=" -i /system/engine/raw/build.prop;
  $B sed -e "s=net.tethering.noprovisioning=#net.tethering.noprovisioning=" -i /system/engine/raw/build.prop;
  $B sed -e "s=tether_dun_required=#tether_dun_required=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=ro.audio.flinger_standbytime_ms=#ro.audio.flinger_standbytime_ms=" -i /system/engine/raw/build.prop;
  if [ "$RAM" -le "1024" ]; then
   $B sed -e "s=net.tcp.buffersize.default=#net.tcp.buffersize.default=" -i /system/engine/raw/build.prop;
   $B sed -e "s=net.tcp.buffersize.wifi=#net.tcp.buffersize.wifi=" -i /system/engine/raw/build.prop;
@@ -222,6 +223,7 @@ if [ ! -e /system/build.prop_bak ]; then
   $B echo "persist.wpa_supplicant.debug=false"
   $B echo "net.tethering.noprovisioning=true"
   $B echo "tether_dun_required=0"
+  $B echo "ro.audio.flinger_standbytime_ms=300"
  } >> /system/engine/raw/build.prop;
 if [ -e /system/etc/calib.cfg ]; then
  {

@@ -12,7 +12,10 @@ mount -o remount,rw /data;
 mount -o remount,rw /system;
 $B echo "Installing BusyBox system-wide..";
 $B rm -f /system/xbin/busybox;
-/system/engine/bin/busybox --install -s /system/xbin;
+for i in $(/system/engine/bin/busybox --list)
+do
+  $B ln -s busybox /system/xbin/$i
+done;
 $B ln -s /system/engine/bin/busybox /system/xbin/busybox;
 chmod 777 /system/xbin/busybox;
 $B echo "Cleaning trash...";

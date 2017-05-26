@@ -7,6 +7,7 @@
 battery=1
 cleaner=1
 graphics=1
+io=1
 network=1
 
 # Cleaner daemon is same cleaner gear

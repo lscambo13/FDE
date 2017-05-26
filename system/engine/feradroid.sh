@@ -137,7 +137,7 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B rm -f /system/engine/gears/runonce.sh;
  $B echo ">> First boot completed." >> $LOG;
  sync;
- $B sleep 3;
+ $B sleep 5;
  reboot
  $B sleep 9;
  exit 0;
@@ -185,6 +185,15 @@ if [ -e /system/engine/gears/graphics.sh ]; then
   $B echo ">> Running GRAPHICS gear..." >> $LOG;
   $B echo "================================" >> $LOG;
   /system/engine/gears/graphics.sh | $B tee -a $LOG;
+  $B echo "================================" >> $LOG;
+ fi;
+fi;
+if [ -e /system/engine/gears/io.sh ]; then
+ IO=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'io=1');
+ if [ "io=1" = "$IO" ]; then
+  $B echo ">> Running IO gear..." >> $LOG;
+  $B echo "================================" >> $LOG;
+  /system/engine/gears/io.sh | $B tee -a $LOG;
   $B echo "================================" >> $LOG;
  fi;
 fi;
@@ -281,6 +290,10 @@ if [ -e /system/engine/gears/cleaner.sh ]; then
   )&
  fi;
 fi;
+for x in $($B mount | grep ext4 | cut -d " " -f3);
+do
+ $B mount -o remount, noatime, delalloc, nosuid, nodev, nodiratime, barrier=0, commit=30, discard, data=writeback "${x}";
+done;
 if [ "$SDK" -lt "22" ]; then
  if [ -e /system/engine/gears/sleeper.sh ]; then
   SLEEPER=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'sleeper=1');

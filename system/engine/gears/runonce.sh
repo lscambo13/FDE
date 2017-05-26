@@ -11,10 +11,11 @@ if [ "$CORES" = "0" ]; then
 fi;
 mount -o remount,rw /data;
 mount -o remount,rw /system;
-$B echo "Installing busybox system-wide..";
-cp /system/engine/bin/busybox /system/xbin/busybox
-chmod 777 /system/xbin/busybox
-/system/xbin/busybox --install -s /system/xbin
+$B echo "Installing BusyBox system-wide..";
+$B rm -f /system/xbin/busybox;
+/system/engine/bin/busybox --install -s /system/xbin;
+$B ln -s /system/engine/bin/busybox /system/xbin/busybox;
+chmod 777 /system/xbin/busybox;
 $B echo "Cleaning trash...";
 $B chmod -R 777 /data/tombstones;
 $B rm -f /data/tombstones/*;

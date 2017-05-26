@@ -118,12 +118,29 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B cp /system/engine/raw/FDE_config.txt $CONFIG;
  $B touch /system/engine/prop/fscore;
  $B chmod 777 /system/engine/prop/fscore;
-fi;
-if [ -e /system/media/bak_bootanimation.zip ]; then
- $B rm -f /system/media/bootanimation.zip;
- $B mv /system/media/bak_bootanimation.zip /system/media/bootanimation.zip;
- $B chmod 644 /system/media/bootanimation.zip;
- $B echo ">> Bootanimation restored." >> $LOG;
+ $B echo ">> Running one time init gear..." >> $LOG;
+ $B echo "================================" >> $LOG;
+ /system/engine/gears/runonce.sh | $B tee -a $LOG;
+ $B echo "================================" >> $LOG;
+ msg -t "FDE deployed. Rebooting NOW!";
+ mount -o remount,rw /system;
+ if [ -e /sbin/sysrw ]; then
+  /sbin/sysrw;
+ fi;
+ if [ -e /system/media/bak_bootanimation.zip ]; then
+  $B rm -f /system/media/bootanimation.zip;
+  $B mv /system/media/bak_bootanimation.zip /system/media/bootanimation.zip;
+  $B chmod 644 /system/media/bootanimation.zip;
+  $B echo ">> Bootanimation restored." >> $LOG;
+ fi;
+ $B rm -f /system/engine/prop/firstboot;
+ $B rm -f /system/engine/gears/runonce.sh;
+ $B echo ">> First boot completed." >> $LOG;
+ sync;
+ $B sleep 3;
+ reboot
+ $B sleep 9;
+ exit 0;
 fi;
 if [ -e $CONFIG ]; then
  $B echo ">> Loading FDE_config..." >> $LOG;
@@ -142,12 +159,6 @@ $B echo "0" > $SCORE;
 $B echo "$((CORES+CORES+1))" >> $SCORE;
 if [ -e /sys/fs/selinux/enforce ]; then
  $B echo "5" >> $SCORE;
-fi;
-if [ -e /system/engine/prop/firstboot ]; then
- $B echo ">> Running one time init gear..." >> $LOG;
- $B echo "================================" >> $LOG;
- /system/engine/gears/runonce.sh | $B tee -a $LOG;
- $B echo "================================" >> $LOG;
 fi;
 if [ -e /system/engine/gears/battery.sh ]; then
  BATTERY=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'battery=1');
@@ -211,15 +222,6 @@ $B fstrim -v /data | $B tee -a $LOG;
 $B fstrim -v /cache | $B tee -a $LOG;
 $B echo "3" >> $SCORE;
 sync;
-if [ -e /system/engine/prop/firstboot ]; then
- mount -o remount,rw /system;
- if [ -e /sbin/sysrw ]; then
-  /sbin/sysrw;
- fi;
- $B rm -f /system/engine/prop/firstboot;
- $B rm -f /system/engine/gears/runonce.sh;
- $B echo ">> First boot completed." >> $LOG;
-fi;
 $B echo ">> Harden security..." >> $LOG;
 if [ -e /sys/fs/selinux/enforce ]; then
  $B chmod 666 /sys/fs/selinux/enforce;
@@ -298,5 +300,5 @@ elif [ "mad_max=1" = "$MADMAX" ]; then
 else
  sync;
  $B sleep 1;
- exit 1;
+ exit 0;
 fi;

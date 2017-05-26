@@ -113,6 +113,9 @@ if [ ! -d /system/su.d ]; then
  if [ -e /init.supersu.rc ]; then
   mkdir /system/su.d
   chmod 777 /system/su.d
+ elif [ -e /system/app/SuperSU ]; then
+  mkdir /system/su.d
+  chmod 777 /system/su.d
  fi;
 fi;
 if [ -e /engine.sh ]; then

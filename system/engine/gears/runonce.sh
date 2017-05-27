@@ -10,14 +10,6 @@ if [ "$CORES" = "0" ]; then
 fi;
 mount -o remount,rw /data;
 mount -o remount,rw /system;
-###$B echo "Installing BusyBox system-wide..";
-###$B rm -f /system/xbin/busybox;
-###for i in $(/system/engine/bin/busybox --list)
-###do
-###  $B ln -s busybox /system/xbin/$i
-###done;
-###$B ln -s /system/engine/bin/busybox /system/xbin/busybox;
-###chmod 777 /system/xbin/busybox;
 $B echo "Cleaning trash...";
 $B chmod -R 777 /data/tombstones;
 $B rm -f /data/tombstones/*;
@@ -34,7 +26,7 @@ if [ -e /sys/devices/platform/i2c-gpio.9/i2c-9/9-0036/power_supply/fuelgauge/fg_
  $B echo "1" > /sys/devices/platform/i2c-gpio.9/i2c-9/9-0036/power_supply/fuelgauge/fg_reset_soc;
  $B echo "1" >> $FSCORE;
 fi;
-$B echo "Chaning to OpenDNS..";
+$B echo "Changing to OpenDNS..";
 $B rm -f /system/etc/resolv.conf;
 $B touch /system/etc/resolv.conf;
 $B chmod 666 /system/etc/resolv.conf
@@ -46,8 +38,18 @@ $B touch /system/etc/ppp/options;
 $B chmod 666 /system/etc/ppp/options;
 $B echo "bsdcomp" > /system/etc/ppp/options;
 $B echo "deflate" >> /system/etc/ppp/options;
-$B echo " " >> /system/etc/ppp/options;
+$B echo "  " >> /system/etc/ppp/options;
+$B echo "2" >> $FSCORE;
 $B echo "Data compression enabled.";
+if [ -e /system/vendor/etc/msm_irqbalance_little_big.conf ]; then
+ $B echo "Tuning MSM IRQ balance..";
+ $B cp /system/vendor/etc/msm_irqbalance_little_big.conf /system/vendor/etc/msm_irqbalance_little_big.conf_bak;
+ $B rm -f /system/vendor/etc/msm_irqbalance_little_big.conf
+ $B echo "PRIO=1,1,1,1,0,0,0,0" > /system/vendor/etc/msm_irqbalance_little_big.conf;
+ $B echo "IGNORED_IRQ=20,39,155,157,172,200,203" >> /system/vendor/etc/msm_irqbalance_little_big.conf;
+ $B echo "  " > /system/vendor/etc/msm_irqbalance_little_big.conf;
+ $B echo "1" >> $FSCORE;
+fi;
 if [ -e /data/misc/mtkgps.dat ]; then
  $B rm -f /data/misc/mtkgps.dat;
  $B echo "MTK GPS data cleared.";
@@ -203,22 +205,22 @@ if [ ! -e /system/build.prop_bak ]; then
   $B echo "tether_dun_required=0"
   $B echo "ro.audio.flinger_standbytime_ms=300"
  } >> /system/engine/raw/build.prop;
-if [ "$RAM" -le "1024" ]; then
- {
-  $B echo "net.tcp.buffersize.default=4096,87380,110208,4096,16384,110208"
-  $B echo "net.tcp.buffersize.wifi=4095,87380,110208,4096,16384,110208"
-  $B echo "net.tcp.buffersize.umts=4095,87380,110208,4096,16384,110208"
-  $B echo "net.tcp.buffersize.hsdpa=4096,32768,65536,4096,32768,65536"
-  $B echo "net.tcp.buffersize.hspa=4096,32768,65536,4096,32768,65536"
-  $B echo "net.tcp.buffersize.hsupa=4096,32768,65536,4096,32768,65536"
-  $B echo "net.tcp.buffersize.edge=4093,26280,35040,4096,16384,35040"
-  $B echo "net.tcp.buffersize.gprs=4092,8760,11680,4096,8760,11680"
- } >> /system/engine/raw/build.prop;
-fi;
+ if [ "$RAM" -le "1024" ]; then
+  {
+   $B echo "net.tcp.buffersize.default=4096,87380,110208,4096,16384,110208"
+   $B echo "net.tcp.buffersize.wifi=4095,87380,110208,4096,16384,110208"
+   $B echo "net.tcp.buffersize.umts=4095,87380,110208,4096,16384,110208"
+   $B echo "net.tcp.buffersize.hsdpa=4096,32768,65536,4096,32768,65536"
+   $B echo "net.tcp.buffersize.hspa=4096,32768,65536,4096,32768,65536"
+   $B echo "net.tcp.buffersize.hsupa=4096,32768,65536,4096,32768,65536"
+   $B echo "net.tcp.buffersize.edge=4093,26280,35040,4096,16384,35040"
+   $B echo "net.tcp.buffersize.gprs=4092,8760,11680,4096,8760,11680"
+  } >> /system/engine/raw/build.prop;
+ fi;
  $B cp -f /system/engine/raw/build.prop /system/build.prop;
  $B chmod 644 /system/build.prop;
 else
  $B echo "Build.prop is already patched by FDE to $(getprop bp_patch)";
 fi;
-$B echo "19" >> $FSCORE;
+$B echo "37" >> $FSCORE;
 

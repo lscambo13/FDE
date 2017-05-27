@@ -27,4 +27,4 @@ sleeper=1
 # potentionally dangerous tweaks.
 # For ex. allowing to run sleeper and
 # enable forced GPU rendering on OS 6.0+
-mad_max=1
+mad_max=0

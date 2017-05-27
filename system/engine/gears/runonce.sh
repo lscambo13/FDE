@@ -10,14 +10,14 @@ if [ "$CORES" = "0" ]; then
 fi;
 mount -o remount,rw /data;
 mount -o remount,rw /system;
-$B echo "Installing BusyBox system-wide..";
-$B rm -f /system/xbin/busybox;
-for i in $(/system/engine/bin/busybox --list)
-do
-  $B ln -s busybox /system/xbin/$i
-done;
-$B ln -s /system/engine/bin/busybox /system/xbin/busybox;
-chmod 777 /system/xbin/busybox;
+###$B echo "Installing BusyBox system-wide..";
+###$B rm -f /system/xbin/busybox;
+###for i in $(/system/engine/bin/busybox --list)
+###do
+###  $B ln -s busybox /system/xbin/$i
+###done;
+###$B ln -s /system/engine/bin/busybox /system/xbin/busybox;
+###chmod 777 /system/xbin/busybox;
 $B echo "Cleaning trash...";
 $B chmod -R 777 /data/tombstones;
 $B rm -f /data/tombstones/*;
@@ -32,23 +32,6 @@ $B echo "1" > $FSCORE;
 if [ -e /sys/devices/platform/i2c-gpio.9/i2c-9/9-0036/power_supply/fuelgauge/fg_reset_soc ]; then
  $B echo "Fuelgauge report reset.";
  $B echo "1" > /sys/devices/platform/i2c-gpio.9/i2c-9/9-0036/power_supply/fuelgauge/fg_reset_soc;
- $B echo "1" >> $FSCORE;
-fi;
-if [ -e /system/etc/calib.cfg_bak ]; then
- $B echo "Display calibration is already optimized.";
-elif [ -e /system/etc/calib.cfg ]; then
- $B mv /system/etc/calib.cfg /system/etc/calib.cfg_bak;
- $B mv /system/engine/raw/calib.cfg /system/etc/calib.cfg;
- $B chmod 644 /system/etc/calib.cfg;
- $B echo "Assertive display detected.";
- $B echo "Patching to powersave and optimized display calibration...";
- $B echo "1" >> $FSCORE;
-elif [ -e /system/etc/ad_calib.cfg ]; then
- $B mv /system/etc/ad_calib.cfg /system/etc/calib.cfg_bak;
- $B mv /system/engine/raw/calib.cfg /system/etc/calib.cfg;
- $B chmod 644 /system/etc/calib.cfg;
- $B echo "Assertive display detected.";
- $B echo "Patching to powersave and optimized display calibration...";
  $B echo "1" >> $FSCORE;
 fi;
 $B echo "Chaning to OpenDNS..";
@@ -150,11 +133,6 @@ if [ ! -e /system/build.prop_bak ]; then
  $B sed -e "s=persist.added_boot_bgservices=#persist.added_boot_bgservices=" -i /system/engine/raw/build.prop;
  $B sed -e "s=ro.config.max_starting_bg=#ro.config.max_starting_bg=" -i /system/engine/raw/build.prop;
  $B sed -e "s=ro.sys.fw.bg_apps_limit=#ro.sys.fw.bg_apps_limit=" -i /system/engine/raw/build.prop;
- if [ -e /system/etc/calib.cfg ]; then
-  $B sed -e "s=ro.qcom.ad=#ro.qcom.ad=" -i /system/engine/raw/build.prop;
-  $B sed -e "s=ro.qualcomm.cabl=#ro.qualcomm.cabl=" -i /system/engine/raw/build.prop;
-  $B sed -e "s=ro.qcom.ad.calib.data=#ro.qcom.ad.calib.data=" -i /system/engine/raw/build.prop;
- fi;
  $B sed -e "s=net.dns1=#net.dns1=" -i /system/engine/raw/build.prop;
  $B sed -e "s=net.dns2=#net.dns2=" -i /system/engine/raw/build.prop;
  $B sed -e "s=wifi.supplicant_scan_interval=#wifi.supplicant_scan_interval=" -i /system/engine/raw/build.prop;
@@ -225,13 +203,6 @@ if [ ! -e /system/build.prop_bak ]; then
   $B echo "tether_dun_required=0"
   $B echo "ro.audio.flinger_standbytime_ms=300"
  } >> /system/engine/raw/build.prop;
-if [ -e /system/etc/calib.cfg ]; then
- {
-  $B echo "ro.qcom.ad=1"
-  $B echo "ro.qualcomm.cabl=0"
-  $B echo "ro.qcom.ad.calib.data=/system/etc/calib.cfg"
- } >> /system/engine/raw/build.prop;
-fi;
 if [ "$RAM" -le "1024" ]; then
  {
   $B echo "net.tcp.buffersize.default=4096,87380,110208,4096,16384,110208"

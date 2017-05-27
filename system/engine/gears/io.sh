@@ -4,12 +4,12 @@ B=/system/engine/bin/busybox;
 SCORE=/system/engine/prop/score;
 MADMAX=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'mad_max=1');
 if [ "mad_max=1" = "$MADMAX" ]; then
- KB=2048;
- $B echo "2" >> $SCORE;
-else
  KB=8196;
  $B echo "8" >> $SCORE;
  $B echo "Mad read-ahead.";
+else
+ KB=2048;
+ $B echo "2" >> $SCORE;
 fi;
 $B echo "Read-ahead cache - $KB";
 MMC="/sys/block/mmc*";

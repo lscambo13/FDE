@@ -18,16 +18,13 @@ if [ "$CORES" = "0" ]; then
 fi;
 if [ "$RAM" -gt "1024" ]; then
  FZRAM=$((RAM/4));
- PZ=45;
 elif [ "$RAM" -gt "512" ]; then
  FZRAM=$(((RAM/3)+96));
- PZ=45;
 elif [ "$RAM" -le "512" ]; then
  FZRAM=$((RAM-96));
- PZ=50;
 fi;
 if [ "mad_max=1" = "$MADMAX" ]; then
- FZRAM=$((FZRAM+50));
+ FZRAM=$((FZRAM+90));
  $B echo "Mad zRam.";
 fi;
 $B echo "Current RAM values:";
@@ -43,7 +40,7 @@ setprop ro.config.zram.support true
 service call activity 51 i32 0;
 $B sleep 2;
 am kill-all;
-$B sleep 5;
+$B sleep 4;
 sync;
 $B sleep 1;
 $B echo "3" > /proc/sys/vm/drop_caches;
@@ -197,31 +194,14 @@ if [ -e /sys/block/zram0/disksize ]; then
  if [ "$SWAP" -gt "0" ]; then
   setprop ro.config.zram.support true;
   setprop zram.disksize $FZRAM;
-  if [ "$RAM" -le "1024" ]; then
-   $B echo "100" > /proc/sys/vm/swappiness;
-   $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf;
-   $B sysctl -e -w vm.swappiness=100;
-   setprop sys.vm.swappiness 100;
-   if [ -e /sys/fs/cgroup/memory/sw/memory.swappiness ]; then
-    $B echo "100" > /sys/fs/cgroup/memory/sw/memory.swappiness;
-    $B echo "1" >> $SCORE;
-    $B echo "Tuning memory cgroups";
-   fi;
-  else
-   $B echo "82" > /proc/sys/vm/swappiness;
-   $B echo "vm.swappiness=82" >> /system/etc/sysctl.conf;
-   $B sysctl -e -w vm.swappiness=82;
-   setprop sys.vm.swappiness 82;
-   if [ -e /sys/fs/cgroup/memory/sw/memory.swappiness ]; then
-    $B echo "82" > /sys/fs/cgroup/memory/sw/memory.swappiness;
-    $B echo "1" >> $SCORE;
-    $B echo "Tuning memory cgroups";
-   fi;
-  fi;
-  if [ -e /sys/module/zram/parameters/total_mem_usage_percent ]; then
-   $B echo "Tuning ZRAM parameters..";
-   $B echo "$PZ" > /sys/module/zram/parameters/total_mem_usage_percent;
+  $B echo "100" > /proc/sys/vm/swappiness;
+  $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf;
+  $B sysctl -e -w vm.swappiness=100;
+  setprop sys.vm.swappiness 100;
+  if [ -e /sys/fs/cgroup/memory/sw/memory.swappiness ]; then
+   $B echo "100" > /sys/fs/cgroup/memory/sw/memory.swappiness;
    $B echo "1" >> $SCORE;
+   $B echo "Tuning memory cgroups";
   fi;
   if [ -e /sys/block/zram0/compact ]; then
    $B echo "Activate ZRAM compaction..";
@@ -236,6 +216,7 @@ if [ "$SWAP" -eq "0" ]; then
  $B echo "vm.swappiness=0" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.swappiness=0;
  setprop sys.vm.swappiness 0;
+ setprop ro.config.zram.support false;
  $B echo "3" >> $SCORE;
  if [ -e /sys/fs/cgroup/memory/sw/memory.swappiness ]; then
   $B echo "0" > /sys/fs/cgroup/memory/sw/memory.swappiness;

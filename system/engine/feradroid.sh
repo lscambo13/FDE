@@ -15,8 +15,6 @@ if [ -e /sys/fs/selinux/enforce ]; then
  setenforce 0;
  $B echo "0" > /sys/fs/selinux/enforce;
 fi;
-setprop persist.added_boot_bgservices "$CORES";
-setprop ro.config.max_starting_bg "$((CORES+1))";
 svc power stayon true;
 if [ "$CORES" -gt "4" ]; then
  $B sleep 45;
@@ -80,7 +78,6 @@ msg -t "FDE v1.1 - firing up...";
  $B echo ">> SElinux state: $(getenforce)"
 } >> $LOG;
 $B echo "Firing up..." >> $LOG;
-service call activity 51 i32 1;
 $B sleep 1;
 if [ -e /sys/fs/selinux/enforce ]; then
  $B echo ">> Tuning SElinux.." >> $LOG;
@@ -263,7 +260,6 @@ setprop ro.adb.secure 1;
 setprop security.perf_harden 1;
 $B echo "3" >> $SCORE;
 $B echo ">> Tweaking multitasking.." >> $LOG;
-setprop ro.sys.fw.bg_apps_limit "$BG";
 service call activity 51 i32 "$BG";
 $B echo "$BG" >> $SCORE;
 svc power stayon false;

@@ -8,8 +8,8 @@ if [ "mad_max=1" = "$MADMAX" ]; then
  $B echo "8" >> $SCORE;
  $B echo "Mad read-ahead.";
 else
- KB=2048;
- $B echo "2" >> $SCORE;
+ KB=4096;
+ $B echo "4" >> $SCORE;
 fi;
 $B echo "Read-ahead cache - $KB";
 MMC="/sys/block/mmc*";
@@ -33,9 +33,6 @@ fi;
 $B echo "Applying new I/O parameters..";
 for b in $MMC $MTD $DM;
 do
- $B echo "off" > "${b}"/max_read_speed;
- $B echo "off" > "${b}"/max_write_speed;
- $B echo "off" > "${b}"/cache_size;
  $B echo "$KB" > "${b}"/bdi/read_ahead_kb;
  $B echo "$KB" > "${b}"/queue/read_ahead_kb;
  $B echo "0" > "${b}"/queue/add_random;
@@ -49,7 +46,7 @@ done;
 $B echo "Remounting EXT4 partitions..";
 for x in $($B mount | grep ext4 | cut -d " " -f3);
 do
- $B mount -o remount, nodiratime, relatime, delalloc, discard, barrier=1, commit=30 "${x}";
+ $B mount -o remount, nodiratime, relatime, delalloc, discard "${x}";
  $B echo "1" >> $SCORE;
 done;
 $B echo "Remounting storage partitions..";

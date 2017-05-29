@@ -6,6 +6,7 @@
 
 battery=1
 cleaner=1
+cpu=1
 graphics=1
 io=1
 network=1

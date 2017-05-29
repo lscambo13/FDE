@@ -109,8 +109,8 @@ if [ -e /sys/block/zram0/disksize ]; then
   fi;
   if [ -e /sys/block/zram0/max_comp_streams ]; then
    $B echo "Set max compression streams..";
-   $B echo "1" > /sys/block/zram0/max_comp_streams;
-   $B echo "1" >> $SCORE;
+   $B echo "$CORES" > /sys/block/zram0/max_comp_streams;
+   $B echo "$CORES" >> $SCORE;
   fi;
   $B echo "Starting swappiness..";
   $B mkswap /dev/block/zram0 > /dev/null 2>&1;

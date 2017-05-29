@@ -6,6 +6,10 @@ RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 CORES=$($B grep -c 'processor' /proc/cpuinfo);
 SCORE=/system/engine/prop/score;
 FSCORE=/system/engine/prop/fscore;
+GOV=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor);
+for each in 0 1 2 3; do
+ $B echo "performance" > /sys/devices/system/cpu/cpu$each/cpufreq/scaling_governor;
+done;
 BG=$((RAM/100));
 if [ "$CORES" = "0" ]; then
  CORES=1;
@@ -179,6 +183,20 @@ if [ -e /system/engine/gears/cleaner.sh ]; then
   /system/engine/gears/cleaner.sh | $B tee -a $LOG;
   $B echo "================================" >> $LOG;
   $B echo "3" >> $SCORE;
+ fi;
+fi;
+for every in 0 1 2 3; do
+ $B echo "$GOV" > /sys/devices/system/cpu/cpu$every/cpufreq/scaling_governor;
+done;
+$B echo ">> CPU boost done." >> $LOG;
+$B echo "4" >> $SCORE;
+if [ -e /system/engine/gears/cpu.sh ]; then
+ CPU=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'cpu=1');
+ if [ "cpu=1" = "$CPU" ]; then
+  $B echo ">> Running CPU gear..." >> $LOG;
+  $B echo "================================" >> $LOG;
+  /system/engine/gears/cpu.sh | $B tee -a $LOG;
+  $B echo "================================" >> $LOG;
  fi;
 fi;
 if [ -e /system/engine/gears/graphics.sh ]; then

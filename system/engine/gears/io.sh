@@ -39,7 +39,7 @@ do
  $B echo "0" > "${b}"/queue/iostats;
  $B echo "0" > "${b}"/queue/rotational;
  $B echo "1" > "${b}"/queue/nomerges;
- $B echo "2" > "${b}"/queue/rq_affinity;
+ $B echo "1" > "${b}"/queue/rq_affinity;
  $B echo "1024" > "${b}"/queue/nr_requests;
  $B echo "1" >> $SCORE;
 done;
@@ -55,5 +55,10 @@ do
  $B mount -o remount, nosuid, nodev, noatime, nodiratime -t auto "${m}";
  $B echo "1" >> $SCORE;
 done;
+if [ -e /sys/devices/virtual/sec/sec_slow/io_is_busy ]; then
+ $B echo "I/O is buzy..";
+ $B echo "1" > /sys/devices/virtual/sec/sec_slow/io_is_busy;
+ $B echo "1" >> $SCORE;
+fi;
 sync;
 $B sleep 1;

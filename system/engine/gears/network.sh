@@ -67,4 +67,9 @@ else
 fi;
 $B echo "Tethering fix..";
 settings put global tether_dun_required 0;
+$B echo "Switching net-interfaces to byte queue.."
+for z in /sys/class/net/*; do
+  $B echo "0" > "${z}"/tx_queue_len;
+done;
 sync;
+$B sleep 1;

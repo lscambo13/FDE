@@ -7,6 +7,7 @@ CORES=$($B grep -c 'processor' /proc/cpuinfo);
 SCORE=/system/engine/prop/score;
 FSCORE=/system/engine/prop/fscore;
 GOV=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor);
+PREV="$GOV";
 for each in 0 1 2 3; do
  $B echo "performance" > /sys/devices/system/cpu/cpu$each/cpufreq/scaling_governor;
 done;
@@ -186,7 +187,7 @@ if [ -e /system/engine/gears/cleaner.sh ]; then
  fi;
 fi;
 for every in 0 1 2 3; do
- $B echo "$GOV" > /sys/devices/system/cpu/cpu$every/cpufreq/scaling_governor;
+ $B echo "$PREV" > /sys/devices/system/cpu/cpu$every/cpufreq/scaling_governor;
 done;
 $B echo ">> CPU boost done." >> $LOG;
 $B echo "4" >> $SCORE;

@@ -34,7 +34,6 @@ rm -f /sdcard/Android/FDE_config.txt
 rm -f /data/media/0/Android/FDE_config.txt
 rm -f /data/media/0/Android/FDE_log.txt
 rm -f /system/etc/fde
-rm -f /system/xbin/busybox
 if [ -e /system/bin/tiny_mkswap ]; then
  mv /system/bin/tiny_mkswap /system/bin/tiny_mkswap_bak
  mv /system/bin/tiny_swapon /system/bin/tiny_swapon_bak

@@ -5,8 +5,13 @@ RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 CORES=$($B grep -c 'processor' /proc/cpuinfo);
 FSCORE=/system/engine/prop/fscore;
 BG=$((RAM/100));
-if [ "$CORES" = "0" ]; then
- CORES=1;
+HZ=$((RAM/4));
+HGL=$((RAM/16));
+if [ "$HZ" -lt "92" ]; then
+ HZ=92;
+fi;
+if [ "$HGL" = "48" ]; then
+ HGL=48;
 fi;
 mount -o remount,rw /data;
 mount -o remount,rw /system;
@@ -42,7 +47,7 @@ $B echo "  " >> /system/etc/ppp/options;
 $B echo "2" >> $FSCORE;
 $B echo "Data compression enabled.";
 if [ -e /system/vendor/etc/msm_irqbalance_little_big.conf ]; then
- if [ ! -e/system/vendor/etc/msm_irqbalance_little_big.conf_bak ]; then
+ if [ ! -e /system/vendor/etc/msm_irqbalance_little_big.conf_bak ]; then
   $B echo "Tuning MSM IRQ balance..";
   $B cp /system/vendor/etc/msm_irqbalance_little_big.conf /system/vendor/etc/msm_irqbalance_little_big.conf_bak;
   $B rm -f /system/vendor/etc/msm_irqbalance_little_big.conf
@@ -157,6 +162,27 @@ if [ ! -e /system/build.prop_bak ]; then
  $B sed -e "s=net.tethering.noprovisioning=#net.tethering.noprovisioning=" -i /system/engine/raw/build.prop;
  $B sed -e "s=tether_dun_required=#tether_dun_required=" -i /system/engine/raw/build.prop;
  $B sed -e "s=ro.audio.flinger_standbytime_ms=#ro.audio.flinger_standbytime_ms=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=ro.HOME_APP_ADJ=#ro.HOME_APP_ADJ=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=ro.HOME_APP_MEM=#ro.HOME_APP_MEM=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=MIN_HIDDEN_APPS=#MIN_HIDDEN_APPS=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=MIN_RECENT_TASKS=#MIN_RECENT_TASKS=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=APP_SWITCH_DELAY_TIME=#APP_SWITCH_DELAY_TIME=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=MIN_CRASH_INTERVAL=#MIN_CRASH_INTERVAL=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=ACTIVITY_INACTIVE_RESET_TIME=#ACTIVITY_INACTIVE_RESET_TIME=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=CPU_MIN_CHECK_DURATION=#CPU_MIN_CHECK_DURATION=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=GC_TIMEOUT=#GC_TIMEOUT=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=PROC_START_TIMEOUT=#PROC_START_TIMEOUT=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=SERVICE_TIMEOUT=#SERVICE_TIMEOUT=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=dalvik.vm.checkjni=#dalvik.vm.checkjni=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=dalvik.vm.check-dex-sum=#dalvik.vm.check-dex-sum=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=dalvik.vm.debug.alloc=#dalvik.vm.debug.alloc=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=dalvik.vm.deadlock-predict=#dalvik.vm.deadlock-predict=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=dalvik.vm.heapsize=#dalvik.vm.heapsize=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=dalvik.vm.heapgrowthlimit=#dalvik.vm.heapgrowthlimit=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=ro.sys.fw.dex2oat_thread_count=#ro.sys.fw.dex2oat_thread_count=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=libc.debug.malloc=#libc.debug.malloc=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=persist.sys.purgeable_assets=#persist.sys.purgeable_assets=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=debug.atrace.tags.enableflags=#debug.atrace.tags.enableflags=" -i /system/engine/raw/build.prop;
  if [ "$RAM" -le "1024" ]; then
   $B sed -e "s=net.tcp.buffersize.default=#net.tcp.buffersize.default=" -i /system/engine/raw/build.prop;
   $B sed -e "s=net.tcp.buffersize.wifi=#net.tcp.buffersize.wifi=" -i /system/engine/raw/build.prop;
@@ -166,6 +192,7 @@ if [ ! -e /system/build.prop_bak ]; then
   $B sed -e "s=net.tcp.buffersize.hsupa=#net.tcp.buffersize.hsupa=" -i /system/engine/raw/build.prop;
   $B sed -e "s=net.tcp.buffersize.edge=#net.tcp.buffersize.edge=" -i /system/engine/raw/build.prop;
   $B sed -e "s=net.tcp.buffersize.gprs=#net.tcp.buffersize.gprs=" -i /system/engine/raw/build.prop;
+  $B sed -e "s=dalvik.vm.heaptargetutilization=#dalvik.vm.heaptargetutilization=" -i /system/engine/raw/build.prop;
  fi;
  {
   $B echo "   "
@@ -208,6 +235,27 @@ if [ ! -e /system/build.prop_bak ]; then
   $B echo "net.tethering.noprovisioning=true"
   $B echo "tether_dun_required=0"
   $B echo "ro.audio.flinger_standbytime_ms=300"
+  $B echo "ro.HOME_APP_ADJ=0"
+  $B echo "ro.HOME_APP_MEM=2439"
+  $B echo "MIN_HIDDEN_APPS=false"
+  $B echo "MIN_RECENT_TASKS=false"
+  $B echo "APP_SWITCH_DELAY_TIME=false"
+  $B echo "MIN_CRASH_INTERVAL=false"
+  $B echo "ACTIVITY_INACTIVE_RESET_TIME=false"
+  $B echo "CPU_MIN_CHECK_DURATION=false"
+  $B echo "GC_TIMEOUT=false"
+  $B echo "PROC_START_TIMEOUT=false"
+  $B echo "SERVICE_TIMEOUT=false"
+  $B echo "dalvik.vm.checkjni=false"
+  $B echo "dalvik.vm.check-dex-sum=false"
+  $B echo "dalvik.vm.debug.alloc=0"
+  $B echo "dalvik.vm.deadlock-predict=off"
+  $B echo "dalvik.vm.heapsize=$((HZ+9))m"
+  $B echo "dalvik.vm.heapgrowthlimit=$((HGL+3))m"
+  $B echo "ro.sys.fw.dex2oat_thread_count=$CORES"
+  $B echo "libc.debug.malloc=0"
+  $B echo "persist.sys.purgeable_assets=1"
+  $B echo "debug.atrace.tags.enableflags=0"
  } >> /system/engine/raw/build.prop;
  if [ "$RAM" -le "1024" ]; then
   {
@@ -219,6 +267,13 @@ if [ ! -e /system/build.prop_bak ]; then
    $B echo "net.tcp.buffersize.hsupa=4096,32768,65536,4096,32768,65536"
    $B echo "net.tcp.buffersize.edge=4093,26280,35040,4096,16384,35040"
    $B echo "net.tcp.buffersize.gprs=4092,8760,11680,4096,8760,11680"
+   $B echo "dalvik.vm.heaptargetutilization=0.9"
+  } >> /system/engine/raw/build.prop;
+ fi;
+ if [ "$RAM" -le "512" ]; then
+  {
+   $B echo "ro.config.low_ram=true"
+   $B echo "config.disable_atlas=true"
   } >> /system/engine/raw/build.prop;
  fi;
  $B cp -f /system/engine/raw/build.prop /system/build.prop;
@@ -226,5 +281,5 @@ if [ ! -e /system/build.prop_bak ]; then
 else
  $B echo "Build.prop is already patched by FDE to $(getprop bp_patch)";
 fi;
-$B echo "37" >> $FSCORE;
+$B echo "62" >> $FSCORE;
 

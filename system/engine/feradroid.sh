@@ -119,7 +119,7 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B echo "================================" >> $LOG;
  /system/engine/gears/runonce.sh | $B tee -a $LOG;
  $B echo "================================" >> $LOG;
- msg -t "FDE deployed. Rebooting NOW!";
+ msg -t "Going to reboot.. Second boot will take few mins.";
  mount -o remount,rw /system;
  if [ -e /sbin/sysrw ]; then
   /sbin/sysrw;
@@ -139,7 +139,10 @@ if [ -e /system/engine/prop/firstboot ]; then
  if [ -e /sbin/sysro ]; then
   /sbin/sysro;
  fi;
- $B sleep 2;
+ msg -t "FDE deployed. Rebooting NOW!";
+ $B sleep 3;
+ $B rm -Rf /data/dalvik-cache;
+ $B sleep 3;
  reboot
  $B sleep 9;
  exit 0;
@@ -223,6 +226,15 @@ if [ -e /system/engine/gears/ram.sh ]; then
   $B echo ">> Running RAM gear..." >> $LOG;
   $B echo "================================" >> $LOG;
   /system/engine/gears/ram.sh | $B tee -a $LOG;
+  $B echo "================================" >> $LOG;
+ fi;
+fi;
+if [ -e /system/engine/gears/vm.sh ]; then
+ VM=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'vm=1');
+ if [ "vm=1" = "$VM" ]; then
+  $B echo ">> Running VM gear..." >> $LOG;
+  $B echo "================================" >> $LOG;
+  /system/engine/gears/vm.sh | $B tee -a $LOG;
   $B echo "================================" >> $LOG;
  fi;
 fi;

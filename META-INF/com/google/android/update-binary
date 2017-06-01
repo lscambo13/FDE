@@ -112,7 +112,10 @@ if [ ! -d /system/su.d ]; then
  if [ -e /init.supersu.rc ]; then
   mkdir /system/su.d
   chmod 777 /system/su.d
- elif [ -e /system/app/SuperSU ]; then
+ elif [ -d /system/app/SuperSU ]; then
+  mkdir /system/su.d
+  chmod 777 /system/su.d
+ elif [ -e /system/app/SuperSU.apk ]; then
   mkdir /system/su.d
   chmod 777 /system/su.d
  elif [ -e /data/su.img ]; then
@@ -124,6 +127,7 @@ if [ -e /engine.sh ]; then
  touch /system/engine/prop/ferakernel
  echo "1" > /system/engine/prop/ferakernel
 elif [ -d /system/su.d ]; then
+ ui_print "su.d init."
  touch /system/su.d/90fde.sh
  echo "#!/system/bin/sh" >> /system/su.d/90fde.sh
  echo "   " >> /system/su.d/90fde.sh
@@ -133,6 +137,7 @@ elif [ -d /system/su.d ]; then
  echo "   " >> /system/su.d/90fde.sh
  chmod 777 /system/su.d/90fde.sh
 else
+ ui_print "init.d init."
  touch /system/etc/init.d/90fde
  echo "#!/system/bin/sh" >> /system/etc/init.d/90fde
  echo "   " >> /system/etc/init.d/90fde

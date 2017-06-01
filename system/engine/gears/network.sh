@@ -56,6 +56,7 @@ settings put global wifi_idle_ms 300000;
 settings put secure wifi_idle_ms 300000;
 settings put secure wifi_watchdog_on 0;
 settings put secure wifi_watchdog_poor_network_test_enabled 0;
+setprop ro.wifi.channels 13;
 if [ "$SDK" -le "20" ]; then
  $B echo "Bandwidth tune-up.";
  ndc bandwidth disable;

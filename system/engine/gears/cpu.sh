@@ -336,7 +336,7 @@ if [ -e /sys/devices/system/cpu/cpufreq/interactive/min_sample_time ]; then
  $B echo "1" > /sys/devices/system/cpu/cpufreq/interactive/use_shed_load;
  $B echo "1" > /sys/devices/system/cpu/cpufreq/interactive/use_migration_notif;
  $B echo "70000" > /sys/devices/system/cpu/cpufreq/interactive/min_sample_time;
- $B echo "30000" > /sys/devices/system/cpu/cpufreq/interactive/timer_rate;
+ $B echo "25000" > /sys/devices/system/cpu/cpufreq/interactive/timer_rate;
  $B echo "5" >> $SCORE;
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time ]; then
@@ -347,7 +347,7 @@ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time ]; then
   $B echo "1" > /sys/devices/system/cpu/cpu$o/cpufreq/interactive/use_shed_load;
   $B echo "1" > /sys/devices/system/cpu/cpu$o/cpufreq/interactive/use_migration_notif;
   $B echo "70000" > /sys/devices/system/cpu/cpu$o/cpufreq/interactive/min_sample_time;
-  $B echo "30000" > /sys/devices/system/cpu/cpu$o/cpufreq/interactive/timer_rate;
+  $B echo "25000" > /sys/devices/system/cpu/cpu$o/cpufreq/interactive/timer_rate;
   $B echo "5" >> $SCORE;
  done;
 fi;
@@ -359,7 +359,7 @@ if [ -e /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time ]; then
   $B echo "1" > /sys/devices/system/cpu/cpu$p/cpufreq/interactive/use_shed_load;
   $B echo "1" > /sys/devices/system/cpu/cpu$p/cpufreq/interactive/use_migration_notif;
   $B echo "60000" > /sys/devices/system/cpu/cpu$p/cpufreq/interactive/min_sample_time;
-  $B echo "20000" > /sys/devices/system/cpu/cpu$p/cpufreq/interactive/timer_rate;
+  $B echo "15000" > /sys/devices/system/cpu/cpu$p/cpufreq/interactive/timer_rate;
   $B echo "5" >> $SCORE;
  done;
 fi;
@@ -370,7 +370,7 @@ if [ -e /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time ]; then
  $B echo "1" > /sys/devices/system/cpu/cpufreq/interactivex/use_shed_load;
  $B echo "1" > /sys/devices/system/cpu/cpufreq/interactivex/use_migration_notif;
  $B echo "70000" > /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time;
- $B echo "30000" > /sys/devices/system/cpu/cpufreq/interactivex/timer_rate;
+ $B echo "25000" > /sys/devices/system/cpu/cpufreq/interactivex/timer_rate;
  $B echo "5" >> $SCORE;
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactivex/min_sample_time ]; then
@@ -381,7 +381,7 @@ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactivex/min_sample_time ]; the
   $B echo "1" > /sys/devices/system/cpu/cpu$q/cpufreq/interactivex/use_shed_load;
   $B echo "1" > /sys/devices/system/cpu/cpu$q/cpufreq/interactivex/use_migration_notif;
   $B echo "70000" > /sys/devices/system/cpu/cpu$q/cpufreq/interactivex/min_sample_time;
-  $B echo "30000" > /sys/devices/system/cpu/cpu$q/cpufreq/interactivex/timer_rate;
+  $B echo "25000" > /sys/devices/system/cpu/cpu$q/cpufreq/interactivex/timer_rate;
   $B echo "5" >> $SCORE;
  done;
 fi;
@@ -393,7 +393,7 @@ if [ -e /sys/devices/system/cpu/cpu4/cpufreq/interactivex/min_sample_time ]; the
   $B echo "1" > /sys/devices/system/cpu/cpu$r/cpufreq/interactivex/use_shed_load;
   $B echo "1" > /sys/devices/system/cpu/cpu$r/cpufreq/interactivex/use_migration_notif;
   $B echo "60000" > /sys/devices/system/cpu/cpu$r/cpufreq/interactivex/min_sample_time;
-  $B echo "20000" > /sys/devices/system/cpu/cpu$r/cpufreq/interactivex/timer_rate;
+  $B echo "15000" > /sys/devices/system/cpu/cpu$r/cpufreq/interactivex/timer_rate;
   $B echo "5" >> $SCORE;
  done;
 fi;
@@ -573,7 +573,7 @@ if [ -e /sys/devices/system/cpu/sched_mc_power_savings ]; then
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/abi/swp ]; then
- $B echo "ARM8 SWP active..";
+ $B echo "Activating ARM8 SWP..";
  $B echo "1" > /proc/sys/abi/swp;
  $B echo "1" >> $SCORE;
 fi;
@@ -598,14 +598,14 @@ if [ "$CORES" -le "4" ]; then
  fi;
 fi;
 if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
- $B echo "BIG-LITTLE tune-up";
+ $B echo "BIG-LITTLE scheduling tune-up..";
  $B echo "36" > /sys/devices/system/cpu/cpu4/core_ctl/busy_down_thres;
  $B echo "72" > /sys/devices/system/cpu/cpu4/core_ctl/busy_up_thres;
  $B echo "0" > /sys/devices/system/cpu/cpu4/core_ctl/offline_delay_ms;
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /dev/cpuctl/bg_non_interactive/cpu.shares ]; then
- $B echo "256" > /dev/cpuctl/bg_non_interactive/cpu.shares
+ $B echo "192" > /dev/cpuctl/bg_non_interactive/cpu.shares
  $B echo "CPU backgound tune-up..";
  $B echo "1" >> $SCORE;
 fi;

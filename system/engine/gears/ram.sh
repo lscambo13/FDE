@@ -74,7 +74,6 @@ if [ -e /sys/block/zram0/disksize ]; then
   $B sleep 1;
  else
   $B echo "Perfect ZRAM size according to your RAM should be $FZRAM MB";
-  $B echo "Applying new ZRAM parameters..";
   if [ "$SWAP" -gt "0" ]; then
    $B echo "Stopping swappiness..";
    $B swapoff /dev/block/zram0 > /dev/null 2>&1;
@@ -100,6 +99,7 @@ if [ -e /sys/block/zram0/disksize ]; then
   if [ -e /sys/block/zram0/comp_algorithm ]; then
    $B echo "Setting compression algorithm to LZ4..";
    $B echo "lz4" > /sys/block/zram0/comp_algorithm;
+   $B echo "1" >> $SCORE;
   fi;
   if [ -e /sys/module/zram/parameters/lzo_algo_type ]; then
    $B echo "Setting compression algorithm to LZO..";
@@ -108,7 +108,7 @@ if [ -e /sys/block/zram0/disksize ]; then
    $B echo "1" >> $SCORE;
   fi;
   if [ -e /sys/block/zram0/max_comp_streams ]; then
-   $B echo "Set max compression streams..";
+   $B echo "Setting max compression streams..";
    $B echo "$CORES" > /sys/block/zram0/max_comp_streams;
    $B echo "$CORES" >> $SCORE;
   fi;
@@ -127,7 +127,6 @@ elif [ -e /sys/block/ramzswap0/size ]; then
   $B echo "Size of your RAMZSWAP is OK";
   sync;
  else
-  $B echo "Applying new RAMZSWAP parameters..";
   if [ "$SWAP" -gt "0" ]; then
    $B echo "Stopping swappiness..";
    sync;
@@ -152,7 +151,7 @@ elif [ -e /sys/block/ramzswap0/size ]; then
   if [ -e /sys/fs/cgroup/memory/sw/memory.swappiness ]; then
    $B echo "100" > /sys/fs/cgroup/memory/sw/memory.swappiness;
    $B echo "1" >> $SCORE;
-   $B echo "Tuning memory cgroups";
+   $B echo "Tuning memory cgroups..";
   fi;
  fi;
 elif [ "$SWAP" -gt "0" ]; then
@@ -168,7 +167,7 @@ elif [ "$SWAP" -gt "0" ]; then
    if [ -e /sys/fs/cgroup/memory/sw/memory.swappiness ]; then
     $B echo "90" > /sys/fs/cgroup/memory/sw/memory.swappiness;
     $B echo "1" >> $SCORE;
-    $B echo "Tuning memory cgroups";
+    $B echo "Tuning memory cgroups..";
    fi;
   else
    $B echo "40" > /proc/sys/vm/swappiness;
@@ -178,7 +177,7 @@ elif [ "$SWAP" -gt "0" ]; then
    if [ -e /sys/fs/cgroup/memory/sw/memory.swappiness ]; then
     $B echo "40" > /sys/fs/cgroup/memory/sw/memory.swappiness;
     $B echo "1" >> $SCORE;
-    $B echo "Tuning memory cgroups";
+    $B echo "Tuning memory cgroups..";
    fi;
   fi;
  if [ -e /sys/module/zswap/parameters/enabled ]; then
@@ -201,7 +200,7 @@ if [ -e /sys/block/zram0/disksize ]; then
   if [ -e /sys/fs/cgroup/memory/sw/memory.swappiness ]; then
    $B echo "100" > /sys/fs/cgroup/memory/sw/memory.swappiness;
    $B echo "1" >> $SCORE;
-   $B echo "Tuning memory cgroups";
+   $B echo "Tuning memory cgroups..";
   fi;
   if [ -e /sys/block/zram0/compact ]; then
    $B echo "Activate ZRAM compaction..";
@@ -221,7 +220,7 @@ if [ "$SWAP" -eq "0" ]; then
  if [ -e /sys/fs/cgroup/memory/sw/memory.swappiness ]; then
   $B echo "0" > /sys/fs/cgroup/memory/sw/memory.swappiness;
   $B echo "1" >> $SCORE;
-  $B echo "Tuning memory cgroups";
+  $B echo "Tuning memory cgroups..";
  fi;
 fi;
 if [ "$RAM" -le "1024" ]; then

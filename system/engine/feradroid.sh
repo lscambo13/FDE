@@ -6,23 +6,6 @@ RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 CORES=$($B grep -c 'processor' /proc/cpuinfo);
 SCORE=/system/engine/prop/score;
 FSCORE=/system/engine/prop/fscore;
-if [ -e /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq ]; then
- GOV=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor);
-else
- GOV=ondemand;
-fi;
-if [ -e /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq ]; then
- BGOV=$($B cat /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor);
-elif [ -e /sys/devices/system/cpu/cpu5/cpufreq/scaling_max_freq ]; then
- BGOV=$($B cat /sys/devices/system/cpu/cpu5/cpufreq/scaling_governor);
-else
- BGOV=ondemand;
-fi;
-setprop ro.fde.gov "$GOV";
-setprop ro.fde.bgov "$BGOV";
-for each in 0 1 2 3 4 5 6 7; do
- $B echo "performance" > /sys/devices/system/cpu/cpu$each/cpufreq/scaling_governor;
-done;
 BG=$((RAM/100));
 if [ "$CORES" = "0" ]; then
  CORES=1;
@@ -198,14 +181,6 @@ if [ -e /system/engine/gears/cleaner.sh ]; then
   $B echo "3" >> $SCORE;
  fi;
 fi;
-for every in 0 1 2 3; do
- $B echo "$(getprop ro.fde.gov)" > /sys/devices/system/cpu/cpu$every/cpufreq/scaling_governor;
-done;
-for every in 4 5 6 7; do
- $B echo "$(getprop ro.fde.bgov)" > /sys/devices/system/cpu/cpu$every/cpufreq/scaling_governor;
-done;
-$B echo ">> CPU boost done." >> $LOG;
-$B echo "4" >> $SCORE;
 if [ -e /system/engine/gears/cpu.sh ]; then
  CPU=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'cpu=1');
  if [ "cpu=1" = "$CPU" ]; then

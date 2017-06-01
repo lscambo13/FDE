@@ -56,10 +56,10 @@ for x in $($B mount | grep ext4 | cut -d " " -f3); do
  $B echo "Remounting EXT4 partition - $x" >> $SCORE;
  $B echo "1" >> $SCORE;
 done;
+$B echo "Remounting storage partitions..";
 for m in $ST $SST; do
  $B mount -o remount, noatime, nodiratime -t auto "${m}";
  $B mount -o remount, noatime, nodiratime -t auto "${m}"/Android/obb;
- $B echo "Remounting storage partition - $m";
  $B echo "1" >> $SCORE;
 done;
 $B echo "Remounting root foleders...";

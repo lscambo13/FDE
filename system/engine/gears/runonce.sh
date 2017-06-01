@@ -42,13 +42,17 @@ $B echo "  " >> /system/etc/ppp/options;
 $B echo "2" >> $FSCORE;
 $B echo "Data compression enabled.";
 if [ -e /system/vendor/etc/msm_irqbalance_little_big.conf ]; then
- $B echo "Tuning MSM IRQ balance..";
- $B cp /system/vendor/etc/msm_irqbalance_little_big.conf /system/vendor/etc/msm_irqbalance_little_big.conf_bak;
- $B rm -f /system/vendor/etc/msm_irqbalance_little_big.conf
- $B echo "PRIO=1,1,1,1,0,0,0,0" > /system/vendor/etc/msm_irqbalance_little_big.conf;
- $B echo "IGNORED_IRQ=20,39,155,157,172,200,203" >> /system/vendor/etc/msm_irqbalance_little_big.conf;
- $B echo "  " > /system/vendor/etc/msm_irqbalance_little_big.conf;
- $B echo "1" >> $FSCORE;
+ if [ ! -e/system/vendor/etc/msm_irqbalance_little_big.conf_bak ]; then
+  $B echo "Tuning MSM IRQ balance..";
+  $B cp /system/vendor/etc/msm_irqbalance_little_big.conf /system/vendor/etc/msm_irqbalance_little_big.conf_bak;
+  $B rm -f /system/vendor/etc/msm_irqbalance_little_big.conf
+  $B touch /system/vendor/etc/msm_irqbalance_little_big.conf
+  $B chmod 644 /system/vendor/etc/msm_irqbalance_little_big.conf
+  $B echo "PRIO=1,1,1,1,0,0,0,0" >> /system/vendor/etc/msm_irqbalance_little_big.conf;
+  $B echo "IGNORED_IRQ=20,39,155,157,172,200,203" >> /system/vendor/etc/msm_irqbalance_little_big.conf;
+  $B echo "  " > /system/vendor/etc/msm_irqbalance_little_big.conf;
+  $B echo "1" >> $FSCORE;
+ fi;
 fi;
 if [ -e /data/misc/mtkgps.dat ]; then
  $B rm -f /data/misc/mtkgps.dat;

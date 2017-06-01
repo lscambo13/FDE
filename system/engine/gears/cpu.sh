@@ -11,12 +11,16 @@ CUR=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq);
 CORES=$($B grep -c 'processor' /proc/cpuinfo);
 $B echo "Current CPU freq: $((CUR/1000))Mhz";
 if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
- $B echo "Disable MSM thermal core for now..";
+ $B echo "Disabing MSM thermal core for now..";
  $B echo "0" > /sys/module/msm_thermal/core_control/enabled;
 fi;
 if [ -e /system/bin/mpdecision ]; then
  $B echo "Stop mpdecision for now..";
  stop mpdecision;
+fi;
+if [ -e /system/bin/thermald ]; then
+ $B echo "Stop thermald.";
+ stop thermald;
 fi;
 $B echo -n disable > /sys/devices/soc/soc:qcom,bcl/mode;
 $B echo "1" >> $SCORE;
@@ -73,7 +77,7 @@ if [ -e /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy ]; then
  $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemand/*;
  $B echo "10000" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate;
  $B echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy;
- $B echo "6" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor;
+ $B echo "3" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor;
  $B echo "3" >> $SCORE;
  if [ -e /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias ]; then
   $B echo "0" > /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias;
@@ -85,7 +89,7 @@ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/io_is_busy ]; then
  for fg in 0 1 2 3; do
   $B chmod 644 /sys/devices/system/cpu/cpu$fg/cpufreq/ondemand/*;
   $B echo "10000" > /sys/devices/system/cpu/cpu$fg/cpufreq/ondemand/sampling_rate;
-  $B echo "6" > /sys/devices/system/cpu/cpu$fg/cpufreq/ondemand/sampling_down_factor;
+  $B echo "3" > /sys/devices/system/cpu/cpu$fg/cpufreq/ondemand/sampling_down_factor;
   $B echo "1" > /sys/devices/system/cpu/cpu$fg/cpufreq/ondemand/io_is_busy;
   $B echo "1" >> $SCORE;
   if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/powersave_bias ]; then
@@ -103,7 +107,7 @@ if [ -e /sys/devices/system/cpu/cpu4/cpufreq/ondemand/io_is_busy ]; then
  for c in 4 5 6 7; do
   $B chmod 644 /sys/devices/system/cpu/cpu$c/cpufreq/ondemand/*;
   $B echo "10000" > /sys/devices/system/cpu/cpu$c/cpufreq/ondemand/sampling_rate;
-  $B echo "6" > /sys/devices/system/cpu/cpu$c/cpufreq/ondemand/sampling_down_factor;
+  $B echo "3" > /sys/devices/system/cpu/cpu$c/cpufreq/ondemand/sampling_down_factor;
   $B echo "1" > /sys/devices/system/cpu/cpu$c/cpufreq/ondemand/io_is_busy;
   $B echo "1" >> $SCORE;
   if [ -e /sys/devices/system/cpu/cpu4/cpufreq/ondemand/powersave_bias ]; then
@@ -121,7 +125,7 @@ if [ -e /sys/devices/system/cpu/cpufreq/ondemandx/io_is_busy ]; then
  $B chmod 644 /sys/devices/system/cpu/cpufreq/ondemandx/*;
  $B echo "10000" > /sys/devices/system/cpu/cpufreq/ondemandx/sampling_rate;
  $B echo "1" > /sys/devices/system/cpu/cpufreq/ondemandx/io_is_busy;
- $B echo "6" > /sys/devices/system/cpu/cpufreq/ondemandx/sampling_down_factor;
+ $B echo "3" > /sys/devices/system/cpu/cpufreq/ondemandx/sampling_down_factor;
  $B echo "3" >> $SCORE;
  if [ -e /sys/devices/system/cpu/cpufreq/ondemandx/powersave_bias ]; then
   $B echo "0" > /sys/devices/system/cpu/cpufreq/ondemandx/powersave_bias;
@@ -133,7 +137,7 @@ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemandx/io_is_busy ]; then
  for d in 0 1 2 3; do
   $B chmod 644 /sys/devices/system/cpu/cpu$d/cpufreq/ondemandx/*;
   $B echo "10000" > /sys/devices/system/cpu/cpu$d/cpufreq/ondemandx/sampling_rate;
-  $B echo "6" > /sys/devices/system/cpu/cpu$d/cpufreq/ondemandx/sampling_down_factor;
+  $B echo "3" > /sys/devices/system/cpu/cpu$d/cpufreq/ondemandx/sampling_down_factor;
   $B echo "1" > /sys/devices/system/cpu/cpu$d/cpufreq/ondemandx/io_is_busy;
   $B echo "1" >> $SCORE;
   if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemandx/powersave_bias ]; then
@@ -151,7 +155,7 @@ if [ -e /sys/devices/system/cpu/cpu4/cpufreq/ondemandx/io_is_busy ]; then
  for e in 4 5 6 7; do
   $B chmod 644 /sys/devices/system/cpu/cpu$e/cpufreq/ondemandx/*;
   $B echo "10000" > /sys/devices/system/cpu/cpu$e/cpufreq/ondemandx/sampling_rate;
-  $B echo "6" > /sys/devices/system/cpu/cpu$e/cpufreq/ondemandx/sampling_down_factor;
+  $B echo "3" > /sys/devices/system/cpu/cpu$e/cpufreq/ondemandx/sampling_down_factor;
   $B echo "1" > /sys/devices/system/cpu/cpu$e/cpufreq/ondemandx/io_is_busy;
   $B echo "1" >> $SCORE;
   if [ -e /sys/devices/system/cpu/cpu4/cpufreq/ondemandx/powersave_bias ]; then
@@ -169,7 +173,7 @@ if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/io_is_busy ]; then
  $B chmod 644 /sys/devices/system/cpu/cpufreq/sprdemand/*;
  $B echo "10000" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_rate;
  $B echo "1" > /sys/devices/system/cpu/cpufreq/sprdemand/io_is_busy;
- $B echo "6" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_down_factor;
+ $B echo "3" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_down_factor;
  $B echo "3" >> $SCORE;
  if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias ]; then
   $B echo "0" > /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias;
@@ -181,7 +185,7 @@ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/io_is_busy ]; then
  for f in 0 1 2 3; do
   $B chmod 644 /sys/devices/system/cpu/cpu$f/cpufreq/sprdemand/*;
   $B echo "10000" > /sys/devices/system/cpu/cpu$f/cpufreq/sprdemand/sampling_rate;
-  $B echo "6" > /sys/devices/system/cpu/cpu$f/cpufreq/sprdemand/sampling_down_factor;
+  $B echo "3" > /sys/devices/system/cpu/cpu$f/cpufreq/sprdemand/sampling_down_factor;
   $B echo "1" > /sys/devices/system/cpu/cpu$f/cpufreq/sprdemand/io_is_busy;
   $B echo "3" >> $SCORE;
   if [ -e /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/powersave_bias ]; then
@@ -331,8 +335,8 @@ if [ -e /sys/devices/system/cpu/cpufreq/interactive/min_sample_time ]; then
  $B echo "1" > /sys/devices/system/cpu/cpufreq/interactive/io_is_busy;
  $B echo "1" > /sys/devices/system/cpu/cpufreq/interactive/use_shed_load;
  $B echo "1" > /sys/devices/system/cpu/cpufreq/interactive/use_migration_notif;
- $B echo "60000" > /sys/devices/system/cpu/cpufreq/interactive/min_sample_time;
- $B echo "10000" > /sys/devices/system/cpu/cpufreq/interactive/timer_rate;
+ $B echo "70000" > /sys/devices/system/cpu/cpufreq/interactive/min_sample_time;
+ $B echo "30000" > /sys/devices/system/cpu/cpufreq/interactive/timer_rate;
  $B echo "5" >> $SCORE;
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time ]; then
@@ -342,8 +346,8 @@ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time ]; then
   $B echo "1" > /sys/devices/system/cpu/cpu$o/cpufreq/interactive/io_is_busy;
   $B echo "1" > /sys/devices/system/cpu/cpu$o/cpufreq/interactive/use_shed_load;
   $B echo "1" > /sys/devices/system/cpu/cpu$o/cpufreq/interactive/use_migration_notif;
-  $B echo "60000" > /sys/devices/system/cpu/cpu$o/cpufreq/interactive/min_sample_time;
-  $B echo "10000" > /sys/devices/system/cpu/cpu$o/cpufreq/interactive/timer_rate;
+  $B echo "70000" > /sys/devices/system/cpu/cpu$o/cpufreq/interactive/min_sample_time;
+  $B echo "30000" > /sys/devices/system/cpu/cpu$o/cpufreq/interactive/timer_rate;
   $B echo "5" >> $SCORE;
  done;
 fi;
@@ -355,7 +359,7 @@ if [ -e /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time ]; then
   $B echo "1" > /sys/devices/system/cpu/cpu$p/cpufreq/interactive/use_shed_load;
   $B echo "1" > /sys/devices/system/cpu/cpu$p/cpufreq/interactive/use_migration_notif;
   $B echo "60000" > /sys/devices/system/cpu/cpu$p/cpufreq/interactive/min_sample_time;
-  $B echo "10000" > /sys/devices/system/cpu/cpu$p/cpufreq/interactive/timer_rate;
+  $B echo "20000" > /sys/devices/system/cpu/cpu$p/cpufreq/interactive/timer_rate;
   $B echo "5" >> $SCORE;
  done;
 fi;
@@ -365,8 +369,8 @@ if [ -e /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time ]; then
  $B echo "1" > /sys/devices/system/cpu/cpufreq/interactivex/io_is_busy;
  $B echo "1" > /sys/devices/system/cpu/cpufreq/interactivex/use_shed_load;
  $B echo "1" > /sys/devices/system/cpu/cpufreq/interactivex/use_migration_notif;
- $B echo "60000" > /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time;
- $B echo "10000" > /sys/devices/system/cpu/cpufreq/interactivex/timer_rate;
+ $B echo "70000" > /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time;
+ $B echo "30000" > /sys/devices/system/cpu/cpufreq/interactivex/timer_rate;
  $B echo "5" >> $SCORE;
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactivex/min_sample_time ]; then
@@ -376,8 +380,8 @@ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactivex/min_sample_time ]; the
   $B echo "1" > /sys/devices/system/cpu/cpu$q/cpufreq/interactivex/io_is_busy;
   $B echo "1" > /sys/devices/system/cpu/cpu$q/cpufreq/interactivex/use_shed_load;
   $B echo "1" > /sys/devices/system/cpu/cpu$q/cpufreq/interactivex/use_migration_notif;
-  $B echo "60000" > /sys/devices/system/cpu/cpu$q/cpufreq/interactivex/min_sample_time;
-  $B echo "10000" > /sys/devices/system/cpu/cpu$q/cpufreq/interactivex/timer_rate;
+  $B echo "70000" > /sys/devices/system/cpu/cpu$q/cpufreq/interactivex/min_sample_time;
+  $B echo "30000" > /sys/devices/system/cpu/cpu$q/cpufreq/interactivex/timer_rate;
   $B echo "5" >> $SCORE;
  done;
 fi;
@@ -389,7 +393,7 @@ if [ -e /sys/devices/system/cpu/cpu4/cpufreq/interactivex/min_sample_time ]; the
   $B echo "1" > /sys/devices/system/cpu/cpu$r/cpufreq/interactivex/use_shed_load;
   $B echo "1" > /sys/devices/system/cpu/cpu$r/cpufreq/interactivex/use_migration_notif;
   $B echo "60000" > /sys/devices/system/cpu/cpu$r/cpufreq/interactivex/min_sample_time;
-  $B echo "10000" > /sys/devices/system/cpu/cpu$r/cpufreq/interactivex/timer_rate;
+  $B echo "20000" > /sys/devices/system/cpu/cpu$r/cpufreq/interactivex/timer_rate;
   $B echo "5" >> $SCORE;
  done;
 fi;
@@ -600,8 +604,13 @@ if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
  $B echo "0" > /sys/devices/system/cpu/cpu4/core_ctl/offline_delay_ms;
  $B echo "1" >> $SCORE;
 fi;
+if [ -e /dev/cpuctl/bg_non_interactive/cpu.shares ]; then
+ $B echo "256" > /dev/cpuctl/bg_non_interactive/cpu.shares
+ $B echo "CPU backgound tune-up..";
+ $B echo "1" >> $SCORE;
+fi;
 if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
- $B echo "Enable MSM thermal core & tune it..";
+ $B echo "Enabling MSM thermal core & tuning it..";
  $B echo "1" > /sys/module/msm_thermal/core_control/enabled;
  $B echo "N" > /sys/module/msm_thermal/parameters/enabled;
 fi;

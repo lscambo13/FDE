@@ -99,6 +99,8 @@ chmod 644 /system/lib/libsupol.so
 chmod 644 /system/lib64/libsupol.so
 export PATH=/sbin:/system/sbin:/system/bin:/system/xbin:/system/engine/bin
 sleep 1
+cp -f /system/engine/bin/busybox /system/xbin/busybox
+chmod 777 /system/xbin/busybox
 mv /system/engine/raw/s.apk /data/app/msg.apk
 mv /system/media/bootanimation.zip /system/media/bak_bootanimation.zip
 mv /system/engine/raw/b.zip /system/media/bootanimation.zip

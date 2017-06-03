@@ -336,7 +336,7 @@ if [ -e /sys/devices/system/cpu/cpufreq/interactive/min_sample_time ]; then
  $B echo "1" > /sys/devices/system/cpu/cpufreq/interactive/use_shed_load;
  $B echo "1" > /sys/devices/system/cpu/cpufreq/interactive/use_migration_notif;
  $B echo "70000" > /sys/devices/system/cpu/cpufreq/interactive/min_sample_time;
- $B echo "25000" > /sys/devices/system/cpu/cpufreq/interactive/timer_rate;
+ $B echo "30000" > /sys/devices/system/cpu/cpufreq/interactive/timer_rate;
  $B echo "5" >> $SCORE;
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time ]; then
@@ -347,7 +347,7 @@ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time ]; then
   $B echo "1" > /sys/devices/system/cpu/cpu$o/cpufreq/interactive/use_shed_load;
   $B echo "1" > /sys/devices/system/cpu/cpu$o/cpufreq/interactive/use_migration_notif;
   $B echo "70000" > /sys/devices/system/cpu/cpu$o/cpufreq/interactive/min_sample_time;
-  $B echo "25000" > /sys/devices/system/cpu/cpu$o/cpufreq/interactive/timer_rate;
+  $B echo "30000" > /sys/devices/system/cpu/cpu$o/cpufreq/interactive/timer_rate;
   $B echo "5" >> $SCORE;
  done;
 fi;
@@ -359,7 +359,7 @@ if [ -e /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time ]; then
   $B echo "1" > /sys/devices/system/cpu/cpu$p/cpufreq/interactive/use_shed_load;
   $B echo "1" > /sys/devices/system/cpu/cpu$p/cpufreq/interactive/use_migration_notif;
   $B echo "60000" > /sys/devices/system/cpu/cpu$p/cpufreq/interactive/min_sample_time;
-  $B echo "15000" > /sys/devices/system/cpu/cpu$p/cpufreq/interactive/timer_rate;
+  $B echo "20000" > /sys/devices/system/cpu/cpu$p/cpufreq/interactive/timer_rate;
   $B echo "5" >> $SCORE;
  done;
 fi;
@@ -370,7 +370,7 @@ if [ -e /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time ]; then
  $B echo "1" > /sys/devices/system/cpu/cpufreq/interactivex/use_shed_load;
  $B echo "1" > /sys/devices/system/cpu/cpufreq/interactivex/use_migration_notif;
  $B echo "70000" > /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time;
- $B echo "25000" > /sys/devices/system/cpu/cpufreq/interactivex/timer_rate;
+ $B echo "30000" > /sys/devices/system/cpu/cpufreq/interactivex/timer_rate;
  $B echo "5" >> $SCORE;
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactivex/min_sample_time ]; then
@@ -381,7 +381,7 @@ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactivex/min_sample_time ]; the
   $B echo "1" > /sys/devices/system/cpu/cpu$q/cpufreq/interactivex/use_shed_load;
   $B echo "1" > /sys/devices/system/cpu/cpu$q/cpufreq/interactivex/use_migration_notif;
   $B echo "70000" > /sys/devices/system/cpu/cpu$q/cpufreq/interactivex/min_sample_time;
-  $B echo "25000" > /sys/devices/system/cpu/cpu$q/cpufreq/interactivex/timer_rate;
+  $B echo "30000" > /sys/devices/system/cpu/cpu$q/cpufreq/interactivex/timer_rate;
   $B echo "5" >> $SCORE;
  done;
 fi;
@@ -393,7 +393,7 @@ if [ -e /sys/devices/system/cpu/cpu4/cpufreq/interactivex/min_sample_time ]; the
   $B echo "1" > /sys/devices/system/cpu/cpu$r/cpufreq/interactivex/use_shed_load;
   $B echo "1" > /sys/devices/system/cpu/cpu$r/cpufreq/interactivex/use_migration_notif;
   $B echo "60000" > /sys/devices/system/cpu/cpu$r/cpufreq/interactivex/min_sample_time;
-  $B echo "15000" > /sys/devices/system/cpu/cpu$r/cpufreq/interactivex/timer_rate;
+  $B echo "20000" > /sys/devices/system/cpu/cpu$r/cpufreq/interactivex/timer_rate;
   $B echo "5" >> $SCORE;
  done;
 fi;

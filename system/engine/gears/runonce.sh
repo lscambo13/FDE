@@ -51,12 +51,54 @@ $B echo "deflate" >> /system/etc/ppp/options;
 $B echo "  " >> /system/etc/ppp/options;
 $B echo "2" >> $FSCORE;
 $B echo "Data compression enabled.";
-if [ -e /system/vendor/etc/msm_irqbalance_little_big.conf ]; then
- $B echo "Tuning MSM IRQ balance..";
- $B rm -f /system/vendor/etc/msm_irqbalance_little_big.conf
- $B cp /system/engine/raw/msm.conf /system/vendor/etc/msm_irqbalance_little_big.conf;
- $B chmod 644 /system/vendor/etc/msm_irqbalance_little_big.conf
- $B echo "1" >> $FSCORE;
+if [ "$SDK" -ge "21" ]; then
+ if [ "$ARCH" = "$($B echo $ARCH | $B grep "arm")" ]; then
+  $B cp -f /system/engine/raw/lib1.so /system/vendor/lib/libaptX.so;
+  $B cp -f /system/engine/raw/lib2.so /system/vendor/lib/libaptXHD.so;
+  $B cp -f /system/engine/raw/lib3.so /system/vendor/lib/libaptXScheduler.so;
+  $B chmod 644 /system/vendor/lib/libaptX.so;
+  $B chmod 644 /system/vendor/lib/libaptXHD.so;
+  $B chmod 644 /system/vendor/lib/libaptXScheduler.so;
+  $B echo "persist.bt.a2dp_offload_cap=sbc-aptx-aptxhd" >> /system/engine/raw/build.prop;
+  $B echo "BT aptxHD codec activated.";
+  $B echo "3" >> $FSCORE;
+ fi;
+fi;
+if [ "$SDK" -le "17" ]; then
+ if [ "$SDK" -ge "9" ]; then
+  if [ -e /system/lib/egl/libGLES_android.so ]; then
+   if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
+    AV=$($B du -k "/system/lib/egl/libGLESv2_adreno200.so" | $B cut -f1);
+   else
+    AV=0;
+   fi;
+   if [ "$AV" -eq "1712" ]; then
+    $B echo "You have legacy GPU libs. No HWA for you.";
+   else
+    $B echo "Enabling Project Butter with forced HWA..";
+    $B cp -f /system/lib/egl/egl.cfg /system/lib/egl/egl.cfg_bak;
+    $B sed -i '/0 0 android/d' /system/lib/egl/egl.cfg;
+    $B mv /system/lib/egl/libGLES_android.so /system/lib/egl/bak.bak_so;
+	$B echo "9" >> $FSCORE;
+   fi;
+  fi;
+ fi;
+fi;
+if [ "$CORES" -le "4" ]; then
+ $B echo "Tuning Android animations..";
+ if [ -e /system/xbin/sqlite3 ]; then
+  $B echo "REPLACE INTO \"system\" VALUES(26,'window_animation_scale','0.5');REPLACE INTO \"system\" VALUES(27,'transition_animation_scale','0.5');" | sqlite3 /data/data/com.android.providers.settings/databases/settings.db;
+ fi;
+ content update --uri content://settings/system --bind value:s:0.5 --where 'name="window_animation_scale"';
+ content update --uri content://settings/system --bind value:s:0.5 --where 'name="transition_animation_scale"';
+ content update --uri content://settings/system --bind value:s:0.75 --where 'name="animator_duration_scale"';
+ settings put system window_animation_scale 0.5;
+ settings put global window_animation_scale 0.5;
+ settings put system transition_animation_scale 0.5;
+ settings put global transition_animation_scale 0.5;
+ settings put system animator_duration_scale 0.75;
+ settings put global animator_duration_scale 0.75;
+ $B echo "6" >> $FSCORE;
 fi;
 if [ -e /data/misc/mtkgps.dat ]; then
  $B rm -f /data/misc/mtkgps.dat;
@@ -215,7 +257,17 @@ $B sed -e "s=debug.mdpcomp.logs=#debug.mdpcomp.logs=" -i /system/engine/raw/buil
 $B sed -e "s=ro.max.fling_velocity=#ro.max.fling_velocity=" -i /system/engine/raw/build.prop;
 $B sed -e "s=ro.min.fling_velocity=#ro.min.fling_velocity=" -i /system/engine/raw/build.prop;
 $B sed -e "s=ro.kernel.android.checkjni=#ro.kernel.android.checkjni=" -i /system/engine/raw/build.prop;
+$B sed -e "s=ro.config.nocheckin=#ro.config.nocheckin=" -i /system/engine/raw/build.prop;
+$B sed -e "s=ro.kernel.checkjni=#ro.kernel.checkjni=" -i /system/engine/raw/build.prop;
+$B sed -e "s=profiler.launch=#profiler.launch=" -i /system/engine/raw/build.prop;
+$B sed -e "s=profiler.force_disable_err_rpt=#profiler.force_disable_err_rpt=" -i /system/engine/raw/build.prop;
+$B sed -e "s=profiler.force_disable_ulog=#profiler.force_disable_ulog=" -i /system/engine/raw/build.prop;
+$B sed -e "s=profiler.debugmonitor=#profiler.debugmonitor=" -i /system/engine/raw/build.prop;
+$B sed -e "s=profiler.hung.dumpdobugreport=#profiler.hung.dumpdobugreport=" -i /system/engine/raw/build.prop;
+$B sed -e "s=logcat.live=#logcat.live=" -i /system/engine/raw/build.prop;
+$B sed -e "s=debugtool.anrhistory=#debugtool.anrhistory=" -i /system/engine/raw/build.prop;
 $B sed -e "s=touch.pressure.scale=#touch.pressure.scale=" -i /system/engine/raw/build.prop;
+$B sed -e "s=ro.vold.umsdirtyratio=#ro.vold.umsdirtyratio=" -i /system/engine/raw/build.prop;
 if [ "$RAM" -le "512" ]; then
  $B sed -e "s=ro.config.low_ram=#ro.config.low_ram=" -i /system/engine/raw/build.prop;
  $B sed -e "s=config.disable_atlas=#config.disable_atlas=" -i /system/engine/raw/build.prop;
@@ -328,6 +380,16 @@ fi;
  $B echo "ro.min.fling_velocity=8000"
  $B echo "ro.kernel.android.checkjni=0"
  $B echo "touch.pressure.scale=0.001"
+ $B echo "ro.config.nocheckin=1"
+ $B echo "ro.kernel.checkjni=0"
+ $B echo "profiler.launch=false"
+ $B echo "profiler.force_disable_err_rpt=1"
+ $B echo "profiler.force_disable_ulog=1"
+ $B echo "profiler.debugmonitor=false"
+ $B echo "profiler.hung.dumpdobugreport=false"
+ $B echo "logcat.live=disable"
+ $B echo "debugtool.anrhistory=0"
+ $B echo "ro.vold.umsdirtyratio=25"
 } >> /system/engine/raw/build.prop;
 if [ "$RAM" -le "512" ]; then
  {
@@ -367,56 +429,7 @@ if [ "$CORES" -ge "5" ]; then
 else
  $B echo "persist.sys.use_dithering=0" >> /system/engine/raw/build.prop;
 fi;
-if [ "$SDK" -ge "21" ]; then
- if [ "$ARCH" = "$($B echo $ARCH | $B grep "arm")" ]; then
-  $B cp -f /system/engine/raw/lib1.so /system/vendor/lib/libaptX.so;
-  $B cp -f /system/engine/raw/lib2.so /system/vendor/lib/libaptXHD.so;
-  $B cp -f /system/engine/raw/lib3.so /system/vendor/lib/libaptXScheduler.so;
-  $B chmod 644 /system/vendor/lib/libaptX.so;
-  $B chmod 644 /system/vendor/lib/libaptXHD.so;
-  $B chmod 644 /system/vendor/lib/libaptXScheduler.so;
-  $B echo "persist.bt.a2dp_offload_cap=sbc-aptx-aptxhd" >> /system/engine/raw/build.prop;
-  $B echo "BT aptxHD codec activated.";
-  $B echo "3" >> $FSCORE;
- fi;
-fi;
-if [ "$SDK" -le "17" ]; then
- if [ "$SDK" -ge "9" ]; then
-  if [ -e /system/lib/egl/libGLES_android.so ]; then
-   if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
-    AV=$($B du -k "/system/lib/egl/libGLESv2_adreno200.so" | $B cut -f1);
-   else
-    AV=0;
-   fi;
-   if [ "$AV" -eq "1712" ]; then
-    $B echo "You have legacy GPU libs. No HWA for you.";
-   else
-    $B echo "Enabling Project Butter with forced HWA..";
-    $B cp -f /system/lib/egl/egl.cfg /system/lib/egl/egl.cfg_bak;
-    $B sed -i '/0 0 android/d' /system/lib/egl/egl.cfg;
-    $B mv /system/lib/egl/libGLES_android.so /system/lib/egl/bak.bak_so;
-	$B echo "9" >> $FSCORE;
-   fi;
-  fi;
- fi;
-fi;
-if [ "$CORES" -le "4" ]; then
- $B echo "Tuning Android animations..";
- if [ -e /system/xbin/sqlite3 ]; then
-  $B echo "REPLACE INTO \"system\" VALUES(26,'window_animation_scale','0.5');REPLACE INTO \"system\" VALUES(27,'transition_animation_scale','0.5');" | sqlite3 /data/data/com.android.providers.settings/databases/settings.db;
- fi;
- content update --uri content://settings/system --bind value:s:0.5 --where 'name="window_animation_scale"';
- content update --uri content://settings/system --bind value:s:0.5 --where 'name="transition_animation_scale"';
- content update --uri content://settings/system --bind value:s:0.75 --where 'name="animator_duration_scale"';
- settings put system window_animation_scale 0.5;
- settings put global window_animation_scale 0.5;
- settings put system transition_animation_scale 0.5;
- settings put global transition_animation_scale 0.5;
- settings put system animator_duration_scale 0.75;
- settings put global animator_duration_scale 0.75;
- $B echo "6" >> $FSCORE;
-fi;
 $B cp -f /system/engine/raw/build.prop /system/build.prop;
 $B chmod 644 /system/build.prop;
-$B echo "88" >> $FSCORE;
+$B echo "98" >> $FSCORE;
 

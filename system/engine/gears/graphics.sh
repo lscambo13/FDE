@@ -2,7 +2,6 @@
 ### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
 SDK=$(getprop ro.build.version.sdk);
-CORES=$($B grep -c 'processor' /proc/cpuinfo);
 MADMAX=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'mad_max=1');
 if [ -e /sys/kernel/debug/msm_fb/0/vsync_enable ]; then
  $B echo "Disabling FPS-cap and tuning FB..";

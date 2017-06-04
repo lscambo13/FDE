@@ -3,13 +3,18 @@
 B=/system/engine/bin/busybox;
 SCORE=/system/engine/prop/score;
 MADMAX=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'mad_max=1');
-RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 if [ -e /sys/module/lowmemorykiller/parameters/cost ]; then
  $B echo "LMK cost fine-tuning..";
  $B chmod 666 /sys/module/lowmemorykiller/parameters/cost;
  $B chown 0:0 /sys/module/lowmemorykiller/parameters/cost;
- $B echo "16" > /sys/module/lowmemorykiller/parameters/cost;
- $B echo "1" >> $SCORE;
+ if [ "mad_max=1" = "$MADMAX" ]; then
+  $B echo "Mad LMK.";
+  $B echo "64" > /sys/module/lowmemorykiller/parameters/cost;
+  $B echo "4" >> $SCORE;
+ else
+  $B echo "16" > /sys/module/lowmemorykiller/parameters/cost;
+  $B echo "1" >> $SCORE;
+ fi;
 fi;
 if [ -e /sys/module/lowmemorykiller/parameters/fudgeswap ]; then
  $B echo "FudgeSwap support detected. Tuning..";
@@ -50,50 +55,50 @@ sui=$($B pidof com.android.systemui);
 net=$($B pidof netd);
 if [ "$sui" ]; then
  $B renice [-18] "$sui";
- $B echo "-17" > /proc/$sui/oom_adj;
- $B chmod 100 /proc/$sui/oom_adj;
+ $B echo "-17" > /proc/"$sui"/oom_adj;
+ $B chmod 100 /proc/"$sui"/oom_adj;
  $B echo " - system UI";
  $B echo "3" >> $SCORE;
 fi;
 if [ "$net" ]; then
  $B renice [-15] "$net";
- $B echo "-14" > /proc/$net/oom_adj;
- $B chmod 100 /proc/$net/oom_adj;
+ $B echo "-14" > /proc/"$net"/oom_adj;
+ $B chmod 100 /proc/"$net"/oom_adj;
  $B echo " - network daemon";
  $B echo "3" >> $SCORE;
 fi;
 if [ "$H" ]; then
  $B renice [-18] "$H";
- $B echo "-17" > /proc/$H/oom_adj;
- $B chmod 100 /proc/$H/oom_adj;
+ $B echo "-17" > /proc/"$H"/oom_adj;
+ $B chmod 100 /proc/"$H"/oom_adj;
  $B echo " - home launcher";
  $B echo "3" >> $SCORE;
 fi;
 if [ "$L" ]; then
  $B renice [-18] "$L";
- $B echo "-17" > /proc/$L/oom_adj;
- $B chmod 100 /proc/$L/oom_adj;
+ $B echo "-17" > /proc/"$L"/oom_adj;
+ $B chmod 100 /proc/"$L"/oom_adj;
  $B echo " - home launcher";
  $B echo "3" >> $SCORE;
 fi;
 if [ "$P" ]; then
  $B renice [-17] "$P";
- $B echo "-17" > /proc/$P/oom_adj;
- $B chmod 100 /proc/$P/oom_adj;
+ $B echo "-17" > /proc/"$P"/oom_adj;
+ $B chmod 100 /proc/"$P"/oom_adj;
  $B echo " - phone";
  $B echo "3" >> $SCORE;
 fi;
 if [ "$D" ]; then
  $B renice [-17] "$D";
- $B echo "-17" > /proc/$D/oom_adj;
- $B chmod 100 /proc/$D/oom_adj;
+ $B echo "-17" > /proc/"$D"/oom_adj;
+ $B chmod 100 /proc/"$D"/oom_adj;
  $B echo " - dialer";
  $B echo "3" >> $SCORE;
 fi;
 if [ "$T" ]; then
  $B renice [-18] "$T";
- $B echo "-17" > /proc/$T/oom_adj;
- $B chmod 100 /proc/$T/oom_adj;
+ $B echo "-17" > /proc/"$T"/oom_adj;
+ $B chmod 100 /proc/"$T"/oom_adj;
  $B echo " - trebuchet launcher";
  $B echo "3" >> $SCORE;
 fi;

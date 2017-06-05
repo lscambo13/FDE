@@ -140,9 +140,7 @@ if [ -e /system/engine/prop/firstboot ]; then
   /sbin/sysro;
  fi;
  msg -t "FDE deployed. Rebooting NOW!";
- $B sleep 3;
- $B rm -Rf /data/dalvik-cache;
- $B sleep 3;
+ $B sleep 5;
  reboot
  $B sleep 9;
  exit 0;
@@ -335,7 +333,7 @@ for x in $($B mount | grep ext4 | cut -d " " -f3); do
  $B mount -o remount, nodiratime, relatime, delalloc, discard "${x}";
 done;
 if [ -e /system/engine/gears/sleeper.sh ]; then
- if [ "$SDK" -le "21" ]; then
+ if [ "$SDK" -le "22" ]; then
   SLEEPER=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'sleeper=1');
   if [ "sleeper=1" = "$SLEEPER" ]; then
    $B echo ">> Starting SLEEPER daemon.." >> $LOG;

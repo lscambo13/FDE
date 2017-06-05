@@ -67,21 +67,15 @@ if [ -e /proc/sys/vm/oom_kill_allocating_task ]; then
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/dirty_ratio ]; then
- if [ "$RAM" -ge "2600" ]; then
-  $B echo "20" > /proc/sys/vm/dirty_ratio;
-  $B echo "vm.dirty_ratio=20" >> /system/etc/sysctl.conf;
-  $B sysctl -e -w vm.dirty_ratio=20;
- else
-  $B echo "27" > /proc/sys/vm/dirty_ratio;
-  $B echo "vm.dirty_ratio=27" >> /system/etc/sysctl.conf;
-  $B sysctl -e -w vm.dirty_ratio=27;
- fi;
+ $B echo "27" > /proc/sys/vm/dirty_ratio;
+ $B echo "vm.dirty_ratio=27" >> /system/etc/sysctl.conf;
+ $B sysctl -e -w vm.dirty_ratio=27;
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/dirty_background_ratio ]; then
- $B echo "9" > /proc/sys/vm/dirty_background_ratio;
- $B echo "vm.dirty_background_ratio=9" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.dirty_background_ratio=9;
+ $B echo "10" > /proc/sys/vm/dirty_background_ratio;
+ $B echo "vm.dirty_background_ratio=10" >> /system/etc/sysctl.conf;
+ $B sysctl -e -w vm.dirty_background_ratio=10;
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/dirty_writeback_centisecs ]; then
@@ -248,12 +242,12 @@ if [ -e /sys/kernel/sched/gentle_fair_sleepers ]; then
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/kernel/sched_window_stats_policy ]; then
- $B echo "3" > /proc/sys/kernel/sched_window_stats_policy;
+ $B echo "2" > /proc/sys/kernel/sched_window_stats_policy;
  $B echo "Tuning kernel sched policy..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/kernel/sched_ravg_hist_size ]; then
- $B echo "3" > /proc/sys/kernel/sched_ravg_hist_size;
+ $B echo "4" > /proc/sys/kernel/sched_ravg_hist_size;
  $B echo "Tuning kernel sched history size..";
  $B echo "1" >> $SCORE;
 fi;
@@ -263,27 +257,27 @@ if [ -e /proc/sys/kernel/sched_spill_load ]; then
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/kernel/sched_spill_nr_run ]; then
- $B echo "9" > /proc/sys/kernel/sched_spill_nr_run;
+ $B echo "7" > /proc/sys/kernel/sched_spill_nr_run;
  $B echo "Tuning kernel sched spill nr run..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/kernel/sched_upmigrate ]; then
- $B echo "90" > /proc/sys/kernel/sched_upmigrate;
+ $B echo "85" > /proc/sys/kernel/sched_upmigrate;
  $B echo "Tuning kernel sched upmigrate..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/kernel/sched_downmigrate ]; then
- $B echo "70" > /proc/sys/kernel/sched_downmigrate;
+ $B echo "65" > /proc/sys/kernel/sched_downmigrate;
  $B echo "Tuning kernel sched downmigrate..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/kernel/sched_heavy_task ]; then
- $B echo "90" > /proc/sys/kernel/sched_heavy_task;
+ $B echo "96" > /proc/sys/kernel/sched_heavy_task;
  $B echo "Tuning kernel sched heavy task..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/kernel/sched_init_task_load ]; then
- $B echo "30" > /proc/sys/kernel/sched_init_task_load;
+ $B echo "40" > /proc/sys/kernel/sched_init_task_load;
  $B echo "Tuning kernel sched init task load..";
  $B echo "1" >> $SCORE;
 fi;
@@ -293,13 +287,18 @@ if [ -e /proc/sys/kernel/sched_enable_power_aware ]; then
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/kernel/sched_upmigrate_min_nice ]; then
- $B echo "9" > /proc/sys/kernel/sched_upmigrate_min_nice;
+ $B echo "7" > /proc/sys/kernel/sched_upmigrate_min_nice;
  $B echo "Tuning kernel sched upmigrate nice..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/kernel/sched_small_wakee_task_load ]; then
- $B echo "12" > /proc/sys/kernel/sched_small_wakee_task_load;
- $B echo "Tuning kernel sched wake task load..";
+ $B echo "15" > /proc/sys/kernel/sched_small_wakee_task_load;
+ $B echo "Tuning kernel sched wake small task load..";
+ $B echo "1" >> $SCORE;
+fi;
+if [ -e /proc/sys/kernel/sched_big_waker_task_load ]; then
+ $B echo "33" > /proc/sys/kernel/sched_big_waker_task_load;
+ $B echo "Tuning kernel sched wake big task load..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/kernel/sched_small_task ]; then
@@ -315,16 +314,6 @@ fi;
 if [ -e /proc/sys/kernel/sched_migration_fixup ]; then
  $B echo "1" > /proc/sys/kernel/sched_migration_fixup;
  $B echo "Tuning kernel sched migration..";
- $B echo "1" >> $SCORE;
-fi;
-if [ -e /proc/sys/kernel/sched_boost ]; then
- $B echo "0" > /proc/sys/kernel/sched_boost;
- $B echo "Tuning kernel sched boost..";
- $B echo "1" >> $SCORE;
-fi;
-if [ -e /proc/sys/kernel/sched_tunable_scaling ]; then
- $B echo "0" > /proc/sys/kernel/sched_tunable_scaling;
- $B echo "Tuning kernel sched scaling..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/kernel/sched_latency_ns ]; then

@@ -177,8 +177,6 @@ $B sed -e "s=power.saving.mode=#power.saving.mode=" -i /system/engine/raw/build.
 $B sed -e "s=persist.radio.ramdump=#persist.radio.ramdump=" -i /system/engine/raw/build.prop;
 $B sed -e "s=pm.sleep_mode=#pm.sleep_mode=" -i /system/engine/raw/build.prop;
 $B sed -e "s=ro.ril.disable.power.collapse=#ro.ril.disable.power.collapse=" -i /system/engine/raw/build.prop;
-$B sed -e "s=ro.ril.fast.dormancy=#ro.ril.fast.dormancy=" -i /system/engine/raw/build.prop;
-$B sed -e "s=ro.ril.fast.dormancy.rule=#ro.ril.fast.dormancy.rule=" -i /system/engine/raw/build.prop;
 $B sed -e "s=ro.config.hw_power_saving=#ro.config.hw_power_saving=" -i /system/engine/raw/build.prop;
 $B sed -e "s=dev.pm.dyn_samplingrate=#dev.pm.dyn_samplingrate=" -i /system/engine/raw/build.prop;
 $B sed -e "s=persist.radio.add_power_save=#persist.radio.add_power_save=" -i /system/engine/raw/build.prop;
@@ -233,14 +231,6 @@ $B sed -e "s=persist.sys.use_dithering=#persist.sys.use_dithering=" -i /system/e
 $B sed -e "s=persist.sys.scrollingcache=#persist.sys.scrollingcache=" -i /system/engine/raw/build.prop;
 $B sed -e "s=persist.sys.dun.override=#persist.sys.dun.override=" -i /system/engine/raw/build.prop;
 $B sed -e "s=persist.sys.camera-sound=#persist.sys.camera-sound=" -i /system/engine/raw/build.prop;
-$B sed -e "s=net.tcp.buffersize.default=#net.tcp.buffersize.default=" -i /system/engine/raw/build.prop;
-$B sed -e "s=net.tcp.buffersize.wifi=#net.tcp.buffersize.wifi=" -i /system/engine/raw/build.prop;
-$B sed -e "s=net.tcp.buffersize.umts=#net.tcp.buffersize.umts=" -i /system/engine/raw/build.prop;
-$B sed -e "s=net.tcp.buffersize.hsdpa=#net.tcp.buffersize.hsdpa=" -i /system/engine/raw/build.prop;
-$B sed -e "s=net.tcp.buffersize.hspa=#net.tcp.buffersize.hspa=" -i /system/engine/raw/build.prop;
-$B sed -e "s=net.tcp.buffersize.hsupa=#net.tcp.buffersize.hsupa=" -i /system/engine/raw/build.prop;
-$B sed -e "s=net.tcp.buffersize.edge=#net.tcp.buffersize.edge=" -i /system/engine/raw/build.prop;
-$B sed -e "s=net.tcp.buffersize.gprs=#net.tcp.buffersize.gprs=" -i /system/engine/raw/build.prop;
 $B sed -e "s=hwui.render_dirty_regions=#hwui.render_dirty_regions=" -i /system/engine/raw/build.prop;
 $B sed -e "s=debug.hwui.render_dirty_regions=#debug.hwui.render_dirty_regions=" -i /system/engine/raw/build.prop;
 $B sed -e "s=ro.media.enc.jpeg.quality=#ro.media.enc.jpeg.quality=" -i /system/engine/raw/build.prop;
@@ -301,9 +291,6 @@ fi;
  $B echo "persist.radio.ramdump=0"
  $B echo "pm.sleep_mode=1"
  $B echo "ro.ril.disable.power.collapse=0"
- $B echo "ro.semc.enable.fast_dormancy=false"
- $B echo "ro.ril.fast.dormancy=0"
- $B echo "ro.ril.fast.dormancy.rule=0"
  $B echo "ro.config.hw_power_saving=1"
  $B echo "dev.pm.dyn_samplingrate=1"
  $B echo "persist.radio.add_power_save=1"
@@ -357,14 +344,6 @@ fi;
  $B echo "persist.sys.scrollingcache=3"
  $B echo "persist.sys.dun.override=0"
  $B echo "persist.sys.camera-sound=0"
- $B echo "net.tcp.buffersize.default=4096,87380,110208,4096,16384,110208"
- $B echo "net.tcp.buffersize.wifi=4095,87380,110208,4096,16384,110208"
- $B echo "net.tcp.buffersize.umts=4095,87380,110208,4096,16384,110208"
- $B echo "net.tcp.buffersize.hsdpa=4096,32768,65536,4096,32768,65536"
- $B echo "net.tcp.buffersize.hspa=4096,32768,65536,4096,32768,65536"
- $B echo "net.tcp.buffersize.hsupa=4096,32768,65536,4096,32768,65536"
- $B echo "net.tcp.buffersize.edge=4093,26280,35040,4096,16384,35040"
- $B echo "net.tcp.buffersize.gprs=4092,8760,11680,4096,8760,11680"
  $B echo "hwui.render_dirty_regions=false"
  $B echo "debug.hwui.render_dirty_regions=false"
  $B echo "ro.media.enc.jpeg.quality=100"
@@ -432,5 +411,6 @@ else
 fi;
 $B cp -f /system/engine/raw/build.prop /system/build.prop;
 $B chmod 644 /system/build.prop;
-$B echo "98" >> $FSCORE;
+$B chmod 644 /system/build.prop_bak;
+$B echo "86" >> $FSCORE;
 

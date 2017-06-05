@@ -35,7 +35,6 @@ $B echo "  Cached:             $RAMcached MB";
 $B echo "  SWAP/ZRAM total:    $SWAP MB";
 $B echo "  SWAP/ZRAM used:     $SWAPused MB";
 $B echo "Freeing RAM...";
-setprop sys.swap 0
 setprop ro.config.zram.support true
 service call activity 51 i32 0;
 $B sleep 2;
@@ -95,7 +94,7 @@ if [ -e /sys/block/zram0/disksize ]; then
   $B sleep 1;
   $B echo "Creating ZRAM blockdev - $FZRAM MB";
   $B echo "$((FZRAM*1024*1024))" > /sys/block/zram0/disksize;
-  $B echo "$((FZRAM/10))" >> $SCORE;
+  $B echo "$((FZRAM/100))" >> $SCORE;
   if [ -e /sys/block/zram0/comp_algorithm ]; then
    $B echo "Setting compression algorithm to LZ4..";
    $B echo "lz4" > /sys/block/zram0/comp_algorithm;
@@ -140,7 +139,7 @@ elif [ -e /sys/block/ramzswap0/size ]; then
   $B sleep 1;
   $B echo "Creating RAMZSWAP blockdev - $FZRAM MB";
   $RZS /dev/block/ramzswap0 -i -d $ZRF;
-  $B echo "$((FZRAM/10))" >> $SCORE;
+  $B echo "$((FZRAM/100))" >> $SCORE;
   $B sleep 1;
   $B echo "Starting swappiness..";
   $B swapon /dev/block/ramzswap0;
@@ -197,6 +196,7 @@ if [ -e /sys/block/zram0/disksize ]; then
   $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf;
   $B sysctl -e -w vm.swappiness=100;
   setprop sys.vm.swappiness 100;
+  $B echo "1" >> $SCORE;
   if [ -e /sys/fs/cgroup/memory/sw/memory.swappiness ]; then
    $B echo "100" > /sys/fs/cgroup/memory/sw/memory.swappiness;
    $B echo "1" >> $SCORE;
@@ -216,7 +216,7 @@ if [ "$SWAP" -eq "0" ]; then
  $B sysctl -e -w vm.swappiness=0;
  setprop sys.vm.swappiness 0;
  setprop ro.config.zram.support false;
- $B echo "3" >> $SCORE;
+ $B echo "6" >> $SCORE;
  if [ -e /sys/fs/cgroup/memory/sw/memory.swappiness ]; then
   $B echo "0" > /sys/fs/cgroup/memory/sw/memory.swappiness;
   $B echo "1" >> $SCORE;
@@ -290,3 +290,4 @@ service call activity 51 i32 -1;
 $B echo "1" >> $SCORE;
 sync;
 $B sleep 1;
+

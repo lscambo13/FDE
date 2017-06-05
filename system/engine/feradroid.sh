@@ -211,6 +211,15 @@ if [ -e /system/engine/gears/io.sh ]; then
   $B echo "================================" >> $LOG;
  fi;
 fi;
+if [ -e /system/engine/gears/kernel.sh ]; then
+ KERNEL=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'kernel=1');
+ if [ "kernel=1" = "$KERNEL" ]; then
+  $B echo ">> Running KERNEL gear..." >> $LOG;
+  $B echo "================================" >> $LOG;
+  /system/engine/gears/kernel.sh | $B tee -a $LOG;
+  $B echo "================================" >> $LOG;
+ fi;
+fi;
 if [ -e /system/engine/gears/network.sh ]; then
  NETWORK=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'network=1');
  if [ "network=1" = "$NETWORK" ]; then
@@ -322,12 +331,11 @@ if [ -e /system/engine/gears/cleaner.sh ]; then
   )&
  fi;
 fi;
-for x in $($B mount | grep ext4 | cut -d " " -f3);
-do
- $B mount -o remount, noatime, delalloc, nosuid, nodev, nodiratime, barrier=0, commit=30, discard, data=writeback "${x}";
+for x in $($B mount | grep ext4 | cut -d " " -f3); do
+ $B mount -o remount, nodiratime, relatime, delalloc, discard "${x}";
 done;
-if [ "$SDK" -lt "22" ]; then
- if [ -e /system/engine/gears/sleeper.sh ]; then
+if [ -e /system/engine/gears/sleeper.sh ]; then
+ if [ "$SDK" -le "21" ]; then
   SLEEPER=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'sleeper=1');
   if [ "sleeper=1" = "$SLEEPER" ]; then
    $B echo ">> Starting SLEEPER daemon.." >> $LOG;
@@ -335,15 +343,13 @@ if [ "$SDK" -lt "22" ]; then
   fi;
  fi;
 elif [ "mad_max=1" = "$MADMAX" ]; then
- if [ -e /system/engine/gears/sleeper.sh ]; then
-  SLEEPER=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'sleeper=1');
-  if [ "sleeper=1" = "$SLEEPER" ]; then
-   $B echo ">> Starting SLEEPER daemon.." >> $LOG;
-   $B setsid /system/engine/gears/sleeper.sh >> $LOG 2>&1 < /dev/null &
-  fi;
+ SLEEPER=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'sleeper=1');
+ if [ "sleeper=1" = "$SLEEPER" ]; then
+  $B echo ">> Starting SLEEPER daemon.." >> $LOG;
+  $B setsid /system/engine/gears/sleeper.sh >> $LOG 2>&1 < /dev/null &
  fi;
 else
  sync;
  $B sleep 1;
- exit 0;
 fi;
+

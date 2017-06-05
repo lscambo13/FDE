@@ -112,12 +112,11 @@ if [ "mad_max=1" = "$MADMAX" ]; then
  setprop video.accelerate.hw 1;
  setprop ro.config.disable.hw_accel false;
 fi;
-if [ "$SDK" -le "21" ]; then
+if [ "$SDK" -le "20" ]; then
  $B echo "Bypassing stagerfright security vulnerabilities..";
  setprop media.stagefright.enable-http false;
  setprop media.stagefright.enable-qcp false;
  setprop media.stagefright.enable-fma2dp false;
- setprop media.stagefright.enable-scan false;
 fi;
 sync;
 $B sleep 1

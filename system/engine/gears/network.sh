@@ -2,7 +2,6 @@
 ### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
 SDK=$(getprop ro.build.version.sdk);
-MADMAX=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'mad_max=1');
 $B echo "Writing optimized network parameters...";
 $B echo "Speed & security..";
 {
@@ -56,16 +55,6 @@ settings put global wifi_idle_ms 300000;
 settings put secure wifi_idle_ms 300000;
 settings put secure wifi_watchdog_on 0;
 settings put secure wifi_watchdog_poor_network_test_enabled 0;
-setprop ro.wifi.channels 13;
-if [ "$SDK" -le "20" ]; then
- $B echo "Bandwidth tune-up.";
- ndc bandwidth disable;
-elif [ "mad_max=1" = "$MADMAX" ]; then
- $B echo "Bandwidth tune-up.";
- ndc bandwidth disable;
-else
- ndc bandwidth enable;
-fi;
 $B echo "Tethering fix..";
 settings put global tether_dun_required 0;
 $B echo "Switching net-interfaces to byte queue.."
@@ -74,3 +63,4 @@ for z in /sys/class/net/*; do
 done;
 sync;
 $B sleep 1;
+

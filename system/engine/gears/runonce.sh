@@ -64,7 +64,7 @@ if [ "$SDK" -ge "21" ]; then
   $B echo "3" >> $FSCORE;
  fi;
 fi;
-if [ "$SDK" -le "17" ]; then
+if [ "$SDK" -le "16" ]; then
  if [ "$SDK" -ge "9" ]; then
   if [ -e /system/lib/egl/libGLES_android.so ]; then
    if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
@@ -279,7 +279,7 @@ if [ -e /dev/kgsl-3d0 ]; then
  $B sed -e "s=debug.qctwa.preservebuf=#debug.qctwa.preservebuf=" -i /system/engine/raw/build.prop;
  $B sed -e "s=persist.hwc.mdpcomp.enable=#persist.hwc.mdpcomp.enable=" -i /system/engine/raw/build.prop;
 fi;
-if [ "$SDK" -le "21" ]; then
+if [ "$SDK" -le "20" ]; then
  $B sed -e "s=debug.sf.hw=#debug.sf.hw=" -i /system/engine/raw/build.prop;
  $B sed -e "s=debug.egl.hw=#debug.egl.hw=" -i /system/engine/raw/build.prop;
  $B sed -e "s=debug.gr.swapinterval=#debug.gr.swapinterval=" -i /system/engine/raw/build.prop;
@@ -287,7 +287,9 @@ if [ "$SDK" -le "21" ]; then
  $B sed -e "s=persist.sys.ui.hw=#persist.sys.ui.hw=" -i /system/engine/raw/build.prop;
  $B sed -e "s=video.accelerate.hw=#video.accelerate.hw=" -i /system/engine/raw/build.prop;
  $B sed -e "s=ro.config.disable.hw_accel=#ro.config.disable.hw_accel=" -i /system/engine/raw/build.prop;
- $B sed -e "s=media.stagefright.enable=#media.stagefright.enable=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=media.stagefright.enable-http=#media.stagefright.enable-http=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=media.stagefright.enable-fma2dp=#media.stagefright.enable-fma2dp=" -i /system/engine/raw/build.prop;
+ $B sed -e "s=media.stagefright.enable-qcp=#media.stagefright.enable-qcp=" -i /system/engine/raw/build.prop;
 fi;
 {
  $B echo "   "
@@ -408,7 +410,7 @@ if [ -e /dev/kgsl-3d0 ]; then
  } >> /system/engine/raw/build.prop;
  $B echo "5" >> $FSCORE;
 fi;
-if [ "$SDK" -le "21" ]; then
+if [ "$SDK" -le "20" ]; then
  {
   $B echo "debug.sf.hw=1"
   $B echo "debug.egl.hw=1"
@@ -420,7 +422,6 @@ if [ "$SDK" -le "21" ]; then
   $B echo "media.stagefright.enable-http=false"
   $B echo "media.stagefright.enable-qcp=false"
   $B echo "media.stagefright.enable-fma2dp=false"
-  $B echo "media.stagefright.enable-scan=false"
  } >> /system/engine/raw/build.prop;
  $B echo "11" >> $FSCORE;
 fi;

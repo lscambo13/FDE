@@ -22,14 +22,12 @@ if [ -e /proc/sys/kernel/random/read_wakeup_threshold ]; then
  $B echo "1024" > /proc/sys/kernel/random/read_wakeup_threshold;
  $B echo "kernel.random.read_wakeup_threshold=1024" >> /system/etc/sysctl.conf;
  $B sysctl -e -w kernel.random.read_wakeup_threshold=1024;
- $B echo "Tuning entropy read treshold..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/kernel/random/write_wakeup_threshold ]; then
  $B echo "2048" > /proc/sys/kernel/random/write_wakeup_threshold;
  $B echo "kernel.random.write_wakeup_threshold=2048" >> /system/etc/sysctl.conf;
  $B sysctl -e -w kernel.random.write_wakeup_threshold=2048;
- $B echo "Tuning entropy write treshold..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/vfs_cache_pressure ]; then
@@ -42,35 +40,30 @@ if [ -e /proc/sys/vm/vfs_cache_pressure ]; then
  $B echo "vm.vfs_cache_pressure=100" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.vfs_cache_pressure=100;
  fi;
- $B echo "Tuning cache pressure..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/min_free_kbytes ]; then
  $B echo "$FK" > /proc/sys/vm/min_free_kbytes;
  $B echo "vm.min_free_kbytes=$FK" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.min_free_kbytes=$FK;
- $B echo "VM min_free - $FK";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/extra_free_kbytes ]; then
  $B echo "$EF" > /proc/sys/vm/extra_free_kbytes;
  $B echo "vm.extra_free_kbytes=$EF" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.extra_free_kbytes=$EF;
- $B echo "VM extra_free - $FK";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/drop_caches ]; then
  $B echo "3" > /proc/sys/vm/drop_caches;
  $B echo "vm.drop_caches=3" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.drop_caches=3;
- $B echo "Tuning cache drop..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/oom_kill_allocating_task ]; then
  $B echo "0" > /proc/sys/vm/oom_kill_allocating_task;
  $B echo "vm.oom_kill_allocating_task=0" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.oom_kill_allocating_task=0;
- $B echo "Don't kill allocating task..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/dirty_ratio ]; then
@@ -83,35 +76,30 @@ if [ -e /proc/sys/vm/dirty_ratio ]; then
   $B echo "vm.dirty_ratio=27" >> /system/etc/sysctl.conf;
   $B sysctl -e -w vm.dirty_ratio=27;
  fi;
- $B echo "Tuning dirty cache..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/dirty_background_ratio ]; then
  $B echo "9" > /proc/sys/vm/dirty_background_ratio;
  $B echo "vm.dirty_background_ratio=9" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.dirty_background_ratio=9;
- $B echo "Tuning dirty background cache..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/dirty_writeback_centisecs ]; then
  $B echo "1500" > /proc/sys/vm/dirty_writeback_centisecs;
  $B echo "vm.dirty_writeback_centisecs=1500" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.dirty_writeback_centisecs=1500;
- $B echo "Tuning dirty cache writeback..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/dirty_expire_centisecs ]; then
  $B echo "600" > /proc/sys/vm/dirty_expire_centisecs;
  $B echo "vm.dirty_expire_centisecs=600" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.dirty_expire_centisecs=600;
- $B echo "Tuning dirty cache expire..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/panic_on_oom ]; then
  $B echo "0" > /proc/sys/vm/panic_on_oom;
  $B echo "vm.panic_on_oom=0" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.panic_on_oom=0;
- $B echo "Disabling VM panic..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/overcommit_memory ]; then
@@ -121,7 +109,6 @@ if [ -e /proc/sys/vm/overcommit_memory ]; then
  $B echo "100" > /proc/sys/vm/overcommit_ratio;
  $B echo "vm.overcommit_ratio=100" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.overcommit_ratio=100;
- $B echo "Tuning VM overcommit..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/laptop_mode ]; then
@@ -130,13 +117,11 @@ if [ -e /proc/sys/vm/laptop_mode ]; then
   $B echo "3" > /proc/sys/vm/laptop_mode;
   $B echo "vm.laptop_mode=3" >> /system/etc/sysctl.conf;
   $B sysctl -e -w vm.laptop_mode=3;
-  $B echo "Agressive power-saving cache management..";
   $B echo "3" >> $SCORE;
  else
   $B echo "1" > /proc/sys/vm/laptop_mode;
   $B echo "vm.laptop_mode=1" >> /system/etc/sysctl.conf;
   $B sysctl -e -w vm.laptop_mode=1;
-  $B echo "Power-saving cache management..";
   $B echo "1" >> $SCORE;
  fi;
 fi;
@@ -144,126 +129,108 @@ if [ -e /proc/sys/vm/block_dump ]; then
  $B echo "0" > /proc/sys/vm/block_dump;
  $B echo "vm.block_dump=0" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.block_dump=0;
- $B echo "Disabling VM block dumps..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/oom_dump_tasks ]; then
  $B echo "0" > /proc/sys/vm/oom_dump_tasks;
  $B echo "vm.oom_dump_tasks=0" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.oom_dump_tasks=0;
- $B echo "Disabling VM task dumps..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/min_free_order_shift ]; then
  $B echo "4" > /proc/sys/vm/min_free_order_shift;
  $B echo "vm.min_free_order_shift=4" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.min_free_order_shift=4;
- $B echo "Tuning VM order shift..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/page-cluster ]; then
  $B echo "1" > /proc/sys/vm/page -cluster;
  $B echo "vm.page-cluster=1" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.page-cluster=1;
- $B echo "Tuning VM page read-ahead..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/scan_unevictable_pages ]; then
  $B echo "0" > /proc/sys/vm/scan_unevictable_pages;
  $B echo "vm.scan_unevictable_pages=0" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.scan_unevictable_pages=0;
- $B echo "Disabling unevictable pages scan..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/highmem_is_dirtyable ]; then
  $B echo "1" > /proc/sys/vm/highmem_is_dirtyable;
  $B echo "vm.highmem_is_dirtyable=1" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.highmem_is_dirtyable=1;
- $B echo "Allowing dirty cache to highmem..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/fs/file-max ]; then
  $B echo "$FM" > /proc/sys/fs/file -max;
  $B echo "fs.file-max=$FM" >> /system/etc/sysctl.conf;
  $B sysctl -e -w fs.file-max=$FM;
- $B echo "FS max file tuning - $FM..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/fs/leases-enable ]; then
  $B echo "1" > /proc/sys/fs/leases -enable;
  $B echo "fs.leases-enable=1" >> /system/etc/sysctl.conf;
  $B sysctl -e -w fs.leases-enable=1;
- $B echo "Enabling FS leases..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/fs/lease-break-time ]; then
  $B echo "9" > /proc/sys/fs/lease-break-time;
  $B echo "fs.lease-break-time=9" >> /system/etc/sysctl.conf;
  $B sysctl -e -w fs.lease-break-time=9;
- $B echo "Tuning FS leases..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/fs/inotify/max_queued_events ]; then
  $B echo "24576" > /proc/sys/fs/inotify/max_queued_events;
  $B echo "fs.inotify.max_queued_events=24576" >> /system/etc/sysctl.conf;
  $B sysctl -e -w fs.inotify.max_queued_events=24576;
- $B echo "Tuning FS max queued events..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/fs/inotify/max_user_instances ]; then
  $B echo "192" > /proc/sys/fs/inotify/max_user_instances;
  $B echo "fs.inotify.max_user_instances=192" >> /system/etc/sysctl.conf;
  $B sysctl -e -w fs.inotify.max_user_instances=192;
- $B echo "Tuning FS max user instances..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/fs/inotify/max_user_watches ]; then
  $B echo "12288" > /proc/sys/fs/inotify/max_user_watches;
  $B echo "fs.inotify.max_user_watches=12288" >> /system/etc/sysctl.conf;
  $B sysctl -e -w fs.inotify.max_user_watches=12288;
- $B echo "Tuning FS max user watches..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/kernel/softlockup_panic ]; then
  $B echo "0" > /proc/sys/kernel/softlockup_panic;
  $B echo "kernel.softlockup_panic=0" >> /system/etc/sysctl.conf;
  $B sysctl -e -w kernel.softlockup_panic=0;
- $B echo "Disabling kernel soft-panic..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/kernel/hung_task_timeout_secs ]; then
  $B echo "0" > /proc/sys/kernel/hung_task_timeout_secs;
  $B echo "kernel.hung_task_timeout_secs=0" >> /system/etc/sysctl.conf;
  $B sysctl -e -w kernel.hung_task_timeout_secs=0;
- $B echo "Disabling hung task timeout..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/kernel/panic ]; then
  $B echo "0" > /proc/sys/kernel/panic;
  $B echo "kernel.panic=0" >> /system/etc/sysctl.conf;
  $B sysctl -e -w kernel.panic=0;
- $B echo "Disabling kernel panic..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/kernel/panic_on_oops ]; then
  $B echo "0" > /proc/sys/kernel/panic_on_oops;
  $B echo "kernel.panic_on_oops=0" >> /system/etc/sysctl.conf;
  $B sysctl -e -w kernel.panic_on_oops=0;
- $B echo "Disabling kernel oops-panic..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/kernel/nmi_watchdog ]; then
  $B echo "0" > /proc/sys/kernel/nmi_watchdog;
  $B echo "kernel.nmi_watchdog=0" >> /system/etc/sysctl.conf;
  $B sysctl -e -w kernel.nmi_watchdog=0;
- $B echo "Disabling kernel nmi watchdog..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/kernel/auto_msgmni ]; then
  $B echo "1" > /proc/sys/kernel/auto_msgmni;
  $B echo "kernel.auto_msgmni=1" >> /system/etc/sysctl.conf;
  $B sysctl -e -w kernel.auto_msgmni=1;
- $B echo "Enabling kernel auto msgmni..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /sys/kernel/debug/sched_features ]; then
@@ -459,17 +426,16 @@ if [ -e /sys/module/sit/parameters/log_ecn_error ]; then
  $B echo "SIT log OFF.";
  $B echo "1" >> $SCORE;
 fi;
+$B echo "Disabling debugging for all modules..";
 for n in /sys/module/*;
 do
  if [ -e "$n"/parameters/debug_mask ]; then
   $B echo "0" > "$n"/parameters/debug_mask;
-  $B echo "Disabling debugging for $n";
   $B echo "1" >> $SCORE;
  fi;
  if [ -e "$n"/parameters/debug ]; then
   $B echo "0" > "$n"/parameters/debug;
   $B echo "N" > "$n"/parameters/debug;
-  $B echo "Disabling debugging for $n";
   $B echo "1" >> $SCORE;
  fi;
 done;

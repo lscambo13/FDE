@@ -24,10 +24,10 @@ vm=1
 
 
 # If this trigger is set to 1, CPU gear
-# will apply optimized conservative
+# will apply optimized 'conservative'
 # cpu governor for LITTLE cluster.
-# Powersaving but still lagfree and snapy.
-powersave_cpu=0
+# Powersaving but still lagfree and snappy.
+powersave=0
 
 
 # Cleanerd is same cleaner gear started

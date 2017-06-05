@@ -33,7 +33,7 @@ $B echo "Applying new I/O parameters system-wide..";
 for g in /sys/block/*/queue; do
  $B echo "512" > "${g}"/nr_requests;
  $B echo "512" > "${g}"/read_ahead_kb;
- $B echo "2" > "${g}"/rq_affinity;
+ $B echo "1" > "${g}"/rq_affinity;
  $B echo "1" > "${g}"/nomerges;
  $B echo "0" > "${g}"/add_random;
  $B echo "0" > "${g}"/rotational;

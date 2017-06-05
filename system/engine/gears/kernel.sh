@@ -85,15 +85,15 @@ if [ -e /proc/sys/vm/dirty_background_ratio ]; then
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/dirty_writeback_centisecs ]; then
- $B echo "1500" > /proc/sys/vm/dirty_writeback_centisecs;
- $B echo "vm.dirty_writeback_centisecs=1500" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.dirty_writeback_centisecs=1500;
+ $B echo "2000" > /proc/sys/vm/dirty_writeback_centisecs;
+ $B echo "vm.dirty_writeback_centisecs=2000" >> /system/etc/sysctl.conf;
+ $B sysctl -e -w vm.dirty_writeback_centisecs=2000;
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/dirty_expire_centisecs ]; then
- $B echo "600" > /proc/sys/vm/dirty_expire_centisecs;
- $B echo "vm.dirty_expire_centisecs=600" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.dirty_expire_centisecs=600;
+ $B echo "700" > /proc/sys/vm/dirty_expire_centisecs;
+ $B echo "vm.dirty_expire_centisecs=700" >> /system/etc/sysctl.conf;
+ $B sysctl -e -w vm.dirty_expire_centisecs=700;
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/panic_on_oom ]; then

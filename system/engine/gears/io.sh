@@ -62,7 +62,7 @@ for m in $ST $SST; do
  $B mount -o remount, noatime, nodiratime -t auto "${m}"/Android/obb;
  $B echo "1" >> $SCORE;
 done;
-$B echo "Remounting root foleders...";
+$B echo "Remounting root folders...";
 $B mount -o remount, noatime, nodiratime -t auto /;
 $B mount -o remount, noatime, nodiratime -t auto /proc;
 $B mount -o remount, noatime, nodiratime -t auto /sys;

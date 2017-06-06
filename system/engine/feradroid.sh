@@ -154,7 +154,7 @@ MADMAX=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'mad_max=1');
 if [ "mad_max=1" = "$MADMAX" ]; then
 {
  $B echo -e "\xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0"
- $B echo " MAD MAX MODE ACTIVE "
+ $B echo "  MAD MAX MODE ACTIVE  "
  $B echo -e "\xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0"
 } >> $LOG;
 fi;
@@ -320,18 +320,16 @@ mount -o remount,ro /system;
 if [ -e /sbin/sysro ]; then
  /sbin/sysro;
 fi;
+for x in $($B mount | grep ext4 | cut -d " " -f3); do
+ $B mount -o remount, nodiratime, relatime, delalloc, discard "${x}";
+done;
 if [ -e /system/engine/gears/cleaner.sh ]; then
  CLEANERD=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'cleanerd=1');
  if [ "cleanerd=1" = "$CLEANERD" ]; then
   $B echo ">> Starting CLEANERD daemon.." >> $LOG;
-  (
-   while true; do /system/engine/gears/cleaner.sh; sleep 259200; done
-  )&
+  $B setsid /system/engine/gears/sleeper.sh >> $LOG 2>&1 < /dev/null &
  fi;
 fi;
-for x in $($B mount | grep ext4 | cut -d " " -f3); do
- $B mount -o remount, nodiratime, relatime, delalloc, discard "${x}";
-done;
 if [ -e /system/engine/gears/sleeper.sh ]; then
  if [ "$SDK" -le "22" ]; then
   SLEEPER=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'sleeper=1');
@@ -346,8 +344,7 @@ elif [ "mad_max=1" = "$MADMAX" ]; then
   $B echo ">> Starting SLEEPER daemon.." >> $LOG;
   $B setsid /system/engine/gears/sleeper.sh >> $LOG 2>&1 < /dev/null &
  fi;
-else
- sync;
- $B sleep 1;
 fi;
-
+sync;
+$B sleep 2;
+exit 0

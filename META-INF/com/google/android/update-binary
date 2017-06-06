@@ -37,10 +37,12 @@ rm -f /system/etc/fde
 if [ -e /system/bin/tiny_mkswap ]; then
  mv /system/bin/tiny_mkswap /system/bin/tiny_mkswap_bak
  mv /system/bin/tiny_swapon /system/bin/tiny_swapon_bak
-elif [ -e /system/bin/mkswap ]; then
+fi;
+if [ -e /system/bin/mkswap ]; then
  mv /system/bin/mkswap /system/bin/mkswap_bak
  mv /system/bin/swapon /system/bin/swapon_bak
-elif [ -e /system/xbin/zram.sh ]; then
+fi;
+if [ -e /system/xbin/zram.sh ]; then
  mv /system/xbin/zram.sh /system/xbin/zram_sh_bak
 fi;
 if [ -d /system/etc/init.d_fde_backup ]; then
@@ -49,8 +51,17 @@ else
  mv /system/etc/init.d /system/etc/init.d_fde_backup
  mkdir /system/etc/init.d
  chmod 777 /system/etc/init.d
+ chown 0.0 /system/etc/init.d
 fi;
-chown 0.0 /system/etc/init.d
+if [ -e /data/app/showtoast.apk ]; then
+ rm -f /data/app/showtoast.apk
+fi;
+if [ -e /system/etc/init.d/90fde ]; then
+ rm -f /system/etc/init.d/90fde
+fi;
+if [ -e /system/su.d/90fde.sh ]; then
+ rm -f /system/su.d/90fde.sh
+fi;
 unzip -o "$ZIP"
 sleep 2
 chmod -R 711 /system/engine
@@ -58,34 +69,24 @@ ARCH=$(grep -Eo "ro.product.cpu.abi(2)?=.+" /system/build.prop 2>/dev/null | gre
 if [ "$ARCH" = "$(echo $ARCH | grep "arm64")" ]; then
  ui_print "64-bit ARM CPU detected."
  cp /system/engine/bin/bin64/arm/busybox /system/engine/bin/busybox
- cp /system/engine/bin/bin64/arm/libsupol.so /system/lib64/libsupol.so
- cp /system/engine/bin/bin64/arm/supolicy /system/engine/bin/supolicy
  sleep 2
 elif [ "$ARCH" = "$(echo $ARCH | grep "armeabi")" ]; then
  ui_print "32-bit ARM CPU detected."
  cp /system/engine/bin/bin32/arm/busybox /system/engine/bin/busybox
- cp /system/engine/bin/bin32/arm/libsupol.so /system/lib/libsupol.so
  cp /system/engine/bin/bin32/arm/rzscontrol /system/engine/bin/rzscontrol
- cp /system/engine/bin/bin32/arm/supolicy /system/engine/bin/supolicy
  sleep 2
 elif [ "$ARCH" = "$(echo $ARCH | grep "x86_64")" ]; then
  ui_print "64-bit X86 CPU detected."
  cp /system/engine/bin/bin64/x86/busybox /system/engine/bin/busybox
- cp /system/engine/bin/bin64/x86/libsupol.so /system/lib64/libsupol.so
- cp /system/engine/bin/bin64/x86/supolicy /system/engine/bin/supolicy
  sleep 2
 elif [ "$ARCH" = "$(echo $ARCH | grep "x86")" ]; then
  ui_print "32-bit X86 CPU detected."
  cp /system/engine/bin/bin32/x86/busybox /system/engine/bin/busybox
- cp /system/engine/bin/bin32/x86/libsupol.so /system/lib/libsupol.so
- cp /system/engine/bin/bin32/x86/supolicy /system/engine/bin/supolicy
  sleep 2
 else
  ui_print "Generic armeabi."
  cp /system/engine/bin/bin32/arm/busybox /system/engine/bin/busybox
- cp /system/engine/bin/bin32/arm/libsupol.so /system/lib/libsupol.so
  cp /system/engine/bin/bin32/arm/rzscontrol /system/engine/bin/rzscontrol
- cp /system/engine/bin/bin32/arm/supolicy /system/engine/bin/supolicy
  sleep 2
 fi;
 rm -Rf /system/engine/bin/bin32
@@ -95,8 +96,6 @@ chmod 777 /system/engine/bin/*
 chmod 711 /system/engine/prop/*
 chmod 777 /system/engine/raw/*
 chmod 711 /system/engine/gears/*
-chmod 644 /system/lib/libsupol.so
-chmod 644 /system/lib64/libsupol.so
 export PATH=/sbin:/system/sbin:/system/bin:/system/xbin:/system/engine/bin
 sleep 1
 cp -f /system/engine/bin/busybox /system/xbin/busybox

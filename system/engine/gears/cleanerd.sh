@@ -8,7 +8,13 @@ else
 fi;
 while true; do
  $B echo "Cleaner daemon is active." >> $LOG;
- $B sleep 259200;
+ $B sleep 172800;
+ sync;
+ $B sleep 1;
+ $B echo "3" > /proc/sys/vm/drop_caches;
+ $B sleep 1;
+ sync;
+ $B sleep 1;
  /system/engine/gears/cleaner.sh;
 done;
 

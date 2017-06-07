@@ -31,15 +31,9 @@ if [ -e /proc/sys/kernel/random/write_wakeup_threshold ]; then
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/vfs_cache_pressure ]; then
- if [ "$RAM" -le "512" ]; then
-  $B echo "150" > /proc/sys/vm/vfs_cache_pressure;
-  $B echo "vm.vfs_cache_pressure=150" >> /system/etc/sysctl.conf;
-  $B sysctl -e -w vm.vfs_cache_pressure=150;
- else
  $B echo "100" > /proc/sys/vm/vfs_cache_pressure;
  $B echo "vm.vfs_cache_pressure=100" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.vfs_cache_pressure=100;
- fi;
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/min_free_kbytes ]; then
@@ -54,12 +48,6 @@ if [ -e /proc/sys/vm/extra_free_kbytes ]; then
  $B sysctl -e -w vm.extra_free_kbytes=$EF;
  $B echo "1" >> $SCORE;
 fi;
-if [ -e /proc/sys/vm/drop_caches ]; then
- $B echo "3" > /proc/sys/vm/drop_caches;
- $B echo "vm.drop_caches=3" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.drop_caches=3;
- $B echo "1" >> $SCORE;
-fi;
 if [ -e /proc/sys/vm/oom_kill_allocating_task ]; then
  $B echo "0" > /proc/sys/vm/oom_kill_allocating_task;
  $B echo "vm.oom_kill_allocating_task=0" >> /system/etc/sysctl.conf;
@@ -67,27 +55,27 @@ if [ -e /proc/sys/vm/oom_kill_allocating_task ]; then
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/dirty_ratio ]; then
- $B echo "27" > /proc/sys/vm/dirty_ratio;
- $B echo "vm.dirty_ratio=27" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.dirty_ratio=27;
+ $B echo "21" > /proc/sys/vm/dirty_ratio;
+ $B echo "vm.dirty_ratio=21" >> /system/etc/sysctl.conf;
+ $B sysctl -e -w vm.dirty_ratio=21;
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/dirty_background_ratio ]; then
- $B echo "10" > /proc/sys/vm/dirty_background_ratio;
- $B echo "vm.dirty_background_ratio=10" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.dirty_background_ratio=10;
+ $B echo "9" > /proc/sys/vm/dirty_background_ratio;
+ $B echo "vm.dirty_background_ratio=9" >> /system/etc/sysctl.conf;
+ $B sysctl -e -w vm.dirty_background_ratio=9;
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/dirty_writeback_centisecs ]; then
- $B echo "2000" > /proc/sys/vm/dirty_writeback_centisecs;
- $B echo "vm.dirty_writeback_centisecs=2000" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.dirty_writeback_centisecs=2000;
+ $B echo "0" > /proc/sys/vm/dirty_writeback_centisecs;
+ $B echo "vm.dirty_writeback_centisecs=0" >> /system/etc/sysctl.conf;
+ $B sysctl -e -w vm.dirty_writeback_centisecs=0;
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/dirty_expire_centisecs ]; then
- $B echo "700" > /proc/sys/vm/dirty_expire_centisecs;
- $B echo "vm.dirty_expire_centisecs=700" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.dirty_expire_centisecs=700;
+ $B echo "0" > /proc/sys/vm/dirty_expire_centisecs;
+ $B echo "vm.dirty_expire_centisecs=0" >> /system/etc/sysctl.conf;
+ $B sysctl -e -w vm.dirty_expire_centisecs=0;
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/panic_on_oom ]; then
@@ -108,9 +96,9 @@ fi;
 if [ -e /proc/sys/vm/laptop_mode ]; then
  if [ "mad_max=1" = "$MADMAX" ]; then
   $B echo "Mad cache.";
-  $B echo "3" > /proc/sys/vm/laptop_mode;
-  $B echo "vm.laptop_mode=3" >> /system/etc/sysctl.conf;
-  $B sysctl -e -w vm.laptop_mode=3;
+  $B echo "2" > /proc/sys/vm/laptop_mode;
+  $B echo "vm.laptop_mode=2" >> /system/etc/sysctl.conf;
+  $B sysctl -e -w vm.laptop_mode=2;
   $B echo "3" >> $SCORE;
  else
   $B echo "1" > /proc/sys/vm/laptop_mode;
@@ -138,21 +126,9 @@ if [ -e /proc/sys/vm/min_free_order_shift ]; then
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/page-cluster ]; then
- $B echo "1" > /proc/sys/vm/page -cluster;
- $B echo "vm.page-cluster=1" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.page-cluster=1;
- $B echo "1" >> $SCORE;
-fi;
-if [ -e /proc/sys/vm/scan_unevictable_pages ]; then
- $B echo "0" > /proc/sys/vm/scan_unevictable_pages;
- $B echo "vm.scan_unevictable_pages=0" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.scan_unevictable_pages=0;
- $B echo "1" >> $SCORE;
-fi;
-if [ -e /proc/sys/vm/highmem_is_dirtyable ]; then
- $B echo "1" > /proc/sys/vm/highmem_is_dirtyable;
- $B echo "vm.highmem_is_dirtyable=1" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.highmem_is_dirtyable=1;
+ $B echo "2" > /proc/sys/vm/page -cluster;
+ $B echo "vm.page-cluster=2" >> /system/etc/sysctl.conf;
+ $B sysctl -e -w vm.page-cluster=2;
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/fs/file-max ]; then

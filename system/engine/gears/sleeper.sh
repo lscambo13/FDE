@@ -28,7 +28,7 @@ if [ "sleeper=1" = "$ON" ]; then
   if [ "$FS" = "$(dumpsys power | $B grep -E $GR | $B grep -o "$FS")" ]; then
    $B sleep 9;
    RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p)
-   if [ "$RAMfree" -le "64" ]; then
+   if [ "$RAMfree" -le "32" ]; then
     sync;
     $B sleep 1;
     $B echo "3" > /proc/sys/vm/drop_caches;

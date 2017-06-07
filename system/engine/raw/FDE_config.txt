@@ -32,7 +32,7 @@ powersave=0
 
 # Cleanerd is same cleaner gear started
 # as daemon which will run
-# every 3 days automatically in background.
+# every 2 days automatically in background.
 cleanerd=1
 
 

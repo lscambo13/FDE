@@ -37,16 +37,13 @@ $B echo "  SWAP/ZRAM used:     $SWAPused MB";
 $B echo "Freeing RAM...";
 setprop ro.config.zram.support true
 service call activity 51 i32 0;
-$B sleep 2;
+$B sleep 1;
 am kill-all;
 $B sleep 4;
 sync;
 $B sleep 1;
-$B echo "3" > /proc/sys/vm/drop_caches;
-$B echo "3" >> $SCORE;
-$B sleep 2;
-sync;
-$B sleep 1;
+$B echo "4" > /proc/sys/vm/drop_caches;
+$B echo "1" >> $SCORE;
 $B mount -o remount,rw /system;
 if [ -e /sbin/sysrw ]; then
  /sbin/sysrw;

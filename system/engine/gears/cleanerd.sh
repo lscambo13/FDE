@@ -13,8 +13,6 @@ while true; do
  $B sleep 1;
  $B echo "3" > /proc/sys/vm/drop_caches;
  $B sleep 1;
- sync;
- $B sleep 1;
  /system/engine/gears/cleaner.sh;
 done;
 

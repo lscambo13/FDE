@@ -27,14 +27,13 @@ if [ "sleeper=1" = "$ON" ]; then
   done;
   if [ "$FS" = "$(dumpsys power | $B grep -E $GR | $B grep -o "$FS")" ]; then
    $B sleep 9;
-   RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p)
-   if [ "$RAMfree" -le "32" ]; then
+   if [ "$SDK" -le "14" ]; then
+    RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p)
+    if [ "$RAMfree" -le "32" ]; then
     sync;
-    $B sleep 1;
-    $B echo "3" > /proc/sys/vm/drop_caches;
-    $B sleep 2;
-	sync;
-	$B sleep 1;
+     $B sleep 1;
+     $B echo "3" > /proc/sys/vm/drop_caches;
+    fi;
    fi;
    $B killall -9 com.google.android.gms.persistent;
    service call activity 51 i32 0;

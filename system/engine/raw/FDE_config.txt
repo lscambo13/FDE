@@ -27,7 +27,7 @@ vm=1
 # will apply optimized 'conservative'
 # cpu governor for LITTLE cluster.
 # Powersaving but still lagfree and snappy.
-powersave=0
+powersave=1
 
 
 # Cleanerd is same cleaner gear started

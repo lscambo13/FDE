@@ -57,9 +57,9 @@ settings put secure wifi_watchdog_on 0;
 settings put secure wifi_watchdog_poor_network_test_enabled 0;
 $B echo "Tethering fix..";
 settings put global tether_dun_required 0;
-$B echo "Switching net-interfaces to byte queue.."
+$B echo "Reduce tx queue for all net interfaces.."
 for z in /sys/class/net/*; do
-  $B echo "0" > "${z}"/tx_queue_len;
+  $B echo "100" > "${z}"/tx_queue_len;
 done;
 sync;
 $B sleep 1;

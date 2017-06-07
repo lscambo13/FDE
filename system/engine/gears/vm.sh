@@ -12,7 +12,7 @@ if [ -e /sys/module/lowmemorykiller/parameters/cost ]; then
   $B echo "64" > /sys/module/lowmemorykiller/parameters/cost;
   $B echo "4" >> $SCORE;
  else
-  $B echo "16" > /sys/module/lowmemorykiller/parameters/cost;
+  $B echo "32" > /sys/module/lowmemorykiller/parameters/cost;
   $B echo "1" >> $SCORE;
  fi;
 fi;
@@ -52,12 +52,20 @@ P=$($B pgrep -l '' | $B grep -E "phone" | $B awk '{print $1}');
 D=$($B pgrep -l '' | $B grep -E "dialer" | $B awk '{print $1}');
 T=$($B pgrep -l '' | $B grep -E "trebuchet" | $B awk '{print $1}');
 sui=$($B pidof com.android.systemui);
+set=$($B pidof com.android.settings);
 net=$($B pidof netd);
 if [ "$sui" ]; then
  $B renice [-18] "$sui";
  $B echo "-17" > /proc/"$sui"/oom_adj;
  $B chmod 100 /proc/"$sui"/oom_adj;
  $B echo " - system UI";
+ $B echo "3" >> $SCORE;
+fi;
+if [ "$set" ]; then
+ $B renice [-17] "$set";
+ $B echo "-17" > /proc/"$set"/oom_adj;
+ $B chmod 100 /proc/"$set"/oom_adj;
+ $B echo " - settings";
  $B echo "3" >> $SCORE;
 fi;
 if [ "$net" ]; then

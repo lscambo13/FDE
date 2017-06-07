@@ -119,7 +119,6 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B echo "================================" >> $LOG;
  /system/engine/gears/runonce.sh | $B tee -a $LOG;
  $B echo "================================" >> $LOG;
- msg -t "Going to reboot.. Second boot will take few mins.";
  mount -o remount,rw /system;
  if [ -e /sbin/sysrw ]; then
   /sbin/sysrw;

@@ -14,7 +14,7 @@ fi;
 $B echo "Read-ahead cache - $KB";
 MMC="/sys/block/mmc*";
 MTD="/sys/block/mtd*";
-DM="/sys/block/dm-0";
+DM="/sys/block/dm*";
 ST="/storage/emulated/*";
 if [ -e /mnt/sd-ext ]; then
  $B echo "Trying to mount SD-EXT (EXT4) partition if it exists..";
@@ -33,11 +33,13 @@ $B echo "Applying new I/O parameters system-wide..";
 for g in /sys/block/*/queue; do
  $B echo "512" > "${g}"/nr_requests;
  $B echo "512" > "${g}"/read_ahead_kb;
- $B echo "1" > "${g}"/rq_affinity;
+ $B echo "2" > "${g}"/rq_affinity;
  $B echo "1" > "${g}"/nomerges;
  $B echo "0" > "${g}"/add_random;
  $B echo "0" > "${g}"/rotational;
  $B echo "0" > "${g}"/iostats;
+ $B echo "1" > "${g}"/iosched/low_latency;
+ $B echo "0" > "${g}"/iosched/slice_idle;
 done;
 $B echo "Applying new I/O parameters for storage blocks..";
 for c in $MMC $MTD $DM; do
@@ -57,7 +59,7 @@ for x in $($B mount | grep ext4 | cut -d " " -f3); do
  $B echo "1" >> $SCORE;
 done;
 $B echo "Remounting storage partitions..";
-for m in $ST $SST; do
+for m in $ST; do
  $B mount -o remount, noatime, nodiratime -t auto "${m}";
  $B mount -o remount, noatime, nodiratime -t auto "${m}"/Android/obb;
  $B echo "1" >> $SCORE;

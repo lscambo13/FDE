@@ -51,19 +51,6 @@ $B echo "deflate" >> /system/etc/ppp/options;
 $B echo "  " >> /system/etc/ppp/options;
 $B echo "2" >> $FSCORE;
 $B echo "Data compression enabled.";
-if [ "$SDK" -ge "21" ]; then
- if [ "$ARCH" = "$($B echo $ARCH | $B grep "arm")" ]; then
-  $B cp -f /system/engine/raw/lib1.so /system/vendor/lib/libaptX.so;
-  $B cp -f /system/engine/raw/lib2.so /system/vendor/lib/libaptXHD.so;
-  $B cp -f /system/engine/raw/lib3.so /system/vendor/lib/libaptXScheduler.so;
-  $B chmod 644 /system/vendor/lib/libaptX.so;
-  $B chmod 644 /system/vendor/lib/libaptXHD.so;
-  $B chmod 644 /system/vendor/lib/libaptXScheduler.so;
-  $B echo "persist.bt.a2dp_offload_cap=sbc-aptx-aptxhd" >> /system/engine/raw/build.prop;
-  $B echo "BT aptxHD codec activated.";
-  $B echo "3" >> $FSCORE;
- fi;
-fi;
 if [ "$SDK" -le "16" ]; then
  if [ "$SDK" -ge "9" ]; then
   if [ -e /system/lib/egl/libGLES_android.so ]; then
@@ -408,6 +395,24 @@ if [ "$CORES" -ge "5" ]; then
  $B echo "persist.sys.use_dithering=1" >> /system/engine/raw/build.prop;
 else
  $B echo "persist.sys.use_dithering=0" >> /system/engine/raw/build.prop;
+fi;
+if [ "$SDK" -ge "21" ]; then
+ if [ "$ARCH" = "$($B echo $ARCH | $B grep "arm")" ]; then
+  if [ -d /system/vendor/lib ]; then
+   DIR=/system/vendor/lib;
+  else
+   DIR=/system/lib;
+  fi;
+  $B cp -f /system/engine/raw/lib1.so "$DIR"/libaptX.so;
+  $B cp -f /system/engine/raw/lib2.so "$DIR"/libaptXHD.so;
+  $B cp -f /system/engine/raw/lib3.so "$DIR"/libaptXScheduler.so;
+  $B chmod 644 "$DIR"/libaptX.so;
+  $B chmod 644 "$DIR"/libaptXHD.so;
+  $B chmod 644 "$DIR"/libaptXScheduler.so;
+  $B echo "persist.bt.a2dp_offload_cap=sbc-aptx-aptxhd" >> /system/engine/raw/build.prop;
+  $B echo "BT aptxHD codec activated.";
+  $B echo "3" >> $FSCORE;
+ fi;
 fi;
 $B cp -f /system/engine/raw/build.prop /system/build.prop;
 $B chmod 644 /system/build.prop;

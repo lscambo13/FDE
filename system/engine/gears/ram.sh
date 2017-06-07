@@ -2,6 +2,7 @@
 ### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
 SCORE=/system/engine/prop/score;
+SDK=$(getprop ro.build.version.sdk);
 MADMAX=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'mad_max=1');
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p);
@@ -111,6 +112,15 @@ if [ -e /sys/block/zram0/disksize ]; then
   $B echo "Starting swappiness..";
   $B mkswap /dev/block/zram0 > /dev/null 2>&1;
   $B swapon /dev/block/zram0 > /dev/null 2>&1;
+  $B echo "Tuning zram..";
+  $B echo "512" > /sys/block/zram0/queue/nr_requests;
+  $B echo "512" > /sys/block/zram0/queue/read_ahead_kb;
+  $B echo "2" > /sys/block/zram0/queue/rq_affinity;
+  $B echo "1" > /sys/block/zram0/queue/nomerges;
+  $B echo "0" > /sys/block/zram0/queue/add_random;
+  $B echo "0" > /sys/block/zram0/queue/rotational;
+  $B echo "0" > /sys/block/zram0/queue/iostats;
+  $B echo "7" >> $SCORE;
  fi;
 elif [ -e /sys/block/ramzswap0/size ]; then
  SWAP=$($B free -m | $B awk '{ print $2 }' | $B sed -n 4p);
@@ -213,7 +223,7 @@ if [ "$SWAP" -eq "0" ]; then
  $B sysctl -e -w vm.swappiness=0;
  setprop sys.vm.swappiness 0;
  setprop ro.config.zram.support false;
- $B echo "6" >> $SCORE;
+ $B echo "9" >> $SCORE;
  if [ -e /sys/fs/cgroup/memory/sw/memory.swappiness ]; then
   $B echo "0" > /sys/fs/cgroup/memory/sw/memory.swappiness;
   $B echo "1" >> $SCORE;
@@ -263,14 +273,13 @@ else
   $B echo "No KSM was detected";
  fi;
 fi;
-$B echo "Paging check completed";
 sync;
 $B sleep 1;
-$B echo "3" > /proc/sys/vm/drop_caches;
-$B sleep 1;
-$B echo "1" >> $SCORE;
-sync;
-$B sleep 1;
+if [ "$SDK" -le "14" ]; then
+ $B echo "3" > /proc/sys/vm/drop_caches;
+ $B echo "1" >> $SCORE;
+ $B sleep 1;
+fi;
 RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p);
 RAMcached=$($B free -m | $B awk '{ print $7 }' | $B sed -n 2p);
 RAMreported=$((RAMfree + RAMcached));

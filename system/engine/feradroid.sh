@@ -6,6 +6,7 @@ RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 CORES=$($B grep -c 'processor' /proc/cpuinfo);
 SCORE=/system/engine/prop/score;
 FSCORE=/system/engine/prop/fscore;
+BG=$((RAM/128));
 if [ "$CORES" = "0" ]; then
  CORES=1;
 fi;
@@ -287,8 +288,15 @@ setprop security.perf_harden 1;
 $B echo "3" >> $SCORE;
 $B echo ">> Tweaking multitasking.." >> $LOG;
 BGA=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'bg_app_limit=' | $B sed -e "s|bg_app_limit=|""|");
-service call activity 51 i32 "$BGA";
-$B echo "$BGA" >> $SCORE;
+if [ "$BGA" -gt "0" ]; then
+ service call activity 51 i32 "$BGA";
+ setprop ro.sys.fw.bg_apps_limit "$BGA";
+ $B echo "$BGA" >> $SCORE;
+else
+ service call activity 51 i32 "$BG";
+ setprop ro.sys.fw.bg_apps_limit "$BG";
+ $B echo "$BG" >> $SCORE;
+fi;
 svc power stayon false;
 $B killall -9 com.google.android.gms.persistent;
 $B echo "1" >> $SCORE;

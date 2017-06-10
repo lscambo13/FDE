@@ -152,8 +152,6 @@ else
  $B echo "GPS config is already patched.";
  $B echo "19" >> $FSCORE;
 fi;
-$B echo "Updating FDE settings..";
-$B sed -e "s=bg_app_limit=0=bg_app_limit=$BG=" -i /system/engine/raw/FDE_config.txt;
 if [ -e /system/build.prop_bak ]; then
  $B cp -f /system/build.prop_bak /system/engine/raw/build.prop;
 elif [ ! -e /system/build.prop_bak ]; then

@@ -32,8 +32,8 @@ powersave=1
 
 # The maximum count of apps that are
 # allowed to run in background.
-# Value is calculated basing on RAM of device,
-# But you may set it manually.
+# If set to 0 then default calculated
+# value is used.
 bg_app_limit=0
 
 

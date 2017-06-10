@@ -113,10 +113,8 @@ if [ -e /sys/block/zram0/disksize ]; then
   $B mkswap /dev/block/zram0 > /dev/null 2>&1;
   $B swapon /dev/block/zram0 > /dev/null 2>&1;
   $B echo "Tuning zram..";
-  $B echo "512" > /sys/block/zram0/queue/nr_requests;
-  $B echo "512" > /sys/block/zram0/queue/read_ahead_kb;
-  $B echo "2" > /sys/block/zram0/queue/rq_affinity;
-  $B echo "1" > /sys/block/zram0/queue/nomerges;
+  $B echo "1" > /sys/block/zram0/queue/rq_affinity;
+  $B echo "2" > /sys/block/zram0/queue/nomerges;
   $B echo "0" > /sys/block/zram0/queue/add_random;
   $B echo "0" > /sys/block/zram0/queue/rotational;
   $B echo "0" > /sys/block/zram0/queue/iostats;
@@ -275,11 +273,9 @@ else
 fi;
 sync;
 $B sleep 1;
-if [ "$SDK" -le "14" ]; then
- $B echo "3" > /proc/sys/vm/drop_caches;
- $B echo "1" >> $SCORE;
- $B sleep 1;
-fi;
+$B echo "3" > /proc/sys/vm/drop_caches;
+$B echo "1" >> $SCORE;
+$B sleep 1;
 RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p);
 RAMcached=$($B free -m | $B awk '{ print $7 }' | $B sed -n 2p);
 RAMreported=$((RAMfree + RAMcached));

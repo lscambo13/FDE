@@ -30,6 +30,13 @@ if [ -e /sys/module/lowmemorykiller/parameters/debug_level ]; then
  $B echo "1" >> $SCORE;
  $B echo "LMK debugging disabled";
 fi;
+if [ -e /sys/module/lowmemorykiller/parameters/lmk_fast_run ]; then
+ $B chmod 666 /sys/module/lowmemorykiller/parameters/lmk_fast_run;
+ $B chown 0:0 /sys/module/lowmemorykiller/parameters/lmk_fast_run;
+ $B echo "1" > /sys/module/lowmemorykiller/parameters/lmk_fast_run;
+ $B echo "1" >> $SCORE;
+ $B echo "LMK fast run enabled";
+fi;
 if [ -e /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk ]; then
  $B echo "Enabling adaptive LMK..";
  $B chmod 666 /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk;
@@ -37,13 +44,7 @@ if [ -e /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk ]; then
  setprop lmk.autocalc true;
  $B echo "1" >> $SCORE;
 else
- $B echo "Tuning LMK parameters..";
- $B chmod 664 /sys/module/lowmemorykiller/parameters/adj;
- $B chmod 664 /sys/module/lowmemorykiller/parameters/minfree;
- $B chown root /sys/module/lowmemorykiller/parameters/minfree;
- $B echo "2439,4878,7317,9756,17073,21951" > /sys/module/lowmemorykiller/parameters/minfree;
  setprop lmk.autocalc false;
- $B echo "3" >> $SCORE;
 fi;
 $B echo "Tuning system resposiveness..";
 H=$($B pgrep -l '' | $B grep -E "launcher" | $B awk '{print $1}');

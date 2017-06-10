@@ -6,7 +6,7 @@ ARCH=$($B grep -Eo "ro.product.cpu.abi(2)?=.+" /system/build.prop 2>/dev/null | 
 SDK=$(getprop ro.build.version.sdk);
 CORES=$($B grep -c 'processor' /proc/cpuinfo);
 FSCORE=/system/engine/prop/fscore;
-BG=$((RAM/100));
+BG=$((RAM/128));
 HZ=$((RAM/4));
 HGL=$((RAM/16));
 if [ "$CORES" = "0" ]; then
@@ -152,6 +152,8 @@ else
  $B echo "GPS config is already patched.";
  $B echo "19" >> $FSCORE;
 fi;
+$B echo "Updating FDE settings..";
+$B sed -e "s=bg_app_limit=0=bg_app_limit=$BG=" -i /system/engine/raw/FDE_config.txt;
 if [ -e /system/build.prop_bak ]; then
  $B cp -f /system/build.prop_bak /system/engine/raw/build.prop;
 elif [ ! -e /system/build.prop_bak ]; then
@@ -256,7 +258,7 @@ if [ -e /dev/kgsl-3d0 ]; then
  $B sed -e "s=debug.qctwa.preservebuf=#debug.qctwa.preservebuf=" -i /system/engine/raw/build.prop;
  $B sed -e "s=persist.hwc.mdpcomp.enable=#persist.hwc.mdpcomp.enable=" -i /system/engine/raw/build.prop;
 fi;
-if [ "$SDK" -le "20" ]; then
+if [ "$SDK" -le "22" ]; then
  $B sed -e "s=debug.sf.hw=#debug.sf.hw=" -i /system/engine/raw/build.prop;
  $B sed -e "s=debug.egl.hw=#debug.egl.hw=" -i /system/engine/raw/build.prop;
  $B sed -e "s=debug.gr.swapinterval=#debug.gr.swapinterval=" -i /system/engine/raw/build.prop;
@@ -376,7 +378,7 @@ if [ -e /dev/kgsl-3d0 ]; then
  } >> /system/engine/raw/build.prop;
  $B echo "5" >> $FSCORE;
 fi;
-if [ "$SDK" -le "20" ]; then
+if [ "$SDK" -le "22" ]; then
  {
   $B echo "debug.sf.hw=1"
   $B echo "debug.egl.hw=1"

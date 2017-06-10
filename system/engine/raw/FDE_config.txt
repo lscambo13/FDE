@@ -30,6 +30,13 @@ vm=1
 powersave=1
 
 
+# The maximum count of apps that are
+# allowed to run in background.
+# Value is calculated basing on RAM of device,
+# But you may set it manually.
+bg_app_limit=0
+
+
 # Cleanerd is same cleaner gear started
 # as daemon which will run
 # every 2 days automatically in background.

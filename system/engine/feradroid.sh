@@ -6,7 +6,6 @@ RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 CORES=$($B grep -c 'processor' /proc/cpuinfo);
 SCORE=/system/engine/prop/score;
 FSCORE=/system/engine/prop/fscore;
-BG=$((RAM/100));
 if [ "$CORES" = "0" ]; then
  CORES=1;
 fi;
@@ -111,14 +110,14 @@ $B touch /system/etc/sysctl.conf;
 $B chmod 777 /system/etc/sysctl.conf;
 if [ -e /system/engine/prop/firstboot ]; then
  $B echo ">> First boot." >> $LOG;
- $B rm -f $CONFIG;
- $B cp /system/engine/raw/FDE_config.txt $CONFIG;
  $B touch /system/engine/prop/fscore;
  $B chmod 777 /system/engine/prop/fscore;
  $B echo ">> Running one time init gear..." >> $LOG;
  $B echo "================================" >> $LOG;
  /system/engine/gears/runonce.sh | $B tee -a $LOG;
  $B echo "================================" >> $LOG;
+ $B rm -f $CONFIG;
+ $B cp /system/engine/raw/FDE_config.txt $CONFIG;
  mount -o remount,rw /system;
  if [ -e /sbin/sysrw ]; then
   /sbin/sysrw;
@@ -287,8 +286,9 @@ setprop ro.adb.secure 1;
 setprop security.perf_harden 1;
 $B echo "3" >> $SCORE;
 $B echo ">> Tweaking multitasking.." >> $LOG;
-service call activity 51 i32 "$BG";
-$B echo "$BG" >> $SCORE;
+BGA=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'bg_app_limit=' | $B sed -e "s|bg_app_limit=|""|");
+service call activity 51 i32 "$BGA";
+$B echo "$BGA" >> $SCORE;
 svc power stayon false;
 $B killall -9 com.google.android.gms.persistent;
 $B echo "1" >> $SCORE;
@@ -326,7 +326,7 @@ if [ -e /system/engine/gears/cleaner.sh ]; then
  CLEANERD=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'cleanerd=1');
  if [ "cleanerd=1" = "$CLEANERD" ]; then
   $B echo ">> Starting CLEANERD daemon.." >> $LOG;
-  $B setsid /system/engine/gears/sleeper.sh >> $LOG 2>&1 < /dev/null &
+  $B setsid /system/engine/gears/cleanerd.sh >> $LOG 2>&1 < /dev/null &
  fi;
 fi;
 if [ -e /system/engine/gears/sleeper.sh ]; then

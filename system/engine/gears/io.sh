@@ -31,26 +31,25 @@ if [ -e /storage/extSdCard ]; then
 fi;
 $B echo "Applying new I/O parameters system-wide..";
 for g in /sys/block/*/queue; do
- $B echo "512" > "${g}"/nr_requests;
- $B echo "512" > "${g}"/read_ahead_kb;
  $B echo "2" > "${g}"/rq_affinity;
- $B echo "1" > "${g}"/nomerges;
+ $B echo "2" > "${g}"/nomerges;
  $B echo "0" > "${g}"/add_random;
  $B echo "0" > "${g}"/rotational;
  $B echo "0" > "${g}"/iostats;
  $B echo "1" > "${g}"/iosched/low_latency;
  $B echo "0" > "${g}"/iosched/slice_idle;
+ $B echo "0" > "${g}"/iosched/max_budget;
 done;
 $B echo "Applying new I/O parameters for storage blocks..";
 for c in $MMC $MTD $DM; do
  $B echo "$KB" > "${c}"/bdi/read_ahead_kb;
  $B echo "$KB" > "${c}"/queue/read_ahead_kb;
+ $B echo "1024" > "${c}"/queue/nr_requests;
  $B echo "0" > "${c}"/queue/add_random;
  $B echo "0" > "${c}"/queue/iostats;
  $B echo "0" > "${c}"/queue/rotational;
  $B echo "1" > "${c}"/queue/nomerges;
  $B echo "1" > "${c}"/queue/rq_affinity;
- $B echo "1024" > "${c}"/queue/nr_requests;
  $B echo "1" >> $SCORE;
 done;
 for x in $($B mount | grep ext4 | cut -d " " -f3); do

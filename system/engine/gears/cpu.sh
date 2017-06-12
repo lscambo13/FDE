@@ -10,6 +10,9 @@ CMAX=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq);
 CMIN=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq);
 CUR=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq);
 CORES=$($B grep -c 'processor' /proc/cpuinfo);
+if [ "$CORES" = "0" ]; then
+ CORES=1;
+fi;
 $B echo "Current CPU freq: $((CUR/1000))Mhz";
 if [ -e /sys/module/msm_thermal/core_control/enabled ]; then
  $B echo "Disabing MSM thermal core for now..";
@@ -37,7 +40,7 @@ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq ]; then
 fi;
 if [ "mad_max=1" = "$MADMAX" ]; then
  if [ -e /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq ]; then
-  if [ "$CMAX" != "$MIN" ]; then
+  if [ "$CMAX" != "$MAX" ]; then
    $B echo "Mad CPU.";
    $B echo "Overclocking your CPU to $((CMAX/1000))Mhz..";
    for a in 0 1 2 3; do
@@ -48,6 +51,7 @@ if [ "mad_max=1" = "$MADMAX" ]; then
   fi;
  fi;
 fi;
+CR=$($B cat /sys/devices/system/cpu/cpu0/topology/core_siblings_list | $B sed -e "s|0-|""|");
 if [ "powersave=1" = "$PCPU" ]; then
  $B echo "Power-saving CPU.";
  if [ -e /sys/devices/system/cpu/cpufreq/scaling_governor ]; then
@@ -55,11 +59,20 @@ if [ "powersave=1" = "$PCPU" ]; then
   $B echo "conservative" > /sys/devices/system/cpu/cpufreq/scaling_governor;
   $B echo "1" >> $SCORE;
  elif [ -e /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor ]; then
-  for cp in 0 1 2 3; do
-   $B chmod 644 /sys/devices/system/cpu/cpu$cp/cpufreq/scaling_governor;
-   $B echo "conservative" > /sys/devices/system/cpu/cpu$cp/cpufreq/scaling_governor;
-   $B echo "1" >> $SCORE;
-  done;
+  if [ "1" = "$CR" ]; then
+   $B echo "Dual-core LITTLE cluster detected.";
+   for cp in 0 1; do
+    $B chmod 644 /sys/devices/system/cpu/cpu$cp/cpufreq/scaling_governor;
+    $B echo "conservative" > /sys/devices/system/cpu/cpu$cp/cpufreq/scaling_governor;
+    $B echo "1" >> $SCORE;
+   done;
+  else
+   for dp in 0 1 2 3; do
+    $B chmod 644 /sys/devices/system/cpu/cpu$dp/cpufreq/scaling_governor;
+    $B echo "conservative" > /sys/devices/system/cpu/cpu$dp/cpufreq/scaling_governor;
+    $B echo "1" >> $SCORE;
+   done;
+  fi;
  fi;
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/vdd_levels ]; then
@@ -93,11 +106,12 @@ if [ -e /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy ]; then
  $B echo "10000" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate;
  $B echo "1" > /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy;
  $B echo "2" > /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor;
- $B echo "3" >> $SCORE;
  if [ -e /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias ]; then
   $B echo "0" > /sys/devices/system/cpu/cpufreq/ondemand/powersave_bias;
   $B echo "1" >> $SCORE;
  fi;
+ SCC=$((CORES*3));
+ $B echo "$SCC" >> $SCORE;
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemand/io_is_busy ]; then
  $B echo "CPU LITTLE cluster ondemand tuning..";
@@ -141,11 +155,12 @@ if [ -e /sys/devices/system/cpu/cpufreq/ondemandx/io_is_busy ]; then
  $B echo "10000" > /sys/devices/system/cpu/cpufreq/ondemandx/sampling_rate;
  $B echo "1" > /sys/devices/system/cpu/cpufreq/ondemandx/io_is_busy;
  $B echo "2" > /sys/devices/system/cpu/cpufreq/ondemandx/sampling_down_factor;
- $B echo "3" >> $SCORE;
  if [ -e /sys/devices/system/cpu/cpufreq/ondemandx/powersave_bias ]; then
   $B echo "0" > /sys/devices/system/cpu/cpufreq/ondemandx/powersave_bias;
   $B echo "1" >> $SCORE;
  fi;
+ SCC=$((CORES*3));
+ $B echo "$SCC" >> $SCORE;
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/ondemandx/io_is_busy ]; then
  $B echo "CPU LITTLE cluster ondemandx tuning..";
@@ -189,11 +204,12 @@ if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/io_is_busy ]; then
  $B echo "10000" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_rate;
  $B echo "1" > /sys/devices/system/cpu/cpufreq/sprdemand/io_is_busy;
  $B echo "3" > /sys/devices/system/cpu/cpufreq/sprdemand/sampling_down_factor;
- $B echo "3" >> $SCORE;
  if [ -e /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias ]; then
   $B echo "0" > /sys/devices/system/cpu/cpufreq/sprdemand/powersave_bias;
   $B echo "1" >> $SCORE;
  fi;
+ SCC=$((CORES*3));
+ $B echo "$SCC" >> $SCORE;
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/sprdemand/io_is_busy ]; then
  $B echo "CPU LITTLE cluster sprdemand tuning..";
@@ -218,7 +234,8 @@ if [ -e /sys/devices/system/cpu/cpufreq/smartass/up_rate_us ]; then
  $B echo "10000" > /sys/devices/system/cpu/cpufreq/smartass/up_rate_us;
  $B echo "10000" > /sys/devices/system/cpu/cpufreq/smartass/down_rate_us;
  $B echo "2" > /sys/devices/system/cpu/cpufreq/smartass/sample_rate_jiffies;
- $B echo "5" >> $SCORE;
+ SCC=$((CORES*5));
+ $B echo "$SCC" >> $SCORE;
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/smartass/up_rate_us ]; then
  $B echo "CPU LITTLE cluster smartass tuning..";
@@ -255,7 +272,8 @@ if [ -e /sys/devices/system/cpu/cpufreq/smartassV2/up_rate_us ]; then
  $B echo "10000" > /sys/devices/system/cpu/cpufreq/smartassV2/up_rate_us;
  $B echo "10000" > /sys/devices/system/cpu/cpufreq/smartassV2/down_rate_us;
  $B echo "2" > /sys/devices/system/cpu/cpufreq/smartassV2/sample_rate_jiffies;
- $B echo "5" >> $SCORE;
+ SCC=$((CORES*5));
+ $B echo "$SCC" >> $SCORE;
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/smartassV2/up_rate_us ]; then
  $B echo "CPU LITTLE cluster smartassV2 tuning..";
@@ -295,7 +313,8 @@ if [ -e /sys/devices/system/cpu/cpufreq/smartassH3/up_rate_us ]; then
  $B echo "18" > /sys/devices/system/cpu/cpufreq/smartassH3/min_cpu_load;
  $B echo "2" > /sys/devices/system/cpu/cpufreq/smartassH3/sample_rate_jiffies;
  $B echo "0" > /sys/devices/system/cpu/cpufreq/smartassH3/boost_enabled;
- $B echo "7" >> $SCORE;
+ SCC=$((CORES*7));
+ $B echo "$SCC" >> $SCORE;
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/smartassH3/up_rate_us ]; then
  $B echo "CPU LITTLE cluster smartassH3 tuning..";
@@ -351,7 +370,8 @@ if [ -e /sys/devices/system/cpu/cpufreq/interactive/min_sample_time ]; then
  $B echo "0" > /sys/devices/system/cpu/cpufreq/interactive/use_shed_load;
  $B echo "1" > /sys/devices/system/cpu/cpufreq/interactive/use_migration_notif;
  $B echo "50000" > /sys/devices/system/cpu/cpufreq/interactive/min_sample_time;
- $B echo "4" >> $SCORE;
+ SCC=$((CORES*4));
+ $B echo "$SCC" >> $SCORE;
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time ]; then
  $B echo "CPU LITTLE cluster interactive tuning..";
@@ -382,7 +402,8 @@ if [ -e /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time ]; then
  $B echo "0" > /sys/devices/system/cpu/cpufreq/interactivex/use_shed_load;
  $B echo "1" > /sys/devices/system/cpu/cpufreq/interactivex/use_migration_notif;
  $B echo "50000" > /sys/devices/system/cpu/cpufreq/interactivex/min_sample_time;
- $B echo "4" >> $SCORE;
+ SCC=$((CORES*4));
+ $B echo "$SCC" >> $SCORE;
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactivex/min_sample_time ]; then
  $B echo "CPU LITTLE cluster interactivex tuning..";
@@ -412,7 +433,8 @@ if [ -e /sys/devices/system/cpu/cpufreq/pegasusq/io_is_busy ]; then
  $B echo "1" > /sys/devices/system/cpu/cpufreq/pegasusq/io_is_busy;
  $B echo "3" > /sys/devices/system/cpu/cpufreq/pegasusq/sampling_down_factor;
  $B echo "10000" > /sys/devices/system/cpu/cpufreq/pegasusq/sampling_rate;
- $B echo "3" >> $SCORE;
+ SCC=$((CORES*3));
+ $B echo "$SCC" >> $SCORE;
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/pegasusq/io_is_busy ]; then
  $B echo "CPU LITTLE cluster pegasusq tuning..";
@@ -459,24 +481,37 @@ fi;
 if [ -e /sys/devices/system/cpu/cpufreq/conservative/sampling_rate ]; then
  $B echo "CPU conservative tuning..";
  $B chmod 644 /sys/devices/system/cpu/cpufreq/conservative/*;
-  $B echo "70000" > /sys/devices/system/cpu/cpufreq/conservative/sampling_rate;
-  $B echo "10" > /sys/devices/system/cpu/cpufreq/conservative/freq_step;
-  $B echo "69" > /sys/devices/system/cpu/cpufreq/conservative/up_threshold;
-  $B echo "18" > /sys/devices/system/cpu/cpufreq/conservative/down_threshold;
-  $B echo "5" > /sys/devices/system/cpu/cpufreq/conservative/sampling_down_factor;
-  $B echo "5" >> $SCORE;
+ $B echo "70000" > /sys/devices/system/cpu/cpufreq/conservative/sampling_rate;
+ $B echo "10" > /sys/devices/system/cpu/cpufreq/conservative/freq_step;
+ $B echo "69" > /sys/devices/system/cpu/cpufreq/conservative/up_threshold;
+ $B echo "18" > /sys/devices/system/cpu/cpufreq/conservative/down_threshold;
+ $B echo "5" > /sys/devices/system/cpu/cpufreq/conservative/sampling_down_factor;
+ SCC=$((CORES*5));
+ $B echo "$SCC" >> $SCORE;
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/conservative/sampling_rate ]; then
  $B echo "CPU LITTLE cluster conservative tuning..";
- for w in 0 1 2 3; do
-  $B chmod 644 /sys/devices/system/cpu/cpu$w/cpufreq/conservative/*;
-  $B echo "70000" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/sampling_rate;
-  $B echo "10" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/freq_step;
-  $B echo "69" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/up_threshold;
-  $B echo "18" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/down_threshold;
-  $B echo "5" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/sampling_down_factor;
-  $B echo "5" >> $SCORE;
- done;
+ if [ "1" = "$CR" ]; then
+  for w in 0 1; do
+   $B chmod 644 /sys/devices/system/cpu/cpu$w/cpufreq/conservative/*;
+   $B echo "70000" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/sampling_rate;
+   $B echo "10" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/freq_step;
+   $B echo "69" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/up_threshold;
+   $B echo "18" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/down_threshold;
+   $B echo "5" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/sampling_down_factor;
+   $B echo "5" >> $SCORE;
+  done;
+ else
+  for w in 0 1 2 3; do
+   $B chmod 644 /sys/devices/system/cpu/cpu$w/cpufreq/conservative/*;
+   $B echo "70000" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/sampling_rate;
+   $B echo "10" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/freq_step;
+   $B echo "69" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/up_threshold;
+   $B echo "18" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/down_threshold;
+   $B echo "5" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/sampling_down_factor;
+   $B echo "5" >> $SCORE;
+  done;
+ fi;
 fi;
 if [ -e /sys/devices/system/cpu/cpu4/cpufreq/conservative/sampling_rate ]; then
  $B echo "CPU big cluster conservative tuning..";
@@ -536,7 +571,8 @@ if [ -e /sys/devices/system/cpu/cpufreq/hotplug/io_is_busy ]; then
  $B chmod 644 /sys/devices/system/cpu/cpufreq/hotplug/*;
  $B echo "1" > /sys/devices/system/cpu/cpufreq/hotplug/io_is_busy;
  $B echo "10000" > /sys/devices/system/cpu/cpufreq/hotplug/sampling_rate;
- $B echo "2" >> $SCORE;
+ SCC=$((CORES*2));
+ $B echo "$SCC" >> $SCORE;
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/hotplug/io_is_busy ]; then
  $B echo "CPU LITTLE cluster hotplug tuning..";

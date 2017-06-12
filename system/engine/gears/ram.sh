@@ -189,6 +189,7 @@ elif [ "$SWAP" -gt "0" ]; then
   $B echo "1" > /sys/module/zswap/parameters/enabled;
   $B echo "LZ4 compression algorithm for ZSWAP";
   $B echo "lz4" > /sys/module/zswap/parameters/compressor;
+  $B echo "zbud" > /sys/module/zswap/parameters/zpool;
   $B echo "1" >> $SCORE;
  fi;
 fi;

@@ -5,17 +5,17 @@ SCORE=/system/engine/prop/score;
 MADMAX=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'mad_max=1');
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 FM=$((RAM*(64 + 1)));
-FK=$(((RAM*10) - 2699));
-EF=$(((RAM*11) - 2966));
+FK=$((RAM*5));
+EF=$((RAM*6));
 if [ "$EF" -gt "12288" ]; then
  EF=12288;
-elif [ "$EF" -le "6144" ]; then
- EF=6144;
+elif [ "$EF" -le "4096" ]; then
+ EF=4096;
 fi;
 if [ "$FK" -gt "12288" ]; then
  FK=12288;
-elif [ "$FK" -le "6144" ]; then
- FK=6144;
+elif [ "$FK" -le "4096" ]; then
+ FK=4096;
 fi;
 $B echo "Applying optimized kernel parameters..";
 if [ -e /proc/sys/kernel/random/read_wakeup_threshold ]; then
@@ -55,15 +55,15 @@ if [ -e /proc/sys/vm/oom_kill_allocating_task ]; then
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/dirty_ratio ]; then
- $B echo "21" > /proc/sys/vm/dirty_ratio;
- $B echo "vm.dirty_ratio=21" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.dirty_ratio=21;
+ $B echo "27" > /proc/sys/vm/dirty_ratio;
+ $B echo "vm.dirty_ratio=27" >> /system/etc/sysctl.conf;
+ $B sysctl -e -w vm.dirty_ratio=27;
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/dirty_background_ratio ]; then
- $B echo "9" > /proc/sys/vm/dirty_background_ratio;
- $B echo "vm.dirty_background_ratio=9" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.dirty_background_ratio=9;
+ $B echo "7" > /proc/sys/vm/dirty_background_ratio;
+ $B echo "vm.dirty_background_ratio=7" >> /system/etc/sysctl.conf;
+ $B sysctl -e -w vm.dirty_background_ratio=7;
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/dirty_writeback_centisecs ]; then
@@ -73,9 +73,9 @@ if [ -e /proc/sys/vm/dirty_writeback_centisecs ]; then
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/dirty_expire_centisecs ]; then
- $B echo "0" > /proc/sys/vm/dirty_expire_centisecs;
- $B echo "vm.dirty_expire_centisecs=0" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.dirty_expire_centisecs=0;
+ $B echo "300" > /proc/sys/vm/dirty_expire_centisecs;
+ $B echo "vm.dirty_expire_centisecs=300" >> /system/etc/sysctl.conf;
+ $B sysctl -e -w vm.dirty_expire_centisecs=300;
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/panic_on_oom ]; then
@@ -129,6 +129,12 @@ if [ -e /proc/sys/vm/page-cluster ]; then
  $B echo "2" > /proc/sys/vm/page -cluster;
  $B echo "vm.page-cluster=2" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.page-cluster=2;
+ $B echo "1" >> $SCORE;
+fi;
+if [ -e /proc/sys/vm/compact_memory ]; then
+ $B echo "1" > /proc/sys/vm/compact_memory;
+ $B echo "vm.compact_memory=1" >> /system/etc/sysctl.conf;
+ $B sysctl -e -w vm.compact_memory=1;
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/fs/file-max ]; then

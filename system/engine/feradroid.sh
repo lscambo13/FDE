@@ -153,7 +153,7 @@ MADMAX=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'mad_max=1');
 if [ "mad_max=1" = "$MADMAX" ]; then
 {
  $B echo -e "\xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0"
- $B echo "  MAD MAX MODE ACTIVE  "
+ $B echo " MAD MAX MODE ACTIVE "
  $B echo -e "\xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0 \xE2\x98\xA0"
 } >> $LOG;
 fi;
@@ -328,7 +328,7 @@ if [ -e /sbin/sysro ]; then
  /sbin/sysro;
 fi;
 for x in $($B mount | grep ext4 | cut -d " " -f3); do
- $B mount -o remount, nodiratime, relatime, delalloc, discard "${x}";
+ $B mount -o remount, noatime, nodiratime, nobarrier, discard "${x}";
 done;
 if [ -e /system/engine/gears/cleaner.sh ]; then
  CLEANERD=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'cleanerd=1');

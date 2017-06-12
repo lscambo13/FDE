@@ -396,24 +396,6 @@ if [ "$CORES" -ge "5" ]; then
 else
  $B echo "persist.sys.use_dithering=0" >> /system/engine/raw/build.prop;
 fi;
-if [ "$SDK" -ge "21" ]; then
- if [ "$ARCH" = "$($B echo $ARCH | $B grep "arm")" ]; then
-  if [ -d /system/vendor/lib ]; then
-   DIR=/system/vendor/lib;
-  else
-   DIR=/system/lib;
-  fi;
-  $B cp -f /system/engine/raw/lib1.so "$DIR"/libaptX.so;
-  $B cp -f /system/engine/raw/lib2.so "$DIR"/libaptXHD.so;
-  $B cp -f /system/engine/raw/lib3.so "$DIR"/libaptXScheduler.so;
-  $B chmod 644 "$DIR"/libaptX.so;
-  $B chmod 644 "$DIR"/libaptXHD.so;
-  $B chmod 644 "$DIR"/libaptXScheduler.so;
-  $B echo "persist.bt.a2dp_offload_cap=sbc-aptx-aptxhd" >> /system/engine/raw/build.prop;
-  $B echo "BT aptxHD codec activated.";
-  $B echo "3" >> $FSCORE;
- fi;
-fi;
 $B cp -f /system/engine/raw/build.prop /system/build.prop;
 $B chmod 644 /system/build.prop;
 $B chmod 644 /system/build.prop_bak;

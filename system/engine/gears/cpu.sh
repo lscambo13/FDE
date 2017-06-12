@@ -461,9 +461,9 @@ if [ -e /sys/devices/system/cpu/cpufreq/conservative/sampling_rate ]; then
  $B chmod 644 /sys/devices/system/cpu/cpufreq/conservative/*;
   $B echo "70000" > /sys/devices/system/cpu/cpufreq/conservative/sampling_rate;
   $B echo "10" > /sys/devices/system/cpu/cpufreq/conservative/freq_step;
-  $B echo "72" > /sys/devices/system/cpu/cpufreq/conservative/up_threshold;
-  $B echo "21" > /sys/devices/system/cpu/cpufreq/conservative/down_threshold;
-  $B echo "4" > /sys/devices/system/cpu/cpufreq/conservative/sampling_down_factor;
+  $B echo "69" > /sys/devices/system/cpu/cpufreq/conservative/up_threshold;
+  $B echo "18" > /sys/devices/system/cpu/cpufreq/conservative/down_threshold;
+  $B echo "5" > /sys/devices/system/cpu/cpufreq/conservative/sampling_down_factor;
   $B echo "5" >> $SCORE;
 fi;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/conservative/sampling_rate ]; then
@@ -472,9 +472,9 @@ if [ -e /sys/devices/system/cpu/cpu0/cpufreq/conservative/sampling_rate ]; then
   $B chmod 644 /sys/devices/system/cpu/cpu$w/cpufreq/conservative/*;
   $B echo "70000" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/sampling_rate;
   $B echo "10" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/freq_step;
-  $B echo "72" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/up_threshold;
-  $B echo "21" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/down_threshold;
-  $B echo "4" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/sampling_down_factor;
+  $B echo "69" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/up_threshold;
+  $B echo "18" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/down_threshold;
+  $B echo "5" > /sys/devices/system/cpu/cpu$w/cpufreq/conservative/sampling_down_factor;
   $B echo "5" >> $SCORE;
  done;
 fi;

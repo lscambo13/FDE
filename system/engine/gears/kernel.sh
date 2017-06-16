@@ -285,7 +285,7 @@ if [ -e /proc/sys/kernel/sched_big_waker_task_load ]; then
 fi;
 if [ -e /proc/sys/kernel/sched_small_task ]; then
  $B echo "18" > /proc/sys/kernel/sched_small_task;
- $B echo "Tuning kernel sched samll task..";
+ $B echo "Tuning kernel sched small task..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/kernel/sched_wakeup_load_threshold ]; then

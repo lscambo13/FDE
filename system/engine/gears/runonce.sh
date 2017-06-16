@@ -51,26 +51,6 @@ $B echo "deflate" >> /system/etc/ppp/options;
 $B echo "  " >> /system/etc/ppp/options;
 $B echo "2" >> $FSCORE;
 $B echo "Data compression enabled.";
-if [ "$SDK" -le "16" ]; then
- if [ "$SDK" -ge "9" ]; then
-  if [ -e /system/lib/egl/libGLES_android.so ]; then
-   if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
-    AV=$($B du -k "/system/lib/egl/libGLESv2_adreno200.so" | $B cut -f1);
-   else
-    AV=0;
-   fi;
-   if [ "$AV" -eq "1712" ]; then
-    $B echo "You have legacy GPU libs. No HWA for you.";
-   else
-    $B echo "Enabling Project Butter with forced HWA..";
-    $B cp -f /system/lib/egl/egl.cfg /system/lib/egl/egl.cfg_bak;
-    $B sed -i '/0 0 android/d' /system/lib/egl/egl.cfg;
-    $B mv /system/lib/egl/libGLES_android.so /system/lib/egl/bak.bak_so;
-	$B echo "9" >> $FSCORE;
-   fi;
-  fi;
- fi;
-fi;
 if [ "$CORES" -le "4" ]; then
  $B echo "Tuning Android animations..";
  if [ -e /system/xbin/sqlite3 ]; then
@@ -245,6 +225,10 @@ $B sed -e "s=logcat.live=#logcat.live=" -i /system/engine/raw/build.prop;
 $B sed -e "s=debugtool.anrhistory=#debugtool.anrhistory=" -i /system/engine/raw/build.prop;
 $B sed -e "s=touch.pressure.scale=#touch.pressure.scale=" -i /system/engine/raw/build.prop;
 $B sed -e "s=ro.vold.umsdirtyratio=#ro.vold.umsdirtyratio=" -i /system/engine/raw/build.prop;
+$B sed -e "s=debug.kill_allocating_task=#debug.kill_allocating_task=" -i /system/engine/raw/build.prop;
+$B sed -e "s=persist.hwc.dynamicfps=#persist.hwc.dynamicfps=" -i /system/engine/raw/build.prop;
+$B sed -e "s=windowsmgr.max_events_per_sec=#windowsmgr.max_events_per_sec=" -i /system/engine/raw/build.prop;
+$B sed -e "s=persist.sys.NV_FPSLIMIT=#persist.sys.NV_FPSLIMIT=" -i /system/engine/raw/build.prop;
 if [ "$RAM" -le "512" ]; then
  $B sed -e "s=ro.config.low_ram=#ro.config.low_ram=" -i /system/engine/raw/build.prop;
  $B sed -e "s=config.disable_atlas=#config.disable_atlas=" -i /system/engine/raw/build.prop;
@@ -344,8 +328,8 @@ fi;
  $B echo "mmp.enable.3g2=true"
  $B echo "media.aac_51_output_enabled=true"
  $B echo "debug.mdpcomp.logs=0"
- $B echo "ro.max.fling_velocity=12000"
- $B echo "ro.min.fling_velocity=8000"
+ $B echo "ro.max.fling_velocity=20000"
+ $B echo "ro.min.fling_velocity=12000"
  $B echo "ro.kernel.android.checkjni=0"
  $B echo "touch.pressure.scale=0.001"
  $B echo "ro.config.nocheckin=1"
@@ -358,6 +342,10 @@ fi;
  $B echo "logcat.live=disable"
  $B echo "debugtool.anrhistory=0"
  $B echo "ro.vold.umsdirtyratio=25"
+ $B echo "debug.kill_allocating_task=0"
+ $B echo "persist.hwc.dynamicfps=60"
+ $B echo "windowsmgr.max_events_per_sec=90"
+ $B echo "persist.sys.NV_FPSLIMIT=90"
 } >> /system/engine/raw/build.prop;
 if [ "$RAM" -le "512" ]; then
  {
@@ -396,8 +384,30 @@ if [ "$CORES" -ge "5" ]; then
 else
  $B echo "persist.sys.use_dithering=0" >> /system/engine/raw/build.prop;
 fi;
+if [ "$SDK" -le "16" ]; then
+ if [ "$SDK" -ge "9" ]; then
+  if [ -e /system/lib/egl/libGLES_android.so ]; then
+   if [ -e /system/lib/egl/libGLESv2_adreno200.so ]; then
+    AV=$($B du -k "/system/lib/egl/libGLESv2_adreno200.so" | $B cut -f1);
+   else
+    AV=0;
+   fi;
+   if [ "$AV" -eq "1712" ]; then
+    $B echo "You have legacy GPU libs. No HWA for you.";
+   else
+    $B echo "Enabling Project Butter with forced HWA..";
+    $B cp -f /system/lib/egl/egl.cfg /system/lib/egl/egl.cfg_bak;
+    $B sed -i '/0 0 android/d' /system/lib/egl/egl.cfg;
+    $B mv /system/lib/egl/libGLES_android.so /system/lib/egl/bak.bak_so;
+	$B sed -e "s=debug.composition.type=#debug.composition.type=" -i /system/engine/raw/build.prop;
+	$B echo "debug.composition.type=gpu" >> /system/engine/raw/build.prop;
+	$B echo "9" >> $FSCORE;
+   fi;
+  fi;
+ fi;
+fi;
 $B cp -f /system/engine/raw/build.prop /system/build.prop;
 $B chmod 644 /system/build.prop;
 $B chmod 644 /system/build.prop_bak;
-$B echo "86" >> $FSCORE;
+$B echo "90" >> $FSCORE;
 

@@ -34,7 +34,7 @@ $B rm -f /data/mlog/*;
 $B rm -f /data/system/*.log;
 $B rm -f /data/system/*.txt;
 $B rm -f /data/system/dropbox/*;
-$B rm -f /data/system/usagestats/*;
+$B rm -Rf /data/system/usagestats/*;
 $B rm -f /data/system/shared_prefs/*;
 $B rm -Rf /sdcard/LOST.DIR;
 $B rm -Rf /sdcard/found000;

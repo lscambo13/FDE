@@ -53,13 +53,12 @@ $B echo "westwood" > /proc/sys/net/ipv4/tcp_congestion_control;
 $B echo "Optimizing WiFi..";
 settings put global wifi_idle_ms 300000;
 settings put secure wifi_idle_ms 300000;
-settings put secure wifi_watchdog_on 0;
 settings put secure wifi_watchdog_poor_network_test_enabled 0;
 $B echo "Tethering fix..";
 settings put global tether_dun_required 0;
-$B echo "Setting to byte queue for all net interfaces.."
+$B echo "Reduce tx queue for all net interfaces.."
 for tx in /sys/class/net/*; do
-  $B echo "0" > "${tx}"/tx_queue_len;
+  $B echo "100" > "${tx}"/tx_queue_len;
 done;
 sync;
 $B sleep 1;

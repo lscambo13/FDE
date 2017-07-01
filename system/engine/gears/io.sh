@@ -38,9 +38,6 @@ for g in /sys/block/*/queue; do
  $B echo "0" > "${g}"/add_random;
  $B echo "0" > "${g}"/rotational;
  $B echo "0" > "${g}"/iostats;
- $B echo "1" > "${g}"/iosched/low_latency;
- $B echo "0" > "${g}"/iosched/slice_idle;
- $B echo "0" > "${g}"/iosched/max_budget;
  $B echo "1" >> $SCORE;
 done;
 $B echo "Applying new I/O parameters for storage blocks..";
@@ -48,31 +45,37 @@ for c in $MMC $MTD $DM; do
  $B echo "$KB" > "${c}"/read_ahead_kb;
  $B echo "1" > "${c}"/nomerges;
  $B echo "1" > "${c}"/rq_affinity;
+ if [ -e "${g}"/iosched/low_latency ]; then
+  $B echo "1" > "${g}"/iosched/low_latency;
+  $B echo "0" > "${g}"/iosched/slice_idle;
+  $B echo "0" > "${g}"/iosched/max_budget;
+ fi;
  $B echo "1" >> $SCORE;
 done;
 for x in $($B mount | grep ext4 | cut -d " " -f3); do
- $B mount -o remount, noatime, nodiratime, nobarrier, discard "${x}";
+ $B mount -o remount,noatime,nodiratime,nobarrier,discard "${x}";
  $B echo "Remounting EXT4 partition - $x" >> $SCORE;
  $B echo "1" >> $SCORE;
 done;
 $B echo "Remounting storage partitions..";
 for m in $ST; do
- $B mount -o remount, noatime, nodiratime -t auto "${m}";
- $B mount -o remount, noatime, nodiratime -t auto "${m}"/Android/obb;
+ $B mount -o remount,noatime,nodiratime -t auto "${m}";
+ $B mount -o remount,noatime,nodiratime -t auto "${m}"/Android/obb;
  $B echo "1" >> $SCORE;
 done;
 $B echo "Remounting root folders...";
-$B mount -o remount, noatime, nodiratime -t auto /;
-$B mount -o remount, noatime, nodiratime -t auto /proc;
-$B mount -o remount, noatime, nodiratime -t auto /sys;
-$B mount -o remount, noatime, nodiratime -t auto /sys/kernel/debug;
-$B mount -o remount, noatime, nodiratime -t auto /mnt/shell/emulated;
+$B mount -o remount,noatime,nodiratime -t auto /;
+$B mount -o remount,noatime,nodiratime -t auto /proc;
+$B mount -o remount,noatime,nodiratime -t auto /sys;
+$B mount -o remount,noatime,nodiratime -t auto /sys/kernel/debug;
+$B mount -o remount,noatime,nodiratime -t auto /mnt/shell/emulated;
 $B echo "3" >> $SCORE;
 if [ -e /sys/devices/virtual/sec/sec_slow/io_is_busy ]; then
  $B echo "I/O is buzy..";
  $B echo "1" > /sys/devices/virtual/sec/sec_slow/io_is_busy;
  $B echo "1" >> $SCORE;
 fi;
+$B mount -o remount,rw /system;
 mount -o remount,rw /system;
 if [ -e /sbin/sysrw ]; then
  /sbin/sysrw;

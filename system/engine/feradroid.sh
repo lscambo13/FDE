@@ -1,6 +1,6 @@
 #!/system/bin/sh
 ### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###
-export PATH=/sbin:/system/sbin:/system/bin:/system/xbin:/system/engine/bin
+export PATH=/sbin:/system/sbin:/system/bin:/system/xbin:/system/engine/bin:/su/bin
 B=/system/engine/bin/busybox;
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 CORES=$($B grep -c 'processor' /proc/cpuinfo);
@@ -46,7 +46,7 @@ if [ -e /sys/power/cpufreq_max_axi_freq ]; then
  $B chmod 664 /sys/power/cpufreq_max_axi_freq;
  AXI=$($B cat /sys/power/cpufreq_max_axi_freq);
 fi;
-$B echo "60" > /sys/devices/virtual/timed_output/vibrator/enable;
+$B echo "90" > /sys/devices/virtual/timed_output/vibrator/enable;
 msg -t "FDE v1.1 - firing up...";
 {
  $B echo "### FeraLab ###"
@@ -88,9 +88,13 @@ if [ -e /sys/fs/selinux/enforce ]; then
  supolicy --live "allow audioserver audioserver_tmpfs:file { read write execute }";
 fi;
 $B echo ">> Mounting partitions RW.." >> $LOG;
+$B mount -o remount,rw /data;
 mount -o remount,rw /data;
+$B mount -o remount,rw /system;
 mount -o remount,rw /system;
+$B mount -t debugfs none /sys/kernel/debug;
 mount -t debugfs none /sys/kernel/debug;
+$B mount -t debugfs debugfs /sys/kernel/debug;
 mount -t debugfs debugfs /sys/kernel/debug;
 $B chmod 0755 /sys/kernel/debug;
 if [ -e /sbin/sysrw ]; then
@@ -119,6 +123,7 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B echo "================================" >> $LOG;
  $B rm -f $CONFIG;
  $B cp /system/engine/raw/FDE_config.txt $CONFIG;
+ $B mount -o remount,rw /system;
  mount -o remount,rw /system;
  if [ -e /sbin/sysrw ]; then
   /sbin/sysrw;
@@ -134,12 +139,8 @@ if [ -e /system/engine/prop/firstboot ]; then
  $B echo ">> First boot completed." >> $LOG;
  sync;
  $B sleep 3;
- mount -o remount,ro /system;
- if [ -e /sbin/sysro ]; then
-  /sbin/sysro;
- fi;
  msg -t "FDE deployed. Rebooting NOW!";
- $B sleep 5;
+ $B sleep 3;
  reboot
  $B sleep 9;
  exit 0;
@@ -287,27 +288,20 @@ setprop ro.adb.secure 1;
 setprop security.perf_harden 1;
 $B echo "3" >> $SCORE;
 $B echo ">> Tweaking multitasking.." >> $LOG;
-BGA=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'bg_app_limit=' | $B sed -e "s|bg_app_limit=|""|");
-if [ "$BGA" -gt "0" ]; then
- service call activity 51 i32 "$BGA";
- setprop ro.sys.fw.bg_apps_limit "$BGA";
- $B echo "$BGA" >> $SCORE;
-else
- service call activity 51 i32 "$BG";
- setprop ro.sys.fw.bg_apps_limit "$BG";
- $B echo "$BG" >> $SCORE;
-fi;
+service call activity 51 i32 "$BG";
+setprop ro.sys.fw.bg_apps_limit "$BG";
+$B echo "$BG" >> $SCORE;
 svc power stayon false;
 $B killall -9 com.google.android.gms.persistent;
 $B echo "1" >> $SCORE;
 FSCR=$($B awk '{ sum += $1 } END { print sum }' $FSCORE);
 $B echo "$FSCR" >> $SCORE;
 $B sleep 1;
-$B echo "96" > /sys/devices/virtual/timed_output/vibrator/enable;
+$B echo "120" > /sys/devices/virtual/timed_output/vibrator/enable;
 $B sleep 0.3;
-$B echo "96" > /sys/devices/virtual/timed_output/vibrator/enable;
+$B echo "120" > /sys/devices/virtual/timed_output/vibrator/enable;
 $B sleep 0.3;
-$B echo "96" > /sys/devices/virtual/timed_output/vibrator/enable;
+$B echo "120" > /sys/devices/virtual/timed_output/vibrator/enable;
 msg -t "FDE status - OK";
 $B echo "FDE status - OK" >> $LOG;
 $B echo "  " >> $LOG;
@@ -323,12 +317,13 @@ if [ -e /engine.sh ]; then
 fi;
 sync;
 $B sleep 1;
+$B mount -o remount,ro /system;
 mount -o remount,ro /system;
 if [ -e /sbin/sysro ]; then
  /sbin/sysro;
 fi;
 for x in $($B mount | grep ext4 | cut -d " " -f3); do
- $B mount -o remount, noatime, nodiratime, nobarrier, discard "${x}";
+ $B mount -o remount,noatime,nodiratime,nobarrier,discard "${x}";
 done;
 if [ -e /system/engine/gears/cleaner.sh ]; then
  CLEANERD=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'cleanerd=1');

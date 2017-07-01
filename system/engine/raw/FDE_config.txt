@@ -1,15 +1,6 @@
 ### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###
 # FDE configuration file.
 
-# Mad Max mode will unlock most API
-# restrictions for FDE and enable
-# potentionally dangerous tweaks.
-# For ex. allowing to run sleeper and
-# enable forced GPU rendering on OS 6.0+
-# Used mostly for debugging purposes..
-mad_max=0
-
-
 # Triggers to enable or disable FDE gears
 # Set 0 to disable any gear you want.
 battery=1
@@ -23,18 +14,13 @@ ram=1
 vm=1
 
 
-# If this trigger is set to 1, CPU gear
-# will apply optimized 'conservative'
-# cpu governor for LITTLE cluster.
-# Powersaving but still lagfree and snappy.
-powersave=1
-
-
-# The maximum count of apps that are
-# allowed to run in background.
-# If set to 0 then default calculated
-# value is used.
-bg_app_limit=0
+# Mad Max mode will unlock most API
+# restrictions for FDE and enable
+# potentionally dangerous tweaks.
+# For ex. allowing to run sleeper and
+# enable forced GPU rendering on OS 6.0+
+# Used mostly for debugging purposes..
+mad_max=0
 
 
 # Cleanerd is same cleaner gear started
@@ -47,21 +33,3 @@ cleanerd=1
 # will relax your device when it's sleeping.
 # Analog of DOZE for OS 5.1 and lower.
 sleeper=1
-
-
-# There is a stamina power saving mode
-# in Sleeper daemon which automatically
-# disables data/wifi/nfc/gps/bt when screen
-# is off and battery level is below the %
-# stated in this tunable.
-# Set 0 to disable this feature.
-lowbatt=9
-
-
-# This option allows to enable/disable
-# wifi and data power-off when stamina
-# mode is enabled and battery goes below
-# stated % in tunable above. Turn on (1)
-# for deeper low-power-saving.
-internet_control=0
-

@@ -9,11 +9,6 @@ if [ -e /sys/kernel/debug/msm_fb/0/vsync_enable ]; then
  $B echo "16" > /sys/kernel/debug/msm_fb/mdp/mdp_usec_diff_treshold;
  $B echo "30" > /sys/kernel/debug/msm_fb/mdp/vs_rdcnt_slow;
 fi;
-if [ -e /dev/kgsl-3d0 ]; then
- $B echo "Setting correct KGSL permissions..";
- $B chmod 666 /dev/kgsl-3d0;
- $B chmod 666 /dev/genlock;
-fi;
 if [ -e /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction ]; then
  $B echo "Adreno i/o fraction tune-up..";
  $B echo "50" > /sys/devices/platform/kgsl/msm_kgsl/kgsl-3d0/io_fraction;

@@ -18,7 +18,9 @@ fi;
 if [ "$HGL" = "48" ]; then
  HGL=48;
 fi;
+$B mount -o remount,rw /data;
 mount -o remount,rw /data;
+$B mount -o remount,rw /system;
 mount -o remount,rw /system;
 $B echo "Cleaning trash...";
 $B chmod -R 777 /data/tombstones;
@@ -107,21 +109,22 @@ if [ ! -e /system/etc/gps_fde_bak ]; then
   $B echo "### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###"
   $B echo "DEBUG_LEVEL=0"
   $B echo "ERR_ESTIMATE=0"
-  $B echo "NTP_SERVER=time.izatcloud.net"
+  $B echo "NTP_SERVER=time.gpsonextra.net"
   $B echo "CAPABILITIES=0x37"
   $B echo "DEFAULT_AGPS_ENABLE=TRUE"
   $B echo "DEFAULT_USER_PLANE=TRUE"
   $B echo "INTERMEDIATE_POS=0"
+  $B echo "ACCURACY_THRES=0"
   $B echo "NMEA_PROVIDER=0"
   $B echo "REPORT_POSITION_USE_SUPL_REFLOC=1"
-  $B echo "XTRA_SERVER_1=http://xtrapath1.izatcloud.net/xtra2.bin"
-  $B echo "XTRA_SERVER_2=http://xtrapath2.izatcloud.net/xtra2.bin"
-  $B echo "XTRA_SERVER_3=http://xtrapath3.izatcloud.net/xtra2.bin"
+  $B echo "XTRA_SERVER_1=http://xtrapath1.gpsonextra.net/xtra2.bin"
+  $B echo "XTRA_SERVER_2=http://xtrapath2.gpsonextra.net/xtra2.bin"
+  $B echo "XTRA_SERVER_3=http://xtrapath3.gpsonextra.net/xtra2.bin"
   $B echo "XTRA_VERSION_CHECK=0"
   $B echo "SUPL_ES=0"
   $B echo "USE_EMERGENCY_PDN_FOR_EMERGENCY_SUPL=1"
   $B echo "SUPL_MODE=1"
-  $B echo "SUPL_HOST=supl.qxwz.com"
+  $B echo "SUPL_HOST=supl.google.com"
   $B echo "SUPL_PORT=7275"
   $B echo "SUPL_VER=0x20000"
   $B echo "   "
@@ -154,8 +157,6 @@ $B sed -e "s=ro.gps.agps_provider=#ro.gps.agps_provider=" -i /system/engine/raw/
 $B sed -e "s=persist.added_boot_bgservices=#persist.added_boot_bgservices=" -i /system/engine/raw/build.prop;
 $B sed -e "s=ro.config.max_starting_bg=#ro.config.max_starting_bg=" -i /system/engine/raw/build.prop;
 $B sed -e "s=ro.sys.fw.bg_apps_limit=#ro.sys.fw.bg_apps_limit=" -i /system/engine/raw/build.prop;
-$B sed -e "s=net.dns1=#net.dns1=" -i /system/engine/raw/build.prop;
-$B sed -e "s=net.dns2=#net.dns2=" -i /system/engine/raw/build.prop;
 $B sed -e "s=wifi.supplicant_scan_interval=#wifi.supplicant_scan_interval=" -i /system/engine/raw/build.prop;
 $B sed -e "s=ro.telephony.call_ring.delay=#ro.telephony.call_ring.delay=" -i /system/engine/raw/build.prop;
 $B sed -e "s=ring.delay=#ring.delay=" -i /system/engine/raw/build.prop;
@@ -166,8 +167,6 @@ $B sed -e "s=ro.ril.enable.a52=#ro.ril.enable.a52=" -i /system/engine/raw/build.
 $B sed -e "s=ro.ril.enable.a53=#ro.ril.enable.a53=" -i /system/engine/raw/build.prop;
 $B sed -e "s=ro.ril.hep=#ro.ril.hep=" -i /system/engine/raw/build.prop;
 $B sed -e "s=ro.ril.enable.amr.wideband=#ro.ril.enable.amr.wideband=" -i /system/engine/raw/build.prop;
-$B sed -e "s=persist.cust.tel.eons=#persist.cust.tel.eons=" -i /system/engine/raw/build.prop;
-$B sed -e "s=persist.eons.enabled=#persist.eons.enabled=" -i /system/engine/raw/build.prop;
 $B sed -e "s=persist.wpa_supplicant.debug=#persist.wpa_supplicant.debug=" -i /system/engine/raw/build.prop;
 $B sed -e "s=net.tethering.noprovisioning=#net.tethering.noprovisioning=" -i /system/engine/raw/build.prop;
 $B sed -e "s=tether_dun_required=#tether_dun_required=" -i /system/engine/raw/build.prop;
@@ -208,7 +207,6 @@ $B sed -e "s=persist.sys.strictmode.disable=#persist.sys.strictmode.disable=" -i
 $B sed -e "s=vidc.debug.level=#vidc.debug.level=" -i /system/engine/raw/build.prop;
 $B sed -e "s=ro.camera.sound.forced=#ro.camera.sound.forced=" -i /system/engine/raw/build.prop;
 $B sed -e "s=mm.enable.smoothstreaming=#mm.enable.smoothstreaming=" -i /system/engine/raw/build.prop;
-$B sed -e "s=mmp.enable.3g2=#mmp.enable.3g2=" -i /system/engine/raw/build.prop;
 $B sed -e "s=media.aac_51_output_enabled=#media.aac_51_output_enabled=" -i /system/engine/raw/build.prop;
 $B sed -e "s=debug.mdpcomp.logs=#debug.mdpcomp.logs=" -i /system/engine/raw/build.prop;
 $B sed -e "s=ro.max.fling_velocity=#ro.max.fling_velocity=" -i /system/engine/raw/build.prop;
@@ -272,8 +270,6 @@ fi;
  $B echo "persist.added_boot_bgservices=$CORES"
  $B echo "ro.config.max_starting_bg=$((CORES+1))"
  $B echo "ro.sys.fw.bg_apps_limit=$BG"
- $B echo "net.dns1=208.67.222.222"
- $B echo "net.dns2=208.67.220.220"
  $B echo "wifi.supplicant_scan_interval=300000"
  $B echo "ro.telephony.call_ring.delay=0"
  $B echo "ring.delay=0"
@@ -284,8 +280,6 @@ fi;
  $B echo "ro.ril.enable.a53=1"
  $B echo "ro.ril.hep=1"
  $B echo "ro.ril.enable.amr.wideband=1"
- $B echo "persist.cust.tel.eons=1"
- $B echo "persist.eons.enabled=true"
  $B echo "persist.wpa_supplicant.debug=false"
  $B echo "net.tethering.noprovisioning=true"
  $B echo "tether_dun_required=0"
@@ -325,7 +319,6 @@ fi;
  $B echo "vidc.debug.level=0"
  $B echo "ro.camera.sound.forced=0"
  $B echo "mm.enable.smoothstreaming=true"
- $B echo "mmp.enable.3g2=true"
  $B echo "media.aac_51_output_enabled=true"
  $B echo "debug.mdpcomp.logs=0"
  $B echo "ro.max.fling_velocity=20000"
@@ -409,5 +402,5 @@ fi;
 $B cp -f /system/engine/raw/build.prop /system/build.prop;
 $B chmod 644 /system/build.prop;
 $B chmod 644 /system/build.prop_bak;
-$B echo "90" >> $FSCORE;
+$B echo "85" >> $FSCORE;
 

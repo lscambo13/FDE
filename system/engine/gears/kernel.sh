@@ -73,9 +73,9 @@ if [ -e /proc/sys/vm/dirty_writeback_centisecs ]; then
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/dirty_expire_centisecs ]; then
- $B echo "300" > /proc/sys/vm/dirty_expire_centisecs;
- $B echo "vm.dirty_expire_centisecs=300" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.dirty_expire_centisecs=300;
+ $B echo "0" > /proc/sys/vm/dirty_expire_centisecs;
+ $B echo "vm.dirty_expire_centisecs=0" >> /system/etc/sysctl.conf;
+ $B sysctl -e -w vm.dirty_expire_centisecs=0;
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/panic_on_oom ]; then
@@ -126,25 +126,19 @@ if [ -e /proc/sys/vm/min_free_order_shift ]; then
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/vm/page-cluster ]; then
- $B echo "2" > /proc/sys/vm/page -cluster;
+ $B echo "2" > /proc/sys/vm/page-cluster;
  $B echo "vm.page-cluster=2" >> /system/etc/sysctl.conf;
  $B sysctl -e -w vm.page-cluster=2;
  $B echo "1" >> $SCORE;
 fi;
-if [ -e /proc/sys/vm/compact_memory ]; then
- $B echo "1" > /proc/sys/vm/compact_memory;
- $B echo "vm.compact_memory=1" >> /system/etc/sysctl.conf;
- $B sysctl -e -w vm.compact_memory=1;
- $B echo "1" >> $SCORE;
-fi;
 if [ -e /proc/sys/fs/file-max ]; then
- $B echo "$FM" > /proc/sys/fs/file -max;
+ $B echo "$FM" > /proc/sys/fs/file-max;
  $B echo "fs.file-max=$FM" >> /system/etc/sysctl.conf;
  $B sysctl -e -w fs.file-max=$FM;
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/fs/leases-enable ]; then
- $B echo "1" > /proc/sys/fs/leases -enable;
+ $B echo "1" > /proc/sys/fs/leases-enable;
  $B echo "fs.leases-enable=1" >> /system/etc/sysctl.conf;
  $B sysctl -e -w fs.leases-enable=1;
  $B echo "1" >> $SCORE;
@@ -248,11 +242,6 @@ if [ -e /proc/sys/kernel/sched_upmigrate ]; then
  $B echo "Tuning kernel sched upmigrate..";
  $B echo "1" >> $SCORE;
 fi;
-if [ -e /proc/sys/kernel/sched_downmigrate ]; then
- $B echo "65" > /proc/sys/kernel/sched_downmigrate;
- $B echo "Tuning kernel sched downmigrate..";
- $B echo "1" >> $SCORE;
-fi;
 if [ -e /proc/sys/kernel/sched_heavy_task ]; then
  $B echo "96" > /proc/sys/kernel/sched_heavy_task;
  $B echo "Tuning kernel sched heavy task..";
@@ -301,11 +290,6 @@ fi;
 if [ -e /proc/sys/kernel/sched_latency_ns ]; then
  $B echo "1000000" > /proc/sys/kernel/sched_latency_ns;
  $B echo "Tuning kernel sched latency..";
- $B echo "1" >> $SCORE;
-fi;
-if [ -e /proc/sys/kernel/sched_wakeup_granularity_ns ]; then
- $B echo "100000" > /proc/sys/kernel/sched_wakeup_granularity_ns;
- $B echo "Tuning kernel sched wakeup granularity..";
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /proc/sys/kernel/sched_child_runs_first ]; then
@@ -406,7 +390,6 @@ do
  fi;
  if [ -e "$n"/parameters/debug ]; then
   $B echo "0" > "$n"/parameters/debug;
-  $B echo "N" > "$n"/parameters/debug;
   $B echo "1" >> $SCORE;
  fi;
 done;

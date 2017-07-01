@@ -198,13 +198,13 @@ if [ -e /sys/block/zram0/disksize ]; then
  if [ "$SWAP" -gt "0" ]; then
   setprop ro.config.zram.support true;
   setprop zram.disksize $FZRAM;
-  $B echo "100" > /proc/sys/vm/swappiness;
-  $B echo "vm.swappiness=100" >> /system/etc/sysctl.conf;
-  $B sysctl -e -w vm.swappiness=100;
-  setprop sys.vm.swappiness 100;
+  $B echo "90" > /proc/sys/vm/swappiness;
+  $B echo "vm.swappiness=90" >> /system/etc/sysctl.conf;
+  $B sysctl -e -w vm.swappiness=90;
+  setprop sys.vm.swappiness 90;
   $B echo "1" >> $SCORE;
   if [ -e /sys/fs/cgroup/memory/sw/memory.swappiness ]; then
-   $B echo "100" > /sys/fs/cgroup/memory/sw/memory.swappiness;
+   $B echo "90" > /sys/fs/cgroup/memory/sw/memory.swappiness;
    $B echo "1" >> $SCORE;
    $B echo "Tuning memory cgroups..";
   fi;
@@ -229,7 +229,7 @@ if [ "$SWAP" -eq "0" ]; then
   $B echo "Tuning memory cgroups..";
  fi;
 fi;
-if [ "$RAM" -le "1024" ]; then
+if [ "$RAM" -le "512" ]; then
  if [ "$CORES" -ge "3" ]; then
   $B echo "Small RAM - KSM wanted..";
   if [ -e /sys/kernel/mm/uksm/run ]; then

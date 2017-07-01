@@ -2,6 +2,7 @@
 ### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
 SCORE=/system/engine/prop/score;
+SDK=$(getprop ro.build.version.sdk);
 if [ -e /sys/kernel/fast_charge/force_fast_charge ]; then
  $B echo "Fast charge support detected. Activating...";
  $B echo "1" > /sys/kernel/fast_charge/force_fast_charge;
@@ -41,9 +42,7 @@ if [ -e /sys/module/msm_performance/parameters/touchboost ]; then
 fi;
 if [ -e /sys/module/cpu_boost/parameters/boost_ms ]; then
  $B echo "Disabling input-boost...";
- $B chmod 644 /sys/module/cpu_boost/parameters/boost_ms;
  $B chmod 644 /sys/module/cpu_boost/parameters/input_boost_ms;
- $B echo "0" > /sys/module/cpu_boost/parameters/boost_ms;
  $B echo "0" > /sys/module/cpu_boost/parameters/input_boost_ms;
  $B echo "1" >> $SCORE;
 fi;
@@ -67,7 +66,7 @@ for i in $($B ls /sys/class/scsi_disk/); do
 done;
 if [ -e /sys/class/timed_output/vibrator/vtg_level ]; then
  $B echo "Vibrator undervolting...";
- $B echo "1369" > /sys/class/timed_output/vibrator/vtg_level;
+ $B echo "1500" > /sys/class/timed_output/vibrator/vtg_level;
  $B echo "1" >> $SCORE;
 fi;
 if [ -e /sys/module/cpuidle_scx35/parameters/cpuidle_debug ]; then
@@ -90,7 +89,7 @@ if [ "$SDK" -ge "23" ]; then
  settings put global device_idle_constants min_deep_maintenance_time=10000;
  settings put global device_idle_constants inactive_to=60000;
  settings put global device_idle_constants sensing_to=0;
- settings put global device_idle_constants locating_to=5000;
+ settings put global device_idle_constants locating_to=0;
  settings put global device_idle_constants location_accuracy=20.0;
  settings put global device_idle_constants motion_inactive_to=5000;
  settings put global device_idle_constants idle_after_inactive_to=0;

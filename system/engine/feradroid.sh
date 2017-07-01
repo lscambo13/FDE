@@ -7,6 +7,9 @@ CORES=$($B grep -c 'processor' /proc/cpuinfo);
 SCORE=/system/engine/prop/score;
 FSCORE=/system/engine/prop/fscore;
 BG=$((RAM/128));
+if [ "$BG" -le "3" ]; then
+ BG=3;
+fi;
 if [ "$CORES" = "0" ]; then
  CORES=1;
 fi;
@@ -79,14 +82,6 @@ msg -t "FDE v1.1 - firing up...";
 } >> $LOG;
 $B echo "Firing up..." >> $LOG;
 $B sleep 1;
-if [ -e /sys/fs/selinux/enforce ]; then
- $B echo ">> Tuning SElinux.." >> $LOG;
- supolicy --live "allow sdcardd unlabeled dir { append create execute write relabelfrom link unlink ioctl getattr setattr read rename lock mounton quotaon swapon rmdir audit_access remove_name add_name reparent execmod search open }";
- supolicy --live "allow sdcardd unlabeled file { append create write relabelfrom link unlink ioctl getattr setattr read rename lock mounton quotaon swapon audit_access open }";
- supolicy --live "allow unlabeled unlabeled filesystem associate";
- supolicy --live "allow mediaserver mediaserver_tmpfs:file { read write execute }";
- supolicy --live "allow audioserver audioserver_tmpfs:file { read write execute }";
-fi;
 $B echo ">> Mounting partitions RW.." >> $LOG;
 $B mount -o remount,rw /data;
 mount -o remount,rw /data;

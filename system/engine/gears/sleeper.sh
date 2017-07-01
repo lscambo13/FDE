@@ -4,6 +4,9 @@ B=/system/engine/bin/busybox;
 SDK=$(getprop ro.build.version.sdk);
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 BG=$((RAM/128));
+if [ "$BG" -le "3" ]; then
+ BG=3;
+fi;
 if [ -d /sdcard/Android/ ]; then
  LOG=/sdcard/Android/FDE_log.txt;
 else

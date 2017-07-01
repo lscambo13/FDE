@@ -229,8 +229,8 @@ if [ "$SWAP" -eq "0" ]; then
   $B echo "Tuning memory cgroups..";
  fi;
 fi;
-if [ "$RAM" -le "512" ]; then
- if [ "$CORES" -ge "3" ]; then
+if [ "$CORES" -ge "3" ]; then
+ if [ "$RAM" -le "512" ]; then
   $B echo "Small RAM - KSM wanted..";
   if [ -e /sys/kernel/mm/uksm/run ]; then
    $B echo "uKSM detected";

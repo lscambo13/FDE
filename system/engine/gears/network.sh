@@ -14,7 +14,7 @@ $B echo "Speed & security..";
  $B echo "net.ipv4.tcp_keepalive_intvl=45"
  $B echo "net.ipv4.tcp_keepalive_probes=9"
  $B echo "net.ipv4.tcp_fin_timeout=45"
- $B echo "net.ipv4.tcp_challenge_ack_limit=1000"
+ $B echo "net.ipv4.tcp_challenge_ack_limit=999"
  $B echo "net.ipv4.conf.all.rp_filter=2"
  $B echo "net.ipv4.conf.default.rp_filter=2"
  $B echo "net.ipv4.tcp_no_metrics_save=1"
@@ -29,7 +29,7 @@ $B sysctl -e -w net.ipv4.tcp_synack_retries=3;
 $B sysctl -e -w net.ipv4.tcp_keepalive_intvl=45;
 $B sysctl -e -w net.ipv4.tcp_keepalive_probes=9;
 $B sysctl -e -w net.ipv4.tcp_fin_timeout=45;
-$B sysctl -e -w net.ipv4.tcp_challenge_ack_limit=1000;
+$B sysctl -e -w net.ipv4.tcp_challenge_ack_limit=999;
 $B sysctl -e -w net.ipv4.conf.all.rp_filter=2;
 $B sysctl -e -w net.ipv4.conf.default.rp_filter=2;
 $B sysctl -e -w net.ipv4.tcp_no_metrics_save=1;
@@ -44,7 +44,7 @@ $B echo "3" > /proc/sys/net/ipv4/tcp_synack_retries;
 $B echo "54" > /proc/sys/net/ipv4/tcp_keepalive_intvl;
 $B echo "9" > /proc/sys/net/ipv4/tcp_keepalive_probes;
 $B echo "45" > /proc/sys/net/ipv4/tcp_fin_timeout;
-$B echo "1000" > /proc/sys/net/ipv4/tcp_challenge_ack_limit;
+$B echo "999" > /proc/sys/net/ipv4/tcp_challenge_ack_limit;
 $B echo "2" > /proc/sys/net/ipv4/conf/all/rp_filter;
 $B echo "2" > /proc/sys/net/ipv4/conf/default/rp_filter;
 $B echo "1" > /proc/sys/net/ipv4/tcp_no_metrics_save;

@@ -406,6 +406,38 @@ if [ -e /sys/devices/system/cpu/cpu4/cpufreq/interactivex/min_sample_time ]; the
   $B echo "4" >> $SCORE;
  done;
 fi;
+if [ -e /sys/devices/system/cpu/cpufreq/interactiveplus/min_sample_time ]; then
+ $B echo "CPU interactiveplus tuning..";
+ $B chmod 644 /sys/devices/system/cpu/cpufreq/interactiveplus/*;
+ $B echo "1" > /sys/devices/system/cpu/cpufreq/interactiveplus/io_is_busy;
+ $B echo "0" > /sys/devices/system/cpu/cpufreq/interactiveplus/use_sched_load;
+ $B echo "1" > /sys/devices/system/cpu/cpufreq/interactiveplus/use_migration_notif;
+ $B echo "50000" > /sys/devices/system/cpu/cpufreq/interactiveplus/min_sample_time;
+ SCC=$((CORES*4));
+ $B echo "$SCC" >> $SCORE;
+fi;
+if [ -e /sys/devices/system/cpu/cpu0/cpufreq/interactiveplus/min_sample_time ]; then
+ $B echo "CPU LITTLE cluster interactiveplus tuning..";
+ for q in 0 1 2 3; do
+  $B chmod 644 /sys/devices/system/cpu/cpu$q/cpufreq/interactiveplus/*;
+  $B echo "1" > /sys/devices/system/cpu/cpu$q/cpufreq/interactiveplus/io_is_busy;
+  $B echo "0" > /sys/devices/system/cpu/cpu$q/cpufreq/interactiveplus/use_sched_load;
+  $B echo "1" > /sys/devices/system/cpu/cpu$q/cpufreq/interactiveplus/use_migration_notif;
+  $B echo "50000" > /sys/devices/system/cpu/cpu$q/cpufreq/interactiveplus/min_sample_time;
+  $B echo "4" >> $SCORE;
+ done;
+fi;
+if [ -e /sys/devices/system/cpu/cpu4/cpufreq/interactiveplus/min_sample_time ]; then
+ $B echo "CPU big cluster interactiveplus tuning..";
+ for r in 4 5 6 7; do
+  $B chmod 644 /sys/devices/system/cpu/cpu$r/cpufreq/interactiveplus/*;
+  $B echo "1" > /sys/devices/system/cpu/cpu$r/cpufreq/interactiveplus/io_is_busy;
+  $B echo "0" > /sys/devices/system/cpu/cpu$r/cpufreq/interactiveplus/use_sched_load;
+  $B echo "1" > /sys/devices/system/cpu/cpu$r/cpufreq/interactiveplus/use_migration_notif;
+  $B echo "50000" > /sys/devices/system/cpu/cpu$r/cpufreq/interactiveplus/min_sample_time;
+  $B echo "4" >> $SCORE;
+ done;
+fi;
 if [ -e /sys/devices/system/cpu/cpufreq/pegasusq/io_is_busy ]; then
  $B echo "CPU pegasusq tuning..";
  $B chmod 644 /sys/devices/system/cpu/cpufreq/pegasusq/*;

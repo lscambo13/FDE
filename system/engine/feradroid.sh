@@ -82,6 +82,11 @@ msg -t "FDE v1.1 - firing up...";
 } >> $LOG;
 $B echo "Firing up..." >> $LOG;
 $B sleep 1;
+if [ -e /sys/fs/selinux/enforce ]; then
+ $B echo ">> Tuning SElinux.." >> $LOG;
+ supolicy --live "allow mediaserver mediaserver_tmpfs:file { read write execute }";
+ supolicy --live "allow audioserver audioserver_tmpfs:file { read write execute }";
+fi;
 $B echo ">> Mounting partitions RW.." >> $LOG;
 $B mount -o remount,rw /data;
 mount -o remount,rw /data;
@@ -246,10 +251,12 @@ $B echo ">> Executing kernel configuration..." >> $LOG;
 sysctl -p;
 $B echo "1" >> $SCORE;
 if [ "$SDK" -le "18" ]; then
- $B echo ">> Mediaserver fix..." >> $LOG;
- $B killall -9 android.process.media;
- $B killall -9 mediaserver;
- $B echo "2" >> $SCORE;
+ if [ "$SDK" -gt "10" ]; then
+  $B echo ">> Mediaserver fix..." >> $LOG;
+  $B killall -9 android.process.media;
+  $B killall -9 mediaserver;
+  $B echo "2" >> $SCORE;
+ fi;
 fi;
 if [ -e /etc/fstab ]; then
  $B echo "FStab onboard.";
@@ -272,6 +279,9 @@ if [ -e /sys/fs/selinux/enforce ]; then
   $B echo ">> Viper4Android support." >> $LOG;
   setenforce 0;
   $B echo "0" > /sys/fs/selinux/enforce;
+  setprop lpa.decode false;
+  setprop tunnel.decode false;
+  setprop lpa.use-stagefright false;
  else
   setenforce 1;
   $B echo "1" > /sys/fs/selinux/enforce;

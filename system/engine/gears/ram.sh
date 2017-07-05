@@ -2,7 +2,6 @@
 ### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
 SCORE=/system/engine/prop/score;
-SDK=$(getprop ro.build.version.sdk);
 MADMAX=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'mad_max=1');
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
 RAMfree=$($B free -m | $B awk '{ print $4 }' | $B sed -n 2p);

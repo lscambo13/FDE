@@ -13,12 +13,8 @@ fi;
 if [ "$CORES" = "0" ]; then
  CORES=1;
 fi;
-if [ -e /sys/fs/selinux/enforce ]; then
- $B chmod 666 /sys/fs/selinux/enforce;
- setenforce 0;
- $B echo "0" > /sys/fs/selinux/enforce;
-fi;
 svc power stayon true;
+$B echo "lock_me" > /sys/power/wake_lock;
 if [ "$CORES" -gt "4" ]; then
  $B sleep 45;
 else
@@ -82,6 +78,12 @@ msg -t "FDE v1.1 - firing up...";
 } >> $LOG;
 $B echo "Firing up..." >> $LOG;
 $B sleep 1;
+if [ -e /sys/fs/selinux/enforce ]; then
+ $B chmod 666 /sys/fs/selinux/enforce;
+ SEMOD=$($B cat /sys/fs/selinux/enforce);
+ setenforce 0;
+ $B echo "0" > /sys/fs/selinux/enforce;
+fi;
 if [ -e /sys/fs/selinux/enforce ]; then
  $B echo ">> Tuning SElinux.." >> $LOG;
  supolicy --live "allow mediaserver mediaserver_tmpfs:file { read write execute }";
@@ -283,7 +285,7 @@ if [ -e /sys/fs/selinux/enforce ]; then
   setprop tunnel.decode false;
   setprop lpa.use-stagefright false;
  else
-  setenforce 1;
+  setenforce "$SEMOD";
   $B echo "1" > /sys/fs/selinux/enforce;
  fi;
  $B chmod 444 /sys/fs/selinux/enforce;
@@ -297,6 +299,7 @@ service call activity 51 i32 "$BG";
 setprop ro.sys.fw.bg_apps_limit "$BG";
 $B echo "$BG" >> $SCORE;
 svc power stayon false;
+$B echo "lock_me" > /sys/power/wake_unlock;
 $B killall -9 com.google.android.gms.persistent;
 $B echo "1" >> $SCORE;
 FSCR=$($B awk '{ sum += $1 } END { print sum }' $FSCORE);

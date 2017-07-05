@@ -2,7 +2,6 @@
 ### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
 RAM=$($B free -m | $B awk '{ print $2 }' | $B sed -n 2p);
-ARCH=$($B grep -Eo "ro.product.cpu.abi(2)?=.+" /system/build.prop 2>/dev/null | $B grep -Eo "[^=]*$" | head -n1);
 SDK=$(getprop ro.build.version.sdk);
 CORES=$($B grep -c 'processor' /proc/cpuinfo);
 FSCORE=/system/engine/prop/fscore;

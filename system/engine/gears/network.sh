@@ -1,7 +1,6 @@
 #!/system/bin/sh
 ### FeraDroid Engine v1.1 | By FeraVolt. 2017 ###
 B=/system/engine/bin/busybox;
-SDK=$(getprop ro.build.version.sdk);
 $B echo "Writing optimized network parameters...";
 $B echo "Speed & security..";
 {

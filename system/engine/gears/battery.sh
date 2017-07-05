@@ -58,11 +58,8 @@ if [ -e /sys/power/cpufreq_min_limit ]; then
  $B echo "1" >> $SCORE;
 fi;
 for i in $($B ls /sys/class/scsi_disk/); do
- $B cat /sys/class/scsi_disk/"$i"/write_protect 2>/dev/null | $B grep 1 >/dev/null
  $B echo "Better DeepSleep.";
- if [ $? -eq 0 ]; then
-  $B echo "temporary none" > /sys/class/scsi_disk/"$i"/cache_type;
- fi;
+ $B echo "temporary none" > /sys/class/scsi_disk/"$i"/cache_type;
 done;
 if [ -e /sys/class/timed_output/vibrator/vtg_level ]; then
  $B echo "Vibrator undervolting...";

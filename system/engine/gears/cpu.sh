@@ -3,7 +3,6 @@
 B=/system/engine/bin/busybox;
 SCORE=/system/engine/prop/score;
 MADMAX=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'mad_max=1');
-PCPU=$($B cat /system/engine/raw/FDE_config.txt | $B grep -e 'powersave=1');
 MAX=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq);
 MIN=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq);
 CMAX=$($B cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq);
@@ -27,10 +26,10 @@ if [ -e /system/bin/thermald ]; then
  setprop ctl.stop thermald;
  stop thermald;
 fi;
-if [ -e /sys/devices/soc.*/qcom,bcl.*/mode ]; then
- $B echo -n "disable" > /sys/devices/soc.*/qcom,bcl.*/mode;
+for mm in /sys/devices/soc.*/qcom,bcl.*; do
+ $B echo -n "disable" > "${mm}"/mode;
  $B echo "1" >> $SCORE;
-fi;
+done;
 if [ -e /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_min_freq ]; then
  if [ "$CMIN" != "$MIN" ]; then
   $B echo "Underclocking your CPU to $((CMIN/1000))Mhz..";

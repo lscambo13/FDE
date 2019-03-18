@@ -223,10 +223,9 @@ else
  umount /cache;
 fi;
 ui_print "*******************************";
-ui_print "        Rebooting NOW! ";
+ui_print "          Completed! ";
 ui_print "*******************************";
 sleep 3;
-reboot;
 exit 0
 
 

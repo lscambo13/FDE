@@ -49,7 +49,6 @@ ui_print "By FeraVolt. 2019.";
 ui_print "  ";
 ui_print "  ";
 ui_print "Installing...";
-ui_print "Device will auto-reboot.";
 ui_print "  ";
 if [ -e /data/adb/magisk.img ]; then
  [ -f $MAGISKBIN/util_functions.sh ] || require_new_magisk;

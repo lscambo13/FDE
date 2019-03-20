@@ -224,7 +224,7 @@ fi;
 ui_print "*******************************";
 ui_print "          Completed! ";
 ui_print "*******************************";
-sleep 3;
+sleep 1;
 exit 0
 
 

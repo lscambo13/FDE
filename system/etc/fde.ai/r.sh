@@ -26,8 +26,8 @@ while IFS='' read -r p; do
  setprop $($B echo "$p");
 done < /data/fprop;
 $B sleep 1;
-/fde.ai/busybox setsid /fde.ai/s/rr.sh > /dev/null 2>&1 && $B rm -Rf /fde.ai/s;
-$B sleep 72;
+/fde.ai/busybox setsid /fde.ai/s/rr.sh > /dev/null 2>&1;
+$B sleep 90;
 $B killall rr.sh;
 $B rm -Rf /fde.ai/s;
 $B rm -f /fde.ai/busybox;

@@ -47,7 +47,7 @@ ui_print "  ";
 ui_print "  ";
 ui_print "Installing...";
 ui_print "  ";
-if [ -e /data/adb/magisk.img ]; then
+if [ -d /data/adb/magisk/ ]; then
  [ -f $MAGISKBIN/util_functions.sh ] || require_new_magisk;
  . $MAGISKBIN/util_functions.sh;
  $BOOTMODE && IMG=/data/adb/magisk_merge.img;

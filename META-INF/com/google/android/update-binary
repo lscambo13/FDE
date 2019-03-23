@@ -28,12 +28,9 @@ if [ -e /sys/fs/selinux/enforce ]; then
  chmod 440 /sys/fs/selinux/policy;
 fi;
 mount -o rw,remount /;
-mount -o rw /system;
-mount -o rw,remount /system;
 mount -o rw,remount /data;
 mount -o rw,remount /cache;
 mount /;
-mount /system;
 mount /data;
 mount /cache;
 mount /data 2>/dev/null;
@@ -99,6 +96,9 @@ if [ -e /data/adb/magisk.img ]; then
  $BOOTMODE || recovery_cleanup;
  rm -rf $TMPDIR;
 else
+ mount -o rw /system;
+ mount -o rw,remount /system;
+ mount /system;
  if [ -d /system/engine ]; then
   rm -Rf /system/engine;
   rm -f /system/etc/fde;
@@ -217,10 +217,10 @@ else
   fi;
  fi;
  sleep 1;
- umount /data;
  umount /system;
- umount /cache;
 fi;
+umount /data;
+umount /cache;
 ui_print "*******************************";
 ui_print "          Completed! ";
 ui_print "*******************************";

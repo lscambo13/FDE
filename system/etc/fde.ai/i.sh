@@ -75,6 +75,7 @@ $B chmod 777 /data/fprop;
 $B chmod 777 /data/F;
 $B echo "1" > /data/F;
 S=$($B grep "ro.build.version.sdk" /system/build.prop | $B cut -d "=" -f 2);
+MI=$($B grep "ro.miui.ui.version.name" /system/build.prop | $B cut -d "=" -f 2);
 C=$($B grep -c 'processor' /proc/cpuinfo);
 if [ "$C" = "0" ]; then
  C=1;
@@ -150,10 +151,15 @@ if [ "$S" -ge "21" ]; then
   $B echo "ro.sys.fw.dex2oat_thread_count=$C"
   $B echo "sys.sysctl.tcp_def_init_rwnd=60"
   $B echo "sys.display-size=3840x2160"
-  $B echo "persist.camera.HAL3.enabled=1"
-  $B echo "persist.camera.eis.enable=1"
-  $B echo "ro.mtk_perfservice_support=0"
  } >> /data/local.prop;
+ if [ -n "$MI" ]; then
+  {
+   $B echo "persist.vendor.camera.HAL3.enabled=1"
+   $B echo "persist.camera.HAL3.enabled=1"
+   $B echo "persist.vendor.camera.eis.enable=1"
+   $B echo "persist.camera.eis.enable=1"
+  } >> /data/local.prop;
+ fi;
 fi;
 if [ "$S" -ge "24" ]; then
  {

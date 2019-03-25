@@ -40,32 +40,36 @@ ui_print "  ";
 ui_print "  ";
 ui_print "  ";
 ui_print "  ";
-ui_print "***FeraLab***";
-ui_print "FDE.AI v3";
-ui_print "By FeraVolt. 2019.";
 ui_print "  ";
 ui_print "  ";
-ui_print "Installing...";
 ui_print "  ";
+ui_print "*******************************";
+ui_print "         ***FeraLab***";
+ui_print "   FDE.AI by FeraVolt  2019";
+ui_print "*******************************";
+ui_print "FDE deploy...";
+ui_print ".";
 if [ -d /data/adb/magisk ]; then
  [ -f $MAGISKBIN/util_functions.sh ] || require_new_magisk;
  . $MAGISKBIN/util_functions.sh;
  $BOOTMODE && IMG=/data/adb/magisk_merge.img;
  MOUNTPATH=$TMPDIR/magisk_img;
  setup_flashable;
- mount_partitions;
+ mount_partitions > /dev/null 2>&1;
  api_level_arch_detect;
  $BOOTMODE && boot_actions || recovery_actions;
- unzip -o "$ZIP" module.prop config.sh -d $INSTALLER;
+ ui_print "..";
+ unzip -o "$ZIP" module.prop config.sh -d $INSTALLER > /dev/null 2>&1;
  . $INSTALLER/config.sh;
  MIN_VER="18000";
  MODID="FDE";
  MODPATH=$MOUNTPATH/$MODID;
  request_zip_size_check "$ZIP";
- mount_magisk_img;
+ mount_magisk_img > /dev/null 2>&1;
  rm -rf $MODPATH;
  mkdir -p $MODPATH;
- unzip -o "$ZIP" 'system/*' -d $MODPATH;
+ ui_print "...";
+ unzip -o "$ZIP" 'system/*' -d $MODPATH > /dev/null 2>&1;
  rm -f $MODPATH/system/placeholder;
  for TARGET in $REPLACE; do
   mktouch $MODPATH$TARGET/.replace;
@@ -77,6 +81,7 @@ if [ -d /data/adb/magisk ]; then
   mktouch /sbin/.core/img/$MODID/update;
   cp -af $INSTALLER/module.prop /sbin/.core/img/$MODID/module.prop;
  fi;
+ ui_print "....";
  $LATESTARTSERVICE;
  {
   echo "#!/system/bin/sh"
@@ -89,7 +94,8 @@ if [ -d /data/adb/magisk ]; then
   echo "   "
  } >> $MODPATH/service.sh;
  set_permissions;
- magisk --restorecon 2>/dev/null;
+ magisk --restorecon;
+ ui_print ".....";
  sleep 1;
  unmount_magisk_img;
  umount /$MOUNTPATH;
@@ -115,7 +121,9 @@ else
  rm -Rf /system/etc/fde.ai;
  rm -Rf /system/engine;
  rm -f /system/etc/sysctl.conf;
+ ui_print "..";
  unzip -o "$ZIP";
+ ui_print "...";
  export PATH=/sbin:/system/sbin:/system/bin:/system/xbin:/system/vendor/bin:/su/xbin;
  if [ -e /data/su.img ]; then
   mknod /dev/block/loop7 b 7 7;
@@ -129,6 +137,7 @@ else
  chmod 777 /system/etc/fde.ai/*;
  chmod 777 /system/etc/fde.ai/b/*;
  sleep 1;
+ ui_print "....";
  if [ -e /init.supersu.rc ]; then
   if [ ! -d /system/su.d ]; then
   mkdir /system/su.d;
@@ -216,14 +225,17 @@ else
    } >> /system/bin/debuggerd;
   fi;
  fi;
+ ui_print ".....";
  sleep 1;
  umount /system;
 fi;
 umount /data;
 umount /cache;
-ui_print "*******************************";
-ui_print "          Completed! ";
-ui_print "*******************************";
+ui_print "......";
+ui_print "Ready.";
+ui_print " ";
+ui_print " ";
+ui_print " ";
 sleep 1;
 exit 0
 

@@ -1,7 +1,7 @@
 <h1 align="center">FDE.AI</h1>
 <h3 align="center"><strong>Ultimate Android Optimizer</strong></h3>
 <p align="center"><img src="https://raw.githubusercontent.com/feravolt/FeraDroid-Engine/master/screenshot.png"></p>
-<p align="center"><img src="https://img.shields.io/badge/version-v3.06-blueviolet.svg"></p>
+<p align="center"><img src="https://img.shields.io/badge/version-v3.07-blueviolet.svg"></p>
 <p>FeraDroid Engine (simpy FDE) - an All-in-One ultimate optimizer for <b>all</b> devices on Android OS. <b>No settings/customizations</b> and rest 'headache' - all parameters are <b>invidual</b> for EVERY device depenging on it's hardware/software characteristics. All parameters are <i>very balanced</i> - you may gain performance without increase of power consumption AND reduce power consumtion without losing performance. FDE is totally compatible with very wide range of devices and Android verions.</p>
 <p align="center"><a href="https://forum.xda-developers.com/android/software-hacking/beta-feradroid-engine-v0-19-ultimate-t3284421"><img src="https://img.shields.io/badge/Thread%20at-XDA-orange.svg"></a> <a href="https://4pda.ru/forum/index.php?showtopic=716174"><img src="https://img.shields.io/badge/Thread%20at-4PDA-9cf.svg"></a> <a href="https://www.facebook.com/groups/feralab/"><img src="https://img.shields.io/badge/Group%20on-Facebook-blue.svg"></a> <a href="https://t.me/feralab_xda"><img src="https://img.shields.io/badge/-Telegram%20group-informational.svg"></a></p>
 <p><b>Supported CPU arch's:</b><br>

@@ -1,0 +1,73 @@
+*** v3.09 ***
+- Updated 'input-boost' tweak
+- Updated & tuned kernel parameters
+- Updated kernel scheduler parameters (should be more battery friendly)
+- Updated CPU tweak
+- Fixed DalvikVM crash on Android 4.2
+- misc..
+
+
+
+*** v3.08 ***
+- Nothing new, code is heavily optimized and bugfixed.
+
+
+
+*** v3.07 ***
+- Updated zRAM logic
+- Updated kernel parameters
+- Updated I/O tweaks
+- Fixed music shuttering while screen-off on MTK cpus
+- Various optimizations for MTK CPU's
+- Few MIUI optimizations
+- Doesn't enable CAM2Api on MIUI (breaks face recognition)
+- System apps priority tweaks fixed & updated
+- Power-saving tweaks updates
+- Initiated AI early development
+- Magisk 18.2 related fixes
+- Updated installer script logic
+- A lot of bug-fixes & code improvement
+- fde.done file contains date-time of last FDE run
+- CPU tweak fixes
+- Tuned low RAM devices related parameters
+- Better optimization for 6+gigs RAM devices
+- Better optimization for 8+cores CPUs
+- Build.prop tweaks fixes
+- Updated kernel scheduler tweaks
+- Updated EAS tweaks
+- misc
+
+
+
+*** v3.06 ***
+- Nothing new, bugfixes only
+
+
+
+*** v3.05 ***
+- Fixed zRam tweak (typo error)
+- Added energy-saving tweaks for Adreno GPUs
+- Optimized FDE init time
+- Fully unloads from RAM after execution
+- Tuned HMP parameters
+- Disabled hot-plug boost
+- System apps priority tweak
+- Totally fixed music shuttering bug while screen-off
+- Overall code optimization & bugfixes
+- misc
+
+
+
+*** v3.04 (fisrt public non-beta release) ***
+- Added UFS Power-saving support on some SoCs
+- Tuned touch-boost
+- Fixed music shutter in very deep sleep mode
+- Fixed possible fast-charge issues
+- Tuned I/O tweaks
+- Tuned FS tweaks
+- Tuned EAS tweaks
+- EAS-WELT activation
+- Tuned HMP settings
+- Tuned VM and LMK settings
+- Disabled kernel tracers
+- misc..

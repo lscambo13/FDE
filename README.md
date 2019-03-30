@@ -32,3 +32,4 @@ Do everything at your own risk!</code><br></p>
 <p><i>Thanks to all guys, who contributed, helped, tested my work.. You all are wonderful, amazing, smart, super cool, beautiful people!</i><br></p>
 
 [![HitCount](http://hits.dwyl.io/Magisk-Modules-Repo/FDE.svg)](http://hits.dwyl.io/Magisk-Modules-Repo/FDE)
+

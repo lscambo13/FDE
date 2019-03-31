@@ -1,3 +1,36 @@
+*** v3.10 ***
+- Urgent bugfixes (code typo's)
+- Whole code is revised and remastered (still no AI)
+- Added log file "/sdcard/fde.txt" instead of "/sdcard/fde.done"
+- Optimized FDE run time (much faster now)
+- Added SoC clock scaling support
+- Smarter input-boost (updated)
+- Smarter dynamic EAS optimizations (updated)
+- Various bugfixes for Android versions pre 5.0
+- Updated network tweak
+- Fixed Doze tweak for Android 7.0+
+- Wifi optimization tweak enhanced
+- System animations tune-up (first boot only)
+- Fixed system trash cleaner tweak
+- Smarter I/O tweak (updated)
+- Added F2FS tweaks
+- FS cache tweak update
+- VM memory allocation tweak bug-fixed
+- Updated VM cache tweaks
+- Updated FS kernel parameters
+- Smarter multi-core optimizations
+- Smarter HMP scheduler tweaks (updated)
+- Updated CPU governor tweaks
+- Smarter EAS tweaks (updated)
+- Updated CPU bandwidth optimization tweak
+- Added LMK agressiveness tweak
+- Updated process reclaim tweaks
+- Fixed system processes optimization tweaks
+- Better zRAM logic & optimization
+- misc...
+
+
+
 *** v3.09 ***
 - Updated 'input-boost' tweak
 - Updated & tuned kernel parameters

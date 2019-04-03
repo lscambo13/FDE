@@ -1,7 +1,7 @@
 <h1 align="center">FDE.AI</h1>
 <h3 align="center"><strong>Ultimate Android Optimizer</strong></h3>
 <p align="center"><img src="https://raw.githubusercontent.com/Magisk-Modules-Repo/FDE/master/screenshot.png"></p>
-<p align="center"><img src="https://img.shields.io/badge/version-v3.10-blueviolet.svg"> <a href="https://raw.githubusercontent.com/Magisk-Modules-Repo/FDE/master/changelog.txt"><img src="https://img.shields.io/badge/-Changelog-success.svg"></a><br></p>
+<p align="center"><img src="https://img.shields.io/badge/version-v3.11-blueviolet.svg"> <a href="https://raw.githubusercontent.com/Magisk-Modules-Repo/FDE/master/changelog.txt"><img src="https://img.shields.io/badge/-Changelog-success.svg"></a><br></p>
 <p>FeraDroid Engine (simpy FDE) - an All-in-One ultimate optimizer for <b>all</b> devices on Android OS. <b>No settings/customizations</b> and rest 'headache' - all parameters are <b>invidual</b> for EVERY device depenging on it's hardware/software characteristics. All parameters are <i>very balanced</i> - you may gain performance without increase of power consumption AND reduce power consumtion without losing performance. FDE is totally compatible with very wide range of devices and Android verions.<br></p>
 <p align="center"><a href="https://forum.xda-developers.com/android/software-hacking/beta-feradroid-engine-v0-19-ultimate-t3284421"><img src="https://img.shields.io/badge/Thread%20at-XDA-orange.svg"></a> <a href="https://4pda.ru/forum/index.php?showtopic=716174"><img src="https://img.shields.io/badge/Thread%20at-4PDA-9cf.svg"></a> <a href="https://www.facebook.com/groups/feralab/"><img src="https://img.shields.io/badge/Group%20on-Facebook-blue.svg"></a> <a href="https://t.me/feralab_xda"><img src="https://img.shields.io/badge/-Telegram%20group-informational.svg"></a><br></p>
 <p><b>Supported CPU arch's:</b><br>
@@ -18,7 +18,7 @@
 <h3 align="center"><strong>Installation:</strong></h3>
 <p align="center"><i>WARNING! Don't use any other All-in-One tweakers or things may get much worse! I warned you!</i><br></p>
 <p><b>- Download latest FDE .zip and install it via recovery OR Magisk manager.</b></p>
-<p><b>- After OS boot, if FDE worked OK you will get <i>5 vibro's</i> and a file <i>/sdcard/fde.txt</i> will be created.</b><br></p>
+<p><b>- After OS boot, if FDE worked OK you will get <i>5 vibro's</i> and a log file <i>/sdcard/fde.txt</i> will be created.</b><br></p>
 <p>When installing new verision of FDE - previous version will be automatically removed.<br></p>
 <h3 align="center"><strong>Disclaimer:</strong></h3>
 <p><code>Your warranty is now void.

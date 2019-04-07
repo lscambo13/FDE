@@ -1,3 +1,27 @@
+*** v3.12 ***
+- Updated I/O tweaks
+- Updated CPU tweaks
+- Updated modules confugurations
+- Updated battery-dependent tweaks
+- EAS governors support
+- EAS tweaks tuned
+- Updated & optimized zRAM tweak
+- Android Q better support
+- Adreno boost support
+- CAM2Api addon disabled
+- Converted to C base
+- Disabled input-boost for EAS devices
+- Removed many persist build.prop tweaks not reverting while uninstalling
+- Whole code optimization
+- Kernel FS tweaks updated
+- VM tweaks updated
+- LMK tweak updated
+- Enhanced log
+- AI base development init
+- misc..
+
+
+
 *** v3.11 ***
 - Animations are not tuned on Android 7+
 - Updated Log

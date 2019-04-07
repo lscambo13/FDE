@@ -10,13 +10,14 @@
 <code>- x32bit (x86)</code><br>
 <code>- x64bit (x86_64)</code><br>
 <b>Supported Android OS verions:</b><br>
-<code>2.3 - 9.0</code><br></p>
+<code>2.3 and higher</code><br></p>
 <h3 align="center"><strong>Features</strong></h3>
 <p>FDE - <b>very universal</b> Android OS optimizer. Very wide-range settings of OS and linux kernel are configured, still being cross-platform utility, maximally compatible with all devices. This means that it doesn't have any dirty hacks/hardcodes and 3rd part binaries (except busybox) & config files. FDE applies configurations depending on it's hardware and software, so that in the end every device is configured <b>individually</b>.</p><p>New <i>unique</i> metod of execution - all requied FDE components are loaded directly to RAM and executed from there. System partitions are remounted RW only once while installation. This means <b>high speed</b> (the worst RAM will have at least ~500MB/s of I/O speed), <b>no power consumption</b> (no NAND memory I/O occurs) and <b>security</b> (system partitions are in read-only state). Also new-gen FDE is synced with OS boot process - so tweaks will be applied in correct time. All system partitions are trimmed and checked for errors after every OS boot with FDE onboard. Universal installer automatically detects what ROOT-method you use and how to autostart. Finally, FDE is not only about optimization. It's also about security and <i>feature-enabler</i>.</p><p>See compacted list of most included features <a href="https://forum.xda-developers.com/showpost.php?p=79092323&postcount=517"><b>HERE</b></a>.<br></p>
 <h3 align="center"><strong>Artificial Intelligence</strong></h3>
 <p>As you may notice from the name "FDE.AI" - can tell us that it has <code>AI inside</code>. It's not there yet, BUT it will be soon. AI will learn how do you use your device, check out current usage scenario and adapt some system parameters realtime to give best experience for every usage scenario. This feature is under development.<br></p>
 <h3 align="center"><strong>Installation:</strong></h3>
 <p align="center"><i>WARNING! Don't use any other All-in-One tweakers or things may get much worse! I warned you!</i><br></p>
+<p><b>- Make a backup just in case something goes wrong.</b></p>
 <p><b>- Download latest FDE .zip and install it via recovery OR Magisk manager.</b></p>
 <p><b>- After OS boot, if FDE worked OK you will get <i>5 vibro's</i> and a log file <i>/sdcard/fde.txt</i> will be created.</b><br></p>
 <p>When installing new verision of FDE - previous version will be automatically removed.<br></p>

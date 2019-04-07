@@ -1,3 +1,10 @@
+*** v3.13 ***
+- Very urgent bugfix to run FDE on older kernels
+- EAS input-boost better detection & tune-up
+- misc..
+
+
+
 *** v3.12 ***
 - Updated I/O tweaks
 - Updated CPU tweaks

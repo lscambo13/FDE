@@ -10,7 +10,6 @@
 - Adreno boost support
 - CAM2Api addon disabled
 - Converted to C base
-- Disabled input-boost for EAS devices
 - Removed many persist build.prop tweaks not reverting while uninstalling
 - Whole code optimization
 - Kernel FS tweaks updated

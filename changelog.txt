@@ -1,3 +1,27 @@
+*** v3.14 ***
+- Enhanced debugging deactivation
+- Mali GPU DVFS activation support
+- Tuned VM parameters
+- Tuned multy-core optimization
+- Power-saving network tweaks for small battery devices
+- New faster network tweaks
+- Network buffer-size tune-up
+- Smarter VM background r/w tweak
+- Fixes for Low RAM devices
+- Re-arranged build.prop tweaks
+- Smarter FS cache optimization
+- New optimized I/O tweaks
+- Better battery detection
+- Scrolling fixes
+- AI base
+- zRAM optimization
+- Optimized Math code
+- Smarter FStrim
+- Better Android Q support
+- misc..
+
+
+
 *** v3.13 ***
 - Very urgent bugfix to run FDE on older kernels
 - EAS input-boost better detection & tune-up

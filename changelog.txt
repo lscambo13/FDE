@@ -10,7 +10,7 @@
 - Touchscreen issues fixed
 - Updated build.prop tweaks
 - Smarter input-boost logic
-- Updated netwrok tweaks
+- Updated network tweaks
 - SElinux wrong state report fix
 - Enhanced system processes optimization
 - Overall code optimization

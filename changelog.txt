@@ -1,3 +1,22 @@
+*** v3.15 ***
+- Extended AI features
+- New F2FS tweaks
+- More better battery capacity detection
+- Better Treble optimizations
+- Smarter cache clearing logic
+- Better fstab detection
+- VM r/w performance improvement
+- Enhanced zRAM logic (fixes many problems)
+- Touchscreen issues fixed
+- Updated build.prop tweaks
+- Smarter input-boost logic
+- Updated netwrok tweaks
+- SElinux wrong state report fix
+- Enhanced system processes optimization
+- Overall code optimization
+- misc fixes..
+
+
 *** v3.14 ***
 - Enhanced debugging deactivation
 - Mali GPU DVFS activation support

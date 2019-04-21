@@ -34,6 +34,7 @@ you point the finger at me for messing up your device, I will laugh at you.
 Do everything at your own risk!</code><br></p>
 <p><i>Thanks to all guys, who contributed, helped, tested my work.. You all are wonderful, amazing, smart, super cool, beautiful people!</i><br></p>
 <h2 align="center"><a href="https://forum.xda-developers.com/showpost.php?p=79092323&postcount=517"><strong>FAQ</strong></a><br></h3>
+<h2 align="center"><a href="https://forum.xda-developers.com/showpost.php?p=79382552&postcount=722"><strong>Related videos</strong></a><br></h3>
 
 [![HitCount](http://hits.dwyl.io/Magisk-Modules-Repo/FDE.svg)](http://hits.dwyl.io/Magisk-Modules-Repo/FDE)
 

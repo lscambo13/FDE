@@ -1,3 +1,27 @@
+*** v3.16 ***
+- HMP tweaks optimized to fix battery drain on rare devices
+- Multy-core optimization fixes
+- Cache clean fixes
+- Сustom super-optimized build of busybox for all arches
+- FDE code is compiled with high optimization & for different arch's
+- Discontinued support for 32bit x86 arch (nobody uses it. x86_x64 arch instead)
+- LMK agressiveness tweak for low-ram devices only
+- RAM management fixes
+- Implemented AI GPUturbo with power-saving features for some MALI and Adreno GPUs.
+- Enabled AI timestamps
+- Enhanced KSM tweak
+- Added Deep-idle tweak
+- Added Mali touch boost tweak
+- CPU tweak updated
+- AI handle old-kernels zRAM bug
+- Improved zRAM logic
+- Build.prop tweak fixes
+- I/O tweak optimized
+- Added scrolling-smoothness tweak
+- misc..
+
+
+
 *** v3.15 ***
 - Extended AI features
 - New F2FS tweaks

@@ -1,3 +1,15 @@
+*** v3.17 ***
+- Whole code revised & optimized
+- Enhanced logging
+- Removed some non-stable tweaks
+- Network tweaks updated
+- Updated VM tweak
+- File system kernel parameters optimized
+- Bulletproof zRAM tweak module
+- misc..
+
+
+
 *** v3.16 ***
 - HMP tweaks optimized to fix battery drain on rare devices
 - Multy-core optimization fixes

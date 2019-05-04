@@ -1,236 +1,247 @@
+*** v3.18 ***
+— RAM management updates
+— I/O tweak update
+— zRAM tweak optimizations
+— KSM/UKSM tweak fix
+— Enhanced AI GPU turbo
+— AI CPU turbo logic
+— misc.
+
+
+
 *** v3.17 ***
-- Whole code revised & optimized
-- Enhanced logging
-- Removed some non-stable tweaks
-- Network tweaks updated
-- Updated VM tweak
-- File system kernel parameters optimized
-- Bulletproof zRAM tweak module
-- misc..
+— Whole code revised &amp; optimized
+— Enhanced logging
+— Removed some non-stable tweaks
+— Network tweaks updated
+— Updated VM tweak
+— File system kernel parameters optimized
+— Bulletproof zRAM tweak module
+— misc.
 
 
 
 *** v3.16 ***
-- HMP tweaks optimized to fix battery drain on rare devices
-- Multy-core optimization fixes
-- Cache clean fixes
-- Сustom super-optimized build of busybox for all arches
-- FDE code is compiled with high optimization & for different arch's
-- Discontinued support for 32bit x86 arch (nobody uses it. x86_x64 arch instead)
-- LMK agressiveness tweak for low-ram devices only
-- RAM management fixes
-- Implemented AI GPUturbo with power-saving features for some MALI and Adreno GPUs.
-- Enabled AI timestamps
-- Enhanced KSM tweak
-- Added Deep-idle tweak
-- Added Mali touch boost tweak
-- CPU tweak updated
-- AI handle old-kernels zRAM bug
-- Improved zRAM logic
-- Build.prop tweak fixes
-- I/O tweak optimized
-- Added scrolling-smoothness tweak
-- misc..
+— HMP tweaks optimized to fix battery drain on rare devices
+— Multy-core optimization fixes
+— Cache clean fixes
+— Custom super-optimized build of busy box for all arches
+— FDE code is compiled with high optimization &amp; for different arch's
+— Discontinued support for 32bit x86 arch (nobody uses it. x86_x64 arch instead)
+— LMK aggressiveness tweak for low-ram devices only
+— RAM management fixes
+— Implemented AI GPU turbo with power-saving features for some MALI and Adreno GPUs.
+— Enabled AI timestamps
+— Enhanced KSM tweak
+— Added Deep-idle tweak
+— Added Mali touch boost tweak
+— CPU tweak updated
+— AI handle old-kernels zRAM bug
+— Improved zRAM logic
+— Build.prop tweak fixes
+— I/O tweak optimized
+— Added scrolling-smoothness tweak
+— misc.
 
 
 
 *** v3.15 ***
-- Extended AI features
-- New F2FS tweaks
-- More better battery capacity detection
-- Better Treble optimizations
-- Smarter cache clearing logic
-- Better fstab detection
-- VM r/w performance improvement
-- Enhanced zRAM logic (fixes many problems)
-- Touchscreen issues fixed
-- Updated build.prop tweaks
-- Smarter input-boost logic
-- Updated network tweaks
-- SElinux wrong state report fix
-- Enhanced system processes optimization
-- Overall code optimization
-- misc fixes..
+— Extended AI features
+— New F2FS tweaks
+— Better battery capacity detection
+— Better Treble optimizations
+— Smarter cache clearing logic
+— Better fstab detection
+— VM r/w performance improvement
+— Enhanced zRAM logic (fixes many problems)
+— Touchscreen issues fixed
+— Updated build.prop tweaks
+— Smarter input-boost logic
+— Updated network tweaks
+— Linux wrong state report fix
+— Enhanced system processes optimization
+— Overall code optimization
+— misc fixes.
 
 
 *** v3.14 ***
-- Enhanced debugging deactivation
-- Mali GPU DVFS activation support
-- Tuned VM parameters
-- Tuned multy-core optimization
-- Power-saving network tweaks for small battery devices
-- New faster network tweaks
-- Network buffer-size tune-up
-- Smarter VM background r/w tweak
-- Fixes for Low RAM devices
-- Re-arranged build.prop tweaks
-- Smarter FS cache optimization
-- New optimized I/O tweaks
-- Better battery detection
-- Scrolling fixes
-- AI base
-- zRAM optimization
-- Optimized Math code
-- Smarter FStrim
-- Better Android Q support
-- misc..
+— Enhanced debugging deactivation
+— Mali GPU DVFS activation support
+— Tuned VM parameters
+— Tuned multy-core optimization
+— Power-saving network tweaks for small battery devices
+— New faster network tweaks
+— Network buffer-size tune-up
+— Smarter VM background r/w tweak
+— Fixes for Low RAM devices
+— Re-arranged build.prop tweaks
+— Smarter FS cache optimization
+— New optimized I/O tweaks
+— Better battery detection
+— Scrolling fixes
+— AI base
+— zRAM optimization
+— Optimized Math code
+— Smarter FStrim
+— Better Android Q support
+— misc.
 
 
 
 *** v3.13 ***
-- Very urgent bugfix to run FDE on older kernels
-- EAS input-boost better detection & tune-up
-- misc..
+— Very urgent bug fix to run FDE on older kernels
+— EAS input-boost better detection &amp; tune-up
+— misc.
 
 
 
 *** v3.12 ***
-- Updated I/O tweaks
-- Updated CPU tweaks
-- Updated modules confugurations
-- Updated battery-dependent tweaks
-- EAS governors support
-- EAS tweaks tuned
-- Updated & optimized zRAM tweak
-- Android Q better support
-- Adreno boost support
-- CAM2Api addon disabled
-- Converted to C base
-- Removed many persist build.prop tweaks not reverting while uninstalling
-- Whole code optimization
-- Kernel FS tweaks updated
-- VM tweaks updated
-- LMK tweak updated
-- Enhanced log
-- AI base development init
-- misc..
+— Updated I/O tweaks
+— Updated CPU tweaks
+— Updated modules configurations
+— Updated battery-dependent tweaks
+— EAS governors support
+— EAS tweaks tuned
+— Updated &amp; optimized zRAM tweak
+— Android Q better support
+— Adreno boost support
+— CAM2Api addon disabled
+— Converted to C base
+— Removed many persist build.prop tweaks not reverting while uninstalling
+— Whole code optimization
+— Kernel FS tweaks updated
+— VM tweaks updated
+— LMK tweak updated
+— Enhanced log
+— AI base development init
+— misc.
 
 
 
 *** v3.11 ***
-- Animations are not tuned on Android 7+
-- Updated Log
-- Smarter CPU tweaks (updated)
-- Fixed I/O tweak (massive performance boost)
-- Updated FS trim tweak
-- zRAM logic is fixed & optimized
-- Process reclaim tweak logic updated
-- Smarter LMK parameters
-- Tuned Doze & Light Doze
-- Multitasking updates
-- Input-boost logic update
-- Multi-core optimization logic update
-- RAM tweak updated
-- Kernel tweaks fixes
-- DalvikVM fixes
-- Low RAM & huge RAM devices optimizations
-- misc..
+— Animations are not tuned on Android 7+
+— Updated Log
+— Smarter CPU tweaks (updated)
+— Fixed I/O tweak (massive performance boost)
+— Updated FS trim tweak
+— zRAM logic is fixed &amp; optimized
+— Process reclaim tweak logic updated
+— Smarter LMK parameters
+— Tuned Doze &amp; Light Doze
+— Multitasking updates
+— Input-boost logic update
+— Multi-core optimization logic update
+— RAM tweak updated
+— Kernel tweaks fixes
+— DalvikVM fixes
+— Low RAM &amp; huge RAM devices optimizations
+— misc.
 
 
 
 *** v3.10 ***
-- Urgent bugfixes (code typo's)
-- Whole code is revised and remastered (still no AI)
-- Added log file "/sdcard/fde.txt" instead of "/sdcard/fde.done"
-- Optimized FDE run time (much faster now)
-- Added SoC clock scaling support
-- Smarter input-boost (updated)
-- Smarter dynamic EAS optimizations (updated)
-- Various bugfixes for Android versions pre 5.0
-- Updated network tweak
-- Fixed Doze tweak for Android 7.0+
-- Wifi optimization tweak enhanced
-- System animations tune-up (first boot only)
-- Fixed system trash cleaner tweak
-- Smarter I/O tweak (updated)
-- Added F2FS tweaks
-- FS cache tweak update
-- VM memory allocation tweak bug-fixed
-- Updated VM cache tweaks
-- Updated FS kernel parameters
-- Smarter multi-core optimizations
-- Smarter HMP scheduler tweaks (updated)
-- Updated CPU governor tweaks
-- Smarter EAS tweaks (updated)
-- Updated CPU bandwidth optimization tweak
-- Added LMK agressiveness tweak
-- Updated process reclaim tweaks
-- Fixed system processes optimization tweaks
-- Better zRAM logic & optimization
-- misc...
+— Urgent bug fixes (code typo's)
+— Whole code is revised and remastered (still no AI)
+— Added log file "/sdcard/fde.txt" instead of "/sdcard/fde.done"
+— Optimized FDE run time (much faster now)
+— Added SoC clock scaling support
+— Smarter input-boost (updated)
+— Smarter dynamic EAS optimizations (updated)
+— Various bug fixes for Android versions pre 5.0
+— Updated network tweak
+— Fixed Doze tweak for Android 7.0+
+— Wi-Fi optimization tweak enhanced
+— System animations tune-up (first boot only)
+— Fixed system trash cleaner tweak
+— Smarter I/O tweak (updated)
+— Added F2FS tweaks
+— FS cache tweak update
+— VM memory allocation tweak bug-fixed
+— Updated VM cache tweaks
+— Updated FS kernel parameters
+— Smarter multi-core optimizations
+— Smarter HMP scheduler tweaks (updated)
+— Updated CPU governor tweaks
+— Smarter EAS tweaks (updated)
+— Updated CPU bandwidth optimization tweak
+— Added LMK aggressiveness tweak
+— Updated process reclaim tweaks
+— Fixed system processes optimization tweaks
+— Better zRAM logic &amp; optimization
+— misc...
 
 
 
 *** v3.09 ***
-- Updated 'input-boost' tweak
-- Updated & tuned kernel parameters
-- Updated kernel scheduler parameters (should be more battery friendly)
-- Updated CPU tweak
-- Fixed DalvikVM crash on Android 4.2
-- misc..
+— Updated 'input-boost' tweak
+— Updated &amp; tuned kernel parameters
+— Updated kernel scheduler parameters (should be more battery friendly)
+— Updated CPU tweak
+— Fixed DalvikVM crash on Android 4.2
+— misc.
 
 
 
 *** v3.08 ***
-- Nothing new, code is heavily optimized and bugfixed.
+— Nothing new, code is heavily optimized and bug fixed.
 
 
 
 *** v3.07 ***
-- Updated zRAM logic
-- Updated kernel parameters
-- Updated I/O tweaks
-- Fixed music shuttering while screen-off on MTK cpus
-- Various optimizations for MTK CPU's
-- Few MIUI optimizations
-- Doesn't enable CAM2Api on MIUI (breaks face recognition)
-- System apps priority tweaks fixed & updated
-- Power-saving tweaks updates
-- Initiated AI early development
-- Magisk 18.2 related fixes
-- Updated installer script logic
-- A lot of bug-fixes & code improvement
-- fde.done file contains date-time of last FDE run
-- CPU tweak fixes
-- Tuned low RAM devices related parameters
-- Better optimization for 6+gigs RAM devices
-- Better optimization for 8+cores CPUs
-- Build.prop tweaks fixes
-- Updated kernel scheduler tweaks
-- Updated EAS tweaks
-- misc
+— Updated zRAM logic
+— Updated kernel parameters
+— Updated I/O tweaks
+— Fixed music shuttering while screen-off on MTK cpus
+— Various optimizations for MTK CPU's
+— Few MIUI optimizations
+— Doesn't enable CAM2Api on MIUI (breaks face recognition)
+— System apps priority tweaks fixed &amp; updated
+— Power-saving tweaks updates
+— Initiated AI early development
+— Magisk 18.2 related fixes
+— Updated installer script logic
+— A lot of bug-fixes &amp; code improvement
+— fde.done file contains date-time of last FDE run
+— CPU tweak fixes
+— Tuned low RAM devices related parameters
+— Better optimization for 6+gigs RAM devices
+— Better optimization for 8+cores CPUs
+— Build.prop tweaks fixes
+— Updated kernel scheduler tweaks
+— Updated EAS tweaks
+— misc
 
 
 
 *** v3.06 ***
-- Nothing new, bugfixes only
+— Nothing new, bug fixes only
 
 
 
 *** v3.05 ***
-- Fixed zRam tweak (typo error)
-- Added energy-saving tweaks for Adreno GPUs
-- Optimized FDE init time
-- Fully unloads from RAM after execution
-- Tuned HMP parameters
-- Disabled hot-plug boost
-- System apps priority tweak
-- Totally fixed music shuttering bug while screen-off
-- Overall code optimization & bugfixes
-- misc
+— Fixed zRam tweak (typo error)
+— Added energy-saving tweaks for Adreno GPUs
+— Optimized FDE init time
+— Fully unloads from RAM after execution
+— Tuned HMP parameters
+— Disabled hot-plug boost
+— System apps priority tweak
+— Totally fixed music shuttering bug while screen-off
+— Overall code optimization &amp; bug fixes
+— misc
 
 
 
 *** v3.04 (fisrt public non-beta release) ***
-- Added UFS Power-saving support on some SoCs
-- Tuned touch-boost
-- Fixed music shutter in very deep sleep mode
-- Fixed possible fast-charge issues
-- Tuned I/O tweaks
-- Tuned FS tweaks
-- Tuned EAS tweaks
-- EAS-WELT activation
-- Tuned HMP settings
-- Tuned VM and LMK settings
-- Disabled kernel tracers
-- misc..
+— Added UFS Power-saving support on some SoCs
+— Tuned touch-boost
+— Fixed music shutter in very deep sleep mode
+— Fixed possible fast-charge issues
+— Tuned I/O tweaks
+— Tuned FS tweaks
+— Tuned EAS tweaks
+— EAS-WELT activation
+— Tuned HMP settings
+— Tuned VM and LMK settings
+— Disabled kernel tracers
+— misc.

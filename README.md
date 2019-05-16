@@ -1,9 +1,11 @@
 <h1 align="center">FDE.AI</h1>
 <h3 align="center"><strong>Ultimate Android Optimizer</strong></h3>
 <p align="center"><img src="https://raw.githubusercontent.com/Magisk-Modules-Repo/FDE/master/screenshot.png"></p>
-<p align="center"><img src="https://img.shields.io/badge/version-v3.18-blueviolet.svg"></p>
-<p align="center"><a href="https://raw.githubusercontent.com/Magisk-Modules-Repo/FDE/master/changelog.txt"><img src="https://img.shields.io/badge/-Changelog-success.svg"></a><br></p>
+<p align="center"><img src="https://img.shields.io/badge/version-v3.19-blueviolet.svg"></p>
+<p align="center"><a href="https://raw.githubusercontent.com/Magisk-Modules-Repo/FDE/master/changelog.txt"> > Changelog < </a><br></p>
 <p>FeraDroid Engine (simply FDE) - an All-in-One ultimate optimizer for <b>all</b> devices on Android OS. <b>No settings/customization</b> and rest 'headache' - all parameters are <b>individual</b> for EVERY device depending on its hardware/software characteristics. All parameters are <i>very balanced</i> - you may gain performance without increase of power consumption AND reduce power consumption without losing performance. FDE is totally compatible with very wide range of devices and Android versions.<br></p>
+<h3 align="center"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L3DVYWWZRBLKN&source=url"><img src="https://raw.githubusercontent.com/Magisk-Modules-Repo/FDE/master/qr.png"><br>
+<strong> > DONATE < </strong></a></h3>
 <p align="center"><a href="https://forum.xda-developers.com/android/software-hacking/beta-feradroid-engine-v0-19-ultimate-t3284421"><img src="https://img.shields.io/badge/Thread%20at-XDA-orange.svg"></a> <a href="https://4pda.ru/forum/index.php?showtopic=716174"><img src="https://img.shields.io/badge/Thread%20at-4PDA-9cf.svg"></a> <a href="https://www.facebook.com/groups/feralab/"><img src="https://img.shields.io/badge/Group%20on-Facebook-blue.svg"></a> <a href="https://t.me/feralab_xda"><img src="https://img.shields.io/badge/-Telegram%20group-informational.svg"></a><br></p>
 <p><b>Supported CPU arch's:</b><br>
 <code>- ARMv7 (armeabi-v7a)</code><br>
@@ -32,8 +34,8 @@ YOU are choosing to make these modifications, and if
 you point the finger at me for messing up your device, I will laugh at you.
 Do everything at your own risk!</code><br></p>
 <p><i>Thanks to all guys, who contributed, helped, tested my work.. You all are wonderful, amazing, smart, super cool, beautiful people!</i><br></p>
-<h2 align="center"><a href="https://forum.xda-developers.com/showpost.php?p=79092323&postcount=517"><strong>FAQ</strong></a><br></h3>
-<h2 align="center"><a href="https://forum.xda-developers.com/showpost.php?p=79382552&postcount=722"><strong>Related videos</strong></a><br></h3>
+<h2 align="center"><a href="https://forum.xda-developers.com/showpost.php?p=79092323&postcount=517"><strong> > FAQ < </strong></a><br></h2>
+<h2 align="center"><a href="https://forum.xda-developers.com/showpost.php?p=79382552&postcount=722"><strong>Related videos</strong></a><br></h2>
 
 [![HitCount](http://hits.dwyl.io/Magisk-Modules-Repo/FDE.svg)](http://hits.dwyl.io/Magisk-Modules-Repo/FDE)
 

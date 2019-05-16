@@ -1,3 +1,20 @@
+*** v3.19 ***
+— CPU tweak fixed & updated
+— EAS parameters tune-up
+— I/O tweaks fixes
+— Updated AI CPU-turbo logic
+— AI GPU turbo fine tuning
+— Input boost tuned
+— I/O tweak updated
+— AI logic updated
+— Network tweak updated
+— Various code optimizations
+— Additional logging disabled
+— Build.prop tweaks fixed
+— misc.
+
+
+
 *** v3.18 ***
 — RAM management updates
 — I/O tweak update

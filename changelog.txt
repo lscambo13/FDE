@@ -1,20 +1,37 @@
+*** v4.01 ***
+— Very urgent AI logic fixes
+— AI machine learning tune-up
+— Tuned CPU tweaks
+— VM tweaks updates
+— Smarter Mali GPU tweaks
+— Build.prop tweaks fixes
+— EAS tweaks fixes
+— AI GPU throttling control
+— Better GPU detection
+— Smarter input-boost
+— Whole code optimized again
+— CPU & GPU turbos unchained
+— Smarter AI CPU turbo
+— Smarter AI GPU turbo
+— misc.
+
+
+
 *** v4.00 ***
-— Whole code optimization
 — Smarter input-boost tweak
 — Smarter CPU tweak
 — Extended GPUturbo support
-— Extended CPUturbo support
-— Smarter GPUturbo logic
 — Smarter CPUturbo logic
 — Smarter AI zRAM handling
-— zRAM tweaks optimized
 — Thermal dependent AI turbos
+— Whole code optimization
 — Toast messages as alerts (small apk will be installed)
 — Fastest FDE compilation optimizations
 — Better system process optimization
 — Build.prop tweaks fixes
 — Auto I/O scheduler desicion
 — Optimized I/O tweaks
+— zRAM tweaks optimized
 — Better trash cleaning logic
 — Updated EAS tweaks
 — AI logic enhanced
